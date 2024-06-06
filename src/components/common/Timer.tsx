@@ -1,4 +1,4 @@
-import Timer from "@/lib/timer";
+import Timer from "~/lib/timer";
 import { cn } from "~/lib/utils";
 import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useState } from "react";
 

@@ -1,5 +1,5 @@
 import { InformationCircleIcon, CheckCircleIcon, ExclamationTriangleIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { MitandaButton } from "./BuuddyButton";
+import { BuuddyButton } from "./BuuddyButton";
 
 type FeedbackMessageProps = {
     message: string
@@ -15,7 +15,7 @@ const FeedbackMessage = ({ message, status }: FeedbackMessageProps) => {
                         <ExclamationCircleIcon className="min-w-6 max-w-6 min-h-6 max-h-6 text-grayMain" />
                         <span className=" text-grayMain text-sm">{message}</span>
                     </div>
-                    <MitandaButton size="sm" variant="link">Enviar reporte</MitandaButton>
+                    <BuuddyButton size="sm" variant="link">Enviar reporte</BuuddyButton>
                 </div>
             }
             {
