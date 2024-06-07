@@ -1,6 +1,5 @@
 "use client"
 
-
 import SibedarItem from "./SidebarItem";
 import { signOut } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar"
@@ -9,7 +8,7 @@ import CustomAlertDialog from "../common/AlertDialog";
 import useSidebarLogic from "./useSidebarLogic";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
-import { ArrowLeftEndOnRectangleIcon, CalendarIcon, CurrencyDollarIcon, UserGroupIcon, UserIcon, ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon, CurrencyDollarIcon, UserGroupIcon, UserIcon, ArrowRightEndOnRectangleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { BuuddyButton } from "../common/BuuddyButton";
 import { useRouter } from "next/navigation";
 
@@ -90,7 +89,7 @@ const Sidebar = ({ session }: SidebarProps) => {
                                             setDisplaySignOutAlert(true);
                                         }}
                                     >
-                                        <ArrowLeftEndOnRectangleIcon className="w-4 h-4 text-blackMain" />
+                                        <ArrowLeftStartOnRectangleIcon className="w-4 h-4 text-blackMain" />
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent className=" bg-blackMain border-none max-w-60">
