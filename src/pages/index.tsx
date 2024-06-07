@@ -1,10 +1,15 @@
+import { type GetServerSideProps, type InferGetServerSidePropsType } from "next";
+import { getServerSession, type Session } from "next-auth";
 import Head from "next/head";
 import Discover from "~/components/Discover";
 import Dashboard from "~/layout/Dashboard";
+import { authOptions } from "~/server/auth";
 
-export default function Home() {
+export default function Home({ session }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log(session);
+
   return (
-    <Dashboard>
+    <Dashboard session={session}>
       <>
         <Head>
           <title>Buuddy - Connect with great people!</title>
@@ -18,3 +23,14 @@ export default function Home() {
     </Dashboard>
   );
 }
+
+type ServerSideProps = {
+  session: Session | null
+}
+
+export const getServerSideProps = (async ({ req, res }) => {
+  const session = await getServerSession(req, res, authOptions);
+
+  return { props: { session } };
+}) satisfies GetServerSideProps<ServerSideProps>
+

@@ -4,12 +4,13 @@ import {
   integer,
   pgTableCreator,
   primaryKey,
-  serial,
   text,
   timestamp,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
+import { typeid } from 'typeid-js';
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -19,27 +20,10 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `buuddy_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("createdById", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
-  },
-  (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
-
 export const users = createTable("user", {
-  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  id: uuid("id").notNull().primaryKey().$defaultFn(() => {
+    return typeid().toUUID()
+  }),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
@@ -47,6 +31,12 @@ export const users = createTable("user", {
     withTimezone: true,
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar("image", { length: 255 }),
+  createdAt: timestamp('createdAt', {
+    mode: 'date'
+  }).notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt', {
+    mode: 'date'
+  }).notNull().defaultNow()
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -56,7 +46,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const accounts = createTable(
   "account",
   {
-    userId: varchar("userId", { length: 255 })
+    userId: uuid("userId")
       .notNull()
       .references(() => users.id),
     type: varchar("type", { length: 255 })
@@ -71,6 +61,12 @@ export const accounts = createTable(
     scope: varchar("scope", { length: 255 }),
     id_token: text("id_token"),
     session_state: varchar("session_state", { length: 255 }),
+    createdAt: timestamp('createdAt', {
+      mode: 'date'
+    }).notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt', {
+      mode: 'date'
+    }).notNull().defaultNow()
   },
   (account) => ({
     compoundKey: primaryKey({
@@ -90,13 +86,19 @@ export const sessions = createTable(
     sessionToken: varchar("sessionToken", { length: 255 })
       .notNull()
       .primaryKey(),
-    userId: varchar("userId", { length: 255 })
+    userId: uuid("userId")
       .notNull()
       .references(() => users.id),
     expires: timestamp("expires", {
       mode: "date",
       withTimezone: true,
     }).notNull(),
+    createdAt: timestamp('createdAt', {
+      mode: 'date'
+    }).notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt', {
+      mode: 'date'
+    }).notNull().defaultNow()
   },
   (session) => ({
     userIdIdx: index("session_userId_idx").on(session.userId),

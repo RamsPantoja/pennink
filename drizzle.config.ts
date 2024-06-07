@@ -1,12 +1,11 @@
-import { type Config } from "drizzle-kit";
-
 import { env } from "~/env";
+import { defineConfig } from "drizzle-kit";
 
-export default {
+export default defineConfig({
+  dialect: "postgresql", // "mysql" | "sqlite" | "postgresql"
   schema: "./src/server/db/schema.ts",
-  dialect: "postgresql",
+  out: './src/server/db/migrations',
   dbCredentials: {
-    url: env.DATABASE_URL,
-  },
-  tablesFilter: ["buuddy_*"],
-} satisfies Config;
+    url: env.DATABASE_URL
+  }
+});

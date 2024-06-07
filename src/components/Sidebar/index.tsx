@@ -9,13 +9,17 @@ import CustomAlertDialog from "../common/AlertDialog";
 import useSidebarLogic from "./useSidebarLogic";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
-import { ArrowLeftEndOnRectangleIcon, CurrencyDollarIcon, UserGroupIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftEndOnRectangleIcon, CalendarIcon, CurrencyDollarIcon, UserGroupIcon, UserIcon, ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
+import { BuuddyButton } from "../common/BuuddyButton";
+import { useRouter } from "next/navigation";
 
 type SidebarProps = {
-    session?: Session
+    session: Session | null
 }
 
-const Sidebar = ({ }: SidebarProps) => {
+const Sidebar = ({ session }: SidebarProps) => {
+    const router = useRouter();
+
     const {
         displaySignOutAlert,
         setDisplaySignOutAlert
@@ -28,70 +32,97 @@ const Sidebar = ({ }: SidebarProps) => {
                 <ul className="flex flex-col w-full h-full">
                     <SibedarItem
                         Icon={UserGroupIcon}
-                        label="Descubrir"
+                        label="Rentar"
                         href="/"
                     />
                     <SibedarItem
-                        Icon={CurrencyDollarIcon}
-                        label="Balance"
-                        href="/balance"
+                        Icon={CalendarIcon}
+                        label="Eventos"
+                        href="/events"
                     />
-                    <SibedarItem
-                        Icon={UserIcon}
-                        label="Perfil"
-                        href="/profile"
-                    />
-                </ul>
-                <div className="flex flex-row gap-2 justify-between items-center w-full">
-                    <div className="flex flex-row items-center gap-2 overflow-hidden">
-                        <Avatar className=" w-7 h-7">
-                            <AvatarImage src={"https://lh3.googleusercontent.com/a/ACg8ocJrMSYUN_uZkhM0ETX4N8H9Ffi6qpY7t67KuL8rdm1B-ErUkjjB=s96-c"} />
-                            <AvatarFallback>Tú</AvatarFallback>
-                        </Avatar>
-                        <p className="text-blackMain text-xs truncate font-bold">Rams Pantoja</p>
-                    </div>
-                    <div className="flex items-center">
-                        <CustomAlertDialog
-                            cancelText="Cancelar"
-                            actionText="Confirmar"
-                            title="Cerrar sesión"
-                            description={"¡Atención! ¿Estás seguro de que quieres cerrar sesión?"}
-                            onCancel={() => {
-                                setDisplaySignOutAlert(false);
-                            }}
-                            onAction={() => signOut({ callbackUrl: '/sign_in' })}
-                            isPending={false}
-                            open={displaySignOutAlert}
+                    {
+                        session &&
+                        <SibedarItem
+                            Icon={CurrencyDollarIcon}
+                            label="Balance"
+                            href="/balance"
                         />
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    className=" h-8 m-w-8 p-0"
-                                    variant='ghost'
-                                    size='icon'
-                                    onClick={() => {
-                                        setDisplaySignOutAlert(true);
-                                    }}
-                                >
-                                    <ArrowLeftEndOnRectangleIcon className="w-4 h-4 text-blackMain" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent className=" bg-blackMain border-none max-w-60">
-                                <p className="text-whiteMain">Cerrar sesión</p>
-                            </TooltipContent>
-                        </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <span>
-                                    {/* <Notifications session={session} /> */}
-                                </span>
-                            </TooltipTrigger>
-                            <TooltipContent className=" bg-blackMain border-none max-w-60">
-                                <p className="text-whiteMain">Notificaciones</p>
-                            </TooltipContent>
-                        </Tooltip>
+                    }
+                    {
+                        session &&
+                        <SibedarItem
+                            Icon={UserIcon}
+                            label="Perfil"
+                            href="/profile"
+                        />
+                    }
+                </ul>
+                {
+                    session &&
+                    <div className="flex flex-row gap-2 justify-between items-center w-full">
+                        <div className="flex flex-row items-center gap-2 overflow-hidden">
+                            <Avatar className=" w-7 h-7">
+                                <AvatarImage src={"https://lh3.googleusercontent.com/a/ACg8ocJrMSYUN_uZkhM0ETX4N8H9Ffi6qpY7t67KuL8rdm1B-ErUkjjB=s96-c"} />
+                                <AvatarFallback>Tú</AvatarFallback>
+                            </Avatar>
+                            <p className="text-blackMain text-xs truncate font-bold">Rams Pantoja</p>
+                        </div>
+                        <div className="flex items-center">
+                            <CustomAlertDialog
+                                cancelText="Cancelar"
+                                actionText="Confirmar"
+                                title="Cerrar sesión"
+                                description={"¡Atención! ¿Estás seguro de que quieres cerrar sesión?"}
+                                onCancel={() => {
+                                    setDisplaySignOutAlert(false);
+                                }}
+                                onAction={() => signOut({ callbackUrl: '/sign_in' })}
+                                isPending={false}
+                                open={displaySignOutAlert}
+                            />
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        className=" h-8 m-w-8 p-0"
+                                        variant='ghost'
+                                        size='icon'
+                                        onClick={() => {
+                                            setDisplaySignOutAlert(true);
+                                        }}
+                                    >
+                                        <ArrowLeftEndOnRectangleIcon className="w-4 h-4 text-blackMain" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent className=" bg-blackMain border-none max-w-60">
+                                    <p className="text-whiteMain">Cerrar sesión</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <span>
+                                        {/* <Notifications session={session} /> */}
+                                    </span>
+                                </TooltipTrigger>
+                                <TooltipContent className=" bg-blackMain border-none max-w-60">
+                                    <p className="text-whiteMain">Notificaciones</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
                     </div>
-                </div>
+                }
+                {
+                    !session &&
+                    <div className="flex flex-row gap-2 justify-between items-center w-full">
+                        <BuuddyButton
+                            variant="secondary"
+                            className="w-full"
+                            endIcon={<ArrowRightEndOnRectangleIcon className="w-6 h-6" />}
+                            onClick={() => { router.push('/sign_in') }}
+                        >
+                            Iniciar sesión
+                        </BuuddyButton>
+                    </div>
+                }
             </nav>
         </TooltipProvider>
     )
