@@ -1,9 +1,12 @@
+import { type InferGetServerSidePropsType, type GetServerSideProps } from "next";
+import { type Session, getServerSession } from "next-auth";
 import Head from "next/head";
 import Dashboard from "~/layout/Dashboard";
+import { authOptions } from "~/server/auth";
 
-const Balance = () => {
+const Balance = ({ session }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
-        <Dashboard>
+        <Dashboard session={session}>
             <>
                 <Head>
                     <title>Balance</title>
@@ -17,5 +20,15 @@ const Balance = () => {
         </Dashboard>
     )
 }
+
+type ServerSideProps = {
+    session: Session | null
+}
+
+export const getServerSideProps = (async ({ req, res }) => {
+    const session = await getServerSession(req, res, authOptions);
+
+    return { props: { session } };
+}) satisfies GetServerSideProps<ServerSideProps>
 
 export default Balance;

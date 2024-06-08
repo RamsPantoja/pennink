@@ -6,8 +6,6 @@ import Dashboard from "~/layout/Dashboard";
 import { authOptions } from "~/server/auth";
 
 export default function Home({ session }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(session);
-
   return (
     <Dashboard session={session}>
       <>
