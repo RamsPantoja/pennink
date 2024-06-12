@@ -12,7 +12,7 @@ export default {
       colors: {
         whiteMain: '#FFFFFF',
         whiteLigth: '#F7F7F7',
-        grayMain: '#B3B3B3',
+        grayMain: '#6A6A6A',
         grayStrong: "#282828",
         blackMain: '#000000',
         blackNormal: "#181818",
