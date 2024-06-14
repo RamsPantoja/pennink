@@ -2,16 +2,19 @@ import { type Config } from "tailwindcss";
 import { nextui } from "@nextui-org/theme"
 
 export default {
-  content: ["./src/**/*.tsx"],
+  content: [
+    "./src/**/*.tsx",
+    "./node_modules/@nextui-org/theme/dist/components/(slider|snippet).js"
+  ],
   theme: {
     fontFamily: {
-      sans: ['__Inconsolata_c33693', '__Inconsolata_Fallback_c33693', 'sans-serif'],
-      serif: ['__Inconsolata_c33693', '__Inconsolata_Fallback_c33693', 'serif'],
+      sans: ['__Nunito_14f33d', '__Nunito_Fallback_14f33d', 'sans-serif'],
+      serif: ['__Nunito_14f33d', '__Nunito_Fallback_14f33d', 'serif'],
     },
     extend: {
       colors: {
         whiteMain: '#FFFFFF',
-        whiteLigth: '#F7F7F7',
+        whiteLigth: '#F0F0F0',
         grayMain: '#6A6A6A',
         grayStrong: "#282828",
         blackMain: '#000000',

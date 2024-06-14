@@ -1,9 +1,9 @@
 import { type Session } from "next-auth";
 import BuuddyCard from "./BuuddyCard";
 import RentModeSwitch from "./RentMode";
-import { BuuddyButton } from "../common/BuuddyButton";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Card } from "../ui/card";
+import RoleList from "./RoleList";
+import RoleForm from "./RoleForm";
 
 type YourBuuddyContainerProps = {
     session: Session
@@ -17,14 +17,12 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
                 <RentModeSwitch />
             </div>
             <div className="flex w-full h-full gap-2">
-                <Card className="flex flex-col gap-2 border-2 border-whiteLigth min-w-96">
+                <Card className="flex flex-col gap-2 min-w-96">
                     <span className="text-blackMain font-bold">Roles</span>
-                    <BuuddyButton
-                        variant="secondary"
-                        endIcon={<PlusCircleIcon className="min-w-5 h-5" />}
-                    >Agregar role</BuuddyButton>
+                    <RoleList />
+                    <RoleForm />
                 </Card>
-                <Card className="flex flex-col gap-2 border-2 border-whiteLigth w-full">
+                <Card className="flex flex-col gap-2 w-full">
                     <span className="text-blackMain font-bold">Planificación y disponibilidad</span>
                 </Card>
             </div>

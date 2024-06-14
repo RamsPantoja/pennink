@@ -1,0 +1,191 @@
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { BuuddyButton } from "~/components/common/BuuddyButton";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
+import useRoleFormLogic from "./useRoleFormLogic";
+import InputFeedbackMessage from "~/components/common/InputFeedbackMessage";
+import { Controller } from "react-hook-form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
+import FeedbackMessage from "~/components/common/FeedbackMessage";
+import { Skeleton } from "~/components/ui/skeleton";
+import { Card } from "~/components/ui/card";
+import RoleCard from "./RoleCard";
+import { Slider } from "@nextui-org/slider";
+import DetailList from "./DetailList";
+
+
+const RoleForm = () => {
+    const {
+        onAddRole,
+        useRoleForm,
+        displayRoleForm,
+        setDisplayRoleForm,
+        rolesData,
+        rolesIsError,
+        rolesIsLoading,
+        onAddDetail,
+        onRemoveDetail,
+        details
+    } = useRoleFormLogic();
+
+    const { register, formState, control, watch, reset } = useRoleForm;
+
+    return (
+        <Dialog
+            open={displayRoleForm}
+            onOpenChange={setDisplayRoleForm}
+        >
+            <DialogTrigger asChild>
+                <BuuddyButton
+                    variant="secondary"
+                    endIcon={<PlusCircleIcon className="min-w-5 h-5" />}
+                >Agregar rol</BuuddyButton>
+            </DialogTrigger>
+            <DialogContent
+                onEscapeKeyDown={(e) => {
+                    e.preventDefault();
+                }}
+                onCloseAutoFocus={(e) => {
+                    e.preventDefault();
+                }}
+                onInteractOutside={(e) => {
+                    e.preventDefault();
+                }}
+            >
+                <DialogHeader>
+                    <DialogTitle>Tu nuevo rol</DialogTitle>
+                    <DialogDescription>
+                        Completa los campos para agregar tu nuevo rol y comenzar a ofrecer tus servicios!
+                    </DialogDescription>
+                </DialogHeader>
+                {
+                    rolesIsError && !rolesIsLoading && <FeedbackMessage message="Error al obtener la lista de roles" status="ERROR" />
+                }
+                {
+                    rolesIsLoading &&
+                    <Card className="flex gap-2 flex-col">
+                        <div className="space-y-2">
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-4 w-40" />
+                        </div>
+                        <div className="space-y-2">
+                            <Skeleton className="h-5 w-full" />
+                            <Skeleton className="h-4 w-40" />
+                        </div>
+                    </Card>
+                }
+                {
+                    !rolesIsError && !rolesIsLoading &&
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2">
+                            <p className="font-bold text-sm">Rol</p>
+                            <Controller
+                                name="role"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Selecciona un rol" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {
+                                                rolesData?.map((item) => {
+                                                    return (
+                                                        <SelectItem key={item.id} value={item.id}>
+                                                            <RoleCard
+                                                                name={item.name}
+                                                                description={item.description}
+                                                            />
+                                                        </SelectItem>
+                                                    )
+                                                })
+                                            }
+
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
+
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <span className="font-bold text-sm">Descripción</span>
+                            <Textarea
+                                placeholder="Escribe aquí..."
+                                className="resize-none"
+                                rows={7}
+                                {...register("description")}
+                            />
+                            {
+                                formState.errors.description && <InputFeedbackMessage status="ERROR" message={formState.errors.description.message} />
+                            }
+                        </div>
+                        <div>
+                            <Controller
+                                name="hourPrice"
+                                control={control}
+                                render={({ field }) => (
+                                    <Slider
+                                        size="sm"
+                                        step={25}
+                                        color="primary"
+                                        label="Precio por hora"
+                                        showSteps={false}
+                                        maxValue={1500}
+                                        minValue={100}
+                                        radius='full'
+                                        defaultValue={field.value}
+                                        className="max-w-md"
+                                        formatOptions={{ style: "currency", currency: "MXN", currencyDisplay: "code" }}
+                                        onChangeEnd={(value) => {
+                                            field.onChange(value);
+                                        }}
+                                        classNames={{
+                                            track: "border-s-blackMain",
+                                            filler: "bg-gradient-to-r from-blackMain to-blackMain",
+                                            label: "text-blackMain font-bold",
+                                            value: "text-blackMain font-bold text-base",
+                                            step: "data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50",
+                                            thumb: [
+                                                "transition-size",
+                                                "bg-gradient-to-r from-blackMain to-blackMain",
+                                                "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
+                                                "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6"
+                                            ],
+                                        }}
+                                        ref={field.ref}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <span className="font-bold text-sm">Detalles</span>
+                            <DetailList 
+                                onRemove={onRemoveDetail}
+                                onAdd={onAddDetail}
+                                details={details}
+                            />
+                        </div>
+                    </div>
+                }
+                <DialogFooter className="flex flex-row items-center justify-between gap-2">
+                    <DialogClose asChild>
+                        <BuuddyButton onClick={() => reset()} type="button" variant="secondary">
+                            Descartar
+                        </BuuddyButton>
+                    </DialogClose>
+                    <BuuddyButton
+                        onClick={() => { console.log("a") }}
+                        variant='default'
+                        isPending={false}>
+                        Agregar rol
+                    </BuuddyButton>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
+export default RoleForm;

@@ -9,12 +9,15 @@
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import Services, { type ServicesConfig, type ServicesContext } from "./services";
+import type * as schema from "../db/schema";
 
 /**
  * 1. CONTEXT
@@ -26,6 +29,14 @@ import { db } from "~/server/db";
 
 interface CreateContextOptions {
   session: Session | null;
+  opts: CreateNextContextOptions
+}
+
+export type TRPCContext = {
+  db: PostgresJsDatabase<typeof schema>
+  session: Session | null
+  services: (config: ServicesConfig) => ServicesContext
+  opts: CreateNextContextOptions
 }
 
 /**
@@ -38,10 +49,12 @@ interface CreateContextOptions {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
+const createInnerTRPCContext = (opts: CreateContextOptions): TRPCContext => {
   return {
     session: opts.session,
     db,
+    services: (config) => Services(config),
+    opts: opts.opts
   };
 };
 
@@ -59,6 +72,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   return createInnerTRPCContext({
     session,
+    opts
   });
 };
 
