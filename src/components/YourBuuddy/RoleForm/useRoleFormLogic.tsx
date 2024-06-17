@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { api } from "~/utils/api";
 import { typeid } from "typeid-js";
+import { toast } from "sonner";
 
 const detailSchema = z.object({
     id: z.string({
@@ -33,44 +34,112 @@ const roleValidationSchema = z
             })
             .min(100)
             .max(1000),
-        details: z.array(detailSchema).nonempty()
+        details: z.array(detailSchema).min(1)
     });
-    
+
 
 export type RoleValidationSchema = z.infer<typeof roleValidationSchema>
 export type DetailSchema = z.infer<typeof detailSchema>
 
 const useRoleFormLogic = () => {
+    const utils = api.useUtils();
+    const defaultDetail = {
+        id: typeid().toUUID(),
+        allowed: false,
+        description: ""
+    };
+
     const [displayRoleForm, setDisplayRoleForm] = useState<boolean>(false);
+
     const useRoleForm = useForm<RoleValidationSchema>({
         resolver: zodResolver(roleValidationSchema),
         defaultValues: {
             role: "",
             description: "",
-            hourPrice: 2,
+            hourPrice: 100,
+            details: [defaultDetail]
         }
     });
 
-    const [details, setDetails] = useState<DetailSchema[]>([]);
+    const [details, setDetails] = useState<DetailSchema[]>([defaultDetail]);
 
     const { data: rolesData, isError: rolesIsError, isLoading: rolesIsLoading } = api.role.roles.useQuery();
 
+    const { mutate: createUserRoleMutation, isPending: createUserRoleMutationIsPending } = api.userRole.create.useMutation({
+        onSuccess: async () => {
+            useRoleForm.reset();
+            setDetails([defaultDetail]);
+            toast.success('Role agregado!');
+            setDisplayRoleForm(false);
+            await utils.userRole.userRoles.invalidate();
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    })
+
     const onAddRole = (data: RoleValidationSchema) => {
-        console.log(data);
+        createUserRoleMutation({
+            roleId: data.role,
+            hourPrice: data.hourPrice,
+            description: data.description,
+            details: data.details
+        });
     }
 
     const onAddDetail = () => {
-        setDetails([...details, {
+        const tempDetails = [...details, {
             id: typeid().toUUID(),
             allowed: false,
             description: ""
-        }]);
+        }];
+
+        setDetails(tempDetails);
+
+        useRoleForm.setValue("details", tempDetails);
     }
 
     const onRemoveDetail = (id: string) => {
-        setDetails((prevState) => {
-            return prevState.filter((item) => item.id !== id);
-        })
+        const tempDetails = details.filter((item) => item.id !== id);
+        setDetails(tempDetails);
+        useRoleForm.setValue("details", tempDetails);
+    }
+
+    const onCloseForm = () => {
+        useRoleForm.reset();
+        setDetails([defaultDetail]);
+    }
+
+    const handleOnChangeDescriptionDetail = (detailId: string, value: string) => {
+        const tempDetails = details.map((item) => {
+            if (item.id === detailId) {
+                return {
+                    ...item,
+                    description: value
+                };
+            } else {
+                return item;
+            }
+        });
+
+        useRoleForm.setValue("details", tempDetails);
+        setDetails(tempDetails);
+    }
+
+    const handleOnChangeAllowedDetail = (detailId: string, check: boolean) => {
+        const tempDetails = details.map((item) => {
+            if (item.id === detailId) {
+                return {
+                    ...item,
+                    allowed: check
+                };
+            } else {
+                return item;
+            }
+        });
+
+        useRoleForm.setValue("details", tempDetails);
+        setDetails(tempDetails);
     }
 
     return {
@@ -83,7 +152,11 @@ const useRoleFormLogic = () => {
         rolesIsLoading,
         onAddDetail,
         onRemoveDetail,
-        details
+        details,
+        onCloseForm,
+        handleOnChangeDescriptionDetail,
+        handleOnChangeAllowedDetail,
+        createUserRoleMutationIsPending
     }
 }
 

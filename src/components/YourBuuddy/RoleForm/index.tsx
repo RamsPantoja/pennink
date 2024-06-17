@@ -13,7 +13,6 @@ import RoleCard from "./RoleCard";
 import { Slider } from "@nextui-org/slider";
 import DetailList from "./DetailList";
 
-
 const RoleForm = () => {
     const {
         onAddRole,
@@ -25,10 +24,14 @@ const RoleForm = () => {
         rolesIsLoading,
         onAddDetail,
         onRemoveDetail,
-        details
+        details,
+        onCloseForm,
+        handleOnChangeDescriptionDetail,
+        handleOnChangeAllowedDetail,
+        createUserRoleMutationIsPending
     } = useRoleFormLogic();
 
-    const { register, formState, control, watch, reset } = useRoleForm;
+    const { register, formState, control, handleSubmit } = useRoleForm;
 
     return (
         <Dialog
@@ -37,7 +40,7 @@ const RoleForm = () => {
         >
             <DialogTrigger asChild>
                 <BuuddyButton
-                    variant="secondary"
+                    variant="default"
                     endIcon={<PlusCircleIcon className="min-w-5 h-5" />}
                 >Agregar rol</BuuddyButton>
             </DialogTrigger>
@@ -87,7 +90,7 @@ const RoleForm = () => {
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
                                     >
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger ref={field.ref} className="w-[180px]">
                                             <SelectValue placeholder="Selecciona un rol" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -108,7 +111,9 @@ const RoleForm = () => {
                                     </Select>
                                 )}
                             />
-
+                            {
+                                formState.errors.role && <InputFeedbackMessage status="ERROR" message={formState.errors.role.message} />
+                            }
                         </div>
                         <div className="flex flex-col gap-1">
                             <span className="font-bold text-sm">Descripción</span>
@@ -117,12 +122,13 @@ const RoleForm = () => {
                                 className="resize-none"
                                 rows={7}
                                 {...register("description")}
+                                status={formState.errors.description && "ERROR"}
                             />
                             {
                                 formState.errors.description && <InputFeedbackMessage status="ERROR" message={formState.errors.description.message} />
                             }
                         </div>
-                        <div>
+                        <div className="flex flex-col gap-1">
                             <Controller
                                 name="hourPrice"
                                 control={control}
@@ -159,27 +165,33 @@ const RoleForm = () => {
                                     />
                                 )}
                             />
+                            {
+                                formState.errors.hourPrice && <InputFeedbackMessage status="ERROR" message={formState.errors.hourPrice.message} />
+                            }
                         </div>
                         <div className="flex flex-col gap-1">
-                            <span className="font-bold text-sm">Detalles</span>
-                            <DetailList 
+                            <span className="font-bold text-sm">Detalles permitidos y no permitidos</span>
+                            <DetailList
                                 onRemove={onRemoveDetail}
                                 onAdd={onAddDetail}
                                 details={details}
+                                errors={formState.errors.details}
+                                handleOnChangeAllowedDetail={handleOnChangeAllowedDetail}
+                                handleOnChangeDescriptionDetail={handleOnChangeDescriptionDetail}
                             />
                         </div>
                     </div>
                 }
                 <DialogFooter className="flex flex-row items-center justify-between gap-2">
                     <DialogClose asChild>
-                        <BuuddyButton onClick={() => reset()} type="button" variant="secondary">
+                        <BuuddyButton onClick={onCloseForm} type="button" variant="secondary">
                             Descartar
                         </BuuddyButton>
                     </DialogClose>
                     <BuuddyButton
-                        onClick={() => { console.log("a") }}
+                        onClick={handleSubmit(onAddRole)}
                         variant='default'
-                        isPending={false}>
+                        isPending={createUserRoleMutationIsPending}>
                         Agregar rol
                     </BuuddyButton>
                 </DialogFooter>

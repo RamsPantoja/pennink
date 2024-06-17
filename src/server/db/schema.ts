@@ -29,6 +29,7 @@ export const educationLevelEnum = pgEnum('educationLevel', ["HIGH_SCHOOL", "TECH
 export const exerciseEnum = pgEnum('exercise', ["ACTIVE", "SOMETIMES", "ALMOST_NEVER"]);
 export const drinkingEnum = pgEnum('drinking', ["SOCIALLY", "NEVER", "FREQUENTLY", "SOBER"]);
 export const smokingEnum = pgEnum('smoking', ["SOCIALLY", "NEVER", "REGULARLY"]);
+export const weekDaysEnum = pgEnum('weekDays', ["MON", "TUE", "WED", "THU", "FRI"]);
 
 export const users = createTable("user", {
   id: uuid("id").notNull().primaryKey().$defaultFn(() => {
@@ -61,6 +62,7 @@ export const users = createTable("user", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  userRoles: many(userRoles)
 }));
 
 export const userAnalytics = createTable(
@@ -271,6 +273,10 @@ export const roles = createTable(
   }
 );
 
+export const rolesRelations = relations(roles, ({ many }) => ({
+  userRoles: many(userRoles)
+}));
+
 export const userRoles = createTable(
   "user_role",
   {
@@ -280,28 +286,25 @@ export const userRoles = createTable(
     userId: uuid("userId")
       .notNull()
       .references(() => users.id),
+    roleId: uuid("roleId")
+      .notNull()
+      .references(() => roles.id),
     hourPrice: numeric('hourPrice').notNull(),
     description: text("description").notNull(),
   }
 );
 
-export const userRolesToRoles = createTable(
-  "user_role_to_role",
-  {
-    userRoleId: uuid("userRoleId")
-      .notNull()
-      .references(() => userRoles.id),
-    roleId: uuid("roleId")
-      .notNull()
-      .references(() => roles.id),
-  },
-  (t) => ({
-    pk: primaryKey({
-      name: "userRoleId_roleId",
-      columns: [t.userRoleId, t.roleId]
-    }),
-  })
-)
+export const userRolesRelations = relations(userRoles, ({ one, many }) => ({
+  user: one(users, {
+    fields: [userRoles.userId],
+    references: [users.id]
+  }),
+  role: one(roles, {
+    fields: [userRoles.roleId],
+    references: [roles.id]
+  }),
+  userRoleDetails: many(userRoleDetails)
+}));
 
 export const userRoleDetails = createTable(
   "user_role_detail",
@@ -316,3 +319,10 @@ export const userRoleDetails = createTable(
     allowed: boolean("allowed").notNull().default(true),
   }
 );
+
+export const userRoleDetailsRelations = relations(userRoleDetails, ({ one }) => ({
+  userRole: one(userRoles, {
+    fields: [userRoleDetails.userRoleId],
+    references: [userRoles.id]
+  }),
+}));
