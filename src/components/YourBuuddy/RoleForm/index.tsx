@@ -41,6 +41,7 @@ const RoleForm = () => {
             <DialogTrigger asChild>
                 <BuuddyButton
                     variant="default"
+                    className="w-fit"
                     endIcon={<PlusCircleIcon className="min-w-5 h-5" />}
                 >Agregar rol</BuuddyButton>
             </DialogTrigger>

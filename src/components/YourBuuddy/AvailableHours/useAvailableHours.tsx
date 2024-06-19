@@ -1,104 +1,103 @@
-import { useState } from "react";
-
-type Interval = {
-    startHour: string
-    endHour: string
-}
+import { useEffect, useState } from "react";
+import { type WeeklyDays } from "~/lib/enum";
+import { api } from "~/utils/api";
+import { type TInterval } from "./WeeklyDay/useWeeklyDayLogic";
 
 export type WeekDay = {
     isActive: boolean
-    key: string
+    key: WeeklyDays
     label: string
-    intevals: Interval[]
 }
 
-const weeklyDaysInit: WeekDay[] = [
-    {
-        isActive: false,
-        key: "SUN",
-        label: "Domingo",
-        intevals: [
-            {
-                startHour: "",
-                endHour: ""
-            },
-        ]
-    },
-    {
-        isActive: false,
-        key: "MON",
-        label: "Lunes",
-        intevals: [
-            {
-                startHour: "",
-                endHour: ""
-            },
-        ]
-    },
-    {
-        isActive: false,
-        key: "TUE",
-        label: "Martes",
-        intevals: [
-            {
-                startHour: "",
-                endHour: ""
-            },
-        ]
-    },
-    {
-        isActive: false,
-        key: "WED",
-        label: "Miercoles",
-        intevals: [
-            {
-                startHour: "",
-                endHour: ""
-            },
-        ]
-    },
-    {
-        isActive: false,
-        key: "THU",
-        label: "Jueves",
-        intevals: [
-            {
-                startHour: "",
-                endHour: ""
-            },
-        ]
-    },
-    {
-        isActive: false,
-        key: "FRI",
-        label: "Viernes",
-        intevals: [
-            {
-                startHour: "",
-                endHour: ""
-            },
-        ]
-    },
-    {
-        isActive: false,
-        key: "SAT",
-        label: "Sabado",
-        intevals: [
-            {
-                startHour: "",
-                endHour: ""
-            },
-        ]
-    }
-]
+type IntervalState = {
+    intervals: TInterval[]
+    hasError: boolean
+}
 
+type IntervalRecord = Record<WeeklyDays, IntervalState>;
+
+const intervalRecordsInit = {
+    MON: {
+        intervals: [],
+        hasError: false
+    },
+    TUE: {
+        intervals: [],
+        hasError: false
+    },
+    WED: {
+        intervals: [],
+        hasError: false
+    },
+    THU: {
+        intervals: [],
+        hasError: false
+    },
+    FRI: {
+        intervals: [],
+        hasError: false
+    },
+    SUN: {
+        intervals: [],
+        hasError: false
+    },
+    SAT: {
+        intervals: [],
+        hasError: false
+    }
+}
 
 const useAvailableHours = () => {
-    const [weeklyDays, setWeeklyDays] = useState<WeekDay[]>(weeklyDaysInit);
+    const [weeklyDays, setWeeklyDays] = useState<WeekDay[]>([]);
+    const [intervalRecords, setIntervalRecords] = useState<IntervalRecord>(intervalRecordsInit);
+    const { data: weeklyDaysData, isError: weeklyDaysIsError, isLoading: weeklyDaysIsLoading } = api.weeklyDays.weeklyDays.useQuery();
+
+    useEffect(() => {
+        if (weeklyDaysData && !weeklyDaysIsError) {
+            setWeeklyDays(weeklyDaysData.map((item) => {
+                return {
+                    isActive: false,
+                    key: item.name,
+                    label: item.name,
+                }
+            }))
+        }
+    }, [weeklyDaysData, weeklyDaysIsError]);
+
+    const onCheckDay = (keyDay: WeeklyDays, value: boolean) => {
+        const tempWeeklyDays = weeklyDays.map((item) => {
+            if (keyDay === item.key) {
+                return {
+                    ...item,
+                    isActive: value,
+                }
+            } else {
+                return item;
+            }
+        });
+
+        setWeeklyDays(tempWeeklyDays);
+    }
+
+    const onChangeIntervals = (keyDay: WeeklyDays, intervalsState: IntervalState) => {
+        const tempIntervalRecords = { ...intervalRecords };
+        tempIntervalRecords[keyDay] = intervalsState;
+
+        setIntervalRecords(tempIntervalRecords);
+    }
+
+    const onSaveAvailableHours = () => {
+        console.log("save");
+    }
 
     return {
         weeklyDays,
-        setWeeklyDays
+        setWeeklyDays,
+        weeklyDaysIsError,
+        weeklyDaysIsLoading,
+        onCheckDay,
+        onChangeIntervals,
+        onSaveAvailableHours
     }
 }
 

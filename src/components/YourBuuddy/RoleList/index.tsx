@@ -2,12 +2,20 @@ import { api } from "~/utils/api";
 import RoleCard from "./RoleCard";
 import { mapSkeletons } from "~/lib/utils";
 import RoleCardSkeleton from "./RoleCard/RoleCardSkeleton";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
+import useYourBuuddyStore from "../useYourBuuddyStore";
 
 const RoleList = () => {
     const { data: userRolesData, isError: userRolesIsError, isLoading: userRolesIsLoading } = api.userRole.userRoles.useQuery();
-    const skeletons = mapSkeletons({ numberOfSkeletons: 10, skeleton: <RoleCardSkeleton /> })
+    const skeletons = mapSkeletons({ numberOfSkeletons: 3, skeleton: <RoleCardSkeleton /> });
+    const setUserRoles = useYourBuuddyStore((state) => state.setUserRoles);
+
+    useEffect(() => {
+        if (userRolesData) {
+            setUserRoles(userRolesData);
+        }
+    }, [userRolesData, setUserRoles]);
 
     return (
         <div className="flex gap-1 flex-col overflow-auto">

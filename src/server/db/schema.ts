@@ -29,7 +29,7 @@ export const educationLevelEnum = pgEnum('educationLevel', ["HIGH_SCHOOL", "TECH
 export const exerciseEnum = pgEnum('exercise', ["ACTIVE", "SOMETIMES", "ALMOST_NEVER"]);
 export const drinkingEnum = pgEnum('drinking', ["SOCIALLY", "NEVER", "FREQUENTLY", "SOBER"]);
 export const smokingEnum = pgEnum('smoking', ["SOCIALLY", "NEVER", "REGULARLY"]);
-export const weekDaysEnum = pgEnum('weekDays', ["MON", "TUE", "WED", "THU", "FRI"]);
+export const weekDaysEnum = pgEnum('weekDays', ["MON", "TUE", "WED", "THU", "FRI", "SUN", "SAT"]);
 
 export const users = createTable("user", {
   id: uuid("id").notNull().primaryKey().$defaultFn(() => {
@@ -326,3 +326,32 @@ export const userRoleDetailsRelations = relations(userRoleDetails, ({ one }) => 
     references: [userRoles.id]
   }),
 }));
+
+export const weeklyDays = createTable(
+  "weekly_day",
+  {
+    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
+      return typeid().toUUID()
+    }),
+    name: weekDaysEnum("name").notNull().unique(),
+    order: integer("order")
+  }
+);
+
+export const usersToWeeklydays = createTable(
+  "user_to_weekly_day",
+  {
+    userId: uuid("userId")
+      .notNull()
+      .references(() => users.id),
+    weeklyDayId: uuid("weeklyDayId")
+      .notNull()
+      .references(() => weeklyDays.id),
+  },
+  (t) => ({
+    pk: primaryKey({
+      name: "userId_weeklydayId",
+      columns: [t.userId, t.weeklyDayId]
+    }),
+  })
+);

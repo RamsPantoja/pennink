@@ -1,4 +1,4 @@
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { type FieldError, type FieldErrorsImpl, type Merge } from "react-hook-form";
 import InputFeedbackMessage from "~/components/common/InputFeedbackMessage";
 import { Button } from "~/components/ui/button";
@@ -51,7 +51,7 @@ const DetailInput = ({ onRemove, id, allowed, description, index, error, onChang
                                 onRemove(id);
                             }}
                         >
-                            <XCircleIcon className="text-blackMain min-w-5 h-5" />
+                            <XMarkIcon className="text-blackMain min-w-5 h-5" />
                         </Button>
                     }
                 </div>
