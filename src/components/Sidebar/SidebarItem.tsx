@@ -15,7 +15,7 @@ const SibedarItem = ({ href, Icon, label }: SidebarItemProps) => {
                 <div className={cn(
                     "flex flex-row gap-2 items-center p-2 w-full rounded-md",
                     {
-                        " bg-lemonLigth": pathname === href ? true : (!pathname.startsWith("/") && pathname.includes(href))
+                        " bg-pinkLigth": pathname === href ? true : (!pathname.startsWith("/") && pathname.includes(href))
                     })}>
                     <Icon className={cn(
                         "w-4 h-4 text-blackMain",

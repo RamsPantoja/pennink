@@ -18,7 +18,7 @@ const UserCard = ({ }: UserProps) => {
                     </Avatar>
                     <div className="flex items-center w-full gap-2">
                         <p className="text-blackMain text-lg truncate font-black w-full">Rams Pantoja Cordoba</p>
-                        <CheckBadgeIcon className="w-5 h-5 text-pinkStrong" />
+                        <CheckBadgeIcon className="w-5 h-5 text-blackLigth" />
                     </div>
                     <div className="flex w-full item-center justify-between gap-2">
                         <div className="flex gap-1 flex-row items-center">
@@ -32,9 +32,12 @@ const UserCard = ({ }: UserProps) => {
                     </div>
                     <div className="flex w-full flex-col">
                         <span className=" text-grayMain text-sm font-semibold">Role principal</span>
-                        <div className="flex flex-col gap-1">
-                            <span className=" text-base font-bold text-blackMain">Tutor de ingles</span>
-                            <span className=" text-base font-bold text-pinkStrong">$250 MXN hora</span>
+                        <div className="flex flex-col gap-2">
+                            <span className=" text-base font-semibold text-blackMain">Tutor de ingles</span>
+                            <div className="flex gap-2">
+                                <span className=" text-base font-bold">$250 MXN</span>
+                                <span className=" text-base">hora</span>
+                            </div>
                         </div>
                     </div>
                     {/* <div className="flex w-full flex-col">

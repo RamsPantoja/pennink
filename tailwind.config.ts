@@ -21,9 +21,6 @@ export default {
         blackNormal: "#181818",
         blackLigth: '#0f0f0f',
         pinkLigth: "#fec7f6",
-        pinkStrong: "#fa23b6",
-        lemonLigth: "#e2fe8d",
-        lemonStrong: "#51cf2d"
       },
       borderRadius: {
         lg: "0.5rem",

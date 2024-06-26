@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type WeeklyDays } from "~/lib/enum";
 import { api } from "~/utils/api";
 import { type TInterval } from "./WeeklyDay/useWeeklyDayLogic";
@@ -9,7 +9,7 @@ export type WeekDay = {
     label: string
 }
 
-type IntervalState = {
+export type IntervalState = {
     intervals: TInterval[]
     hasError: boolean
 }
@@ -49,7 +49,7 @@ const intervalRecordsInit = {
 
 const useAvailableHours = () => {
     const [weeklyDays, setWeeklyDays] = useState<WeekDay[]>([]);
-    const [intervalRecords, setIntervalRecords] = useState<IntervalRecord>(intervalRecordsInit);
+    const intervalRecords = useRef<IntervalRecord>(intervalRecordsInit);
     const { data: weeklyDaysData, isError: weeklyDaysIsError, isLoading: weeklyDaysIsLoading } = api.weeklyDays.weeklyDays.useQuery();
 
     useEffect(() => {
@@ -80,14 +80,26 @@ const useAvailableHours = () => {
     }
 
     const onChangeIntervals = (keyDay: WeeklyDays, intervalsState: IntervalState) => {
-        const tempIntervalRecords = { ...intervalRecords };
+        const tempIntervalRecords = { ...intervalRecords.current };
         tempIntervalRecords[keyDay] = intervalsState;
 
-        setIntervalRecords(tempIntervalRecords);
+        intervalRecords.current = tempIntervalRecords;
     }
 
     const onSaveAvailableHours = () => {
-        console.log("save");
+        let intervalsHaveErrors = false;
+        console.log(intervalRecords.current);
+
+        for (const keyDay of Object.keys(intervalRecords.current)) {
+            if (intervalRecords.current[keyDay as WeeklyDays].hasError) {
+                intervalsHaveErrors = true;
+                break;
+            }
+        };
+
+        if (!intervalsHaveErrors) {
+            console.log("Saved");
+        }
     }
 
     return {

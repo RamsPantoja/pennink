@@ -21,11 +21,19 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
                 <Card className="flex flex-col gap-2 min-w-96">
                     <span className="text-blackMain font-bold">Roles</span>
                     <RoleList />
-                    <RoleForm />
+                    <div className="flex justify-end items-center">
+                        <RoleForm />
+                    </div>
                 </Card>
-                <Card className="flex flex-col gap-2 w-full">
+                <Card className="flex flex-col gap-2">
                     <span className="text-blackMain font-bold">Planificación y disponibilidad</span>
                     <AvailableHours />
+                </Card>
+                <Card className="flex flex-col gap-2 w-full">
+                    <span className="text-blackMain font-bold">Solicitudes</span>
+                    <Card className="border w-full h-full overflow-auto">
+
+                    </Card>
                 </Card>
             </div>
         </div>

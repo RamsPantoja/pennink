@@ -13,13 +13,14 @@ const AvailableHours = () => {
         weeklyDaysIsError,
         weeklyDaysIsLoading,
         onCheckDay,
-        onSaveAvailableHours,
+        onChangeIntervals,
+        onSaveAvailableHours
     } = useAvailableHours();
 
     const skeletons = mapSkeletons({ numberOfSkeletons: 3, skeleton: <WeeklyDaysSkeleton /> });
 
     return (
-        <Card className="border w-fit overflow-hidden flex flex-col h-fit gap-2">
+        <Card className="border min-w-[400px] overflow-hidden flex flex-col h-fit gap-2">
             <span className="text-sm font-bold">Horas semanales</span>
             <div className="flex gap-2 flex-col overflow-auto p-2 h-fit">
                 {
@@ -36,6 +37,7 @@ const AvailableHours = () => {
                                 key={item.key}
                                 weekDay={item}
                                 onCheckDay={onCheckDay}
+                                onChangeIntervals={onChangeIntervals}
                             />
                         )
                     })
@@ -54,10 +56,12 @@ const AvailableHours = () => {
                     </div>
                 }
             </div>
-            <BuuddyButton
-                onClick={onSaveAvailableHours}
-                className="w-fit"
-            >Save</BuuddyButton>
+            <div className="flex items-center justify-end">
+                <BuuddyButton
+                    onClick={onSaveAvailableHours}
+                    className="w-fit"
+                >Guardar</BuuddyButton>
+            </div>
         </Card>
     )
 }

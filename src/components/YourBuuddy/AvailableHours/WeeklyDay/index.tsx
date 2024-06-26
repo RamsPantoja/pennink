@@ -2,7 +2,7 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
-import { type WeekDay } from "../useAvailableHours";
+import { type IntervalState, type WeekDay } from "../useAvailableHours";
 import { type WeeklyDays } from "~/lib/enum";
 import { cn } from "~/lib/utils";
 import Interval from "./Interval";
@@ -11,15 +11,17 @@ import useWeeklyDayLogic from "./useWeeklyDayLogic";
 type WeeklyDayProps = {
     weekDay: WeekDay
     onCheckDay: (keyDay: WeeklyDays, value: boolean) => void
+    onChangeIntervals: (keyDay: WeeklyDays, intervalsState: IntervalState) => void
 }
 
-const WeeklyDay = ({ weekDay, onCheckDay }: WeeklyDayProps) => {
+const WeeklyDay = ({ weekDay, onCheckDay, onChangeIntervals }: WeeklyDayProps) => {
     const {
         onRemoveInterval,
         onAddInterval,
         intervals,
-        control
-    } = useWeeklyDayLogic({ keyDay: weekDay.key, isActive: weekDay.isActive });
+        control,
+        onChangeInterval
+    } = useWeeklyDayLogic({ keyDay: weekDay.key, isActive: weekDay.isActive, onChangeIntervals });
 
     return (
         <div className="flex flex-col gap-2 min-w-60">
@@ -54,8 +56,8 @@ const WeeklyDay = ({ weekDay, onCheckDay }: WeeklyDayProps) => {
                             <Button
                                 variant='ghost'
                                 size='icon'
-                                onClick={async () => {
-                                    await onAddInterval();
+                                onClick={() => {
+                                    onAddInterval();
                                 }}
                             >
                                 <ClockIcon className="min-w-5 h-5 text-blackMain" />
@@ -75,11 +77,13 @@ const WeeklyDay = ({ weekDay, onCheckDay }: WeeklyDayProps) => {
                             return (
                                 <Interval
                                     key={item.id}
-                                    onRemove={async () => {
-                                        await onRemoveInterval(item.id);
+                                    id={item.id}
+                                    onRemove={() => {
+                                        onRemoveInterval(item.id);
                                     }}
                                     control={control}
                                     index={index}
+                                    onChange={onChangeInterval}
                                 />
                             )
                         })

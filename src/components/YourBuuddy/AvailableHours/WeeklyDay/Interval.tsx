@@ -3,7 +3,9 @@ import { Button } from "~/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import useYourBuuddyStore from "../../useYourBuuddyStore";
 import { type Control, Controller } from "react-hook-form";
-import { type IntervalsValidationSchema } from "./useWeeklyDayLogic";
+import { type TInterval, type IntervalsValidationSchema } from "./useWeeklyDayLogic";
+import InputFeedbackMessage from "~/components/common/InputFeedbackMessage";
+import { useMemo } from "react";
 
 const hoursList: string[] = [
     "00:00",
@@ -37,91 +39,114 @@ type IntervalProps = {
     onRemove: () => void;
     control: Control<IntervalsValidationSchema>
     index: number
+    onChange: (intervalId: string, value: string, key: keyof TInterval) => void
+    id: string
 }
 
-const Interval = ({ onRemove, control, index }: IntervalProps) => {
-    const userRoles = useYourBuuddyStore((state) => state.userRoles)
+const Interval = ({ onRemove, control, index, onChange, id }: IntervalProps) => {
+    const userRoles = useYourBuuddyStore((state) => state.userRoles);
+
+    const error = useMemo(() => {
+        if (control._formState.errors && control._formState.errors.intervals) {
+            return control._formState.errors.intervals[index];
+        }
+    }, [control, index]);
 
     return (
-        <div className="flex gap-2 items-center">
-            <Controller
-                render={({ field, fieldState }) => <Select
-                    onValueChange={field.onChange}
-                >
-                    <SelectTrigger status={fieldState.error && "ERROR"} ref={field.ref} className=" min-w-28 max-w-28">
-                        <SelectValue placeholder="Rol" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {
-                            userRoles.map((role) => {
-                                return (
-                                    <SelectItem key={role.id} value={role.id}>{role.role.name}</SelectItem>
-                                )
-                            })
+        <div className="flex flex-col gap-1">
+            <div className="flex gap-2 items-center">
+                <Controller
+                    render={({ field, fieldState }) => <Select
+                        onValueChange={(value) => {
+                            onChange(id, value, "userRoleId");
+                        }}
+                        defaultValue={field.value}
+                    >
+                        <SelectTrigger status={fieldState.error && "ERROR"} ref={field.ref} className=" min-w-28 max-w-28">
+                            <SelectValue placeholder="Rol" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {
+                                userRoles.map((role) => {
+                                    return (
+                                        <SelectItem key={role.id} value={role.id}>{role.role.name}</SelectItem>
+                                    )
+                                })
+                            }
+                        </SelectContent>
+                    </Select>}
+                    name={`intervals.${index}.userRoleId`}
+                    control={control}
+                />
+                <div className="flex gap-1 items-center ">
+                    <Controller
+                        render={({ field }) =>
+                            <Select
+                                onValueChange={(value) => {
+                                    onChange(id, value, "startTime");
+                                }}
+                                defaultValue={field.value}
+                            >
+                                <SelectTrigger status={error && "ERROR"} ref={field.ref} className=" w-24">
+                                    <SelectValue placeholder="Hora" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {
+                                        hoursList.map((hour, index) => {
+                                            return (
+                                                <SelectItem key={index} value={hour}>{hour}</SelectItem>
+                                            )
+                                        })
+                                    }
+                                </SelectContent>
+                            </Select>
                         }
-                    </SelectContent>
-                </Select>}
-                name={`intervals.${index}.userRoleId`}
-                control={control}
-            />
-            <div className="flex gap-1 items-center ">
-                <Controller
-                    render={({ field, fieldState }) =>
-                        <Select
-                            onValueChange={field.onChange}
-                        >
-                            <SelectTrigger status={fieldState.error && "ERROR"} ref={field.ref} className=" w-24">
-                                <SelectValue placeholder="Hora" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {
-                                    hoursList.map((hour, index) => {
-                                        return (
-                                            <SelectItem key={index} value={hour}>{hour}</SelectItem>
-                                        )
-                                    })
-                                }
-                            </SelectContent>
-                        </Select>
-                    }
-                    name={`intervals.${index}.startHour`}
-                    control={control}
-                />
-                <span className="font-black text-lg">-</span>
-                <Controller
-                    render={({ field, fieldState }) =>
-                        <Select
-                            onValueChange={field.onChange}
-                        >
-                            <SelectTrigger status={fieldState.error && "ERROR"} ref={field.ref} className="w-24">
-                                <SelectValue placeholder="Hora" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {
-                                    hoursList.map((hour, index) => {
-                                        return (
-                                            <SelectItem key={index} value={hour}>{hour}</SelectItem>
-                                        )
-                                    })
-                                }
-                            </SelectContent>
-                        </Select>
-                    }
-                    name={`intervals.${index}.endHour`}
-                    control={control}
-                />
+                        name={`intervals.${index}.startTime`}
+                        control={control}
+                    />
+                    <span className="font-black text-lg">-</span>
+                    <Controller
+                        render={({ field }) =>
+                            <Select
+                                onValueChange={(value) => {
+                                    onChange(id, value, "endTime");
+                                }}
+                                defaultValue={field.value}
+                            >
+                                <SelectTrigger status={error && "ERROR"} ref={field.ref} className="w-24">
+                                    <SelectValue placeholder="Hora" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {
+                                        hoursList.map((hour, index) => {
+                                            return (
+                                                <SelectItem key={index} value={hour}>{hour}</SelectItem>
+                                            )
+                                        })
+                                    }
+                                </SelectContent>
+                            </Select>
+                        }
+                        name={`intervals.${index}.endTime`}
+                        control={control}
+                    />
 
+                </div>
+                <div className="min-w-12 flex justify-center">
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={onRemove}
+                    >
+                        <XMarkIcon className="text-blackMain min-w-5 h-5" />
+                    </Button>
+                </div>
             </div>
-            <div className="min-w-12 flex justify-center">
-                <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={onRemove}
-                >
-                    <XMarkIcon className="text-blackMain min-w-5 h-5" />
-                </Button>
-            </div>
+            {
+                error && <InputFeedbackMessage status="ERROR" message={error.message} />
+            }
         </div>
+
     )
 }
 

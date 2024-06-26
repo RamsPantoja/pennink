@@ -1,28 +1,37 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { typeid } from "typeid-js";
 import { z } from "zod";
 import { type WeeklyDays } from "~/lib/enum";
+import useYourBuuddyStore from "../../useYourBuuddyStore";
+import { compareHours, operateHours } from "~/lib/utils";
+import { type IntervalState } from "../useAvailableHours";
 
 export type TInterval = {
     id: string
-    startHour: string
-    endHour: string
+    startTime: string
+    endTime: string
     keyDay: WeeklyDays
     userRoleId: string
+}
+
+type IntervalError = {
+    index: number
+    message: string
 }
 
 type UseWeeklyDayLogicProps = {
     keyDay: WeeklyDays
     isActive: boolean
+    onChangeIntervals: (keyDay: WeeklyDays, intervalsState: IntervalState) => void
 }
 
 const intervalSchema = z.object({
-    startHour: z.string({
+    startTime: z.string({
         required_error: "Campo requerido"
     }).min(1, "Campo requerido"),
-    endHour: z.string({
+    endTime: z.string({
         required_error: "Campo requerido"
     }).min(1, "Campo requerido"),
     userRoleId: z.string({
@@ -43,66 +52,159 @@ const intervalsValidationSchema = z
 
 export type IntervalsValidationSchema = z.infer<typeof intervalsValidationSchema>
 
-const useWeeklyDayLogic = ({ keyDay, isActive }: UseWeeklyDayLogicProps) => {
-    const [intervals, setIntervals] = useState<TInterval[]>([]);
+const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals }: UseWeeklyDayLogicProps) => {
+    const userRoles = useYourBuuddyStore((state) => state.userRoles);
 
-    const { control, register, formState, trigger } = useForm<IntervalsValidationSchema>({
+    const { control, register, setError, clearErrors } = useForm<IntervalsValidationSchema>({
         resolver: zodResolver(intervalsValidationSchema),
         defaultValues: {
-            intervals: [{
-                id: typeid().toUUID(),
-                startHour: "",
-                endHour: "",
-                keyDay,
-                userRoleId: ""
-            }]
+            intervals: []
         }
     });
 
-    console.log(formState.errors);
-
-    const { fields, append, remove } = useFieldArray({
+    const { fields, replace } = useFieldArray({
         control,
-        name: "intervals", // unique name for your Field Array
+        name: "intervals",
     });
 
     useEffect(() => {
-        if (isActive && intervals.length === 0) {
-            setIntervals([
-                {
-                    id: typeid().toUUID(),
-                    startHour: "",
-                    endHour: "",
-                    keyDay,
-                    userRoleId: ""
-                }
-            ])
-        }
-    }, [isActive, keyDay, intervals.length]);
+        if (isActive && fields.length === 0 && userRoles[0]) {
+            const intervals = [{
+                id: typeid().toUUID(),
+                startTime: "09:00",
+                endTime: "17:00",
+                keyDay,
+                userRoleId: userRoles[0].id
+            }];
 
-    const onAddInterval = async () => {
-        append({
-            id: typeid().toUUID(),
-            startHour: "",
-            endHour: "",
-            keyDay,
-            userRoleId: ""
+            replace(intervals);
+            onChangeIntervals(keyDay, { intervals, hasError: false });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isActive, keyDay]);
+
+    const intervalsValidator = (intervals: TInterval[]) => {
+        const errors: IntervalError[] = [];
+
+        for (let i = 0; i < intervals.length; i++) {
+            const elementI = intervals[i];
+
+            if (elementI) {
+                const endTimeLaterThanStartTime = compareHours(elementI.startTime, elementI.endTime);
+
+                if (endTimeLaterThanStartTime !== null && endTimeLaterThanStartTime >= 0) {
+                    errors.push({ index: i, message: "Elige un tiempo final más tarde que el inicial" });
+                } else {
+                    const [startTimeHoursI] = elementI.startTime.split(':').map(Number);
+                    const [endTimeHoursI] = elementI.endTime.split(':').map(Number);
+
+                    for (let j = 0; j < intervals.length; j++) {
+                        if (i !== j) {
+                            const elementJ = intervals[j];
+
+                            if (elementJ) {
+                                const [startTimeHoursJ]: number[] = elementJ.startTime.split(':').map(Number);
+                                const [endTimeHoursJ] = elementJ.endTime.split(':').map(Number);
+
+                                if (
+                                    startTimeHoursI !== undefined &&
+                                    endTimeHoursI !== undefined &&
+                                    startTimeHoursJ !== undefined &&
+                                    endTimeHoursJ !== undefined
+                                ) {
+                                    const intervalOverlap = ((startTimeHoursI >= startTimeHoursJ) && (startTimeHoursI <= endTimeHoursJ)) || ((endTimeHoursI >= startTimeHoursJ) && (endTimeHoursI <= endTimeHoursJ))
+
+                                    if (intervalOverlap) {
+                                        errors.push({ index: i, message: "Los tiempos se traslapan" });
+                                        errors.push({ index: j, message: "Los tiempos se traslapan" });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        clearErrors();
+
+        for (const error of errors) {
+            setError(`intervals.${error.index}`, { message: error.message });
+        }
+
+        if (errors.length > 0) {
+            onChangeIntervals(keyDay, { intervals, hasError: true });
+        } else {
+            onChangeIntervals(keyDay, { intervals, hasError: false });
+        }
+    }
+
+    const onAddInterval = () => {
+        if (userRoles[0]) {
+            if (fields.length === 0) {
+                const intervals = [{
+                    id: typeid().toUUID(),
+                    startTime: "09:00",
+                    endTime: "17:00",
+                    keyDay,
+                    userRoleId: userRoles[0].id
+                }];
+
+                replace(intervals);
+                onChangeIntervals(keyDay, { intervals, hasError: false });
+            } else {
+                const lastInterval = fields[fields.length - 1];
+
+                if (lastInterval) {
+                    const startTime = operateHours(lastInterval.endTime, "01:00", "add");
+                    const endTime = operateHours(startTime, "01:00", "add");
+
+                    const newInterval = {
+                        id: typeid().toUUID(),
+                        startTime,
+                        endTime,
+                        keyDay,
+                        userRoleId: userRoles[0].id
+                    }
+
+                    replace([...fields as TInterval[], newInterval]);
+
+                    intervalsValidator([...fields as TInterval[], newInterval]);
+                }
+            }
+        }
+    };
+
+    const onRemoveInterval = (intervalId: string) => {
+        const tempIntervals = fields.filter((item) => item.id !== intervalId);
+        replace(tempIntervals);
+        intervalsValidator(tempIntervals as TInterval[]);
+    }
+
+    const onChangeInterval = (intervalId: string, value: string, key: keyof TInterval) => {
+        const intervals = fields.map((item) => {
+            if (item.id === intervalId) {
+                return {
+                    ...item,
+                    [key]: value
+                }
+            } else {
+                return item;
+            }
         });
 
-        await trigger();
-    }
+        replace(intervals);
 
-    const onRemoveInterval = async (intervalId: string) => {
-        remove(fields.findIndex((item) => item.id === intervalId));
-        await trigger();
-    }
+        intervalsValidator(intervals as TInterval[]);
+    };
 
     return {
         onRemoveInterval,
         onAddInterval,
         intervals: fields,
         register,
-        control
+        control,
+        onChangeInterval
     }
 }
 
