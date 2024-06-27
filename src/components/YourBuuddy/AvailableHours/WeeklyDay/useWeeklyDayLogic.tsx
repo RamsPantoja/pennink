@@ -73,6 +73,11 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId }:
     });
 
     useEffect(() => {
+        /**
+         * When the weeklyDay is active for first time and there are no intervals added
+         * Then we create the first interval and replace the interval array with the new intervals array
+         * and finally we update the intervalRecords state from the parent component with the new intervals without error
+         */
         if (isActive && fields.length === 0 && userRoles[0]) {
             const intervals: TInterval[] = [{
                 id: typeid().toUUID(),
@@ -85,6 +90,15 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId }:
 
             replace(intervals);
             onChangeIntervals(keyDay, { intervals, hasError: false });
+        }
+
+
+        /**
+         * if the weeklyDay is activated and exist previous intervals, we run the intervalsValidator method to validate all intervals 
+         * and update the intervalRecords state with their errors
+         */
+        if (isActive && fields.length > 0) {
+            intervalsValidator(fields as TInterval[]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isActive, keyDay]);
@@ -138,11 +152,7 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId }:
             setError(`intervals.${error.index}`, { message: error.message });
         }
 
-        if (errors.length > 0) {
-            onChangeIntervals(keyDay, { intervals, hasError: true });
-        } else {
-            onChangeIntervals(keyDay, { intervals, hasError: false });
-        }
+        onChangeIntervals(keyDay, { intervals, hasError: errors.length > 0 ? true : false });
     }
 
     const onAddInterval = () => {

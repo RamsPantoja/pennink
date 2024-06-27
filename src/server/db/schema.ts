@@ -375,7 +375,7 @@ export const userTimes = createTable(
       .notNull()
       .references(() => userRoles.id),
     startTime: text("startTime").notNull(),
-    endTime: text("startTime").notNull(),
+    endTime: text("endTime").notNull(),
     weeklyDayId: uuid("weeklyDayId")
       .notNull()
       .references(() => weeklyDays.id),

@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { type WeeklyDays } from "~/lib/enum";
 import { api } from "~/utils/api";
 import { type TInterval } from "./WeeklyDay/useWeeklyDayLogic";
+import { toast } from "sonner";
 
 export type WeekDay = {
     isActive: boolean
@@ -51,8 +52,20 @@ const intervalRecordsInit = {
 
 const useAvailableHours = () => {
     const [weeklyDays, setWeeklyDays] = useState<WeekDay[]>([]);
-    const intervalRecords = useRef<IntervalRecord>(intervalRecordsInit);
+    const [intervalRecords, setIntervalRecords] = useState<IntervalRecord>(intervalRecordsInit);
+    const [intervalsToSave, setIntervalsToSave] = useState<TInterval[]>([]);
+    const [intervalsHaveError, setIntervalsHaveError] = useState<boolean>(false);
+
     const { data: weeklyDaysData, isError: weeklyDaysIsError, isLoading: weeklyDaysIsLoading } = api.weeklyDays.weeklyDays.useQuery();
+
+    const { mutate: updateUserTimeMutation, isPending: updateUserTimeIsPending } = api.userTime.update.useMutation({
+        onSuccess: async () => {
+            toast.success('Tiempos guardados correctamente!');
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    });
 
     useEffect(() => {
         if (weeklyDaysData && !weeklyDaysIsError) {
@@ -67,7 +80,12 @@ const useAvailableHours = () => {
         }
     }, [weeklyDaysData, weeklyDaysIsError]);
 
-    const onCheckDay = (keyDay: WeeklyDays, value: boolean) => {
+    const getIntervalsByActiveDay = (intevals: TInterval[], weeklyDays: WeekDay[]): TInterval[] => {
+        const activeDays = weeklyDays.filter((item) => item.isActive).map((item) => item.key);
+        return intevals.filter((interval) => activeDays.includes(interval.keyDay));
+    };
+
+    const onCheckDay = useCallback((keyDay: WeeklyDays, value: boolean) => {
         const tempWeeklyDays = weeklyDays.map((item) => {
             if (keyDay === item.key) {
                 return {
@@ -79,32 +97,45 @@ const useAvailableHours = () => {
             }
         });
 
+
+        if (!value) {
+            setIntervalsToSave((prev) => {
+                return getIntervalsByActiveDay(prev, tempWeeklyDays);
+            });
+        }
+
         setWeeklyDays(tempWeeklyDays);
-    }
+    }, [weeklyDays]);
 
-    const onChangeIntervals = (keyDay: WeeklyDays, intervalsState: IntervalState) => {
-        const tempIntervalRecords = { ...intervalRecords.current };
-        tempIntervalRecords[keyDay] = intervalsState;
+    const onChangeIntervals = useCallback((keyDay: WeeklyDays, intervalsState: IntervalState) => {
+        const activeDays = weeklyDays.filter((item) => item.isActive).map((item) => item.key);
 
-        intervalRecords.current = tempIntervalRecords;
-    }
+        setIntervalRecords((prev) => {
+            let intervals: TInterval[] = [];
+
+            const tempIntervalRecords = { ...prev };
+            tempIntervalRecords[keyDay] = intervalsState;
+
+            for (const keyDay of Object.keys(tempIntervalRecords)) {
+                if (tempIntervalRecords[keyDay as WeeklyDays].hasError && activeDays.includes(keyDay as WeeklyDays)) {
+                    setIntervalsHaveError(true);
+                    break;
+                } else {
+                    setIntervalsHaveError(false);
+                    intervals = [...intervals, ...tempIntervalRecords[keyDay as WeeklyDays].intervals];
+                }
+            };
+
+            setIntervalsToSave(getIntervalsByActiveDay(intervals, weeklyDays));
+            return tempIntervalRecords;
+        });
+    }, [weeklyDays]);
 
     const onSaveAvailableHours = () => {
-        let intervalsHaveErrors = false;
-
-        let intervals: TInterval[] = [];
-
-        for (const keyDay of Object.keys(intervalRecords.current)) {
-            if (intervalRecords.current[keyDay as WeeklyDays].hasError) {
-                intervalsHaveErrors = true;
-                break;
-            } else {
-                intervals = [...intervals, ...intervalRecords.current[keyDay as WeeklyDays].intervals];
-            }
-        };
-
-        if (!intervalsHaveErrors) {
-            console.log(intervals);
+        if (!intervalsHaveError && intervalsToSave.length > 0) {
+            updateUserTimeMutation({
+                intervals: intervalsToSave
+            });
         }
     }
 
@@ -115,7 +146,10 @@ const useAvailableHours = () => {
         weeklyDaysIsLoading,
         onCheckDay,
         onChangeIntervals,
-        onSaveAvailableHours
+        onSaveAvailableHours,
+        updateUserTimeIsPending,
+        intervalRecords,
+        intervalsToSave
     }
 }
 

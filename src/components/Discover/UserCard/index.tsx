@@ -10,7 +10,7 @@ type UserProps = {
 const UserCard = ({ }: UserProps) => {
     return (
         <a href="/users/313123">
-            <Card className=" bg-whiteMain border-2 border-whiteLigth min-w-52 max-w-52 min-h-52">
+            <Card className=" bg-whiteMain border min-w-52 max-w-52 min-h-52">
                 <div className="flex flex-col items-center gap-2 overflow-hidden">
                     <Avatar className=" w-14 h-14">
                         <AvatarImage src={"https://lh3.googleusercontent.com/a/ACg8ocJrMSYUN_uZkhM0ETX4N8H9Ffi6qpY7t67KuL8rdm1B-ErUkjjB=s96-c"} />

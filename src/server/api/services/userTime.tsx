@@ -28,7 +28,7 @@ class UserTimeService {
             return [...new Set(list)];
         }
 
-        const userToWeeklyDays = removeDuplicatedIds(intervals.map((item) => item.id)).map((item) => {
+        const userToWeeklyDays = removeDuplicatedIds(intervals.map((item) => item.weeklyDayId)).map((item) => {
             return {
                 weeklyDayId: item,
                 userId: session.user.id

@@ -7,6 +7,7 @@ import { type WeeklyDays } from "~/lib/enum";
 import { cn } from "~/lib/utils";
 import Interval from "./Interval";
 import useWeeklyDayLogic from "./useWeeklyDayLogic";
+import { memo } from "react";
 
 type WeeklyDayProps = {
     weekDay: WeekDay
@@ -94,4 +95,6 @@ const WeeklyDay = ({ weekDay, onCheckDay, onChangeIntervals }: WeeklyDayProps) =
     )
 }
 
-export default WeeklyDay;
+const WeeklyDayMemo = memo(WeeklyDay);
+
+export default WeeklyDayMemo;

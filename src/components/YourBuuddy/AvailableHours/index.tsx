@@ -1,11 +1,11 @@
 import { Card } from "~/components/ui/card";
-import WeeklyDay from "./WeeklyDay";
 import useAvailableHours from "./useAvailableHours";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { Fragment } from "react";
 import { mapSkeletons } from "~/lib/utils";
 import WeeklyDaysSkeleton from "./WeeklyDay/WeeklyDaySkeleton";
 import { BuuddyButton } from "~/components/common/BuuddyButton";
+import WeeklyDayMemo from "./WeeklyDay";
 
 const AvailableHours = () => {
     const {
@@ -14,7 +14,9 @@ const AvailableHours = () => {
         weeklyDaysIsLoading,
         onCheckDay,
         onChangeIntervals,
-        onSaveAvailableHours
+        onSaveAvailableHours,
+        updateUserTimeIsPending,
+        intervalsToSave
     } = useAvailableHours();
 
     const skeletons = mapSkeletons({ numberOfSkeletons: 3, skeleton: <WeeklyDaysSkeleton /> });
@@ -33,7 +35,7 @@ const AvailableHours = () => {
                 {
                     !weeklyDaysIsLoading && !weeklyDaysIsError && weeklyDays.map((item) => {
                         return (
-                            <WeeklyDay
+                            <WeeklyDayMemo
                                 key={item.key}
                                 weekDay={item}
                                 onCheckDay={onCheckDay}
@@ -58,8 +60,10 @@ const AvailableHours = () => {
             </div>
             <div className="flex items-center justify-end">
                 <BuuddyButton
+                    disabled={intervalsToSave.length === 0}
                     onClick={onSaveAvailableHours}
                     className="w-fit"
+                    isPending={updateUserTimeIsPending}
                 >Guardar</BuuddyButton>
             </div>
         </Card>
