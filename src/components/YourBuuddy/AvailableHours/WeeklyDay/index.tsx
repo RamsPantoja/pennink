@@ -21,7 +21,7 @@ const WeeklyDay = ({ weekDay, onCheckDay, onChangeIntervals }: WeeklyDayProps) =
         intervals,
         control,
         onChangeInterval
-    } = useWeeklyDayLogic({ keyDay: weekDay.key, isActive: weekDay.isActive, onChangeIntervals });
+    } = useWeeklyDayLogic({ keyDay: weekDay.key, isActive: weekDay.isActive, onChangeIntervals, weeklyDayId: weekDay.id });
 
     return (
         <div className="flex flex-col gap-2 min-w-60">

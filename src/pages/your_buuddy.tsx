@@ -10,7 +10,7 @@ const YourBuuddy = ({ session }: InferGetServerSidePropsType<typeof getServerSid
         <Dashboard session={session}>
             <>
                 <Head>
-                    <title>Tú buuddy</title>
+                    <title>Tu buuddy</title>
                     <meta name="description" content="Find a partner to do anything!" />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>

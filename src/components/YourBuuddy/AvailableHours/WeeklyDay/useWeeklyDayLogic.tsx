@@ -14,6 +14,7 @@ export type TInterval = {
     endTime: string
     keyDay: WeeklyDays
     userRoleId: string
+    weeklyDayId: string
 }
 
 type IntervalError = {
@@ -23,11 +24,12 @@ type IntervalError = {
 
 type UseWeeklyDayLogicProps = {
     keyDay: WeeklyDays
+    weeklyDayId: string
     isActive: boolean
     onChangeIntervals: (keyDay: WeeklyDays, intervalsState: IntervalState) => void
 }
 
-const intervalSchema = z.object({
+export const intervalSchema = z.object({
     startTime: z.string({
         required_error: "Campo requerido"
     }).min(1, "Campo requerido"),
@@ -43,6 +45,9 @@ const intervalSchema = z.object({
     keyDay: z.string({
         required_error: "Campo requerido"
     }).min(1, "Campo requerido"),
+    weeklyDayId: z.string({
+        required_error: "Campo requerido"
+    }).min(1, "Campo requerido"),
 })
 
 const intervalsValidationSchema = z
@@ -52,7 +57,7 @@ const intervalsValidationSchema = z
 
 export type IntervalsValidationSchema = z.infer<typeof intervalsValidationSchema>
 
-const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals }: UseWeeklyDayLogicProps) => {
+const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId }: UseWeeklyDayLogicProps) => {
     const userRoles = useYourBuuddyStore((state) => state.userRoles);
 
     const { control, register, setError, clearErrors } = useForm<IntervalsValidationSchema>({
@@ -69,12 +74,13 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals }: UseWeeklyDay
 
     useEffect(() => {
         if (isActive && fields.length === 0 && userRoles[0]) {
-            const intervals = [{
+            const intervals: TInterval[] = [{
                 id: typeid().toUUID(),
                 startTime: "09:00",
                 endTime: "17:00",
                 keyDay,
-                userRoleId: userRoles[0].id
+                userRoleId: userRoles[0].id,
+                weeklyDayId
             }];
 
             replace(intervals);
@@ -142,12 +148,13 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals }: UseWeeklyDay
     const onAddInterval = () => {
         if (userRoles[0]) {
             if (fields.length === 0) {
-                const intervals = [{
+                const intervals: TInterval[] = [{
                     id: typeid().toUUID(),
                     startTime: "09:00",
                     endTime: "17:00",
                     keyDay,
-                    userRoleId: userRoles[0].id
+                    userRoleId: userRoles[0].id,
+                    weeklyDayId
                 }];
 
                 replace(intervals);
@@ -159,12 +166,13 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals }: UseWeeklyDay
                     const startTime = operateHours(lastInterval.endTime, "01:00", "add");
                     const endTime = operateHours(startTime, "01:00", "add");
 
-                    const newInterval = {
+                    const newInterval: TInterval = {
                         id: typeid().toUUID(),
                         startTime,
                         endTime,
                         keyDay,
-                        userRoleId: userRoles[0].id
+                        userRoleId: userRoles[0].id,
+                        weeklyDayId
                     }
 
                     replace([...fields as TInterval[], newInterval]);

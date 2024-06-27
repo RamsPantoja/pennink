@@ -291,6 +291,15 @@ export const userRoles = createTable(
       .references(() => roles.id),
     hourPrice: numeric('hourPrice').notNull(),
     description: text("description").notNull(),
+    createdAt: timestamp('createdAt', {
+      mode: 'date'
+    }).notNull().defaultNow(),
+    updatedAt: timestamp('updatedAt', {
+      mode: 'date'
+    }).notNull().defaultNow(),
+    deletedAt: timestamp('deletedAt', {
+      mode: 'date'
+    })
   }
 );
 
@@ -354,4 +363,27 @@ export const usersToWeeklydays = createTable(
       columns: [t.userId, t.weeklyDayId]
     }),
   })
+);
+
+export const userTimes = createTable(
+  "userTime",
+  {
+    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
+      return typeid().toUUID()
+    }),
+    userRoleId: uuid("userRoleId")
+      .notNull()
+      .references(() => userRoles.id),
+    startTime: text("startTime").notNull(),
+    endTime: text("startTime").notNull(),
+    weeklyDayId: uuid("weeklyDayId")
+      .notNull()
+      .references(() => weeklyDays.id),
+    userId: uuid("userId")
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp('createdAt', {
+      mode: 'date'
+    }).notNull().defaultNow(),
+  }
 );

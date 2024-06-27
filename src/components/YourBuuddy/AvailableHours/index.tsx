@@ -20,7 +20,7 @@ const AvailableHours = () => {
     const skeletons = mapSkeletons({ numberOfSkeletons: 3, skeleton: <WeeklyDaysSkeleton /> });
 
     return (
-        <Card className="border min-w-[400px] overflow-hidden flex flex-col h-fit gap-2">
+        <Card className="border min-w-[480px] overflow-hidden flex flex-col h-fit gap-2">
             <span className="text-sm font-bold">Horas semanales</span>
             <div className="flex gap-2 flex-col overflow-auto p-2 h-fit">
                 {

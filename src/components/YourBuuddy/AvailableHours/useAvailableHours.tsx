@@ -7,12 +7,14 @@ export type WeekDay = {
     isActive: boolean
     key: WeeklyDays
     label: string
+    id: string
 }
 
 export type IntervalState = {
     intervals: TInterval[]
     hasError: boolean
 }
+
 
 type IntervalRecord = Record<WeeklyDays, IntervalState>;
 
@@ -59,6 +61,7 @@ const useAvailableHours = () => {
                     isActive: false,
                     key: item.name,
                     label: item.name,
+                    id: item.id
                 }
             }))
         }
@@ -88,17 +91,20 @@ const useAvailableHours = () => {
 
     const onSaveAvailableHours = () => {
         let intervalsHaveErrors = false;
-        console.log(intervalRecords.current);
+
+        let intervals: TInterval[] = [];
 
         for (const keyDay of Object.keys(intervalRecords.current)) {
             if (intervalRecords.current[keyDay as WeeklyDays].hasError) {
                 intervalsHaveErrors = true;
                 break;
+            } else {
+                intervals = [...intervals, ...intervalRecords.current[keyDay as WeeklyDays].intervals];
             }
         };
 
         if (!intervalsHaveErrors) {
-            console.log("Saved");
+            console.log(intervals);
         }
     }
 
