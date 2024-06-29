@@ -35,7 +35,9 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
         createUserRoleMutationIsPending,
         userRoleIsLoading,
         userRoleError,
-        userRoleData
+        userRoleData,
+        updateUserRoleMutationIsPending,
+        onEditRole
     } = useRoleFormLogic({ onOpenChange, userRoleId });
 
     const { register, formState, control, handleSubmit } = useRoleForm;
@@ -203,10 +205,12 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                         </BuuddyButton>
                     </DialogClose>
                     <BuuddyButton
-                        onClick={handleSubmit(onAddRole)}
+                        onClick={handleSubmit(userRoleId ? onEditRole : onAddRole)}
                         variant='default'
-                        isPending={createUserRoleMutationIsPending}>
-                        Agregar rol
+                        isPending={createUserRoleMutationIsPending || updateUserRoleMutationIsPending}>
+                        {
+                            userRoleId ? "Guardar" : "Agregar rol"
+                        }
                     </BuuddyButton>
                 </DialogFooter>
             </DialogContent>

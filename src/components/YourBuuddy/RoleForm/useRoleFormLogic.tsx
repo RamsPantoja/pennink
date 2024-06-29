@@ -33,7 +33,7 @@ const roleValidationSchema = z
                 required_error: "Campo requerido"
             })
             .min(100)
-            .max(1000),
+            .max(1500),
         details: z.array(detailSchema).min(1)
     });
 
@@ -72,7 +72,7 @@ const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) =
             id: userRoleId!
         },
         {
-            enabled: userRoleId ? true : false
+            enabled: userRoleId ? true : false,
         }
     );
 
@@ -108,7 +108,19 @@ const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) =
         onError: (error) => {
             toast.error(error.message);
         }
-    })
+    });
+
+    const { mutate: updateUserRoleMutation, isPending: updateUserRoleMutationIsPending } = api.userRole.update.useMutation({
+        onSuccess: async () => {
+            await utils.userRole.userRoleById.invalidate({ id: userRoleId });
+            toast.success('Role editado correctamente!');
+            onOpenChange(false);
+            await utils.userRole.userRoles.invalidate();
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
+    });
 
     const onAddRole = (data: RoleValidationSchema) => {
         createUserRoleMutation({
@@ -117,6 +129,19 @@ const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) =
             description: data.description,
             details: data.details
         });
+    }
+
+    const onEditRole = (data: RoleValidationSchema) => {
+        if (userRoleId) {
+            updateUserRoleMutation({
+                id: userRoleId,
+                data: {
+                    description: data.description,
+                    hourPrice: data.hourPrice,
+                    details: data.details
+                }
+            })
+        }
     }
 
     const onAddDetail = () => {
@@ -189,7 +214,9 @@ const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) =
         createUserRoleMutationIsPending,
         userRoleIsLoading,
         userRoleError,
-        userRoleData
+        userRoleData,
+        updateUserRoleMutationIsPending,
+        onEditRole
     }
 }
 

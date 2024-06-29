@@ -23,3 +23,12 @@ export const createUserRoleInputSchema = z.object({
 export const getUserRoleByIdInputSchema = z.object({
     id: z.string()
 })
+
+export const updateUserRoleInputSchema = z.object({
+    id: z.string().uuid(),
+    data: z.object({
+        description: z.string().min(1),
+        hourPrice: z.number(),
+        details: z.array(detailSchema).min(1)
+    })
+});
