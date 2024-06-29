@@ -66,6 +66,27 @@ class UserRoleService {
 
         return roles;
     }
+
+    async getUserRoleById(userRoleId: string) {
+        const userRole = await this.ctx.db.query.userRoles.findFirst({
+            where: (userRoles, { eq }) => {
+                return eq(userRoles.id, userRoleId);
+            },
+            with: {
+                userRoleDetails: true,
+                role: true
+            }
+        });
+
+        if (!userRole) {
+            throw new TRPCError({
+                code: "CONFLICT",
+                message: 'User role not found',
+            });
+        }
+
+        return userRole;
+    }
 }
 
 export default UserRoleService;

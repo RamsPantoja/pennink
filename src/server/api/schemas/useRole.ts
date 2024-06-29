@@ -19,3 +19,7 @@ export const createUserRoleInputSchema = z.object({
     hourPrice: z.number(),
     details: z.array(detailSchema).min(1)
 });
+
+export const getUserRoleByIdInputSchema = z.object({
+    id: z.string()
+})

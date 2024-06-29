@@ -1,6 +1,5 @@
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { BuuddyButton } from "~/components/common/BuuddyButton";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "~/components/ui/dialog";
 import useRoleFormLogic from "./useRoleFormLogic";
 import InputFeedbackMessage from "~/components/common/InputFeedbackMessage";
 import { Controller } from "react-hook-form";
@@ -12,13 +11,18 @@ import { Card } from "~/components/ui/card";
 import RoleCard from "./RoleCard";
 import { Slider } from "@nextui-org/slider";
 import DetailList from "./DetailList";
+import { Fragment } from "react";
 
-const RoleForm = () => {
+type RoleFormProps = {
+    userRoleId?: string
+    open: boolean
+    onOpenChange: (open: boolean) => void
+}
+
+const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
     const {
         onAddRole,
         useRoleForm,
-        displayRoleForm,
-        setDisplayRoleForm,
         rolesData,
         rolesIsError,
         rolesIsLoading,
@@ -28,23 +32,19 @@ const RoleForm = () => {
         onCloseForm,
         handleOnChangeDescriptionDetail,
         handleOnChangeAllowedDetail,
-        createUserRoleMutationIsPending
-    } = useRoleFormLogic();
+        createUserRoleMutationIsPending,
+        userRoleIsLoading,
+        userRoleError,
+        userRoleData
+    } = useRoleFormLogic({ onOpenChange, userRoleId });
 
     const { register, formState, control, handleSubmit } = useRoleForm;
 
     return (
         <Dialog
-            open={displayRoleForm}
-            onOpenChange={setDisplayRoleForm}
+            open={open}
+            onOpenChange={onOpenChange}
         >
-            <DialogTrigger asChild>
-                <BuuddyButton
-                    variant="default"
-                    className="w-fit"
-                    endIcon={<PlusCircleIcon className="min-w-5 h-5" />}
-                >Agregar rol</BuuddyButton>
-            </DialogTrigger>
             <DialogContent
                 onEscapeKeyDown={(e) => {
                     e.preventDefault();
@@ -57,16 +57,22 @@ const RoleForm = () => {
                 }}
             >
                 <DialogHeader>
-                    <DialogTitle>Tu nuevo rol</DialogTitle>
+                    <DialogTitle>{userRoleId ? "Editar role" : "Tu nuevo rol"}</DialogTitle>
                     <DialogDescription>
-                        Completa los campos para agregar tu nuevo rol y comenzar a ofrecer tus servicios!
+                        {
+                            userRoleId ? "Edita la información relacionada al rol. Si quieres cambiar el rol seleccionado, tendras que agregar un nuevo rol" :
+                                "Completa los campos para agregar tu nuevo rol y comenzar a ofrecer tus servicios!"
+                        }
                     </DialogDescription>
                 </DialogHeader>
                 {
                     rolesIsError && !rolesIsLoading && <FeedbackMessage message="Error al obtener la lista de roles" status="ERROR" />
                 }
                 {
-                    rolesIsLoading &&
+                    userRoleError && !userRoleIsLoading && <FeedbackMessage message="Error al obtener el rol" status="ERROR" />
+                }
+                {
+                    (rolesIsLoading || userRoleIsLoading) &&
                     <Card className="flex gap-2 flex-col">
                         <div className="space-y-2">
                             <Skeleton className="h-10 w-full" />
@@ -79,41 +85,48 @@ const RoleForm = () => {
                     </Card>
                 }
                 {
-                    !rolesIsError && !rolesIsLoading &&
+                    !rolesIsError && !rolesIsLoading && !userRoleError && !userRoleIsLoading &&
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             <p className="font-bold text-sm">Rol</p>
-                            <Controller
-                                name="role"
-                                control={control}
-                                render={({ field }) => (
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <SelectTrigger ref={field.ref} className="w-[180px]">
-                                            <SelectValue placeholder="Selecciona un rol" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {
-                                                rolesData?.map((item) => {
-                                                    return (
-                                                        <SelectItem key={item.id} value={item.id}>
-                                                            <RoleCard
-                                                                name={item.name}
-                                                                description={item.description}
-                                                            />
-                                                        </SelectItem>
-                                                    )
-                                                })
-                                            }
-
-                                        </SelectContent>
-                                    </Select>
-                                )}
-                            />
                             {
-                                formState.errors.role && <InputFeedbackMessage status="ERROR" message={formState.errors.role.message} />
+                                userRoleId && userRoleData && <span className="text-lg text-blackMain font-semibold">{userRoleData.role.name}</span>
+                            }
+                            {
+                                !userRoleId && <Fragment>
+                                    <Controller
+                                        name="role"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <SelectTrigger ref={field.ref} className="w-[180px]">
+                                                    <SelectValue placeholder="Selecciona un rol" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {
+                                                        rolesData?.map((item) => {
+                                                            return (
+                                                                <SelectItem key={item.id} value={item.id}>
+                                                                    <RoleCard
+                                                                        name={item.name}
+                                                                        description={item.description}
+                                                                    />
+                                                                </SelectItem>
+                                                            )
+                                                        })
+                                                    }
+
+                                                </SelectContent>
+                                            </Select>
+                                        )}
+                                    />
+                                    {
+                                        formState.errors.role && <InputFeedbackMessage status="ERROR" message={formState.errors.role.message} />
+                                    }
+                                </Fragment>
                             }
                         </div>
                         <div className="flex flex-col gap-1">
@@ -143,7 +156,7 @@ const RoleForm = () => {
                                         maxValue={1500}
                                         minValue={100}
                                         radius='full'
-                                        defaultValue={field.value}
+                                        defaultValue={userRoleId && userRoleData ? parseInt(userRoleData.hourPrice) : field.value}
                                         className="max-w-md"
                                         formatOptions={{ style: "currency", currency: "MXN", currencyDisplay: "code" }}
                                         onChangeEnd={(value) => {

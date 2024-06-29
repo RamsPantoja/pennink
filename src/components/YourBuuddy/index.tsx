@@ -3,7 +3,6 @@ import BuuddyCard from "./BuuddyCard";
 import RentModeSwitch from "./RentMode";
 import { Card } from "../ui/card";
 import RoleList from "./RoleList";
-import RoleForm from "./RoleForm";
 import AvailableHours from "./AvailableHours";
 
 type YourBuuddyContainerProps = {
@@ -21,9 +20,6 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
                 <Card className="flex flex-col gap-2 min-w-96">
                     <span className="text-blackMain font-bold">Roles</span>
                     <RoleList />
-                    <div className="flex justify-end items-center">
-                        <RoleForm />
-                    </div>
                 </Card>
                 <Card className="flex flex-col gap-2">
                     <span className="text-blackMain font-bold">Planificación y disponibilidad</span>

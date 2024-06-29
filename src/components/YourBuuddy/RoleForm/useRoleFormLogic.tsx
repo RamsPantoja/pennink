@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 import { typeid } from "typeid-js";
 import { toast } from "sonner";
@@ -41,15 +41,20 @@ const roleValidationSchema = z
 export type RoleValidationSchema = z.infer<typeof roleValidationSchema>
 export type DetailSchema = z.infer<typeof detailSchema>
 
-const useRoleFormLogic = () => {
+
+type useRoleFormLogicProps = {
+    onOpenChange: (open: boolean) => void
+    userRoleId?: string
+}
+
+const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) => {
     const utils = api.useUtils();
     const defaultDetail = {
         id: typeid().toUUID(),
         allowed: false,
         description: ""
     };
-
-    const [displayRoleForm, setDisplayRoleForm] = useState<boolean>(false);
+    const [details, setDetails] = useState<DetailSchema[]>([defaultDetail]);
 
     const useRoleForm = useForm<RoleValidationSchema>({
         resolver: zodResolver(roleValidationSchema),
@@ -61,16 +66,43 @@ const useRoleFormLogic = () => {
         }
     });
 
-    const [details, setDetails] = useState<DetailSchema[]>([defaultDetail]);
-
     const { data: rolesData, isError: rolesIsError, isLoading: rolesIsLoading } = api.role.roles.useQuery();
+    const { data: userRoleData, isLoading: userRoleIsLoading, error: userRoleError } = api.userRole.userRoleById.useQuery(
+        {
+            id: userRoleId!
+        },
+        {
+            enabled: userRoleId ? true : false
+        }
+    );
+
+    useEffect(() => {
+        if (userRoleData && !userRoleError && !userRoleIsLoading) {
+            const detailsSaved = userRoleData.userRoleDetails.map((item) => {
+                return {
+                    id: item.id,
+                    allowed: item.allowed,
+                    description: item.description
+                }
+            });
+
+            useRoleForm.reset({
+                role: userRoleData.roleId,
+                description: userRoleData.description,
+                hourPrice: parseInt(userRoleData.hourPrice),
+                details: detailsSaved
+            });
+
+            setDetails(detailsSaved);
+        }
+    }, [userRoleData, userRoleIsLoading, userRoleError, useRoleForm]);
 
     const { mutate: createUserRoleMutation, isPending: createUserRoleMutationIsPending } = api.userRole.create.useMutation({
         onSuccess: async () => {
             useRoleForm.reset();
             setDetails([defaultDetail]);
             toast.success('Role agregado!');
-            setDisplayRoleForm(false);
+            onOpenChange(false);
             await utils.userRole.userRoles.invalidate();
         },
         onError: (error) => {
@@ -145,8 +177,6 @@ const useRoleFormLogic = () => {
     return {
         onAddRole,
         useRoleForm,
-        displayRoleForm,
-        setDisplayRoleForm,
         rolesData,
         rolesIsError,
         rolesIsLoading,
@@ -156,7 +186,10 @@ const useRoleFormLogic = () => {
         onCloseForm,
         handleOnChangeDescriptionDetail,
         handleOnChangeAllowedDetail,
-        createUserRoleMutationIsPending
+        createUserRoleMutationIsPending,
+        userRoleIsLoading,
+        userRoleError,
+        userRoleData
     }
 }
 
