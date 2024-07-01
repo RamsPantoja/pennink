@@ -23,7 +23,7 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
                 </Card>
                 <Card className="flex flex-col gap-2">
                     <span className="text-blackMain font-bold">Planificación y disponibilidad</span>
-                    <AvailableHours />
+                    <AvailableHours session={session} />
                 </Card>
                 <Card className="flex flex-col gap-2 w-full">
                     <span className="text-blackMain font-bold">Solicitudes de reservación</span>

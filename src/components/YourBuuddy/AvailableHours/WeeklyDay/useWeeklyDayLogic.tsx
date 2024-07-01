@@ -25,6 +25,7 @@ type IntervalError = {
 type UseWeeklyDayLogicProps = {
     keyDay: WeeklyDays
     weeklyDayId: string
+    initIntervals : TInterval[]
     isActive: boolean
     onChangeIntervals: (keyDay: WeeklyDays, intervalsState: IntervalState) => void
 }
@@ -57,13 +58,13 @@ const intervalsValidationSchema = z
 
 export type IntervalsValidationSchema = z.infer<typeof intervalsValidationSchema>
 
-const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId }: UseWeeklyDayLogicProps) => {
+const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId, initIntervals }: UseWeeklyDayLogicProps) => {
     const userRoles = useYourBuuddyStore((state) => state.userRoles);
 
     const { control, register, setError, clearErrors } = useForm<IntervalsValidationSchema>({
         resolver: zodResolver(intervalsValidationSchema),
         defaultValues: {
-            intervals: []
+            intervals: initIntervals
         }
     });
 

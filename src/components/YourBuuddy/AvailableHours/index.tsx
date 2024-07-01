@@ -6,8 +6,13 @@ import { mapSkeletons } from "~/lib/utils";
 import WeeklyDaysSkeleton from "./WeeklyDay/WeeklyDaySkeleton";
 import { BuuddyButton } from "~/components/common/BuuddyButton";
 import WeeklyDayMemo from "./WeeklyDay";
+import { type Session } from "next-auth";
 
-const AvailableHours = () => {
+type AvailableHoursProps = {
+    session: Session
+}
+
+const AvailableHours = ({ session }: AvailableHoursProps) => {
     const {
         weeklyDays,
         weeklyDaysIsError,
@@ -16,8 +21,10 @@ const AvailableHours = () => {
         onChangeIntervals,
         onSaveAvailableHours,
         updateUserTimeIsPending,
-        intervalsToSave
-    } = useAvailableHours();
+        intervalsToSave,
+        userTimesIsError,
+        userTimesIsLoading,
+    } = useAvailableHours({ session });
 
     const skeletons = mapSkeletons({ numberOfSkeletons: 3, skeleton: <WeeklyDaysSkeleton /> });
 
@@ -26,17 +33,17 @@ const AvailableHours = () => {
             <span className="text-sm font-bold">Horas semanales</span>
             <div className="flex gap-2 flex-col overflow-auto p-2 h-fit">
                 {
-                    weeklyDaysIsLoading && skeletons.map((skeleton, index) => {
+                    (weeklyDaysIsLoading || userTimesIsLoading) && skeletons.map((skeleton, index) => {
                         return <Fragment key={index}>
                             {skeleton}
                         </Fragment>
                     })
                 }
                 {
-                    !weeklyDaysIsLoading && !weeklyDaysIsError && weeklyDays.map((item) => {
+                    !weeklyDaysIsLoading && !userTimesIsLoading && !weeklyDaysIsError && !userTimesIsError && weeklyDays.map((item) => {
                         return (
                             <WeeklyDayMemo
-                                key={item.key}
+                                key={`${item.id}_${item.initIntervals.length}`}
                                 weekDay={item}
                                 onCheckDay={onCheckDay}
                                 onChangeIntervals={onChangeIntervals}
@@ -45,14 +52,7 @@ const AvailableHours = () => {
                     })
                 }
                 {
-                    !weeklyDaysIsLoading && !weeklyDaysIsError && weeklyDays.length === 0 &&
-                    <div className="p-4">
-                        <FeedbackMessage status="INFORMATION" message="No hay días horarios para mostrar" />
-                    </div>
-                }
-                {
-                    !weeklyDaysIsLoading &&
-                    weeklyDaysIsError &&
+                    (!weeklyDaysIsLoading && weeklyDaysIsError) || (!userTimesIsLoading && userTimesIsError) &&
                     <div className="p-4">
                         <FeedbackMessage status="ERROR" message="Algo salio mal! No se pueden obtener la configuración de horarios" />
                     </div>

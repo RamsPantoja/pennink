@@ -2,7 +2,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from "~/server/api/trpc";
-import { createUserRoleInputSchema, getUserRoleByIdInputSchema, updateUserRoleInputSchema } from "../schemas/useRole";
+import { createUserRoleInputSchema, deleteUserRoleInputSchema, getUserRoleByIdInputSchema, updateUserRoleInputSchema } from "../schemas/useRole";
 
 export const userRoleRouter = createTRPCRouter({
   create: protectedProcedure
@@ -23,5 +23,10 @@ export const userRoleRouter = createTRPCRouter({
     .input(updateUserRoleInputSchema)
     .mutation(async ({ ctx, input }) => {
       return await ctx.services({ ctx }).userRoleService.update(input);
+    }),
+  delete: protectedProcedure
+    .input(deleteUserRoleInputSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.services({ ctx }).userRoleService.delete(input);
     }),
 });

@@ -3,19 +3,20 @@ import { type WeeklyDays } from "~/lib/enum";
 import { api } from "~/utils/api";
 import { type TInterval } from "./WeeklyDay/useWeeklyDayLogic";
 import { toast } from "sonner";
+import { type Session } from "next-auth";
 
 export type WeekDay = {
     isActive: boolean
     key: WeeklyDays
     label: string
     id: string
+    initIntervals: TInterval[]
 }
 
 export type IntervalState = {
     intervals: TInterval[]
     hasError: boolean
 }
-
 
 type IntervalRecord = Record<WeeklyDays, IntervalState>;
 
@@ -50,17 +51,25 @@ const intervalRecordsInit = {
     }
 }
 
-const useAvailableHours = () => {
+type UseAvailableHoursProps = {
+    session: Session
+}
+
+const useAvailableHours = ({ session }: UseAvailableHoursProps) => {
     const [weeklyDays, setWeeklyDays] = useState<WeekDay[]>([]);
     const [intervalRecords, setIntervalRecords] = useState<IntervalRecord>(intervalRecordsInit);
     const [intervalsToSave, setIntervalsToSave] = useState<TInterval[]>([]);
     const [intervalsHaveError, setIntervalsHaveError] = useState<boolean>(false);
-
+    const utils = api.useUtils();
     const { data: weeklyDaysData, isError: weeklyDaysIsError, isLoading: weeklyDaysIsLoading } = api.weeklyDays.weeklyDays.useQuery();
+    const { data: userTimesData, isLoading: userTimesIsLoading, isError: userTimesIsError } = api.userTime.userTimes.useQuery({
+        userId: session.user.id,
+    });
 
     const { mutate: updateUserTimeMutation, isPending: updateUserTimeIsPending } = api.userTime.update.useMutation({
         onSuccess: async () => {
             toast.success('Tiempos guardados correctamente!');
+            await utils.userTime.userTimes.invalidate();
         },
         onError: (error) => {
             toast.error(error.message);
@@ -68,17 +77,36 @@ const useAvailableHours = () => {
     });
 
     useEffect(() => {
-        if (weeklyDaysData && !weeklyDaysIsError) {
+        if (weeklyDaysData && userTimesData) {
+            console.log("a");
             setWeeklyDays(weeklyDaysData.map((item) => {
+                const initIntervals = userTimesData.reduce<TInterval[]>((acc, userTime) => {
+                    if (userTime.weeklyDayId === item.id) {
+                        const interval: TInterval = {
+                            id: userTime.id,
+                            startTime: userTime.startTime,
+                            endTime: userTime.endTime,
+                            keyDay: item.name,
+                            userRoleId: userTime.userRoleId,
+                            weeklyDayId: userTime.weeklyDayId
+                        };
+
+                        acc = [...acc, interval];
+                    }
+
+                    return acc;
+                }, []);
+
                 return {
-                    isActive: false,
+                    isActive: initIntervals.length > 0 ? true : false,
                     key: item.name,
                     label: item.name,
-                    id: item.id
+                    id: item.id,
+                    initIntervals: initIntervals
                 }
             }))
         }
-    }, [weeklyDaysData, weeklyDaysIsError]);
+    }, [weeklyDaysData, weeklyDaysIsError, userTimesData, userTimesIsError]);
 
     const getIntervalsByActiveDay = (intevals: TInterval[], weeklyDays: WeekDay[]): TInterval[] => {
         const activeDays = weeklyDays.filter((item) => item.isActive).map((item) => item.key);
@@ -149,7 +177,9 @@ const useAvailableHours = () => {
         onSaveAvailableHours,
         updateUserTimeIsPending,
         intervalRecords,
-        intervalsToSave
+        intervalsToSave,
+        userTimesIsError,
+        userTimesIsLoading
     }
 }
 

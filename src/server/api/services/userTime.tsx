@@ -1,6 +1,6 @@
 import { userTimes, usersToWeeklydays } from "~/server/db/schema";
 import { type TRPCContext } from "../trpc";
-import { type createUserTimesInputSchema } from "../schemas/userTime";
+import { type WhereUserTimesInputSchema, type createUserTimesInputSchema } from "../schemas/userTime";
 import { type z } from "zod";
 import { type Session } from "next-auth";
 import { eq } from "drizzle-orm";
@@ -10,6 +10,7 @@ type UserTimeServiceContructor = {
 }
 
 type CreateUserTimesInput = z.infer<typeof createUserTimesInputSchema>;
+type WhereUserTimesInput = z.infer<typeof WhereUserTimesInputSchema>;
 export type UserTimeInsert = typeof userTimes.$inferInsert;
 
 class UserTimeService {
@@ -19,7 +20,7 @@ class UserTimeService {
         this.ctx = ctx;
     }
 
-    async update(input: CreateUserTimesInput, session: Session) {
+    public async update(input: CreateUserTimesInput, session: Session) {
         const {
             intervals
         } = input;
@@ -55,6 +56,26 @@ class UserTimeService {
         });
 
         return result;
+    }
+
+    public async getUserTimes(input: WhereUserTimesInput) {
+        const {
+            weeklyDayIds,
+            userId,
+            userRoleIds
+        } = input;
+
+        const userTimesList = await this.ctx.db.query.userTimes.findMany({
+            where: (userTimes, { and, inArray, eq }) => {
+                return and(
+                    weeklyDayIds ? inArray(userTimes.weeklyDayId, weeklyDayIds) : undefined,
+                    userId ? eq(userTimes.userId, userId) : undefined,
+                    userRoleIds ? inArray(userTimes.userRoleId, userRoleIds) : undefined,
+                )
+            }
+        });
+
+        return userTimesList;
     }
 }
 

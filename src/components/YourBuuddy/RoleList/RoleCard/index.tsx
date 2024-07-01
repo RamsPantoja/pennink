@@ -7,6 +7,7 @@ import { BuuddyButton } from "~/components/common/BuuddyButton";
 import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import RoleForm from "../../RoleForm";
 import useRoleCardLogic from "./useRoleCardLogic";
+import CustomAlertDialog from "~/components/common/AlertDialog";
 
 type RoleCardProps = {
     role: string
@@ -19,11 +20,29 @@ type RoleCardProps = {
 const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCardProps) => {
     const {
         setDisplayRoleForm,
-        displayRoleForm
+        displayRoleForm,
+        displayDeleteRolAlertDialog,
+        setDisplayDeleteRolAlertDialog,
+        onDeleteUserRol,
+        deleteUserRoleMutationIsPending
     } = useRoleCardLogic();
 
     return (
         <Card className="flex gap-2 flex-col border">
+            <CustomAlertDialog
+                cancelText="Cancelar"
+                actionText="Confirmar"
+                title="Eliminar rol"
+                description={`¡Atención! ¿Estás seguro de que quieres eliminar el rol <<${role}>>?`}
+                onCancel={() => {
+                    setDisplayDeleteRolAlertDialog(false);
+                }}
+                onAction={() => {
+                    onDeleteUserRol(userRoleId);
+                }}
+                isPending={deleteUserRoleMutationIsPending}
+                open={displayDeleteRolAlertDialog}
+            />
             {
                 displayRoleForm &&
                 <RoleForm
@@ -38,7 +57,7 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <DropdownMenuTrigger asChild>
-                                <BuuddyButton size="icon" startIcon={<EllipsisVerticalIcon className="h-6 min-w-6 text-blackMain" />} variant='ghost'>{""}</BuuddyButton>
+                                <BuuddyButton size="icon" startIcon={<EllipsisVerticalIcon className="h-5 min-w-5 text-blackMain" />} variant='ghost'>{""}</BuuddyButton>
                             </DropdownMenuTrigger>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -49,7 +68,7 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                     >
                         <DropdownMenuItem
                             onSelect={() => {
-                                console.log("Eliminar")
+                                setDisplayDeleteRolAlertDialog(true);
                             }}
                         >
                             <TrashIcon className="mr-2 h-4 min-w-4" />

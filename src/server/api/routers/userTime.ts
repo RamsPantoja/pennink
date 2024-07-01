@@ -1,8 +1,9 @@
 import {
     createTRPCRouter,
     protectedProcedure,
+    publicProcedure,
 } from "~/server/api/trpc";
-import { createUserTimesInputSchema } from "../schemas/userTime";
+import { WhereUserTimesInputSchema, createUserTimesInputSchema } from "../schemas/userTime";
 
 export const userTimeRouter = createTRPCRouter({
     update: protectedProcedure
@@ -10,4 +11,9 @@ export const userTimeRouter = createTRPCRouter({
         .mutation(async ({ input, ctx }) => {
             return await ctx.services({ ctx }).userTimeService.update(input, ctx.session);
         }),
+    userTimes: publicProcedure
+        .input(WhereUserTimesInputSchema)
+        .query(async ({ input, ctx }) => {
+            return await ctx.services({ ctx }).userTimeService.getUserTimes(input);
+        })
 });

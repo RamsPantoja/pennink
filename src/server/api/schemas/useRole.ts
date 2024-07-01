@@ -32,3 +32,7 @@ export const updateUserRoleInputSchema = z.object({
         details: z.array(detailSchema).min(1)
     })
 });
+
+export const deleteUserRoleInputSchema = z.object({
+    id: z.string().uuid()
+})
