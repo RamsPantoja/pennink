@@ -7,10 +7,10 @@ import { type Session } from "next-auth";
 import CustomAlertDialog from "../common/AlertDialog";
 import useSidebarLogic from "./useSidebarLogic";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Button } from "../ui/button";
-import { CalendarIcon, CurrencyDollarIcon, UserGroupIcon, UserIcon, EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { CurrencyDollarIcon, UserGroupIcon, UserIcon, EllipsisVerticalIcon, Cog6ToothIcon, PowerIcon } from "@heroicons/react/24/outline";
 import { BuuddyButton } from "../common/BuuddyButton";
 import { useRouter } from "next/navigation";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 type SidebarProps = {
     session: Session | null
@@ -99,11 +99,11 @@ z"/>
                     label="Rentar"
                     href="/"
                 />
-                <SibedarItem
+                {/* <SibedarItem
                     Icon={CalendarIcon}
                     label="Eventos"
                     href="/events"
-                />
+                /> */}
                 {
                     session &&
                     <SibedarItem
@@ -144,33 +144,37 @@ z"/>
                             isPending={false}
                             open={displaySignOutAlert}
                         />
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    className=" h-8 m-w-8 p-0"
-                                    variant='ghost'
-                                    size='icon'
-                                    onClick={() => {
+                        <DropdownMenu>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <DropdownMenuTrigger asChild>
+                                        <BuuddyButton size="icon" startIcon={<EllipsisVerticalIcon className="h-5 min-w-5 text-blackMain" />} variant='ghost'>{""}</BuuddyButton>
+                                    </DropdownMenuTrigger>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p className="text-whiteMain">Más opciones</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            <DropdownMenuContent
+                            >
+                                <DropdownMenuItem
+                                    onSelect={() => {
+                                        console.log("Settings")
+                                    }}
+                                >
+                                    <Cog6ToothIcon className="mr-2 h-5 min-w-5 text-blackMain" />
+                                    Configuración
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onSelect={() => {
                                         setDisplaySignOutAlert(true);
                                     }}
                                 >
-                                    <EllipsisVerticalIcon className="min-w-5 h-5 text-blackMain" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent className=" bg-blackMain border-none max-w-60">
-                                <p className="text-whiteMain">Opciones de cuenta</p>
-                            </TooltipContent>
-                        </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <span>
-                                    {/* <Notifications session={session} /> */}
-                                </span>
-                            </TooltipTrigger>
-                            <TooltipContent className=" bg-blackMain border-none max-w-60">
-                                <p className="text-whiteMain">Notificaciones</p>
-                            </TooltipContent>
-                        </Tooltip>
+                                    <PowerIcon className="mr-2 h-5 min-w-5 text-blackMain" />
+                                    Cerrar sesión
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </div>
             }

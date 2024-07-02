@@ -1,9 +1,8 @@
 import { type Session } from "next-auth";
-import BuuddyCard from "./BuuddyCard";
-import RentModeSwitch from "./RentMode";
 import { Card } from "../ui/card";
 import RoleList from "./RoleList";
 import AvailableHours from "./AvailableHours";
+import Profile from "./Profile";
 
 type YourBuuddyContainerProps = {
     session: Session
@@ -12,10 +11,7 @@ type YourBuuddyContainerProps = {
 const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
     return (
         <div className=" flex flex-col w-full h-full gap-2 p-4">
-            <div className=" flex gap-2">
-                <BuuddyCard session={session} />
-                <RentModeSwitch />
-            </div>
+            <Profile session={session} />
             <div className="flex w-full h-full overflow-hidden">
                 <Card className="flex flex-col gap-2 min-w-96">
                     <span className="text-blackMain font-bold">Roles</span>

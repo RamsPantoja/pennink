@@ -27,12 +27,6 @@ const RoleList = () => {
                 open={displayUserRoleForm}
                 onOpenChange={setDisplayUserRoleForm}
             />
-            <div className="flex items-center justify-end">
-                <BuuddyButton
-                    endIcon={<PlusCircleIcon className="min-w-5 h-5" />}
-                    onClick={() => setDisplayUserRoleForm(true)}
-                >Agregar role</BuuddyButton>
-            </div>
             <div className="flex gap-1 flex-col overflow-auto">
                 {
                     userRolesIsLoading && skeletons.map((skeleton, index) => {
@@ -68,6 +62,12 @@ const RoleList = () => {
                         <FeedbackMessage status="ERROR" message="Algo salio mal! No se pueden obtener los roles" />
                     </div>
                 }
+            </div>
+            <div className="flex items-center justify-end">
+                <BuuddyButton
+                    startIcon={<PlusCircleIcon className="min-w-5 h-5" />}
+                    onClick={() => setDisplayUserRoleForm(true)}
+                >Agregar role</BuuddyButton>
             </div>
         </div>
     )

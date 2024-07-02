@@ -46,7 +46,7 @@ const DetailList = ({ onRemove, onAdd, details, errors, handleOnChangeDescriptio
             </div>
             <BuuddyButton
                 variant="secondary"
-                endIcon={<PlusCircleIcon className="min-w-5 h-5" />}
+                startIcon={<PlusCircleIcon className="min-w-5 h-5" />}
                 onClick={onAdd}
                 className="w-fit"
             >Agregar detalle</BuuddyButton>

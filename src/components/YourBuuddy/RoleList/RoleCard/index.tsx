@@ -71,7 +71,7 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                                 setDisplayDeleteRolAlertDialog(true);
                             }}
                         >
-                            <TrashIcon className="mr-2 h-4 min-w-4" />
+                            <TrashIcon className="mr-2 h-5 min-w-5" />
                             Eliminar
                         </DropdownMenuItem>
                         <DropdownMenuItem
@@ -79,7 +79,7 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                                 setDisplayRoleForm(true);
                             }}
                         >
-                            <PencilIcon className="mr-2 h-4 w-4" />
+                            <PencilIcon className="mr-2 h-5 min-w-5" />
                             Editar
                         </DropdownMenuItem>
                     </DropdownMenuContent>

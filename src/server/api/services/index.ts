@@ -1,5 +1,6 @@
 import { type TRPCContext } from "../trpc"
 import RoleService from "./role"
+import UserService from "./user"
 import UserRoleService from "./userRole"
 import UserTimeService from "./userTime"
 import WeeklyDaysService from "./weeklyDays"
@@ -9,6 +10,7 @@ export type ServicesContext = {
     roleService: RoleService
     weeklyDaysService: WeeklyDaysService
     userTimeService: UserTimeService
+    userService: UserService
 }
 
 export type ServicesConfig = {
@@ -20,7 +22,8 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
         userRoleService: new UserRoleService({ ctx }),
         roleService: new RoleService({ ctx }),
         weeklyDaysService: new WeeklyDaysService({ ctx }),
-        userTimeService: new UserTimeService({ ctx })
+        userTimeService: new UserTimeService({ ctx }),
+        userService: new UserService({ ctx }),
     }
 }
 
