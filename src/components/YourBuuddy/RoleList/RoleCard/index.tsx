@@ -53,7 +53,10 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
             }
             <div className="flex items-center justify-between">
                 <span className="text-blackMain font-bold">{role}</span>
-                <DropdownMenu>
+                {
+                    //Important: Use the DropdownMenu with modal prop set to false to avoid modal collisions
+                }
+                <DropdownMenu modal={false}>
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <DropdownMenuTrigger asChild>
@@ -65,6 +68,9 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                         </TooltipContent>
                     </Tooltip>
                     <DropdownMenuContent
+                        onCloseAutoFocus={(e) => {
+                            e.preventDefault();
+                        }}
                     >
                         <DropdownMenuItem
                             onSelect={() => {

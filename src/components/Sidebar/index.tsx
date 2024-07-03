@@ -156,6 +156,9 @@ z"/>
                                 </TooltipContent>
                             </Tooltip>
                             <DropdownMenuContent
+                                onCloseAutoFocus={(e) => {
+                                    e.preventDefault();
+                                }}
                             >
                                 <DropdownMenuItem
                                     onSelect={() => {

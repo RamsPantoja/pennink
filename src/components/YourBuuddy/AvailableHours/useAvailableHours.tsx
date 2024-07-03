@@ -78,7 +78,6 @@ const useAvailableHours = ({ session }: UseAvailableHoursProps) => {
 
     useEffect(() => {
         if (weeklyDaysData && userTimesData) {
-            console.log("a");
             setWeeklyDays(weeklyDaysData.map((item) => {
                 const initIntervals = userTimesData.reduce<TInterval[]>((acc, userTime) => {
                     if (userTime.weeklyDayId === item.id) {
