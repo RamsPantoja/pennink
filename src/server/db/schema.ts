@@ -48,7 +48,6 @@ export const users = createTable("user", {
   }).default(sql`CURRENT_TIMESTAMP`),
   image: text("image").notNull(),
   verified: boolean("verified").notNull().default(false),
-  gender: genderEnum("gender"),
   suscription: suscriptionEnum("suscription").notNull().default("BASIC"),
   buuddyMode: boolean("buuddyMode").notNull().default(false),
   location: text("location"),
@@ -86,6 +85,7 @@ export const profiles = createTable(
       return typeid().toUUID()
     }),
     about: text("about"),
+    gender: genderEnum("gender"),
     work: text("work"),
     birthday: text("birthday"),
     whatLoves: text("whatLoves"),

@@ -4,6 +4,7 @@ import { userRoleRouter } from "./routers/userRole";
 import { weeklyDaysRouter } from "./routers/weeklyDays";
 import { userTimeRouter } from "./routers/userTime";
 import { userRouter } from "./routers/user";
+import { interestRouter } from "./routers/interest";
 
 /**
  * This is the primary router for your server.
@@ -15,7 +16,8 @@ export const appRouter = createTRPCRouter({
   userRole: userRoleRouter,
   weeklyDays: weeklyDaysRouter,
   userTime: userTimeRouter,
-  user: userRouter
+  user: userRouter,
+  interest: interestRouter
 });
 
 // export type definition of API
