@@ -26,9 +26,6 @@ export const createTable = pgTableCreator((name) => `buuddy_${name}`);
 export const genderEnum = pgEnum('gender', ["MALE", "FEMALE"]);
 export const suscriptionEnum = pgEnum('suscription', ["BASIC", "PREMIUM"]);
 export const educationLevelEnum = pgEnum('educationLevel', ["HIGH_SCHOOL", "TECH_SCHOOL", "IN_COLLEGE", "GRADUATE_DEGREE"]);
-export const exerciseEnum = pgEnum('exercise', ["ACTIVE", "SOMETIMES", "ALMOST_NEVER"]);
-export const drinkingEnum = pgEnum('drinking', ["SOCIALLY", "NEVER", "FREQUENTLY", "SOBER"]);
-export const smokingEnum = pgEnum('smoking', ["SOCIALLY", "NEVER", "REGULARLY"]);
 export const weekDaysEnum = pgEnum('weekDays', ["MON", "TUE", "WED", "THU", "FRI", "SUN", "SAT"]);
 
 export const users = createTable("user", {
@@ -59,9 +56,10 @@ export const users = createTable("user", {
   }).notNull().defaultNow()
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
   accounts: many(accounts),
-  userRoles: many(userRoles)
+  userRoles: many(userRoles),
+  profile: one(profiles, { fields: [users.id], references: [profiles.userId] }),
 }));
 
 export const userAnalytics = createTable(
@@ -84,23 +82,23 @@ export const profiles = createTable(
     id: uuid("id").notNull().primaryKey().$defaultFn(() => {
       return typeid().toUUID()
     }),
-    about: text("about"),
-    gender: genderEnum("gender"),
-    work: text("work"),
+    about: text("about").notNull(),
+    headline: text("headline").notNull(),
+    gender: genderEnum("gender").notNull(),
+    experience: text("experience"),
     birthday: text("birthday"),
-    whatLoves: text("whatLoves"),
-    nickname: text("nickname"),
-    pets: text("pets"),
-    educationLevel: educationLevelEnum("educationLevel"),
-    exercise: exerciseEnum("exercise"),
-    drinking: drinkingEnum("drinking"),
-    smoking: smokingEnum("smoking"),
+    educationLevel: educationLevelEnum("educationLevel").notNull(),
     completed: boolean("completed").notNull().default(false),
     userId: uuid("userId")
       .notNull()
       .references(() => users.id),
   }
 );
+
+export const profilesRelations = relations(profiles, ({ one }) => ({
+  user: one(users, { fields: [profiles.userId], references: [users.id] }),
+}));
+
 
 export const accounts = createTable(
   "account",
