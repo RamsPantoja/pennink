@@ -41,6 +41,17 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                 }
             </div>
             <div className="flex flex-col gap-1">
+                <span className="font-bold text-sm">Username*</span>
+                <Input
+                    placeholder="Escribe aquí..."
+                    {...register("username")}
+                    status={formState.errors.username && "ERROR"}
+                />
+                {
+                    formState.errors.username && <InputFeedbackMessage status="ERROR" message={formState.errors.username.message} />
+                }
+            </div>
+            <div className="flex flex-col gap-1">
                 <span className="font-bold text-sm">Your headline*</span>
                 <Input
                     placeholder="Escribe aquí..."
@@ -130,7 +141,7 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                     formState.errors.interests && <InputFeedbackMessage status="ERROR" message={formState.errors.interests.message} />
                 }
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
                 <span className="font-bold text-sm">Gender</span>
                 <Controller
                     control={control}
@@ -138,7 +149,7 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                     render={({ field }) => {
                         return (
                             <RadioGroup
-                                className="flex gap-4"
+                                className="gap-4"
                                 defaultValue={field.value}
                                 onValueChange={(value) => {
                                     field.onChange(value as Genders);
@@ -170,7 +181,7 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                     formState.errors.gender && <InputFeedbackMessage status="ERROR" message={formState.errors.gender.message} />
                 }
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
                 <span className="font-bold text-sm">Education level</span>
                 <Controller
                     control={control}
@@ -178,7 +189,7 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                     render={({ field }) => {
                         return (
                             <RadioGroup
-                                className="flex gap-4"
+                                className="gap-4"
                                 defaultValue={field.value}
                                 onValueChange={(value) => {
                                     field.onChange(value as EducationLevel);
@@ -214,6 +225,17 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                 />
                 {
                     formState.errors.educationLevel && <InputFeedbackMessage status="ERROR" message={formState.errors.educationLevel.message} />
+                }
+            </div>
+            <div className="flex flex-col gap-1">
+                <span className="font-bold text-sm">Website</span>
+                <Input
+                    placeholder="Escribe aquí..."
+                    {...register("website")}
+                    status={formState.errors.website && "ERROR"}
+                />
+                {
+                    formState.errors.website && <InputFeedbackMessage status="ERROR" message={formState.errors.website.message} />
                 }
             </div>
         </Card>

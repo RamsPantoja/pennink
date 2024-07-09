@@ -8,6 +8,10 @@ import { api } from "~/utils/api";
 
 const profileValidationSchema = z
     .object({
+        username: z.string({
+            required_error: "Required field"
+        }).min(1, "Required field").trim(),
+        website: z.string().trim().optional().nullable(),
         about: z.string({
             required_error: "Required field"
         }).min(1, "Required field").trim(),
@@ -38,7 +42,9 @@ const useProfileFormLogic = () => {
             experience: "",
             name: "",
             headline: "",
+            username: "",
             educationLevel: "GRADUATE_DEGREE",
+            website: ""
         }
     });
 
@@ -46,6 +52,8 @@ const useProfileFormLogic = () => {
         if (userProfileData && !userProfileIsLoading && !userProfileIsError) {
             useProfileForm.reset({
                 about: userProfileData.profile?.about,
+                username: userProfileData.profile?.username,
+                website: userProfileData.profile?.website,
                 gender: userProfileData.profile?.gender,
                 experience: userProfileData.profile?.experience,
                 name: userProfileData.session.user.name!,

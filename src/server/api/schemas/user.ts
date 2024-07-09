@@ -7,3 +7,8 @@ export const buuddyModeUserInputSchema = z.object({
 export const getUserByIdInputSchema = z.object({
     id: z.string().uuid()
 });
+
+export const buuddiesInputSchema = z.object({
+    interests: z.array(z.string().uuid()),
+    name: z.string().trim().optional()
+})

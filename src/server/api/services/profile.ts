@@ -27,7 +27,9 @@ class ProfileService {
             educationLevel,
             headline,
             about,
-            gender
+            gender,
+            website,
+            username
         } = input;
 
         const userProfile = await this.ctx.db.query.profiles.findFirst({
@@ -38,7 +40,8 @@ class ProfileService {
 
         const result = await this.ctx.db.transaction(async (tx) => {
             await tx.update(users)
-                .set({ name });
+                .set({ name })
+                .where(eq(users.id, session.user.id))
 
             await tx.delete(usersToInterests)
                 .where(eq(usersToInterests.userId, session.user.id));
@@ -78,6 +81,8 @@ class ProfileService {
                     headline,
                     educationLevel,
                     experience,
+                    website,
+                    username,
                     userId: session.user.id
                 }).returning();
 

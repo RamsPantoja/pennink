@@ -21,4 +21,14 @@ export const updateProfileInputSchema = z.object({
     }).min(1, "Required field"),
     educationLevel: z.enum(educationLevelEnum.enumValues),
     interests: z.array(z.string().uuid()).min(1, "Least 1 interest"),
+    website: z.string().optional().nullable().transform((value) => {
+        if (value?.length === 0) {
+            return null
+        } else {
+            return value;
+        }
+    }),
+    username: z.string({
+        required_error: "Required field"
+    }).min(1, "Required field"),
 });

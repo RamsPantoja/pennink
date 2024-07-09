@@ -47,7 +47,6 @@ export const users = createTable("user", {
   verified: boolean("verified").notNull().default(false),
   suscription: suscriptionEnum("suscription").notNull().default("BASIC"),
   buuddyMode: boolean("buuddyMode").notNull().default(false),
-  location: text("location"),
   createdAt: timestamp('createdAt', {
     mode: 'date'
   }).notNull().defaultNow(),
@@ -60,6 +59,7 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   accounts: many(accounts),
   userRoles: many(userRoles),
   profile: one(profiles, { fields: [users.id], references: [profiles.userId] }),
+  usersToInterests: many(usersToInterests)
 }));
 
 export const userAnalytics = createTable(
@@ -82,11 +82,15 @@ export const profiles = createTable(
     id: uuid("id").notNull().primaryKey().$defaultFn(() => {
       return typeid().toUUID()
     }),
+    username: text("username").notNull(),
     about: text("about").notNull(),
     headline: text("headline").notNull(),
     gender: genderEnum("gender").notNull(),
     experience: text("experience"),
     birthday: text("birthday"),
+    // countryId: uuid("countryId")
+    //   .references(() => users.id),
+    website: text("website"),
     educationLevel: educationLevelEnum("educationLevel").notNull(),
     completed: boolean("completed").notNull().default(false),
     userId: uuid("userId")
@@ -219,6 +223,10 @@ export const interests = createTable(
   }
 );
 
+export const interestsRelations = relations(interests, ({ many }) => ({
+  usersToInterests: many(usersToInterests)
+}))
+
 export const usersToInterests = createTable(
   "user_to_interest",
   {
@@ -236,6 +244,17 @@ export const usersToInterests = createTable(
     }),
   })
 );
+
+export const usersToGroupsRelations = relations(usersToInterests, ({ one }) => ({
+  interest: one(interests, {
+    fields: [usersToInterests.interestId],
+    references: [interests.id],
+  }),
+  user: one(users, {
+    fields: [usersToInterests.userId],
+    references: [users.id],
+  }),
+}));
 
 export const reviews = createTable(
   "review",

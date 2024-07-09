@@ -6,6 +6,7 @@ import { userTimeRouter } from "./routers/userTime";
 import { userRouter } from "./routers/user";
 import { interestRouter } from "./routers/interest";
 import { profileRouter } from "./routers/profile";
+import { type inferRouterOutputs } from "@trpc/server";
 
 /**
  * This is the primary router for your server.
@@ -33,3 +34,4 @@ export type AppRouter = typeof appRouter;
  *       ^? Post[]
  */
 export const createCaller = createCallerFactory(appRouter);
+export type RouterOutput = inferRouterOutputs<AppRouter>;
