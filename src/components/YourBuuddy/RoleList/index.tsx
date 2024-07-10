@@ -11,7 +11,7 @@ import RoleForm from "../RoleForm";
 
 const RoleList = () => {
     const { data: userRolesData, isError: userRolesIsError, isLoading: userRolesIsLoading } = api.userRole.userRoles.useQuery();
-    const skeletons = mapSkeletons({ numberOfSkeletons: 10, skeleton: <RoleCardSkeleton /> });
+    const skeletons = mapSkeletons({ numberOfSkeletons: 2, skeleton: <RoleCardSkeleton /> });
     const setUserRoles = useYourBuuddyStore((state) => state.setUserRoles);
     const [displayUserRoleForm, setDisplayUserRoleForm] = useState<boolean>(false);
 

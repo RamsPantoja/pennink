@@ -68,10 +68,10 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                     </DialogDescription>
                 </DialogHeader>
                 {
-                    rolesIsError && !rolesIsLoading && <FeedbackMessage message="Error al obtener la lista de roles" status="ERROR" />
+                    rolesIsError && !rolesIsLoading && <FeedbackMessage message="Error on getting the role list" status="ERROR" />
                 }
                 {
-                    userRoleError && !userRoleIsLoading && <FeedbackMessage message="Error al obtener el rol" status="ERROR" />
+                    userRoleError && !userRoleIsLoading && <FeedbackMessage message="Error on getting the user role" status="ERROR" />
                 }
                 {
                     (rolesIsLoading || userRoleIsLoading) &&

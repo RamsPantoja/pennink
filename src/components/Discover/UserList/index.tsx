@@ -14,6 +14,8 @@ type UserListProps = {
 const UserList = ({ users, isError, isLoading }: UserListProps) => {
     const skeletons = mapSkeletons({ numberOfSkeletons: 15, skeleton: <UserCardSkeleton /> });
 
+    console.log(users);
+
     return (
         <div className="flex items-start justify-start gap-2 flex-wrap w-full h-fit">
             {
@@ -24,29 +26,26 @@ const UserList = ({ users, isError, isLoading }: UserListProps) => {
                 })
             }
             {
-                !isLoading && !isError && users?.map((item) => {
+                !isLoading && !isError && users && Object.keys(users).map((userId) => {
                     return (
                         <UserCard
-                            key={item.user?.id}
-                            name={item.user?.name}
-                            verified={item.user?.verified}
-                            image={item.user?.image}
-                            username={item.profile?.username}
+                            key={userId}
+                            userData={users[userId]}
                         />
                     )
                 })
             }
             {
-                !isLoading && !isError && users?.length === 0 &&
+                !isLoading && !isError && users && Object.keys(users).length === 0 &&
                 <div className="p-4">
-                    <FeedbackMessage status="INFORMATION" message="Agrega un rol para comenzar a ofrecer tus servicios" />
+                    <FeedbackMessage status="INFORMATION" message="No buuddies to display" />
                 </div>
             }
             {
                 !isLoading &&
                 isError &&
                 <div className="p-4">
-                    <FeedbackMessage status="ERROR" message="Algo salio mal! No se pueden obtener los roles" />
+                    <FeedbackMessage status="ERROR" message="Something went wrong!" />
                 </div>
             }
         </div>

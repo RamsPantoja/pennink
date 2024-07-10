@@ -33,7 +33,7 @@ const ProfileEditor = () => {
             />
             <SheetFooter>
                 <SheetClose asChild>
-                    <BuuddyButton isPending={upsertProfileMutationIsPending} onClick={useProfileForm.handleSubmit(onSave)} variant="default">Guardar cambios</BuuddyButton>
+                    <BuuddyButton isPending={upsertProfileMutationIsPending} onClick={useProfileForm.handleSubmit(onSave)} variant="default">Save</BuuddyButton>
                 </SheetClose>
             </SheetFooter>
         </SheetContent>

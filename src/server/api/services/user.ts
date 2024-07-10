@@ -69,12 +69,20 @@ class UserService {
                 id: users.id,
                 name: users.name,
                 verified: users.verified,
-                image: users.image
+                image: users.image,
+                buuddyMode: users.buuddyMode,
             },
             profile: {
+                id: profiles.id,
                 headline: profiles.headline,
                 gender: profiles.gender,
                 username: profiles.username
+            },
+            userRole: {
+                id: userRoles.id,
+                roleId: userRoles.roleId,
+                hourPrice: userRoles.hourPrice,
+                role: roles.name
             }
         })
             .from(users)
@@ -84,14 +92,37 @@ class UserService {
             .leftJoin(roles, eq(userRoles.roleId, roles.id))
             .where(
                 and(
+                    eq(users.buuddyMode, true),
                     isNotNull(profiles.id),
                     name ? eq(users.name, name) : undefined,
                     interests.length > 0 ? inArray(usersToInterests.interestId, interests) : undefined
                 )
             )
-            .groupBy(users.id, profiles.id);
+            .groupBy(users.id, profiles.id, userRoles.id, roles.id);
 
-        return buuddies;
+        type BuuddiesPartialSelect = typeof buuddies[number];
+
+
+        const result = buuddies.reduce<Record<string, { user: BuuddiesPartialSelect["user"], profile: BuuddiesPartialSelect["profile"], userRoles: BuuddiesPartialSelect["userRole"][] }>>(
+            (acc, row) => {
+                const user = row.user;
+                const profile = row.profile;
+                const userRole = row.userRole;
+
+                if (!acc[user.id]) {
+                    acc[user.id] = { user, profile, userRoles: [] };
+                }
+
+                if (userRole.id) {
+                    acc[user.id]?.userRoles.push(userRole);
+                }
+
+                return acc;
+            },
+            {}
+        );
+
+        return result;
     }
 }
 
