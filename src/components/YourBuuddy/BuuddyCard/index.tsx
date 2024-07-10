@@ -19,7 +19,7 @@ const BuuddyCard = ({ session }: ProfileCardProps) => {
                 <div className="flex flex-col gap-1 w-full overflow-hidden">
                     <div className="flex items-center gap-2">
                         <p className="text-blackMain text-2xl truncate font-bold">{session.user.name}</p>
-                        <CheckBadgeIcon className="min-w-5 h-5 text-blackLigth" />
+                        <CheckBadgeIcon className="min-w-6 h-6 text-pinkStrong" />
                     </div>
                     <p className="text-blackMain text-base truncate">{session.user.email}</p>
                     <div className="flex w-fit item-center justify-between gap-4">

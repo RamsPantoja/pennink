@@ -18,7 +18,7 @@ const UserCard = ({ userData }: UserProps) => {
     }, [userData]);
 
     return (
-        <a href={`/bd/${userData?.user.name}`}>
+        <a href={`/bd/${userData?.profile?.username}`}>
             <Card className=" bg-whiteMain border min-w-52 max-w-52 min-h-52">
                 <div className="flex flex-col items-center gap-2 overflow-hidden">
                     <div className="flex flex-col relative">
