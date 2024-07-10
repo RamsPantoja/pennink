@@ -133,10 +133,10 @@ z"/>
                     </div>
                     <div className="flex items-center">
                         <CustomAlertDialog
-                            cancelText="Cancelar"
-                            actionText="Confirmar"
-                            title="Cerrar sesión"
-                            description={"¡Atención! ¿Estás seguro de que quieres cerrar sesión?"}
+                            cancelText="Cancel"
+                            actionText="Sign out"
+                            title="Sign out"
+                            description={"Warning! Are you sure you want to sign out?"}
                             onCancel={() => {
                                 setDisplaySignOutAlert(false);
                             }}
@@ -166,7 +166,7 @@ z"/>
                                     }}
                                 >
                                     <Cog6ToothIcon className="mr-2 h-5 min-w-5 text-blackMain" />
-                                    Configuración
+                                    Settings
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     onSelect={() => {
@@ -174,7 +174,7 @@ z"/>
                                     }}
                                 >
                                     <PowerIcon className="mr-2 h-5 min-w-5 text-blackMain" />
-                                    Cerrar sesión
+                                    Sign out
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

@@ -30,7 +30,7 @@ const AvailableHours = ({ session }: AvailableHoursProps) => {
 
     return (
         <Card className="border min-w-[480px] overflow-hidden flex flex-col h-fit gap-2">
-            <span className="text-sm font-bold">Horas semanales</span>
+            <span className="text-sm font-bold">Weekly hours</span>
             <div className="flex gap-2 flex-col overflow-auto p-2 h-fit">
                 {
                     (weeklyDaysIsLoading || userTimesIsLoading) && skeletons.map((skeleton, index) => {
@@ -54,7 +54,7 @@ const AvailableHours = ({ session }: AvailableHoursProps) => {
                 {
                     (!weeklyDaysIsLoading && weeklyDaysIsError) || (!userTimesIsLoading && userTimesIsError) &&
                     <div className="p-4">
-                        <FeedbackMessage status="ERROR" message="Algo salio mal! No se pueden obtener la configuración de horarios" />
+                        <FeedbackMessage status="ERROR" message="Something went wrong! Can not get the hours settings" />
                     </div>
                 }
             </div>
@@ -64,7 +64,7 @@ const AvailableHours = ({ session }: AvailableHoursProps) => {
                     onClick={onSaveAvailableHours}
                     className="w-fit"
                     isPending={updateUserTimeIsPending}
-                >Guardar</BuuddyButton>
+                >Save</BuuddyButton>
             </div>
         </Card>
     )

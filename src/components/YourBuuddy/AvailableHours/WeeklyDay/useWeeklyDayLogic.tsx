@@ -32,23 +32,23 @@ type UseWeeklyDayLogicProps = {
 
 export const intervalSchema = z.object({
     startTime: z.string({
-        required_error: "Campo requerido"
-    }).min(1, "Campo requerido"),
+        required_error: "Required field"
+    }).min(1, "Required field"),
     endTime: z.string({
-        required_error: "Campo requerido"
-    }).min(1, "Campo requerido"),
+        required_error: "Required field"
+    }).min(1, "Required field"),
     userRoleId: z.string({
-        required_error: "Campo requerido"
-    }).min(1, "Campo requerido"),
+        required_error: "Required field"
+    }).min(1, "Required field"),
     id: z.string({
-        required_error: "Campo requerido"
-    }).min(1, "Campo requerido"),
+        required_error: "Required field"
+    }).min(1, "Required field"),
     keyDay: z.string({
-        required_error: "Campo requerido"
-    }).min(1, "Campo requerido"),
+        required_error: "Required field"
+    }).min(1, "Required field"),
     weeklyDayId: z.string({
-        required_error: "Campo requerido"
-    }).min(1, "Campo requerido"),
+        required_error: "Required field"
+    }).min(1, "Required field"),
 })
 
 const intervalsValidationSchema = z
@@ -114,7 +114,7 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId, i
                 const endTimeLaterThanStartTime = compareHours(elementI.startTime, elementI.endTime);
 
                 if (endTimeLaterThanStartTime !== null && endTimeLaterThanStartTime >= 0) {
-                    errors.push({ index: i, message: "Elige un tiempo final más tarde que el inicial" });
+                    errors.push({ index: i, message: "Choose an end time later than the start time" });
                 } else {
                     const [startTimeHoursI] = elementI.startTime.split(':').map(Number);
                     const [endTimeHoursI] = elementI.endTime.split(':').map(Number);
@@ -136,8 +136,8 @@ const useWeeklyDayLogic = ({ keyDay, isActive, onChangeIntervals, weeklyDayId, i
                                     const intervalOverlap = ((startTimeHoursI >= startTimeHoursJ) && (startTimeHoursI <= endTimeHoursJ)) || ((endTimeHoursI >= startTimeHoursJ) && (endTimeHoursI <= endTimeHoursJ))
 
                                     if (intervalOverlap) {
-                                        errors.push({ index: i, message: "Los tiempos se traslapan" });
-                                        errors.push({ index: j, message: "Los tiempos se traslapan" });
+                                        errors.push({ index: i, message: "Times overlap" });
+                                        errors.push({ index: j, message: "Times overlap" });
                                     }
                                 }
                             }

@@ -71,7 +71,7 @@ const WeeklyDay = ({ weekDay, onCheckDay, onChangeIntervals }: WeeklyDayProps) =
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent className=" bg-blackMain border-none max-w-60">
-                            <p className="text-whiteMain">Nuevo intervalo para {weekDay.key}</p>
+                            <p className="text-whiteMain">New time for {weekDay.key}</p>
                         </TooltipContent>
                     </Tooltip>
                 }

@@ -52,14 +52,14 @@ const RoleList = () => {
                 {
                     !userRolesIsLoading && !userRolesIsError && userRolesData?.length === 0 &&
                     <div className="p-4">
-                        <FeedbackMessage status="INFORMATION" message="Agrega un rol para comenzar a ofrecer tus servicios" />
+                        <FeedbackMessage status="INFORMATION" message="Add a new role to start offering your services" />
                     </div>
                 }
                 {
                     !userRolesIsLoading &&
                     userRolesIsError &&
                     <div className="p-4">
-                        <FeedbackMessage status="ERROR" message="Algo salio mal! No se pueden obtener los roles" />
+                        <FeedbackMessage status="ERROR" message="Something went wrong! Can not get the roles" />
                     </div>
                 }
             </div>
