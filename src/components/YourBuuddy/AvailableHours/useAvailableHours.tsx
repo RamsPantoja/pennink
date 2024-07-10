@@ -68,7 +68,7 @@ const useAvailableHours = ({ session }: UseAvailableHoursProps) => {
 
     const { mutate: updateUserTimeMutation, isPending: updateUserTimeIsPending } = api.userTime.update.useMutation({
         onSuccess: async () => {
-            toast.success('Tiempos guardados correctamente!');
+            toast.success('Times saved successfully!');
             await utils.userTime.userTimes.invalidate();
         },
         onError: (error) => {

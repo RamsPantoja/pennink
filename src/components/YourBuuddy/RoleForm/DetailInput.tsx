@@ -22,7 +22,7 @@ const DetailInput = ({ onRemove, id, allowed, description, index, error, onChang
             <div className="flex gap-2">
                 <div className="w-full">
                     <Input
-                        placeholder="Escribe aquí..."
+                        placeholder="Type here..."
                         defaultValue={description}
                         status={error?.description && "ERROR"}
                         onBlur={(e) => {

@@ -96,7 +96,7 @@ z"/>
             <ul className="flex flex-col w-full h-full">
                 <SibedarItem
                     Icon={UserGroupIcon}
-                    label="Rentar"
+                    label="Rent and connect"
                     href="/"
                 />
                 {/* <SibedarItem
@@ -116,7 +116,7 @@ z"/>
                     session &&
                     <SibedarItem
                         Icon={UserIcon}
-                        label="Tu buuddy"
+                        label="Your buuddy"
                         href="/your_buuddy"
                     />
                 }
@@ -152,7 +152,7 @@ z"/>
                                     </DropdownMenuTrigger>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p className="text-whiteMain">Más opciones</p>
+                                    <p className="text-whiteMain">More options</p>
                                 </TooltipContent>
                             </Tooltip>
                             <DropdownMenuContent
@@ -189,7 +189,7 @@ z"/>
                         className="w-full"
                         onClick={() => { router.push('/sign_in') }}
                     >
-                        Iniciar sesión
+                        Sign in
                     </BuuddyButton>
                 </div>
             }

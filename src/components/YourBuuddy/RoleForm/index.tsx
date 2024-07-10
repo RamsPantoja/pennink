@@ -59,11 +59,11 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                 }}
             >
                 <DialogHeader>
-                    <DialogTitle>{userRoleId ? "Editar role" : "Tu nuevo rol"}</DialogTitle>
+                    <DialogTitle>{userRoleId ? "Edit role" : "Your new role"}</DialogTitle>
                     <DialogDescription>
                         {
-                            userRoleId ? "Edita la información relacionada al rol. Si quieres cambiar el rol seleccionado, tendras que agregar un nuevo rol" :
-                                "Completa los campos para agregar tu nuevo rol y comenzar a ofrecer tus servicios!"
+                            userRoleId ? "Edit the information related to the role. If you want to change the selected role, you will need to add a new role." :
+                                "Complete the fields to add your new role and start offering your services!"
                         }
                     </DialogDescription>
                 </DialogHeader>
@@ -90,7 +90,7 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                     !rolesIsError && !rolesIsLoading && !userRoleError && !userRoleIsLoading &&
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            <p className="font-bold text-sm">Rol</p>
+                            <p className="font-bold text-sm">Role</p>
                             {
                                 userRoleId && userRoleData && <span className="text-lg text-blackMain font-semibold">{userRoleData.role.name}</span>
                             }
@@ -105,7 +105,7 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                                                 defaultValue={field.value}
                                             >
                                                 <SelectTrigger ref={field.ref} className="w-[180px]">
-                                                    <SelectValue placeholder="Selecciona un rol" />
+                                                    <SelectValue placeholder="Select a role" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
@@ -132,9 +132,9 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                             }
                         </div>
                         <div className="flex flex-col gap-1">
-                            <span className="font-bold text-sm">Descripción</span>
+                            <span className="font-bold text-sm">Description</span>
                             <Textarea
-                                placeholder="Escribe aquí..."
+                                placeholder="Type here..."
                                 className="resize-none"
                                 rows={7}
                                 {...register("description")}
@@ -151,16 +151,16 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                                 render={({ field }) => (
                                     <Slider
                                         size="sm"
-                                        step={25}
+                                        step={10}
                                         color="primary"
-                                        label="Precio por hora"
+                                        label="Price by hour"
                                         showSteps={false}
-                                        maxValue={1500}
-                                        minValue={100}
+                                        maxValue={150}
+                                        minValue={10}
                                         radius='full'
                                         defaultValue={userRoleId && userRoleData ? parseInt(userRoleData.hourPrice) : field.value}
                                         className="max-w-md"
-                                        formatOptions={{ style: "currency", currency: "MXN", currencyDisplay: "code" }}
+                                        formatOptions={{ style: "currency", currency: "USD", currencyDisplay: "code" }}
                                         onChangeEnd={(value) => {
                                             field.onChange(value);
                                         }}
@@ -186,7 +186,7 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                             }
                         </div>
                         <div className="flex flex-col gap-1">
-                            <span className="font-bold text-sm">Detalles permitidos y no permitidos</span>
+                            <span className="font-bold text-sm">Details allowed and not allowed</span>
                             <DetailList
                                 onRemove={onRemoveDetail}
                                 onAdd={onAddDetail}
@@ -201,7 +201,7 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                 <DialogFooter className="flex flex-row items-center justify-between gap-2">
                     <DialogClose asChild>
                         <BuuddyButton onClick={onCloseForm} type="button" variant="secondary">
-                            Descartar
+                            Discard
                         </BuuddyButton>
                     </DialogClose>
                     <BuuddyButton
@@ -209,7 +209,7 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                         variant='default'
                         isPending={createUserRoleMutationIsPending || updateUserRoleMutationIsPending}>
                         {
-                            userRoleId ? "Guardar" : "Agregar rol"
+                            userRoleId ? "Save" : "Add role"
                         }
                     </BuuddyButton>
                 </DialogFooter>

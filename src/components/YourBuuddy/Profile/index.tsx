@@ -48,7 +48,7 @@ const Profile = ({ session }: ProfileProps) => {
                 </Fragment>
             }
             {
-                !userIsLoading && userIsError && <FeedbackMessage status="ERROR" message="Error al obtener la información del usuario" />
+                !userIsLoading && userIsError && <FeedbackMessage status="ERROR" message="Was an error on getting the user information" />
             }
         </div>
     )

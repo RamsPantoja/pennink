@@ -13,7 +13,7 @@ const useRoleCardLogic = () => {
 
     const { mutate: deleteUserRoleMutation, isPending: deleteUserRoleMutationIsPending } = api.userRole.delete.useMutation({
         onSuccess: async () => {
-            toast.success('Role eliminado correctamente');
+            toast.success('Role deleted successfully');
             setDisplayDeleteRolAlertDialog(false);
             await utils.userTime.userTimes.invalidate();
             await utils.userRole.userRoles.invalidate();

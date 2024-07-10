@@ -14,19 +14,19 @@ const RoleDetails = ({ details }: RoleDetailsProps) => {
             <DialogTrigger asChild>
                 <BuuddyButton
                     variant="secondary"
-                >Ver detalles</BuuddyButton>
+                >See details</BuuddyButton>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Detalles</DialogTitle>
                     <DialogDescription>
-                        Lista de detalles permitidos y no permitidos
+                        Details allowed and not allowed
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-2">
                     <div className="flex gap-2 w-full">
-                        <span className="text-grayMain text-xs w-full">Descripción</span>
-                        <span className="text-grayMain text-xs min-w-12 text-center">Permitido</span>
+                        <span className="text-grayMain text-xs w-full">Description</span>
+                        <span className="text-grayMain text-xs min-w-12 text-center">Allowed</span>
                     </div>
                     {
                         details.map((item) => {
@@ -43,7 +43,7 @@ const RoleDetails = ({ details }: RoleDetailsProps) => {
                 <DialogFooter className="flex flex-row items-center justify-between gap-2">
                     <DialogClose asChild>
                         <BuuddyButton type="button" variant="secondary">
-                            Cerrar
+                            Close
                         </BuuddyButton>
                     </DialogClose>
                 </DialogFooter>

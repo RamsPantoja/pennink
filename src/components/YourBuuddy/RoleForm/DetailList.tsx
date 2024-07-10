@@ -22,8 +22,8 @@ const DetailList = ({ onRemove, onAdd, details, errors, handleOnChangeDescriptio
         <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1">
                 <div className="flex gap-2 w-full">
-                    <span className="text-grayMain text-xs w-full">Descripción</span>
-                    <span className="text-grayMain text-xs min-w-12 text-center">Permitir</span>
+                    <span className="text-grayMain text-xs w-full">Description</span>
+                    <span className="text-grayMain text-xs min-w-12 text-center">Allow</span>
                     <span className="text-grayMain text-xs min-w-12 text-center"></span>
                 </div>
                 {
@@ -49,7 +49,7 @@ const DetailList = ({ onRemove, onAdd, details, errors, handleOnChangeDescriptio
                 startIcon={<PlusCircleIcon className="min-w-5 h-5" />}
                 onClick={onAdd}
                 className="w-fit"
-            >Agregar detalle</BuuddyButton>
+            >Add detail</BuuddyButton>
         </div>
     )
 }

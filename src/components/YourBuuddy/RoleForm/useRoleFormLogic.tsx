@@ -8,32 +8,32 @@ import { toast } from "sonner";
 
 const detailSchema = z.object({
     id: z.string({
-        required_error: "Campo requerido"
+        required_error: "Required field"
     }).uuid("Not allowed"),
     allowed: z.boolean({
-        required_error: "Campo requerido",
-        invalid_type_error: "Campo requerido",
+        required_error: "Required field",
+        invalid_type_error: "Required field",
     }),
     description: z.string({
-        required_error: "Campo requerido"
-    }).min(1, "Campo requerido"),
+        required_error: "Required field"
+    }).min(1, "Required field"),
 });
 
 
 const roleValidationSchema = z
     .object({
         role: z.string({
-            required_error: "Campo requerido"
-        }).min(1, "Campo requerido"),
+            required_error: "Required field"
+        }).min(1, "Required field"),
         description: z.string({
-            required_error: "Campo requerido"
-        }).min(1, "Campo requerido"),
+            required_error: "Required field"
+        }).min(1, "Required field"),
         hourPrice: z
             .number({
-                required_error: "Campo requerido"
+                required_error: "Required field"
             })
-            .min(100)
-            .max(1500),
+            .min(10)
+            .max(150),
         details: z.array(detailSchema).min(1)
     });
 
@@ -61,7 +61,7 @@ const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) =
         defaultValues: {
             role: "",
             description: "",
-            hourPrice: 100,
+            hourPrice: 10,
             details: [defaultDetail]
         }
     });
@@ -101,7 +101,7 @@ const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) =
         onSuccess: async () => {
             useRoleForm.reset();
             setDetails([defaultDetail]);
-            toast.success('Role agregado!');
+            toast.success('Role added!');
             onOpenChange(false);
             await utils.userRole.userRoles.invalidate();
         },
@@ -113,7 +113,7 @@ const useRoleFormLogic = ({ onOpenChange, userRoleId }: useRoleFormLogicProps) =
     const { mutate: updateUserRoleMutation, isPending: updateUserRoleMutationIsPending } = api.userRole.update.useMutation({
         onSuccess: async () => {
             await utils.userRole.userRoleById.invalidate({ id: userRoleId });
-            toast.success('Role editado correctamente!');
+            toast.success('Role edited successfully!');
             onOpenChange(false);
             await utils.userRole.userRoles.invalidate();
         },

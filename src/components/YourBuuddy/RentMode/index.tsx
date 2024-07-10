@@ -35,13 +35,13 @@ const RentModeSwitch = ({ isActive }: RentModeSwitchProps) => {
                 onCheckedChange={handleOnChangeBuuddyMode}
                 defaultChecked={isActive}
             />
-            <Label className="font-bold" htmlFor="rent-mode">Modo Buuddy</Label>
+            <Label className="font-bold" htmlFor="rent-mode">Buuddy mode</Label>
             <Tooltip>
                 <TooltipTrigger asChild>
                     <InformationCircleIcon className="h-5 w-5 text-grayMain" />
                 </TooltipTrigger>
                 <TooltipContent className=" bg-blackMain border-none max-w-60">
-                    <p className="text-whiteMain">Activar para aparecer como un buuddy en la plataforma y comenzar a ofrecer tus servicios.</p>
+                    <p className="text-whiteMain">Activate to appear as a buddy on the platform and start offering your services.</p>
                 </TooltipContent>
             </Tooltip>
         </div>

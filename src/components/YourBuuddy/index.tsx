@@ -18,11 +18,11 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
                     <RoleList />
                 </Card>
                 <Card className="flex flex-col gap-2">
-                    <span className="text-blackMain font-bold">Planificación y disponibilidad</span>
+                    <span className="text-blackMain font-bold">Planning and availability</span>
                     <AvailableHours session={session} />
                 </Card>
                 <Card className="flex flex-col gap-2 w-full">
-                    <span className="text-blackMain font-bold">Solicitudes de reservación</span>
+                    <span className="text-blackMain font-bold">Booking requests</span>
                     <Card className="border w-full h-full overflow-auto">
 
                     </Card>

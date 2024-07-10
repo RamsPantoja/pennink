@@ -30,10 +30,10 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
     return (
         <Card className="flex gap-2 flex-col border">
             <CustomAlertDialog
-                cancelText="Cancelar"
-                actionText="Confirmar"
-                title="Eliminar rol"
-                description={`¡Atención! ¿Estás seguro de que quieres eliminar el rol <<${role}>>?`}
+                cancelText="Cancel"
+                actionText="Delete"
+                title="Delete rol"
+                description={`Warning! ¿Are you sure you want to delete the role <<${role}>>?`}
                 onCancel={() => {
                     setDisplayDeleteRolAlertDialog(false);
                 }}
@@ -64,7 +64,7 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                             </DropdownMenuTrigger>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <p className="text-whiteMain">Más opciones</p>
+                            <p className="text-whiteMain">More options</p>
                         </TooltipContent>
                     </Tooltip>
                     <DropdownMenuContent
@@ -78,7 +78,7 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                             }}
                         >
                             <TrashIcon className="mr-2 h-5 min-w-5" />
-                            Eliminar
+                            Delete
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             onSelect={() => {
@@ -86,15 +86,15 @@ const RoleCard = ({ role, hourPrice, description, details, userRoleId }: RoleCar
                             }}
                         >
                             <PencilIcon className="mr-2 h-5 min-w-5" />
-                            Editar
+                            Edit
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
             <p className="text-grayMain text-sm">{description}</p>
             <div className="flex items-end gap-2">
-                <span className="font-bold text-blackMain">${hourPrice} MXN</span>
-                <span className="text-sm">hora</span>
+                <span className="font-bold text-blackMain">${hourPrice} USD</span>
+                <span className="text-sm">hour</span>
             </div>
             <div className="flex justify-end">
                 <RoleDetails

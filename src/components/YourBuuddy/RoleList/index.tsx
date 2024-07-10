@@ -67,7 +67,7 @@ const RoleList = () => {
                 <BuuddyButton
                     startIcon={<PlusCircleIcon className="min-w-5 h-5" />}
                     onClick={() => setDisplayUserRoleForm(true)}
-                >Agregar role</BuuddyButton>
+                >Add role</BuuddyButton>
             </div>
         </div>
     )
