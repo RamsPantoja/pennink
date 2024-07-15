@@ -47,6 +47,7 @@ export const users = createTable("user", {
   verified: boolean("verified").notNull().default(false),
   suscription: suscriptionEnum("suscription").notNull().default("BASIC"),
   buuddyMode: boolean("buuddyMode").notNull().default(false),
+  onBoardingCompleted: boolean("onBoardingCompleted").notNull().default(false),
   createdAt: timestamp('createdAt', {
     mode: 'date'
   }).notNull().defaultNow(),
@@ -404,3 +405,14 @@ export const userTimes = createTable(
     }).notNull().defaultNow(),
   }
 );
+
+export const userTimesRelations = relations(userTimes, ({ one }) => ({
+  userRole: one(userRoles, {
+    fields: [userTimes.userRoleId],
+    references: [userRoles.id]
+  }),
+  weeklyDay: one(weeklyDays, {
+    fields: [userTimes.weeklyDayId],
+    references: [weeklyDays.id]
+  }),
+}));

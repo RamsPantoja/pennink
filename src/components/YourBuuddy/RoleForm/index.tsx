@@ -103,6 +103,7 @@ const RoleForm = ({ open, onOpenChange, userRoleId }: RoleFormProps) => {
                                             <Select
                                                 onValueChange={field.onChange}
                                                 defaultValue={field.value}
+
                                             >
                                                 <SelectTrigger ref={field.ref} className="w-[180px]">
                                                     <SelectValue placeholder="Select a role" />

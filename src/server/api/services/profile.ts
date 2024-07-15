@@ -1,7 +1,7 @@
 import { profiles, users, usersToInterests } from "~/server/db/schema";
 import { type TRPCContext } from "../trpc";
 import { type z } from "zod";
-import { type updateProfileInputSchema } from "../schemas/profile";
+import { type buuddyProfileInputSchema, type updateProfileInputSchema } from "../schemas/profile";
 import { type Session } from "next-auth";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
@@ -11,6 +11,7 @@ type ProfileServiceContructor = {
 }
 
 type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>;
+type BuuddyProfileInput = z.infer<typeof buuddyProfileInputSchema>;
 
 class ProfileService {
     ctx: TRPCContext
@@ -40,7 +41,7 @@ class ProfileService {
 
         const result = await this.ctx.db.transaction(async (tx) => {
             await tx.update(users)
-                .set({ name })
+                .set({ name, onBoardingCompleted: true })
                 .where(eq(users.id, session.user.id))
 
             await tx.delete(usersToInterests)
@@ -53,7 +54,7 @@ class ProfileService {
                 }
             }));
 
-
+            //Update path
             if (userProfile) {
                 const [profile] = await tx.update(profiles)
                     .set({
@@ -62,6 +63,8 @@ class ProfileService {
                         headline,
                         educationLevel,
                         experience,
+                        website,
+                        username,
                     })
                     .where(eq(profiles.id, userProfile.id))
                     .returning();
@@ -74,7 +77,7 @@ class ProfileService {
                 }
 
                 return profile;
-            } else {
+            } else { //Create new profile path
                 const [profile] = await tx.insert(profiles).values({
                     about,
                     gender,
@@ -117,6 +120,31 @@ class ProfileService {
             profile,
             interests,
             session
+        }
+    }
+
+    public async getBuuddy(input: BuuddyProfileInput) {
+        const { username } = input;
+
+        const profile = await this.ctx.db.query.profiles.findFirst({
+            where: (fields, { eq }) => {
+                return eq(fields.username, username);
+            },
+        });
+
+        if (!profile) {
+            return null;
+        }
+
+        const user = await this.ctx.db.query.users.findFirst({
+            where: (fields, { eq }) => {
+                return eq(fields.id, profile.userId)
+            },
+        });
+
+        return {
+            profile,
+            user
         }
     }
 }

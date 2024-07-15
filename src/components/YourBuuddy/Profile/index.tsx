@@ -5,7 +5,6 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { Fragment } from "react";
 import BuuddyCard from "../BuuddyCard";
 import RentModeSwitch from "../RentMode";
-import ProfileEditor from "../ProfileEditor";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 
 type ProfileProps = {
@@ -44,7 +43,6 @@ const Profile = ({ session }: ProfileProps) => {
                             isActive={userData.buuddyMode}
                         />
                     </div>
-                    <ProfileEditor />
                 </Fragment>
             }
             {

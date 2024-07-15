@@ -1,43 +1,61 @@
-import { PencilIcon } from "@heroicons/react/24/outline";
 import { BuuddyButton } from "~/components/common/BuuddyButton";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "~/components/ui/sheet";
 import ProfileForm from "./ProfileForm";
 import useProfileFormLogic from "./ProfileForm/useProfileFormLogic";
+import { Card } from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
+import { Fragment } from "react";
 
-const ProfileEditor = () => {
+type ProfileEditor = {
+    onSuccessCallback?: () => void
+}
+
+const ProfileEditor = ({ onSuccessCallback }: ProfileEditor) => {
     const {
         useProfileForm,
         interestData,
         interestIsLoading,
         interestIsError,
         onSave,
-        upsertProfileMutationIsPending
-    } = useProfileFormLogic();
+        upsertProfileMutationIsPending,
+        userProfileIsLoading
+    } = useProfileFormLogic({ onSuccessCallback });
 
-    return <Sheet>
-        <SheetTrigger asChild>
-            <BuuddyButton startIcon={<PencilIcon className="h-5 min-w-5 text-blackMain" />} variant="secondary">Edit profile</BuuddyButton>
-        </SheetTrigger>
-        <SheetContent className="flex flex-col h-full overflow-hidden">
-            <SheetHeader>
-                <SheetTitle>Edit profile</SheetTitle>
-                <SheetDescription>
-                    The information about your profile will be visible for general public.
-                </SheetDescription>
-            </SheetHeader>
-            <ProfileForm
-                useProfileForm={useProfileForm}
-                interestData={interestData}
-                interestIsError={interestIsError}
-                interestIsLoading={interestIsLoading}
-            />
-            <SheetFooter>
-                <SheetClose asChild>
+    return <Card className="flex flex-col gap-4 w-full h-full max-w-screen-md">
+        {
+            userProfileIsLoading && <Card className="flex gap-4 flex-col w-full">
+                <div className="space-y-2 w-full">
+                    <Skeleton className="h-6 w-40" />
+                    <Skeleton className="h-10 w-full" />
+                </div>
+                <div className="space-y-2 w-full">
+                    <Skeleton className="h-5 w-60" />
+                    <Skeleton className="h-5 w-full" />
+                </div>
+                <div className="space-y-2 w-full">
+                    <Skeleton className="h-6 w-40" />
+                    <Skeleton className="h-10 w-full" />
+                </div>
+                <div className="space-y-2 w-full">
+                    <Skeleton className="h-5 w-60" />
+                    <Skeleton className="h-5 w-full" />
+                </div>
+            </Card>
+        }
+        {
+            !userProfileIsLoading && <Fragment>
+                <p className="text-sm text-grayMain">The information about your profile will be visible for general public.</p>
+                <ProfileForm
+                    useProfileForm={useProfileForm}
+                    interestData={interestData}
+                    interestIsError={interestIsError}
+                    interestIsLoading={interestIsLoading}
+                />
+                <div className="flex justify-end">
                     <BuuddyButton isPending={upsertProfileMutationIsPending} onClick={useProfileForm.handleSubmit(onSave)} variant="default">Save</BuuddyButton>
-                </SheetClose>
-            </SheetFooter>
-        </SheetContent>
-    </Sheet>
+                </div>
+            </Fragment>
+        }
+    </Card>
 
 }
 export default ProfileEditor;

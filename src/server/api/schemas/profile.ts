@@ -32,3 +32,9 @@ export const updateProfileInputSchema = z.object({
         required_error: "Required field"
     }).min(1, "Required field"),
 });
+
+export const buuddyProfileInputSchema = z.object({
+    username: z.string({
+        required_error: "Required field"
+    }).min(1, "Required field"),
+});

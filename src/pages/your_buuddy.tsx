@@ -38,6 +38,15 @@ export const getServerSideProps = (async ({ req, res }) => {
         }
     }
 
+    if (!session.user.onBoardingCompleted) {
+        return {
+            redirect: {
+                destination: "/onboarding",
+                permanent: false,
+            },
+        }
+    }
+
     return { props: { session } };
 }) satisfies GetServerSideProps<ServerSideProps>
 

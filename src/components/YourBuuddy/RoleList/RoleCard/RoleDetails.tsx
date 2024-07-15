@@ -18,7 +18,7 @@ const RoleDetails = ({ details }: RoleDetailsProps) => {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Detalles</DialogTitle>
+                    <DialogTitle>Details</DialogTitle>
                     <DialogDescription>
                         Details allowed and not allowed
                     </DialogDescription>

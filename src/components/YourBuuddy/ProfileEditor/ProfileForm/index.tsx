@@ -117,7 +117,7 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                                         field.onChange(value);
                                     }}
                                     ref={field.ref}
-                                    defaultValue={field.value}
+                                    value={field.value}
                                 >
                                     {
                                         interestData.map((interest) => {
@@ -150,7 +150,7 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                         return (
                             <RadioGroup
                                 className="gap-4"
-                                defaultValue={field.value}
+                                value={field.value}
                                 onValueChange={(value) => {
                                     field.onChange(value as Genders);
                                 }}
@@ -190,7 +190,7 @@ const ProfileForm = ({ useProfileForm, interestIsLoading, interestIsError, inter
                         return (
                             <RadioGroup
                                 className="gap-4"
-                                defaultValue={field.value}
+                                value={field.value}
                                 onValueChange={(value) => {
                                     field.onChange(value as EducationLevel);
                                 }}

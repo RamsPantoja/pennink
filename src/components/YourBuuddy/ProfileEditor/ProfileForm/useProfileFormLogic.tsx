@@ -29,7 +29,11 @@ const profileValidationSchema = z
 
 export type ProfileValidationSchema = z.infer<typeof profileValidationSchema>
 
-const useProfileFormLogic = () => {
+type UseProfileFormLogicProps = {
+    onSuccessCallback?: () => void
+}
+
+const useProfileFormLogic = ({ onSuccessCallback }: UseProfileFormLogicProps) => {
     const utils = api.useUtils();
     const { data: interestData, isLoading: interestIsLoading, isError: interestIsError } = api.interest.interests.useQuery();
     const { data: userProfileData, isLoading: userProfileIsLoading, isError: userProfileIsError } = api.profile.userProfile.useQuery();
@@ -44,7 +48,8 @@ const useProfileFormLogic = () => {
             headline: "",
             username: "",
             educationLevel: "GRADUATE_DEGREE",
-            website: ""
+            website: "",
+            interests: []
         }
     });
 
@@ -68,6 +73,10 @@ const useProfileFormLogic = () => {
         onSuccess: async () => {
             toast.success('The information has been saved!');
             await utils.user.userById.invalidate();
+
+            if (onSuccessCallback) {
+                onSuccessCallback();
+            }
         },
         onError: (error) => {
             toast.error(error.message);
@@ -84,7 +93,8 @@ const useProfileFormLogic = () => {
         interestIsLoading,
         interestIsError,
         onSave,
-        upsertProfileMutationIsPending
+        upsertProfileMutationIsPending,
+        userProfileIsLoading
     }
 }
 

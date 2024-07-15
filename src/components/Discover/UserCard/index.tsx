@@ -31,8 +31,9 @@ const UserCard = ({ userData }: UserProps) => {
                             <CheckBadgeIcon className="w-6 h-6 text-pinkStrong absolute bottom-0 right-[-0.5em]" />
                         }
                     </div>
-                    <div className="flex items-center w-full gap-2">
-                        <p className="text-blackMain text-lg truncate font-black w-full">{userData?.user.name}</p>
+                    <div className="flex items-center w-full flex-col">
+                        <p className="text-blackMain truncate font-black w-full">{userData?.user.name}</p>
+                        <p className="text-blackMain text-sm truncate w-full">{userData?.profile?.headline}</p>
                     </div>
                     <div className="flex w-full item-center justify-between gap-2">
                         <div className="flex gap-1 flex-row items-center">
@@ -50,9 +51,9 @@ const UserCard = ({ userData }: UserProps) => {
                             <span className=" text-blackMain text-sm font-semibold">Role</span>
                             <div className="flex flex-col gap-2">
                                 <span className=" text-base font-semibold text-grayMain">{userRole.role}</span>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 items-center">
                                     <span className=" text-base font-bold">${userRole.hourPrice} USD</span>
-                                    <span className=" text-base">hour</span>
+                                    <span className="text-sm">hour</span>
                                 </div>
                             </div>
                         </div>

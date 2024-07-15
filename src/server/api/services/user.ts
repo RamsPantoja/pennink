@@ -102,7 +102,6 @@ class UserService {
 
         type BuuddiesPartialSelect = typeof buuddies[number];
 
-
         const result = buuddies.reduce<Record<string, { user: BuuddiesPartialSelect["user"], profile: BuuddiesPartialSelect["profile"], userRoles: BuuddiesPartialSelect["userRole"][] }>>(
             (acc, row) => {
                 const user = row.user;

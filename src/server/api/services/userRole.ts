@@ -1,6 +1,11 @@
 import { type z } from "zod";
 import { type TRPCContext } from "../trpc";
-import { type updateUserRoleInputSchema, type createUserRoleInputSchema, type deleteUserRoleInputSchema } from "../schemas/useRole";
+import {
+    type updateUserRoleInputSchema,
+    type createUserRoleInputSchema,
+    type deleteUserRoleInputSchema,
+    type buuddyRolesInputSchema
+} from "../schemas/useRole";
 import { userRoleDetails, userRoles, userTimes } from "~/server/db/schema";
 import { type Session } from "next-auth";
 import { TRPCError } from "@trpc/server";
@@ -15,6 +20,7 @@ export type UserRoleDetailInsert = typeof userRoleDetails.$inferInsert;
 export type UserRoleDetail = typeof userRoleDetails.$inferSelect;
 type UpdateUserRoleInput = z.infer<typeof updateUserRoleInputSchema>;
 type DeleteUserRoleInput = z.infer<typeof deleteUserRoleInputSchema>;
+type BuuddyRolesInput = z.infer<typeof buuddyRolesInputSchema>;
 
 class UserRoleService {
     ctx: TRPCContext
@@ -61,6 +67,25 @@ class UserRoleService {
             where: (userRoles, { eq, and, isNull }) => {
                 return and(
                     eq(userRoles.userId, session.user.id),
+                    isNull(userRoles.deletedAt)
+                )
+            },
+            with: {
+                role: true,
+                userRoleDetails: true
+            }
+        });
+
+        return roles;
+    }
+
+    async getBuuddyRoles(input: BuuddyRolesInput) {
+        const { userId } = input;
+
+        const roles = await this.ctx.db.query.userRoles.findMany({
+            where: (userRoles, { eq, and, isNull }) => {
+                return and(
+                    eq(userRoles.userId, userId),
                     isNull(userRoles.deletedAt)
                 )
             },

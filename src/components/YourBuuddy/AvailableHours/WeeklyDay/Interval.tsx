@@ -63,7 +63,7 @@ const Interval = ({ onRemove, control, index, onChange, id }: IntervalProps) => 
                         defaultValue={field.value}
                     >
                         <SelectTrigger status={fieldState.error && "ERROR"} ref={field.ref} className=" min-w-28 max-w-28">
-                            <SelectValue placeholder="Rol" />
+                            <SelectValue placeholder="Role" />
                         </SelectTrigger>
                         <SelectContent>
                             {

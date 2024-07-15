@@ -29,6 +29,15 @@ type ServerSideProps = {
 export const getServerSideProps = (async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions);
 
+  if (session && !session.user.onBoardingCompleted) {
+    return {
+        redirect: {
+            destination: "/onboarding",
+            permanent: false,
+        },
+    }
+}
+
   return { props: { session } };
 }) satisfies GetServerSideProps<ServerSideProps>
 

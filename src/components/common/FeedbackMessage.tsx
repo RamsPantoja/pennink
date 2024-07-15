@@ -15,7 +15,7 @@ const FeedbackMessage = ({ message, status }: FeedbackMessageProps) => {
                         <ExclamationCircleIcon className="min-w-6 max-w-6 min-h-6 max-h-6 text-grayMain" />
                         <span className=" text-grayMain text-sm">{message}</span>
                     </div>
-                    <BuuddyButton size="sm" variant="link">Enviar reporte</BuuddyButton>
+                    <BuuddyButton size="sm" variant="link">Report error</BuuddyButton>
                 </div>
             }
             {

@@ -72,6 +72,9 @@ class UserTimeService {
                     userId ? eq(userTimes.userId, userId) : undefined,
                     userRoleIds ? inArray(userTimes.userRoleId, userRoleIds) : undefined,
                 )
+            },
+            with: {
+                weeklyDay: true
             }
         });
 

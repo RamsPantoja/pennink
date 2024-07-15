@@ -7,7 +7,7 @@ import { type Session } from "next-auth";
 import CustomAlertDialog from "../common/AlertDialog";
 import useSidebarLogic from "./useSidebarLogic";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { CurrencyDollarIcon, UserGroupIcon, UserIcon, EllipsisVerticalIcon, Cog6ToothIcon, PowerIcon } from "@heroicons/react/24/outline";
+import { CurrencyDollarIcon, UserGroupIcon, UserIcon, EllipsisVerticalIcon, Cog6ToothIcon, PowerIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { BuuddyButton } from "../common/BuuddyButton";
 import { useRouter } from "next/navigation";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
@@ -99,17 +99,17 @@ z"/>
                     label="Rent and connect"
                     href="/"
                 />
-                {/* <SibedarItem
-                    Icon={CalendarIcon}
-                    label="Eventos"
-                    href="/events"
-                /> */}
+                <SibedarItem
+                    Icon={PaperAirplaneIcon}
+                    label="Booking requests"
+                    href="/booking_requests"
+                />
                 {
                     session &&
                     <SibedarItem
                         Icon={CurrencyDollarIcon}
-                        label="Balance"
-                        href="/balance"
+                        label="Orders"
+                        href="/payments"
                     />
                 }
                 {
@@ -162,7 +162,7 @@ z"/>
                             >
                                 <DropdownMenuItem
                                     onSelect={() => {
-                                        console.log("Settings")
+                                        router.push('/settings')
                                     }}
                                 >
                                     <Cog6ToothIcon className="mr-2 h-5 min-w-5 text-blackMain" />

@@ -1,8 +1,9 @@
 import {
     createTRPCRouter,
     protectedProcedure,
+    publicProcedure,
 } from "~/server/api/trpc";
-import { updateProfileInputSchema } from "../schemas/profile";
+import { buuddyProfileInputSchema, updateProfileInputSchema } from "../schemas/profile";
 
 export const profileRouter = createTRPCRouter({
     upsert: protectedProcedure
@@ -13,5 +14,10 @@ export const profileRouter = createTRPCRouter({
     userProfile: protectedProcedure
         .query(async ({ ctx }) => {
             return await ctx.services({ ctx }).profileService.getUserProfile(ctx.session);
+        }),
+    buuddyProfile: publicProcedure
+        .input(buuddyProfileInputSchema)
+        .query(async ({ input, ctx }) => {
+            return await ctx.services({ ctx }).profileService.getBuuddy(input);
         })
 });
