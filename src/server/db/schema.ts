@@ -13,7 +13,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
-import { typeid } from 'typeid-js';
+import { typeid } from "typeid-js";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -23,15 +23,31 @@ import { typeid } from 'typeid-js';
  */
 export const createTable = pgTableCreator((name) => `buuddy_${name}`);
 
-export const genderEnum = pgEnum('gender', ["MALE", "FEMALE"]);
-export const suscriptionEnum = pgEnum('suscription', ["BASIC", "PREMIUM"]);
-export const educationLevelEnum = pgEnum('educationLevel', ["HIGH_SCHOOL", "TECH_SCHOOL", "IN_COLLEGE", "GRADUATE_DEGREE"]);
-export const weekDaysEnum = pgEnum('weekDays', ["MON", "TUE", "WED", "THU", "FRI", "SUN", "SAT"]);
+export const genderEnum = pgEnum("gender", ["MALE", "FEMALE"]);
+export const suscriptionEnum = pgEnum("suscription", ["BASIC", "PREMIUM"]);
+export const educationLevelEnum = pgEnum("educationLevel", [
+  "HIGH_SCHOOL",
+  "TECH_SCHOOL",
+  "IN_COLLEGE",
+  "GRADUATE_DEGREE",
+]);
+export const weekDaysEnum = pgEnum("weekDays", [
+  "MON",
+  "TUE",
+  "WED",
+  "THU",
+  "FRI",
+  "SUN",
+  "SAT",
+]);
 
 export const users = createTable("user", {
-  id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-    return typeid().toUUID()
-  }),
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
+    }),
   name: text("name").notNull(),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", {
@@ -48,62 +64,65 @@ export const users = createTable("user", {
   suscription: suscriptionEnum("suscription").notNull().default("BASIC"),
   buuddyMode: boolean("buuddyMode").notNull().default(false),
   onBoardingCompleted: boolean("onBoardingCompleted").notNull().default(false),
-  createdAt: timestamp('createdAt', {
-    mode: 'date'
-  }).notNull().defaultNow(),
-  updatedAt: timestamp('updatedAt', {
-    mode: 'date'
-  }).notNull().defaultNow()
+  createdAt: timestamp("createdAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updatedAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
 });
 
 export const usersRelations = relations(users, ({ many, one }) => ({
   accounts: many(accounts),
   userRoles: many(userRoles),
   profile: one(profiles, { fields: [users.id], references: [profiles.userId] }),
-  usersToInterests: many(usersToInterests)
+  usersToInterests: many(usersToInterests),
 }));
 
-export const userAnalytics = createTable(
-  "user_analytic",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
+export const userAnalytics = createTable("user_analytic", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
     }),
-    likes: bigserial('likes', { mode: "number" }).notNull(),
-    rating: integer("rating").notNull().default(0),
-    userId: uuid("userId")
-      .notNull()
-      .references(() => users.id),
-  }
-);
+  likes: bigserial("likes", { mode: "number" }).notNull(),
+  rating: integer("rating").notNull().default(0),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+});
 
-export const profiles = createTable(
-  "profile",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
+export const profiles = createTable("profile", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
     }),
-    username: text("username").notNull(),
-    about: text("about").notNull(),
-    headline: text("headline").notNull(),
-    gender: genderEnum("gender").notNull(),
-    experience: text("experience"),
-    birthday: text("birthday"),
-    // countryId: uuid("countryId")
-    //   .references(() => users.id),
-    website: text("website"),
-    educationLevel: educationLevelEnum("educationLevel").notNull(),
-    completed: boolean("completed").notNull().default(false),
-    userId: uuid("userId")
-      .notNull()
-      .references(() => users.id),
-  }
-);
+  username: text("username").notNull(),
+  about: text("about").notNull(),
+  headline: text("headline").notNull(),
+  gender: genderEnum("gender").notNull(),
+  experience: text("experience"),
+  birthday: text("birthday"),
+  // countryId: uuid("countryId")
+  //   .references(() => users.id),
+  website: text("website"),
+  educationLevel: educationLevelEnum("educationLevel").notNull(),
+  completed: boolean("completed").notNull().default(false),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+});
 
 export const profilesRelations = relations(profiles, ({ one }) => ({
   user: one(users, { fields: [profiles.userId], references: [users.id] }),
 }));
-
 
 export const accounts = createTable(
   "account",
@@ -111,9 +130,7 @@ export const accounts = createTable(
     userId: uuid("userId")
       .notNull()
       .references(() => users.id),
-    type: text("type")
-      .$type<AdapterAccount["type"]>()
-      .notNull(),
+    type: text("type").$type<AdapterAccount["type"]>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
     refresh_token: text("refresh_token"),
@@ -123,19 +140,23 @@ export const accounts = createTable(
     scope: text("scope"),
     id_token: text("id_token"),
     session_state: text("session_state"),
-    createdAt: timestamp('createdAt', {
-      mode: 'date'
-    }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', {
-      mode: 'date'
-    }).notNull().defaultNow()
+    createdAt: timestamp("createdAt", {
+      mode: "date",
+    })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updatedAt", {
+      mode: "date",
+    })
+      .notNull()
+      .defaultNow(),
   },
   (account) => ({
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId],
     }),
     userIdIdx: index("account_userId_idx").on(account.userId),
-  })
+  }),
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -145,9 +166,7 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessions = createTable(
   "session",
   {
-    sessionToken: text("sessionToken")
-      .notNull()
-      .primaryKey(),
+    sessionToken: text("sessionToken").notNull().primaryKey(),
     userId: uuid("userId")
       .notNull()
       .references(() => users.id),
@@ -155,16 +174,20 @@ export const sessions = createTable(
       mode: "date",
       withTimezone: true,
     }).notNull(),
-    createdAt: timestamp('createdAt', {
-      mode: 'date'
-    }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', {
-      mode: 'date'
-    }).notNull().defaultNow()
+    createdAt: timestamp("createdAt", {
+      mode: "date",
+    })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updatedAt", {
+      mode: "date",
+    })
+      .notNull()
+      .defaultNow(),
   },
   (session) => ({
     userIdIdx: index("session_userId_idx").on(session.userId),
-  })
+  }),
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -183,18 +206,18 @@ export const verificationTokens = createTable(
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  }),
 );
 
-export const languages = createTable(
-  "language",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
+export const languages = createTable("language", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
     }),
-    name: text("name").notNull().unique()
-  }
-);
+  name: text("name").notNull().unique(),
+});
 
 export const usersToLanguages = createTable(
   "user_to_language",
@@ -209,24 +232,24 @@ export const usersToLanguages = createTable(
   (t) => ({
     pk: primaryKey({
       name: "userId_languageId",
-      columns: [t.userId, t.languageId]
+      columns: [t.userId, t.languageId],
     }),
-  })
-)
-
-export const interests = createTable(
-  "interest",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
-    }),
-    name: text("name").notNull().unique()
-  }
+  }),
 );
 
+export const interests = createTable("interest", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
+    }),
+  name: text("name").notNull().unique(),
+});
+
 export const interestsRelations = relations(interests, ({ many }) => ({
-  usersToInterests: many(usersToInterests)
-}))
+  usersToInterests: many(usersToInterests),
+}));
 
 export const usersToInterests = createTable(
   "user_to_interest",
@@ -241,129 +264,143 @@ export const usersToInterests = createTable(
   (t) => ({
     pk: primaryKey({
       name: "userId_interestId",
-      columns: [t.userId, t.interestId]
+      columns: [t.userId, t.interestId],
     }),
+  }),
+);
+
+export const usersToGroupsRelations = relations(
+  usersToInterests,
+  ({ one }) => ({
+    interest: one(interests, {
+      fields: [usersToInterests.interestId],
+      references: [interests.id],
+    }),
+    user: one(users, {
+      fields: [usersToInterests.userId],
+      references: [users.id],
+    }),
+  }),
+);
+
+export const reviews = createTable("review", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
+    }),
+  comment: text("comment").notNull(),
+  rating: integer("rate").notNull(),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+  reviewerId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("createdAt", {
+    mode: "date",
   })
-);
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updatedAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+});
 
-export const usersToGroupsRelations = relations(usersToInterests, ({ one }) => ({
-  interest: one(interests, {
-    fields: [usersToInterests.interestId],
-    references: [interests.id],
-  }),
-  user: one(users, {
-    fields: [usersToInterests.userId],
-    references: [users.id],
-  }),
-}));
-
-export const reviews = createTable(
-  "review",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
+export const roles = createTable("role", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
     }),
-    comment: text("comment").notNull(),
-    rating: integer("rate").notNull(),
-    userId: uuid("userId")
-      .notNull()
-      .references(() => users.id),
-    reviewerId: uuid("userId")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp('createdAt', {
-      mode: 'date'
-    }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', {
-      mode: 'date'
-    }).notNull().defaultNow()
-  }
-);
-
-export const roles = createTable(
-  "role",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
-    }),
-    name: text("name").notNull().unique(),
-    description: text("description").notNull()
-  }
-);
+  name: text("name").notNull().unique(),
+  description: text("description").notNull(),
+});
 
 export const rolesRelations = relations(roles, ({ many }) => ({
-  userRoles: many(userRoles)
+  userRoles: many(userRoles),
 }));
 
-export const userRoles = createTable(
-  "user_role",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
+export const userRoles = createTable("user_role", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
     }),
-    userId: uuid("userId")
-      .notNull()
-      .references(() => users.id),
-    roleId: uuid("roleId")
-      .notNull()
-      .references(() => roles.id),
-    hourPrice: numeric('hourPrice').notNull(),
-    description: text("description").notNull(),
-    createdAt: timestamp('createdAt', {
-      mode: 'date'
-    }).notNull().defaultNow(),
-    updatedAt: timestamp('updatedAt', {
-      mode: 'date'
-    }).notNull().defaultNow(),
-    deletedAt: timestamp('deletedAt', {
-      mode: 'date'
-    })
-  }
-);
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+  roleId: uuid("roleId")
+    .notNull()
+    .references(() => roles.id),
+  hourPrice: numeric("hourPrice").notNull(),
+  description: text("description").notNull(),
+  createdAt: timestamp("createdAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updatedAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  deletedAt: timestamp("deletedAt", {
+    mode: "date",
+  }),
+});
 
 export const userRolesRelations = relations(userRoles, ({ one, many }) => ({
   user: one(users, {
     fields: [userRoles.userId],
-    references: [users.id]
+    references: [users.id],
   }),
   role: one(roles, {
     fields: [userRoles.roleId],
-    references: [roles.id]
+    references: [roles.id],
   }),
-  userRoleDetails: many(userRoleDetails)
+  userRoleDetails: many(userRoleDetails),
 }));
 
-export const userRoleDetails = createTable(
-  "user_role_detail",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
+export const userRoleDetails = createTable("user_role_detail", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
     }),
-    userRoleId: uuid("userRoleId")
-      .notNull()
-      .references(() => userRoles.id),
-    description: text("description").notNull(),
-    allowed: boolean("allowed").notNull().default(true),
-  }
-);
+  userRoleId: uuid("userRoleId")
+    .notNull()
+    .references(() => userRoles.id),
+  description: text("description").notNull(),
+  allowed: boolean("allowed").notNull().default(true),
+});
 
-export const userRoleDetailsRelations = relations(userRoleDetails, ({ one }) => ({
-  userRole: one(userRoles, {
-    fields: [userRoleDetails.userRoleId],
-    references: [userRoles.id]
+export const userRoleDetailsRelations = relations(
+  userRoleDetails,
+  ({ one }) => ({
+    userRole: one(userRoles, {
+      fields: [userRoleDetails.userRoleId],
+      references: [userRoles.id],
+    }),
   }),
-}));
-
-export const weeklyDays = createTable(
-  "weekly_day",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
-    }),
-    name: weekDaysEnum("name").notNull().unique(),
-    order: integer("order")
-  }
 );
+
+export const weeklyDays = createTable("weekly_day", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
+    }),
+  name: weekDaysEnum("name").notNull().unique(),
+  order: integer("order"),
+});
 
 export const usersToWeeklydays = createTable(
   "user_to_weekly_day",
@@ -378,41 +415,44 @@ export const usersToWeeklydays = createTable(
   (t) => ({
     pk: primaryKey({
       name: "userId_weeklydayId",
-      columns: [t.userId, t.weeklyDayId]
+      columns: [t.userId, t.weeklyDayId],
     }),
-  })
+  }),
 );
 
-export const userTimes = createTable(
-  "userTime",
-  {
-    id: uuid("id").notNull().primaryKey().$defaultFn(() => {
-      return typeid().toUUID()
+export const userTimes = createTable("userTime", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
     }),
-    userRoleId: uuid("userRoleId")
-      .notNull()
-      .references(() => userRoles.id),
-    startTime: text("startTime").notNull(),
-    endTime: text("endTime").notNull(),
-    weeklyDayId: uuid("weeklyDayId")
-      .notNull()
-      .references(() => weeklyDays.id),
-    userId: uuid("userId")
-      .notNull()
-      .references(() => users.id),
-    createdAt: timestamp('createdAt', {
-      mode: 'date'
-    }).notNull().defaultNow(),
-  }
-);
+  userRoleId: uuid("userRoleId")
+    .notNull()
+    .references(() => userRoles.id),
+  startTime: text("startTime").notNull(),
+  endTime: text("endTime").notNull(),
+  weeklyDayId: uuid("weeklyDayId")
+    .notNull()
+    .references(() => weeklyDays.id),
+  timezoneIANA: text("timezoneIANA").notNull(),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("createdAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+});
 
 export const userTimesRelations = relations(userTimes, ({ one }) => ({
   userRole: one(userRoles, {
     fields: [userTimes.userRoleId],
-    references: [userRoles.id]
+    references: [userRoles.id],
   }),
   weeklyDay: one(weeklyDays, {
     fields: [userTimes.weeklyDayId],
-    references: [weeklyDays.id]
+    references: [weeklyDays.id],
   }),
 }));

@@ -6,62 +6,70 @@ import { type RouterOutputs } from "~/utils/api";
 import { useMemo } from "react";
 
 type UserProps = {
-    userData: RouterOutputs["user"]["buuddies"][number] | undefined
-}
+  userData: RouterOutputs["user"]["buuddies"][number] | undefined;
+};
 
 const UserCard = ({ userData }: UserProps) => {
+  const userRole = useMemo(() => {
+    if (userData && userData.userRoles.length > 0) {
+      return userData.userRoles[0];
+    }
+  }, [userData]);
 
-    const userRole = useMemo(() => {
-        if (userData && userData.userRoles.length > 0) {
-            return userData.userRoles[0]
-        }
-    }, [userData]);
-
-    return (
-        <a href={`/bd/${userData?.profile?.username}`}>
-            <Card className=" bg-whiteMain border min-w-52 max-w-52 min-h-52">
-                <div className="flex flex-col items-center gap-2 overflow-hidden">
-                    <div className="flex flex-col relative">
-                        <Avatar className=" w-16 h-16">
-                            <AvatarImage src={userData?.user.image} />
-                            <AvatarFallback>Tú</AvatarFallback>
-                        </Avatar>
-                        {
-                            typeof userData?.user.verified === "boolean" && userData.user.verified &&
-                            <CheckBadgeIcon className="w-6 h-6 text-pinkStrong absolute bottom-0 right-[-0.5em]" />
-                        }
-                    </div>
-                    <div className="flex items-center w-full flex-col">
-                        <p className="text-blackMain truncate font-black w-full">{userData?.user.name}</p>
-                        <p className="text-blackMain text-sm truncate w-full">{userData?.profile?.headline}</p>
-                    </div>
-                    <div className="flex w-full item-center justify-between gap-2">
-                        <div className="flex gap-1 flex-row items-center">
-                            <span className="text-sm font-semibold">123</span>
-                            <HeartIcon className="w-4 h-4 " />
-                        </div>
-                        <div className="flex gap-1 flex-row items-center">
-                            <span className="text-sm font-semibold">4.3</span>
-                            <StarIcon className="w-4 h-4 " />
-                        </div>
-                    </div>
-                    {
-                        userRole &&
-                        <div className="flex w-full flex-col">
-                            <span className=" text-blackMain text-sm font-semibold">Role</span>
-                            <div className="flex flex-col gap-2">
-                                <span className=" text-base font-semibold text-grayMain">{userRole.role}</span>
-                                <div className="flex gap-2 items-center">
-                                    <span className=" text-base font-bold">${userRole.hourPrice} USD</span>
-                                    <span className="text-sm">hour</span>
-                                </div>
-                            </div>
-                        </div>
-                    }
+  return (
+    <a href={`/bd/${userData?.profile?.username}`}>
+      <Card className=" min-h-52 min-w-52 max-w-52 border bg-whiteMain">
+        <div className="flex flex-col items-center gap-2 overflow-hidden">
+          <div className="relative flex flex-col">
+            <Avatar className=" h-16 w-16">
+              <AvatarImage src={userData?.user.image} />
+              <AvatarFallback>Tú</AvatarFallback>
+            </Avatar>
+            {typeof userData?.user.verified === "boolean" &&
+              userData.user.verified && (
+                <CheckBadgeIcon className="absolute bottom-0 right-[-0.5em] h-6 w-6 text-pinkStrong" />
+              )}
+          </div>
+          <div className="flex w-full flex-col items-center">
+            <p className="w-full truncate font-black text-blackMain">
+              {userData?.user.name}
+            </p>
+            <p className="w-full truncate text-sm text-blackMain">
+              {userData?.profile?.headline}
+            </p>
+          </div>
+          <div className="item-center flex w-full justify-between gap-2">
+            <div className="flex flex-row items-center gap-1">
+              <span className="text-sm font-semibold">123</span>
+              <HeartIcon className="h-4 w-4 " />
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <span className="text-sm font-semibold">4.3</span>
+              <StarIcon className="h-4 w-4 " />
+            </div>
+          </div>
+          {userRole && (
+            <div className="flex w-full flex-col">
+              <span className=" text-sm font-semibold text-blackMain">
+                Role
+              </span>
+              <div className="flex flex-col gap-2">
+                <span className=" text-base font-semibold text-grayMain">
+                  {userRole.role}
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className=" text-base font-bold">
+                    ${userRole.hourPrice} USD
+                  </span>
+                  <span className="text-sm">hour</span>
                 </div>
-            </Card>
-        </a>
-    )
-}
+              </div>
+            </div>
+          )}
+        </div>
+      </Card>
+    </a>
+  );
+};
 
 export default UserCard;

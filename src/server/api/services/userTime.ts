@@ -74,7 +74,12 @@ class UserTimeService {
                 )
             },
             with: {
-                weeklyDay: true
+                weeklyDay: true,
+                userRole: {
+                    with: {
+                        role: true
+                    }
+                }
             }
         });
 
