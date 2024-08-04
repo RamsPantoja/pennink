@@ -95,7 +95,7 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
 
   return (
     <div className="flex flex-col gap-4 p-2">
-      <span className="text-mochaText text-sm font-bold">
+      <span className="text-sm font-bold text-mochaText">
         {time.userRole.role.name}
       </span>
       <div className="flex flex-col gap-2">
@@ -107,7 +107,7 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
         )}
         {times.length > 0 &&
           times.map((item, index) => {
-            return <TimeCard key={index} role={item.role} hour={item.hour} />;
+            return <TimeCard key={index} hour={item.hour} />;
           })}
       </div>
     </div>
