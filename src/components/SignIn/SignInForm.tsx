@@ -1,121 +1,123 @@
-"use client"
+"use client";
 
-import { signIn } from "next-auth/react"
+import { signIn } from "next-auth/react";
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "~/components/ui/card"
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { BuuddyButton } from "../common/BuuddyButton";
+import BuuddyLogotype from "../common/BuuddyLogotype";
 
 type SignInFormProps = {
-    callbackUrl?: string
-}
+  callbackUrl?: string;
+};
 
 const SignInForm = ({ callbackUrl }: SignInFormProps) => {
-    const onSignInWithGoogle = async () => {
-        await signIn("google", { callbackUrl });
-    }
+  const onSignInWithGoogle = async () => {
+    await signIn("google", { callbackUrl });
+  };
 
-    return (
-        <Card className="max-w-72 border-1 p-0">
-            <CardHeader>
-                <CardTitle>
-                    <div className="flex items-center justify-center flex-col gap-4">
-                        <div className="flex items-center gap-2">
-                            <div className="h-6 m-w-6">
-                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                    width="100%" height="100%" viewBox="0 0 500 500" enableBackground="new 0 0 500 500" xmlSpace="preserve">
-                                    <path fill="#FFFFFF" opacity="1.000000" stroke="none"
-                                        d="
-M501.000000,194.000000 
-	C501.000000,296.666656 501.000000,398.833282 501.000000,500.999939 
-	C334.333405,500.999969 167.666794,500.999969 1.000144,501.000000 
-	C1.000096,334.333435 1.000096,167.666870 1.000048,1.000234 
-	C167.666519,1.000156 334.333038,1.000156 500.999786,1.000078 
-	C501.000000,65.166664 501.000000,129.333328 501.000000,194.000000 
-M208.558182,478.005219 
-	C244.703873,485.116394 280.425079,483.466797 315.446014,471.959595 
-	C367.876587,454.731934 407.776733,421.859894 434.851166,373.843292 
-	C451.897614,343.611359 461.026611,310.928589 461.112335,276.096527 
-	C461.283386,206.610748 461.194183,137.123978 461.054169,67.637939 
-	C461.001373,41.428879 439.348877,20.180870 413.115570,20.117413 
-	C387.783905,20.056135 366.081207,41.454296 365.923553,66.694916 
-	C365.865723,75.950027 365.914246,85.205803 365.914246,94.704552 
-	C289.115723,50.045288 212.866852,50.000057 136.099136,94.548958 
-	C136.099136,85.441597 135.838913,76.663506 136.151001,67.905807 
-	C136.899200,46.910572 119.233894,21.229013 89.383461,20.152840 
-	C63.615223,19.223839 40.975304,41.041489 40.937233,66.933311 
-	C40.836044,135.752808 40.698021,204.572968 40.941971,273.391571 
-	C40.983620,285.141052 41.979977,297.034607 44.004696,308.604431 
-	C53.399258,362.287689 80.243721,405.684845 123.157730,439.025543 
-	C148.242432,458.514313 176.650757,471.209229 208.558182,478.005219 
-z"/>
-                                    <path fill="#fa23b6" opacity="1.000000" stroke="none"
-                                        d="
-M208.137299,477.957458 
-	C176.650757,471.209229 148.242432,458.514313 123.157730,439.025543 
-	C80.243721,405.684845 53.399258,362.287689 44.004696,308.604431 
-	C41.979977,297.034607 40.983620,285.141052 40.941971,273.391571 
-	C40.698021,204.572968 40.836044,135.752808 40.937233,66.933311 
-	C40.975304,41.041489 63.615223,19.223839 89.383461,20.152840 
-	C119.233894,21.229013 136.899200,46.910572 136.151001,67.905807 
-	C135.838913,76.663506 136.099136,85.441597 136.099136,94.548958 
-	C212.866852,50.000057 289.115723,50.045288 365.914246,94.704552 
-	C365.914246,85.205803 365.865723,75.950027 365.923553,66.694916 
-	C366.081207,41.454296 387.783905,20.056135 413.115570,20.117413 
-	C439.348877,20.180870 461.001373,41.428879 461.054169,67.637939 
-	C461.194183,137.123978 461.283386,206.610748 461.112335,276.096527 
-	C461.026611,310.928589 451.897614,343.611359 434.851166,373.843292 
-	C407.776733,421.859894 367.876587,454.731934 315.446014,471.959595 
-	C280.425079,483.466797 244.703873,485.116394 208.137299,477.957458 
-M275.976593,374.552856 
-	C328.549347,361.622742 363.355499,311.296326 355.758728,257.564636 
-	C348.841248,208.637512 310.265717,170.716400 261.757690,166.319382 
-	C225.726273,163.053299 194.886337,174.948303 170.817856,202.529938 
-	C134.892212,243.699493 136.357498,306.238403 174.659302,345.104675 
-	C202.486221,373.341675 236.329086,382.999573 275.976593,374.552856 
-z"/>
-                                    <path fill="#FFFFFF" opacity="1.000000" stroke="none"
-                                        d="
-M275.580261,374.679962 
-	C236.329086,382.999573 202.486221,373.341675 174.659302,345.104675 
-	C136.357498,306.238403 134.892212,243.699493 170.817856,202.529938 
-	C194.886337,174.948303 225.726273,163.053299 261.757690,166.319382 
-	C310.265717,170.716400 348.841248,208.637512 355.758728,257.564636 
-	C363.355499,311.296326 328.549347,361.622742 275.580261,374.679962 
-z"/>
-                                </svg>
-                            </div>
-                            <p className="font-black text-2xl">buuddy</p>
-                        </div>
-                        <p className="text-blackMain font-black text-base">Rent and Connect with People</p>
-                    </div>
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-xs text-blackMain">By creating an account, you agree to the <a className="underline text-blackLight" target="_blank" href="https://mitanda.xyz/tos">Terms and Conditions</a> and our <a className="underline text-blackLight" target="_blank" href="https://mitanda.xyz/privacy_policy">Privacy Policy</a>.</p>
-            </CardContent>
-            <CardFooter className="flex justify-center flex-col gap-2">
-                <BuuddyButton
-                    className=" bg-whiteLigth text-blackMain w-full"
-                    onClick={onSignInWithGoogle}
-                    startIcon={<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 20 20" fill="none"><g clipPath="url(#clip0_46_9139)"><path d="M10 8.18188V12.0546H15.3818C15.1455 13.3001 14.4363 14.3547 13.3727 15.0638L16.6182 17.582C18.5091 15.8366 19.6 13.2729 19.6 10.2275C19.6 9.51837 19.5364 8.83648 19.4182 8.18199L10 8.18188Z" fill="#1976D2"></path><path d="M4.39569 11.9033L3.66372 12.4636L1.07275 14.4818C2.71821 17.7454 6.09071 20 9.99979 20C12.6997 20 14.9634 19.1091 16.618 17.5819L13.3725 15.0636C12.4816 15.6636 11.3452 16.0273 9.99979 16.0273C7.39979 16.0273 5.19075 14.2728 4.39978 11.9091L4.39569 11.9033Z" fill="#4CAF50"></path><path d="M1.07278 5.51831C0.390993 6.86372 0.00012207 8.38193 0.00012207 10.0001C0.00012207 11.6183 0.390993 13.1365 1.07278 14.4819C1.07278 14.4909 4.40013 11.9 4.40013 11.9C4.20013 11.3 4.08191 10.6637 4.08191 9.99999C4.08191 9.33626 4.20013 8.69993 4.40013 8.09993L1.07278 5.51831Z" fill="#FFC107"></path><path d="M10 3.98184C11.4728 3.98184 12.7818 4.49092 13.8273 5.47276L16.6909 2.60914C14.9545 0.990977 12.7 0 10 0C6.09091 0 2.71821 2.24546 1.07275 5.51822L4.4 8.10005C5.19087 5.73638 7.4 3.98184 10 3.98184Z" fill="#FF3D00"></path></g><defs><clipPath id="clip0_46_9139"><rect width="19.6" height="20" fill="white"></rect></clipPath></defs></svg>}
-                >
-                    Sign in
-                </BuuddyButton>
-                <BuuddyButton
-                    className=" bg-whiteLigth text-blackMain w-full"
-                    onClick={onSignInWithGoogle}
-                    startIcon={<svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M21.5 12.058c0-5.28-4.253-9.558-9.5-9.558s-9.5 4.279-9.5 9.558c0 4.771 3.473 8.725 8.016 9.442v-6.68H8.104v-2.762h2.412V9.952c0-2.395 1.417-3.718 3.588-3.718 1.04 0 2.126.186 2.126.186v2.352h-1.198c-1.18 0-1.548.738-1.548 1.494v1.792h2.635l-.421 2.763h-2.214V21.5c4.543-.717 8.016-4.67 8.016-9.442z" fill="#0866ff"></path></svg>}
-                >
-                    Sign in
-                </BuuddyButton>
-            </CardFooter>
-        </Card>
-    )
-}
+  return (
+    <Card className="max-w-72 bg-mochaMantle p-0">
+      <CardHeader>
+        <CardTitle>
+          <div className="flex flex-col items-center justify-center gap-4 text-mochaText">
+            <BuuddyLogotype />
+            <p className="text-base font-black text-mochaText">
+              Rent and Connect with People
+            </p>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-xs text-mochaText">
+          By creating an account, you agree to the{" "}
+          <a
+            className="text-blackLight underline"
+            target="_blank"
+            href="https://mitanda.xyz/tos"
+          >
+            Terms and Conditions
+          </a>{" "}
+          and our{" "}
+          <a
+            className="text-blackLight underline"
+            target="_blank"
+            href="https://mitanda.xyz/privacy_policy"
+          >
+            Privacy Policy
+          </a>
+          .
+        </p>
+      </CardContent>
+      <CardFooter className="flex flex-col justify-center gap-2">
+        <BuuddyButton
+          className=" w-full bg-mochaMantle text-mochaText"
+          onClick={onSignInWithGoogle}
+          variant="outline"
+          startIcon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20px"
+              height="20px"
+              viewBox="0 0 20 20"
+              fill="none"
+            >
+              <g clipPath="url(#clip0_46_9139)">
+                <path
+                  d="M10 8.18188V12.0546H15.3818C15.1455 13.3001 14.4363 14.3547 13.3727 15.0638L16.6182 17.582C18.5091 15.8366 19.6 13.2729 19.6 10.2275C19.6 9.51837 19.5364 8.83648 19.4182 8.18199L10 8.18188Z"
+                  fill="#1976D2"
+                ></path>
+                <path
+                  d="M4.39569 11.9033L3.66372 12.4636L1.07275 14.4818C2.71821 17.7454 6.09071 20 9.99979 20C12.6997 20 14.9634 19.1091 16.618 17.5819L13.3725 15.0636C12.4816 15.6636 11.3452 16.0273 9.99979 16.0273C7.39979 16.0273 5.19075 14.2728 4.39978 11.9091L4.39569 11.9033Z"
+                  fill="#4CAF50"
+                ></path>
+                <path
+                  d="M1.07278 5.51831C0.390993 6.86372 0.00012207 8.38193 0.00012207 10.0001C0.00012207 11.6183 0.390993 13.1365 1.07278 14.4819C1.07278 14.4909 4.40013 11.9 4.40013 11.9C4.20013 11.3 4.08191 10.6637 4.08191 9.99999C4.08191 9.33626 4.20013 8.69993 4.40013 8.09993L1.07278 5.51831Z"
+                  fill="#FFC107"
+                ></path>
+                <path
+                  d="M10 3.98184C11.4728 3.98184 12.7818 4.49092 13.8273 5.47276L16.6909 2.60914C14.9545 0.990977 12.7 0 10 0C6.09091 0 2.71821 2.24546 1.07275 5.51822L4.4 8.10005C5.19087 5.73638 7.4 3.98184 10 3.98184Z"
+                  fill="#FF3D00"
+                ></path>
+              </g>
+              <defs>
+                <clipPath id="clip0_46_9139">
+                  <rect width="19.6" height="20" fill="white"></rect>
+                </clipPath>
+              </defs>
+            </svg>
+          }
+        >
+          Sign in
+        </BuuddyButton>
+        <BuuddyButton
+          className=" w-full bg-mochaMantle text-mochaText"
+          onClick={onSignInWithGoogle}
+          variant="outline"
+          startIcon={
+            <svg
+              fill="none"
+              height="24"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21.5 12.058c0-5.28-4.253-9.558-9.5-9.558s-9.5 4.279-9.5 9.558c0 4.771 3.473 8.725 8.016 9.442v-6.68H8.104v-2.762h2.412V9.952c0-2.395 1.417-3.718 3.588-3.718 1.04 0 2.126.186 2.126.186v2.352h-1.198c-1.18 0-1.548.738-1.548 1.494v1.792h2.635l-.421 2.763h-2.214V21.5c4.543-.717 8.016-4.67 8.016-9.442z"
+                fill="#0866ff"
+              ></path>
+            </svg>
+          }
+        >
+          Sign in
+        </BuuddyButton>
+      </CardFooter>
+    </Card>
+  );
+};
 
 export default SignInForm;

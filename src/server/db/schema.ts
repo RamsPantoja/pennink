@@ -40,6 +40,12 @@ export const weekDaysEnum = pgEnum("weekDays", [
   "SUN",
   "SAT",
 ]);
+export const bookingRequestStatusEnum = pgEnum("bookingRequestStatus", [
+  "PENDING",
+  "ACCEPTED",
+  "REJECTED",
+  "CANCELED",
+]);
 
 export const users = createTable("user", {
   id: uuid("id")
@@ -81,6 +87,7 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   userRoles: many(userRoles),
   profile: one(profiles, { fields: [users.id], references: [profiles.userId] }),
   usersToInterests: many(usersToInterests),
+  bookingRequests: many(bookingRequests),
 }));
 
 export const userAnalytics = createTable("user_analytic", {
@@ -291,11 +298,11 @@ export const reviews = createTable("review", {
       return typeid().toUUID();
     }),
   comment: text("comment").notNull(),
-  rating: integer("rate").notNull(),
+  rating: integer("rating").notNull(),
   userId: uuid("userId")
     .notNull()
     .references(() => users.id),
-  reviewerId: uuid("userId")
+  reviewerId: uuid("reviewerId")
     .notNull()
     .references(() => users.id),
   createdAt: timestamp("createdAt", {
@@ -446,7 +453,7 @@ export const userTimes = createTable("userTime", {
     .defaultNow(),
 });
 
-export const userTimesRelations = relations(userTimes, ({ one }) => ({
+export const userTimesRelations = relations(userTimes, ({ one, many }) => ({
   userRole: one(userRoles, {
     fields: [userTimes.userRoleId],
     references: [userRoles.id],
@@ -455,4 +462,68 @@ export const userTimesRelations = relations(userTimes, ({ one }) => ({
     fields: [userTimes.weeklyDayId],
     references: [weeklyDays.id],
   }),
+  bookingRequests: many(bookingRequests),
 }));
+
+export const bookingRequests = createTable("booking_request", {
+  id: uuid("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => {
+      return typeid().toUUID();
+    }),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => users.id),
+  senderId: uuid("senderId")
+    .notNull()
+    .references(() => users.id),
+  receiverId: uuid("receiverId")
+    .notNull()
+    .references(() => users.id),
+  senderTimezoneIANA: text("senderTimezoneIANA").notNull(),
+  receiverTimezoneIANA: text("receiverTimezoneIANA").notNull(),
+  message: text("message").notNull(),
+  status: bookingRequestStatusEnum("status").notNull().default("PENDING"),
+  userTimeId: uuid("userTimeId")
+    .notNull()
+    .references(() => userTimes.id),
+  bookingHour: text("bookingHour").notNull(),
+  bookingDate: timestamp("bookingDate", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  createdAt: timestamp("createdAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("createdAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+});
+
+export const bookingRequestsRelations = relations(
+  bookingRequests,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [bookingRequests.userId],
+      references: [users.id],
+    }),
+    sender: one(users, {
+      fields: [bookingRequests.senderId],
+      references: [users.id],
+    }),
+    receiver: one(users, {
+      fields: [bookingRequests.receiverId],
+      references: [users.id],
+    }),
+    userTime: one(userTimes, {
+      fields: [bookingRequests.userTimeId],
+      references: [userTimes.id],
+    }),
+  }),
+);

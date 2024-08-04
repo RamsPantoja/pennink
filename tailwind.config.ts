@@ -1,27 +1,25 @@
 import { type Config } from "tailwindcss";
-import { nextui } from "@nextui-org/theme"
+import { nextui } from "@nextui-org/theme";
 
 export default {
   content: [
     "./src/**/*.tsx",
-    "./node_modules/@nextui-org/theme/dist/components/(slider|snippet).js"
+    "./node_modules/@nextui-org/theme/dist/components/(slider|snippet).js",
   ],
   theme: {
     fontFamily: {
-      sans: ['__Nunito_14f33d', '__Nunito_Fallback_14f33d', 'sans-serif'],
-      serif: ['__Nunito_14f33d', '__Nunito_Fallback_14f33d', 'serif'],
+      sans: ["__Nunito_14f33d", "__Nunito_Fallback_14f33d", "sans-serif"],
+      serif: ["__Nunito_14f33d", "__Nunito_Fallback_14f33d", "serif"],
     },
     extend: {
       colors: {
-        whiteMain: '#FFFFFF',
-        whiteLigth: '#F0F0F0',
-        grayMain: '#6A6A6A',
-        grayStrong: "#282828",
-        blackMain: '#000000',
-        blackNormal: "#181818",
-        blackLigth: '#0f0f0f',
-        pinkLigth: "#fec7f6",
-        pinkStrong: "#fa23b6"
+        mochaBase: "#1e1e2e",
+        mochaMantle: "#181825",
+        mochaText: "#cdd6f4",
+        mochaSubText: "#bac2de",
+        mochaLavender: "#b4befe",
+        mochaMauve: "#cba6f7",
+        mochaCrust: "#181926",
       },
       borderRadius: {
         lg: "0.5rem",

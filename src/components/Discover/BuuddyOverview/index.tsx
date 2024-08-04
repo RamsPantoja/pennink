@@ -51,32 +51,32 @@ const BuuddyOverview = () => {
     <Card className="flex w-full flex-col gap-2">
       <BuuddyCardOverview buuddyData={buuddyProfileData} />
       <Card className="flex h-full w-full gap-2 overflow-hidden">
-        <div className="flex w-full max-w-screen-lg flex-col">
+        <div className="flex w-full max-w-screen-lg flex-col overflow-auto">
           <Card>
-            <span className="font-bold text-blackMain">About</span>
-            <p className="text-sm text-grayMain">
+            <span className="text-mochaText font-bold">About</span>
+            <p className="text-mochaSubText text-sm">
               {buuddyProfileData?.profile.about}
             </p>
           </Card>
           {buuddyProfileData?.profile.experience && (
             <Card>
-              <span className="font-bold text-blackMain">Experience</span>
-              <p className="text-sm text-grayMain">
+              <span className="text-mochaText font-bold">Experience</span>
+              <p className="text-mochaSubText text-sm">
                 {buuddyProfileData?.profile.experience}
               </p>
             </Card>
           )}
           <Card className="flex flex-col gap-2">
-            <span className="font-bold text-blackMain">Roles</span>
+            <span className="text-mochaText font-bold">Roles</span>
             <Roles userId={buuddyProfileData?.user?.id} />
           </Card>
-          <Card>
-            <span className="font-bold text-blackMain">Reviews</span>
+          <Card className="flex flex-col gap-2">
+            <span className="text-mochaText font-bold">Reviews</span>
             <ReviewList />
           </Card>
         </div>
         <div className="flex w-full flex-col gap-2">
-          <span className="font-bold text-blackMain">Booking</span>
+          <span className="text-mochaText font-bold">Booking</span>
           <TimesSelector userId={buuddyProfileData?.user?.id} />
         </div>
       </Card>

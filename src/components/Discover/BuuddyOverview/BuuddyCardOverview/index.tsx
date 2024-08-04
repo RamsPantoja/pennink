@@ -17,14 +17,14 @@ const BuuddyCardOverview = ({ buuddyData }: BuuddyCardOverviewProps) => {
       </Avatar>
       <div className="flex w-full flex-col gap-1 overflow-hidden">
         <div className="flex items-center gap-2">
-          <p className="truncate text-2xl font-bold text-blackMain">
+          <p className="text-mochaText truncate text-2xl font-bold">
             {buuddyData?.user?.name}
           </p>
           {buuddyData?.user?.verified && (
-            <CheckBadgeIcon className="h-6 min-w-6 text-pinkStrong" />
+            <CheckBadgeIcon className="text-mochaMauve h-6 min-w-6" />
           )}
         </div>
-        <p className="truncate text-base text-blackMain">
+        <p className="text-mochaText truncate text-base">
           {buuddyData?.profile.headline}
         </p>
         <div className="item-center flex w-fit justify-between gap-4">

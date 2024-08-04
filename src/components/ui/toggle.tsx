@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as TogglePrimitive from "@radix-ui/react-toggle"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import * as TogglePrimitive from "@radix-ui/react-toggle";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "~/lib/utils"
+import { cn } from "~/lib/utils";
 
 const toggleVariants = cva(
-  "inline-flex items-center justify-center border rounded-md text-sm font-semibold ring-offset-white transition-colors hover:bg-blackMain hover:text-whiteMain focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-pinkLigth data-[state=on]:text-blackMain",
+  "inline-flex items-center justify-center rounded-md text-sm font-semibold ring-offset-white transition-colors hover:bg-mochaMantle hover:text-mochaText focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-mochaMantle data-[state=on]:text-mochaMauve",
   {
     variants: {
       variant: {
-        default: "bg-whiteMain text-blackMain",
+        default: "bg-mochaBase text-mochaSubText",
         outline:
           "border border-slate-200 bg-transparent hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:text-slate-50",
       },
@@ -25,8 +25,8 @@ const toggleVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
-)
+  },
+);
 
 const Toggle = React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
@@ -38,8 +38,8 @@ const Toggle = React.forwardRef<
     className={cn(toggleVariants({ variant, size, className }))}
     {...props}
   />
-))
+));
 
-Toggle.displayName = TogglePrimitive.Root.displayName
+Toggle.displayName = TogglePrimitive.Root.displayName;
 
-export { Toggle, toggleVariants }
+export { Toggle, toggleVariants };

@@ -2,6 +2,8 @@ import { type RouterOutputs } from "~/utils/api";
 import TimeCard, { type TimeCardProps } from "../TimeCard";
 import { useMemo } from "react";
 import { DateTime } from "luxon";
+import { shiftTimeInterval } from "~/lib/utils";
+import FeedbackMessage from "~/components/common/FeedbackMessage";
 
 type TimeListProps = {
   time: RouterOutputs["userTime"]["userTimes"][number];
@@ -22,10 +24,8 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
         endTime: string;
       }): string[] => {
         const { startTime, endTime } = interval;
-
         const startHour = parseInt(startTime.split(":")[0]!, 10);
         const endHour = parseInt(endTime.split(":")[0]!, 10);
-
         const times: string[] = [];
 
         const timeInSourceTimezone = DateTime.fromMillis(
@@ -39,18 +39,16 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
           Intl.DateTimeFormat().resolvedOptions().timeZone,
         );
 
-        console.log({
-          hoursDiff:
-            (timeInTargetTimezone.offset - timeInSourceTimezone.offset) / 60,
-        });
-
-        console.log(selectedDate);
+        const hoursDiff =
+          (timeInTargetTimezone.offset - timeInSourceTimezone.offset) / 60;
 
         const getCurrentHour = (): number => {
           const currentDate = new Date();
           const currentHour = currentDate.getHours();
           return currentHour;
         };
+
+        const currentHour = getCurrentHour();
 
         const isDifferentDay = (date1: Date, date2: Date): boolean => {
           return (
@@ -60,9 +58,13 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
           );
         };
 
-        const currentHour = getCurrentHour();
+        const { newStartTime, newEndTime } = shiftTimeInterval(
+          startHour,
+          endHour,
+          hoursDiff,
+        );
 
-        for (let hour = startHour; hour <= endHour; hour++) {
+        for (let hour = newStartTime; hour <= newEndTime; hour++) {
           if (isDifferentDay(new Date(), selectedDate)) {
             times.push(convertTo12HourFormat(hour));
           } else {
@@ -92,10 +94,22 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
   }, [time, selectedDate]);
 
   return (
-    <div className="flex flex-col gap-2">
-      {times.map((item, index) => {
-        return <TimeCard key={index} role={item.role} hour={item.hour} />;
-      })}
+    <div className="flex flex-col gap-4 p-2">
+      <span className="text-mochaText text-sm font-bold">
+        {time.userRole.role.name}
+      </span>
+      <div className="flex flex-col gap-2">
+        {times.length === 0 && (
+          <FeedbackMessage
+            status="INFORMATION"
+            message="No available times for this date"
+          />
+        )}
+        {times.length > 0 &&
+          times.map((item, index) => {
+            return <TimeCard key={index} role={item.role} hour={item.hour} />;
+          })}
+      </div>
     </div>
   );
 };

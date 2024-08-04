@@ -21,8 +21,8 @@ const TimesSelector = ({ userId }: TimesSelectorProps) => {
   } = useTimesSelectorLogic({ userId });
 
   return (
-    <Card className="flex h-full w-full flex-col gap-2 overflow-hidden border">
-      <span className="text-sm font-bold text-blackMain">Select a Date</span>
+    <Card className="flex h-full w-full flex-col gap-2 overflow-hidden">
+      <span className="text-mochaSubText text-sm font-bold">Select a Date</span>
       {userTimesIsLoading && (
         <div className="flex w-full flex-col gap-2">
           <Skeleton className="h-80 min-w-16 max-w-96" />
@@ -48,45 +48,45 @@ const TimesSelector = ({ userId }: TimesSelectorProps) => {
         !userTimesIsError &&
         userTimesData &&
         userTimesData.length > 0 && (
-        <div className="flex gap-2 overflow-hidden">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            disabled={[
-              { before: new Date() },
-              { dayOfWeek: notAllowedWeeklyDays },
-            ]}
-          />
-          <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
-            <span className="text-sm font-bold text-blackMain">Times</span>
-            <div className="flex flex-col gap-2 overflow-auto">
-              {timesToDisplay.length > 0 &&
-                timesToDisplay.map((time) => {
-                  return (
-                    <TimeList key={time.id} time={time} selectedDate={date} />
-                  );
-                })}
-              {timesToDisplay.length === 0 && (
-                <FeedbackMessage
-                  status="INFORMATION"
-                  message="No times to display"
-                />
-              )}
+          <div className="flex gap-2 overflow-hidden">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              disabled={[
+                { before: new Date() },
+                { dayOfWeek: notAllowedWeeklyDays },
+              ]}
+            />
+            <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
+              <span className="text-mochaSubText text-sm font-bold">Times</span>
+              <div className="flex flex-col gap-4 overflow-auto">
+                {timesToDisplay.length > 0 &&
+                  timesToDisplay.map((time) => {
+                    return (
+                      <TimeList key={time.id} time={time} selectedDate={date} />
+                    );
+                  })}
+                {timesToDisplay.length === 0 && (
+                  <FeedbackMessage
+                    status="INFORMATION"
+                    message="No times to display"
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       {!userTimesIsLoading &&
         !userTimesIsError &&
         userTimesData?.length === 0 && (
-        <div className="p-4">
-          <FeedbackMessage
-            status="INFORMATION"
-            message="The buuddy has not configured its times"
-          />
-        </div>
-      )}
+          <div className="p-4">
+            <FeedbackMessage
+              status="INFORMATION"
+              message="The buuddy has not configured its times"
+            />
+          </div>
+        )}
       {!userTimesIsLoading && userTimesIsError && (
         <div className="p-4">
           <FeedbackMessage

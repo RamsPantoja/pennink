@@ -2,29 +2,29 @@ import { type Session } from "next-auth";
 import Sidebar from "~/components/Sidebar";
 
 type DashboardProps = {
-    session: Session | null
-    children: JSX.Element
-}
+  session: Session | null;
+  children: JSX.Element;
+};
 
 const Dashboard = ({ children, session }: DashboardProps) => {
-    return (
-        <main className="flex w-full h-screen bg-whiteLigth">
-            <div className=" grid grid-cols-[256px_minmax(0,_1fr)] grid-rows-1 gap-2 p-2 w-full h-full">
-                <div className="w-full h-full flex flex-col">
-                    <div className="w-full h-full rounded-md p-4 flex flex-col bg-whiteMain">
-                        <Sidebar session={session} />
-                    </div>
-                </div>
-                <div className="flex w-full h-full">
-                    <div className="w-full h-full rounded-md gap-2 flex flex-col">
-                        <div className="flex w-full h-full overflow-hidden bg-whiteMain rounded-md">
-                            {children}
-                        </div>
-                    </div>
-                </div>
+  return (
+    <main className="bg-mochaMantle flex h-screen w-full">
+      <div className=" grid h-full w-full grid-cols-[256px_minmax(0,_1fr)] grid-rows-1 gap-2 p-2">
+        <div className="flex h-full w-full flex-col">
+          <div className="bg-mochaBase flex h-full w-full flex-col rounded-md p-4">
+            <Sidebar session={session} />
+          </div>
+        </div>
+        <div className="flex h-full w-full">
+          <div className="flex h-full w-full flex-col gap-2 rounded-md">
+            <div className="bg-mochaBase flex h-full w-full overflow-hidden rounded-md">
+              {children}
             </div>
-        </main>
-    );
-}
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+};
 
 export default Dashboard;

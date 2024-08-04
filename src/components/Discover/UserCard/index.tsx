@@ -18,7 +18,7 @@ const UserCard = ({ userData }: UserProps) => {
 
   return (
     <a href={`/bd/${userData?.profile?.username}`}>
-      <Card className=" min-h-52 min-w-52 max-w-52 border bg-whiteMain">
+      <Card className=" bg-mochaMantle min-h-52 min-w-52 max-w-52">
         <div className="flex flex-col items-center gap-2 overflow-hidden">
           <div className="relative flex flex-col">
             <Avatar className=" h-16 w-16">
@@ -27,14 +27,14 @@ const UserCard = ({ userData }: UserProps) => {
             </Avatar>
             {typeof userData?.user.verified === "boolean" &&
               userData.user.verified && (
-                <CheckBadgeIcon className="absolute bottom-0 right-[-0.5em] h-6 w-6 text-pinkStrong" />
+                <CheckBadgeIcon className="text-mochaMauve absolute bottom-0 right-[-0.5em] h-6 w-6" />
               )}
           </div>
           <div className="flex w-full flex-col items-center">
-            <p className="w-full truncate font-black text-blackMain">
+            <p className="text-mochaText w-full truncate font-black">
               {userData?.user.name}
             </p>
-            <p className="w-full truncate text-sm text-blackMain">
+            <p className="text-mochaText w-full truncate text-sm">
               {userData?.profile?.headline}
             </p>
           </div>
@@ -50,11 +50,11 @@ const UserCard = ({ userData }: UserProps) => {
           </div>
           {userRole && (
             <div className="flex w-full flex-col">
-              <span className=" text-sm font-semibold text-blackMain">
+              <span className=" text-mochaText text-sm font-semibold">
                 Role
               </span>
               <div className="flex flex-col gap-2">
-                <span className=" text-base font-semibold text-grayMain">
+                <span className=" text-mochaSubText text-base font-semibold">
                   {userRole.role}
                 </span>
                 <div className="flex items-center gap-2">

@@ -3,24 +3,19 @@ import { BuuddyButton } from "~/components/common/BuuddyButton";
 import { Card } from "~/components/ui/card";
 
 export type TimeCardProps = {
-  role: string;
   hour: string;
 };
 
-const TimeCard = ({ role, hour }: TimeCardProps) => {
-  const timeZone = () => {
-    console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
-  };
-
+const TimeCard = ({ hour }: TimeCardProps) => {
   return (
-    <Card className="flex min-w-80 flex-col gap-2 border">
+    <Card className="bg-mochaMantle flex min-w-80 flex-col gap-2">
       <div className="flex items-center justify-between gap-4">
-        <span className="text-sm font-semibold text-grayMain">{role}</span>
-        <span className="font-bold text-blackMain">{hour}</span>
-      </div>
-      <div className="flex justify-end">
+        <span className="text-mochaText font-bold">{hour}</span>
         <BuuddyButton
-          onClick={timeZone}
+          onClick={() => {
+            console.log("clicked");
+          }}
+          variant="outline"
           endIcon={<PaperAirplaneIcon className="h-5 min-w-5" />}
         >
           Send request

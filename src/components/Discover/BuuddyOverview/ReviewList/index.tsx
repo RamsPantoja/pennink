@@ -1,7 +1,11 @@
+import ReviewCard from "./ReviewCard";
+
 const ReviewList = () => {
   return (
-    <div>
-      <span>Review list</span>
+    <div className="flex flex-col gap-2">
+      {/* <ReviewCard />
+      <ReviewCard />
+      <ReviewCard /> */}
     </div>
   );
 };
