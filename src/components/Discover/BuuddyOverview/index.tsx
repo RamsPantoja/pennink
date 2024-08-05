@@ -75,7 +75,7 @@ const BuuddyOverview = () => {
         </div>
         <div className="flex w-full flex-col gap-2">
           <span className="font-bold text-mochaText">Booking</span>
-          <TimesSelector userId={buuddyProfileData?.user?.id} />
+          <TimesSelector buuddyId={buuddyProfileData?.user?.id} />
         </div>
       </Card>
     </Card>

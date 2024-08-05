@@ -1,9 +1,9 @@
 import { type RouterOutputs } from "~/utils/api";
-import TimeCard, { type TimeCardProps } from "../TimeCard";
-import { useMemo } from "react";
-import { DateTime } from "luxon";
-import { shiftTimeInterval } from "~/lib/utils";
+import TimeCard from "../TimeCard";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
+import useTimeListLogic from "./useTimeListLogic";
+import BookingRequestForm from "../BookingRequestForm";
+import { useSession } from "next-auth/react";
 
 type TimeListProps = {
   time: RouterOutputs["userTime"]["userTimes"][number];
@@ -11,90 +11,31 @@ type TimeListProps = {
 };
 
 const TimeList = ({ time, selectedDate }: TimeListProps) => {
-  const times: TimeCardProps[] = useMemo(() => {
-    const convertTo12HourFormat = (hour: number): string => {
-      const period = hour < 12 || hour === 24 ? "AM" : "PM";
-      const adjustedHour = hour % 12 || 12;
-      return `${adjustedHour}:00 ${period}`;
-    };
+  const {
+    times,
+    displaySendBookingRequestForm,
+    onDisplayBookingRequestForm,
+    onCloseBookingRequestForm,
+    selectedTime,
+  } = useTimeListLogic({ time, selectedDate });
 
-    if (selectedDate && time) {
-      const generateTimeArray = (interval: {
-        startTime: string;
-        endTime: string;
-      }): string[] => {
-        const { startTime, endTime } = interval;
-        const startHour = parseInt(startTime.split(":")[0]!, 10);
-        const endHour = parseInt(endTime.split(":")[0]!, 10);
-        const times: string[] = [];
-
-        const timeInSourceTimezone = DateTime.fromMillis(
-          selectedDate.getTime(),
-          {
-            zone: time.timezoneIANA,
-          },
-        );
-
-        const timeInTargetTimezone = timeInSourceTimezone.setZone(
-          Intl.DateTimeFormat().resolvedOptions().timeZone,
-        );
-
-        const hoursDiff =
-          (timeInTargetTimezone.offset - timeInSourceTimezone.offset) / 60;
-
-        const getCurrentHour = (): number => {
-          const currentDate = new Date();
-          const currentHour = currentDate.getHours();
-          return currentHour;
-        };
-
-        const currentHour = getCurrentHour();
-
-        const isDifferentDay = (date1: Date, date2: Date): boolean => {
-          return (
-            date1.getFullYear() !== date2.getFullYear() ||
-            date1.getMonth() !== date2.getMonth() ||
-            date1.getDate() !== date2.getDate()
-          );
-        };
-
-        const { newStartTime, newEndTime } = shiftTimeInterval(
-          startHour,
-          endHour,
-          hoursDiff,
-        );
-
-        for (let hour = newStartTime; hour <= newEndTime; hour++) {
-          if (isDifferentDay(new Date(), selectedDate)) {
-            times.push(convertTo12HourFormat(hour));
-          } else {
-            if (hour > currentHour) {
-              times.push(convertTo12HourFormat(hour));
-            }
-          }
-        }
-
-        return times;
-      };
-
-      const formatedTimes = generateTimeArray({
-        startTime: time.startTime,
-        endTime: time.endTime,
-      });
-
-      return formatedTimes.map((item) => {
-        return {
-          role: time.userRole.role.name,
-          hour: item,
-        };
-      });
-    } else {
-      return [];
-    }
-  }, [time, selectedDate]);
+  const { data: session, status } = useSession();
 
   return (
     <div className="flex flex-col gap-4 p-2">
+      {status !== "loading" && session && (
+        <BookingRequestForm
+          open={displaySendBookingRequestForm}
+          onOpenChange={onCloseBookingRequestForm}
+          time={selectedTime}
+          date={selectedDate}
+          buuddyId={time.userId}
+          senderId={session.user.id}
+          senderTimezoneIANA={Intl.DateTimeFormat().resolvedOptions().timeZone}
+          buuddyTimezoneIANA={time.timezoneIANA}
+          userRoleId={time.userRoleId}
+        />
+      )}
       <span className="text-sm font-bold text-mochaText">
         {time.userRole.role.name}
       </span>
@@ -107,7 +48,13 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
         )}
         {times.length > 0 &&
           times.map((item, index) => {
-            return <TimeCard key={index} hour={item.hour} />;
+            return (
+              <TimeCard
+                key={index}
+                hour={item}
+                onSendRequest={onDisplayBookingRequestForm}
+              />
+            );
           })}
       </div>
     </div>

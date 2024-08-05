@@ -2,10 +2,10 @@ import { useMemo, useState } from "react";
 import { api } from "~/utils/api";
 
 type UseTimesSelectorLogicProps = {
-  userId: string | undefined;
+  buuddyId: string | undefined;
 };
 
-const useTimesSelectorLogic = ({ userId }: UseTimesSelectorLogicProps) => {
+const useTimesSelectorLogic = ({ buuddyId }: UseTimesSelectorLogicProps) => {
   const [date, setDate] = useState<Date | undefined>();
 
   const {
@@ -13,7 +13,7 @@ const useTimesSelectorLogic = ({ userId }: UseTimesSelectorLogicProps) => {
     isLoading: userTimesIsLoading,
     isError: userTimesIsError,
   } = api.userTime.userTimes.useQuery({
-    userId,
+    userId: buuddyId,
   });
 
   const notAllowedWeeklyDays = useMemo(() => {

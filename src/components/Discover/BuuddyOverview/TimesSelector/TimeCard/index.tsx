@@ -4,16 +4,17 @@ import { Card } from "~/components/ui/card";
 
 export type TimeCardProps = {
   hour: string;
+  onSendRequest: (time: string) => void;
 };
 
-const TimeCard = ({ hour }: TimeCardProps) => {
+const TimeCard = ({ hour, onSendRequest }: TimeCardProps) => {
   return (
-    <Card className="bg-mochaMantle flex min-w-80 flex-col gap-2">
+    <Card className="flex min-w-80 flex-col gap-2 bg-mochaMantle">
       <div className="flex items-center justify-between gap-4">
-        <span className="text-mochaText font-bold">{hour}</span>
+        <span className="font-bold text-mochaText">{hour}</span>
         <BuuddyButton
           onClick={() => {
-            console.log("clicked");
+            onSendRequest(hour);
           }}
           variant="outline"
           endIcon={<PaperAirplaneIcon className="h-5 min-w-5" />}

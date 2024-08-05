@@ -6,10 +6,10 @@ import { Skeleton } from "~/components/ui/skeleton";
 import TimeList from "./TimeList";
 
 type TimesSelectorProps = {
-  userId: string | undefined;
+  buuddyId: string | undefined;
 };
 
-const TimesSelector = ({ userId }: TimesSelectorProps) => {
+const TimesSelector = ({ buuddyId }: TimesSelectorProps) => {
   const {
     userTimesData,
     userTimesIsLoading,
@@ -18,11 +18,11 @@ const TimesSelector = ({ userId }: TimesSelectorProps) => {
     date,
     notAllowedWeeklyDays,
     timesToDisplay,
-  } = useTimesSelectorLogic({ userId });
+  } = useTimesSelectorLogic({ buuddyId });
 
   return (
     <Card className="flex h-full w-full flex-col gap-2 overflow-hidden">
-      <span className="text-mochaSubText text-sm font-bold">Select a Date</span>
+      <span className="text-sm font-bold text-mochaSubText">Select a Date</span>
       {userTimesIsLoading && (
         <div className="flex w-full flex-col gap-2">
           <Skeleton className="h-80 min-w-16 max-w-96" />
@@ -59,7 +59,7 @@ const TimesSelector = ({ userId }: TimesSelectorProps) => {
               ]}
             />
             <div className="flex h-full w-full flex-col gap-2 overflow-hidden">
-              <span className="text-mochaSubText text-sm font-bold">Times</span>
+              <span className="text-sm font-bold text-mochaSubText">Times</span>
               <div className="flex flex-col gap-4 overflow-auto">
                 {timesToDisplay.length > 0 &&
                   timesToDisplay.map((time) => {

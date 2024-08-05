@@ -86,8 +86,8 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   accounts: many(accounts),
   userRoles: many(userRoles),
   profile: one(profiles, { fields: [users.id], references: [profiles.userId] }),
-  usersToInterests: many(usersToInterests),
-  bookingRequests: many(bookingRequests),
+  sentBookingRequests: many(bookingRequests, { relationName: "sender" }),
+  receivedBookingRequests: many(bookingRequests, { relationName: "receiver" }),
 }));
 
 export const userAnalytics = createTable("user_analytic", {
@@ -372,6 +372,7 @@ export const userRolesRelations = relations(userRoles, ({ one, many }) => ({
     references: [roles.id],
   }),
   userRoleDetails: many(userRoleDetails),
+  bookingRequests: many(bookingRequests),
 }));
 
 export const userRoleDetails = createTable("user_role_detail", {
@@ -472,9 +473,6 @@ export const bookingRequests = createTable("booking_request", {
     .$defaultFn(() => {
       return typeid().toUUID();
     }),
-  userId: uuid("userId")
-    .notNull()
-    .references(() => users.id),
   senderId: uuid("senderId")
     .notNull()
     .references(() => users.id),
@@ -485,15 +483,15 @@ export const bookingRequests = createTable("booking_request", {
   receiverTimezoneIANA: text("receiverTimezoneIANA").notNull(),
   message: text("message").notNull(),
   status: bookingRequestStatusEnum("status").notNull().default("PENDING"),
-  userTimeId: uuid("userTimeId")
-    .notNull()
-    .references(() => userTimes.id),
-  bookingHour: text("bookingHour").notNull(),
+  bookingTime: text("bookingTime").notNull(),
   bookingDate: timestamp("bookingDate", {
     mode: "date",
   })
     .notNull()
     .defaultNow(),
+  userRoleId: uuid("userRoleId")
+    .notNull()
+    .references(() => userRoles.id),
   createdAt: timestamp("createdAt", {
     mode: "date",
   })
@@ -509,21 +507,19 @@ export const bookingRequests = createTable("booking_request", {
 export const bookingRequestsRelations = relations(
   bookingRequests,
   ({ one }) => ({
-    user: one(users, {
-      fields: [bookingRequests.userId],
-      references: [users.id],
-    }),
     sender: one(users, {
       fields: [bookingRequests.senderId],
       references: [users.id],
+      relationName: "sender",
     }),
     receiver: one(users, {
       fields: [bookingRequests.receiverId],
       references: [users.id],
+      relationName: "receiver",
     }),
-    userTime: one(userTimes, {
-      fields: [bookingRequests.userTimeId],
-      references: [userTimes.id],
+    userRole: one(userRoles, {
+      fields: [bookingRequests.userRoleId],
+      references: [userRoles.id],
     }),
   }),
 );
