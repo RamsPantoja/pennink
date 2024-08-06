@@ -4,6 +4,8 @@ import FeedbackMessage from "~/components/common/FeedbackMessage";
 import useTimeListLogic from "./useTimeListLogic";
 import BookingRequestForm from "../BookingRequestForm";
 import { useSession } from "next-auth/react";
+import CustomAlertDialog from "~/components/common/AlertDialog";
+import { useRouter } from "next/router";
 
 type TimeListProps = {
   time: RouterOutputs["userTime"]["userTimes"][number];
@@ -11,12 +13,16 @@ type TimeListProps = {
 };
 
 const TimeList = ({ time, selectedDate }: TimeListProps) => {
+  const router = useRouter();
+  console.log(router);
   const {
     times,
     displaySendBookingRequestForm,
     onDisplayBookingRequestForm,
     onCloseBookingRequestForm,
     selectedTime,
+    displaySignInWarning,
+    setDisplaySignInWarning,
   } = useTimeListLogic({ time, selectedDate });
 
   const { data: session, status } = useSession();
@@ -36,6 +42,18 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
           userRoleId={time.userRoleId}
         />
       )}
+      <CustomAlertDialog
+        open={displaySignInWarning}
+        title="Sign In Required"
+        description="You need to sign in to book a time"
+        cancelText="Close"
+        actionText="Sign In"
+        onAction={async () => {
+          await router.push(`/sign_in?callback_url=${router.asPath}`);
+        }}
+        onCancel={() => setDisplaySignInWarning(false)}
+        isPending={false}
+      />
       <span className="text-sm font-bold text-mochaText">
         {time.userRole.role.name}
       </span>

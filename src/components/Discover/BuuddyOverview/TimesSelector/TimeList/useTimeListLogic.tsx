@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { DateTime } from "luxon";
 import { shiftTimeInterval } from "~/lib/utils";
 import { type RouterOutputs } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 type UseTimeListLogicProps = {
   time: RouterOutputs["userTime"]["userTimes"][number];
@@ -12,6 +13,9 @@ const useTimeListLogic = ({ time, selectedDate }: UseTimeListLogicProps) => {
   const [displaySendBookingRequestForm, setDisplaySentBookingRequest] =
     useState<boolean>(false);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [displaySignInWarning, setDisplaySignInWarning] =
+    useState<boolean>(false);
+  const { data: session } = useSession();
 
   const times: string[] = useMemo(() => {
     const convertTo12HourFormat = (hour: number): string => {
@@ -91,8 +95,12 @@ const useTimeListLogic = ({ time, selectedDate }: UseTimeListLogicProps) => {
   }, [time, selectedDate]);
 
   const onDisplayBookingRequestForm = (time: string) => {
-    setSelectedTime(time);
-    setDisplaySentBookingRequest(true);
+    if (session) {
+      setSelectedTime(time);
+      setDisplaySentBookingRequest(true);
+    } else {
+      setDisplaySignInWarning(true);
+    }
   };
 
   const onCloseBookingRequestForm = (open: boolean) => {
@@ -107,6 +115,8 @@ const useTimeListLogic = ({ time, selectedDate }: UseTimeListLogicProps) => {
     onDisplayBookingRequestForm,
     onCloseBookingRequestForm,
     selectedTime,
+    displaySignInWarning,
+    setDisplaySignInWarning,
   };
 };
 
