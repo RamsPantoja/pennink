@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import { api } from "~/utils/api";
 
 const bookingRequestValidationSchema = z.object({
   message: z
@@ -34,6 +36,7 @@ const useBookingRequestFormLogic = ({
   senderTimezoneIANA,
   buuddyTimezoneIANA,
   userRoleId,
+  onOpenChange,
 }: UseBookingRequestFormLogicProps) => {
   const useBookingRequestForm = useForm<BookingRequestValidationSchema>({
     resolver: zodResolver(bookingRequestValidationSchema),
@@ -42,17 +45,30 @@ const useBookingRequestFormLogic = ({
     },
   });
 
+  const {
+    mutate: createBookingRequestMutation,
+    isPending: createBookingRequestIsPending,
+  } = api.bookingRequest.create.useMutation({
+    onSuccess: async () => {
+      toast.success("Booking request sent successfully");
+      onOpenChange(false);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   const onSubmit = useBookingRequestForm.handleSubmit((data) => {
     if (time && date) {
-      console.log({
-        ...data,
-        time,
-        date,
-        buuddyId,
+      createBookingRequestMutation({
+        bookingTime: time,
+        bookingDate: date,
+        receiverId: buuddyId,
         senderId,
         senderTimezoneIANA,
-        buuddyTimezoneIANA,
+        receiverTimezoneIANA: buuddyTimezoneIANA,
         userRoleId,
+        message: data.message,
       });
     }
   });
@@ -60,6 +76,7 @@ const useBookingRequestFormLogic = ({
   return {
     useBookingRequestForm,
     onSubmit,
+    createBookingRequestIsPending,
   };
 };
 

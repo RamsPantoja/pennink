@@ -20,6 +20,7 @@ export default {
         mochaLavender: "#b4befe",
         mochaMauve: "#cba6f7",
         mochaCrust: "#181926",
+        mochaTeal: "#a6e3a1",
       },
       borderRadius: {
         lg: "0.5rem",

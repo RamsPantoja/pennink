@@ -34,7 +34,10 @@ const AvailableHours = ({ session }: AvailableHoursProps) => {
   const userRoles = useYourBuuddyStore((state) => state.userRoles);
 
   return (
-    <Card className="flex h-fit min-w-[480px] flex-col gap-2 overflow-hidden">
+    <Card className="flex h-full min-w-[480px] flex-col gap-2 overflow-hidden">
+      <span className="font-bold text-mochaText">
+        Planning and availability
+      </span>
       {userRoles.length > 0 ? (
         <Fragment>
           <span className="text-sm font-bold">Weekly hours</span>

@@ -87,7 +87,7 @@ const BuuddyButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {!isPending && startIcon}
-        {isPending ? "Espera" : children}
+        {isPending ? "Wait..." : children}
         {!isPending && endIcon}
       </Comp>
     );

@@ -35,16 +35,17 @@ const BookingRequestForm = ({
   buuddyTimezoneIANA,
   userRoleId,
 }: BookingRequestFormProps) => {
-  const { useBookingRequestForm, onSubmit } = useBookingRequestFormLogic({
-    onOpenChange,
-    time,
-    date,
-    buuddyId,
-    senderId,
-    senderTimezoneIANA,
-    buuddyTimezoneIANA,
-    userRoleId,
-  });
+  const { useBookingRequestForm, onSubmit, createBookingRequestIsPending } =
+    useBookingRequestFormLogic({
+      onOpenChange,
+      time,
+      date,
+      buuddyId,
+      senderId,
+      senderTimezoneIANA,
+      buuddyTimezoneIANA,
+      userRoleId,
+    });
 
   const {
     register,
@@ -94,6 +95,7 @@ const BookingRequestForm = ({
         <DialogFooter className="flex flex-row items-center justify-between gap-2">
           <DialogClose asChild>
             <BuuddyButton
+              disabled={createBookingRequestIsPending}
               onClick={() => {
                 onOpenChange(false);
               }}
@@ -103,7 +105,11 @@ const BookingRequestForm = ({
               Discard
             </BuuddyButton>
           </DialogClose>
-          <BuuddyButton onClick={onSubmit} variant="default" isPending={false}>
+          <BuuddyButton
+            onClick={onSubmit}
+            variant="default"
+            isPending={createBookingRequestIsPending}
+          >
             Send
           </BuuddyButton>
         </DialogFooter>

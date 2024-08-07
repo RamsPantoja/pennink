@@ -7,6 +7,7 @@ import { userRouter } from "./routers/user";
 import { interestRouter } from "./routers/interest";
 import { profileRouter } from "./routers/profile";
 import { type inferRouterOutputs } from "@trpc/server";
+import { bookingRequestRouter } from "./routers/bookingRequest";
 
 /**
  * This is the primary router for your server.
@@ -20,7 +21,8 @@ export const appRouter = createTRPCRouter({
   userTime: userTimeRouter,
   user: userRouter,
   interest: interestRouter,
-  profile: profileRouter
+  profile: profileRouter,
+  bookingRequest: bookingRequestRouter,
 });
 
 // export type definition of API

@@ -8,6 +8,7 @@ import useYourBuuddyStore from "../useYourBuuddyStore";
 import { BuuddyButton } from "~/components/common/BuuddyButton";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import RoleForm from "../RoleForm";
+import { Card } from "~/components/ui/card";
 
 const RoleList = () => {
   const {
@@ -30,7 +31,8 @@ const RoleList = () => {
   }, [userRolesData, setUserRoles]);
 
   return (
-    <div className="flex flex-col gap-2 overflow-hidden">
+    <Card className="flex min-w-96 flex-col gap-2 overflow-hidden">
+      <span className="font-bold text-mochaText">Roles</span>
       <RoleForm
         open={displayUserRoleForm}
         onOpenChange={setDisplayUserRoleForm}
@@ -81,7 +83,7 @@ const RoleList = () => {
           Add role
         </BuuddyButton>
       </div>
-    </div>
+    </Card>
   );
 };
 

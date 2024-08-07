@@ -18,12 +18,12 @@ const BuuddyCard = ({ session }: ProfileCardProps) => {
         </Avatar>
         <div className="flex w-full flex-col gap-1 overflow-hidden">
           <div className="flex items-center gap-2">
-            <p className="text-mochaText truncate text-2xl font-bold">
+            <p className="truncate text-2xl font-bold text-mochaText">
               {session.user.name}
             </p>
-            <CheckBadgeIcon className="text-mochaMauve h-6 min-w-6" />
+            <CheckBadgeIcon className="text-mochaTeal h-6 min-w-6" />
           </div>
-          <p className="text-mochaText truncate text-base">
+          <p className="truncate text-base text-mochaText">
             {session.user.email}
           </p>
           <div className="item-center flex w-fit justify-between gap-4">

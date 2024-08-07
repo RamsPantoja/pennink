@@ -463,7 +463,6 @@ export const userTimesRelations = relations(userTimes, ({ one, many }) => ({
     fields: [userTimes.weeklyDayId],
     references: [weeklyDays.id],
   }),
-  bookingRequests: many(bookingRequests),
 }));
 
 export const bookingRequests = createTable("booking_request", {
@@ -481,7 +480,7 @@ export const bookingRequests = createTable("booking_request", {
     .references(() => users.id),
   senderTimezoneIANA: text("senderTimezoneIANA").notNull(),
   receiverTimezoneIANA: text("receiverTimezoneIANA").notNull(),
-  message: text("message").notNull(),
+  message: text("message"),
   status: bookingRequestStatusEnum("status").notNull().default("PENDING"),
   bookingTime: text("bookingTime").notNull(),
   bookingDate: timestamp("bookingDate", {
@@ -497,7 +496,7 @@ export const bookingRequests = createTable("booking_request", {
   })
     .notNull()
     .defaultNow(),
-  updatedAt: timestamp("createdAt", {
+  updatedAt: timestamp("updatedAt", {
     mode: "date",
   })
     .notNull()
