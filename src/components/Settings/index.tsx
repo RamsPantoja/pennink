@@ -15,12 +15,10 @@ const SettingsContainer = () => {
       >
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="payment">Payment</TabsTrigger>
         </TabsList>
         <TabsContent value="profile" className="flex overflow-hidden">
           <ProfileEditor />
         </TabsContent>
-        <TabsContent value="payment"></TabsContent>
       </Tabs>
     </Card>
   );

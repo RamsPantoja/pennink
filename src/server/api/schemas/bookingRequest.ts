@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { bookingRequestStatusEnum } from "~/server/db/schema";
 
 export const createBookingRequestInputSchema = z.object({
   senderId: z.string().uuid(),
@@ -12,9 +13,11 @@ export const createBookingRequestInputSchema = z.object({
 });
 
 export const bookingRequestsBySenderInputSchema = z.object({
-  id: z.string().uuid(),
+  senderId: z.string().uuid(),
+  status: z.enum(bookingRequestStatusEnum.enumValues),
 });
 
 export const bookingRequestsByReceiverInputSchema = z.object({
-  id: z.string().uuid(),
+  receiverId: z.string().uuid(),
+  status: z.enum(bookingRequestStatusEnum.enumValues),
 });

@@ -17,13 +17,13 @@ export const bookingRequestRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       return await ctx
         .services({ ctx })
-        .bookingRequestService.getBookingRequestsBySenderId(input.id);
+        .bookingRequestService.getBookingRequestsBySenderId(input.senderId);
     }),
   bookingRequestsByReceiver: protectedProcedure
     .input(bookingRequestsByReceiverInputSchema)
     .query(async ({ input, ctx }) => {
       return await ctx
         .services({ ctx })
-        .bookingRequestService.getBookingRequestsByReceiverId(input.id);
+        .bookingRequestService.getBookingRequestsByReceiverId(input);
     }),
 });

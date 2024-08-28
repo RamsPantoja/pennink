@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BuuddyButton } from "~/components/common/BuuddyButton";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Card } from "~/components/ui/card";
+import { Separator } from "~/components/ui/separator";
 
 type BookingRequestCardBuuddyProps = {
   bookingTime: string;
@@ -23,7 +24,7 @@ const BookingRequestBuuddyCard = ({
   senderUsername,
 }: BookingRequestCardBuuddyProps) => {
   return (
-    <Card className="flex flex-col gap-2 bg-mochaMantle p-4">
+    <Card className="flex flex-col gap-2 bg-mochaMantle p-4 max-w-sm max-h-80 min-h-80">
       <div className="flex justify-between gap-2">
         <div className="flex basis-full items-center gap-4 overflow-hidden">
           <Avatar className="h-12 min-w-12">
@@ -51,16 +52,18 @@ const BookingRequestBuuddyCard = ({
             {bookingDate.toLocaleDateString()}
           </span>
         </div>
+        <Separator />
         <div className="flex items-center justify-between">
           <span className="text-sm text-mochaSubText">Time</span>
           <span className="text-mochaText">{bookingTime}</span>
         </div>
+        <Separator />
         <div className="flex flex-col">
           <span className="text-sm text-mochaSubText">Message</span>
           <span className="text-mochaText">{message}</span>
         </div>
       </div>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 items-end h-full">
         <BuuddyButton
           variant="outline"
           className="w-fit"

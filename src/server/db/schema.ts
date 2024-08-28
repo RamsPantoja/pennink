@@ -45,6 +45,7 @@ export const bookingRequestStatusEnum = pgEnum("bookingRequestStatus", [
   "ACCEPTED",
   "REJECTED",
   "CANCELED",
+  "PAID",
 ]);
 
 export const users = createTable("user", {
@@ -454,7 +455,7 @@ export const userTimes = createTable("userTime", {
     .defaultNow(),
 });
 
-export const userTimesRelations = relations(userTimes, ({ one, many }) => ({
+export const userTimesRelations = relations(userTimes, ({ one }) => ({
   userRole: one(userRoles, {
     fields: [userTimes.userRoleId],
     references: [userRoles.id],

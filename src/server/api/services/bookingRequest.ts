@@ -1,5 +1,5 @@
 import { type z } from "zod";
-import { type createBookingRequestInputSchema } from "../schemas/bookingRequest";
+import { type bookingRequestsByReceiverInputSchema, type createBookingRequestInputSchema } from "../schemas/bookingRequest";
 import { type TRPCContext } from "../trpc";
 import { bookingRequests } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
@@ -12,6 +12,8 @@ export type BookingRequest = typeof bookingRequests.$inferSelect;
 export type CreateBookingRequestInput = z.infer<
   typeof createBookingRequestInputSchema
 >;
+
+type GetBookingRequestsByReceiverIdInput = z.infer<typeof bookingRequestsByReceiverInputSchema>;
 
 class BookingRequestService {
   ctx: TRPCContext;
@@ -40,10 +42,15 @@ class BookingRequestService {
     return bookingRequest;
   }
 
-  public async getBookingRequestsByReceiverId(receiverId: string) {
+  public async getBookingRequestsByReceiverId(input: GetBookingRequestsByReceiverIdInput) {
+    const { receiverId, status } = input;
+
     return this.ctx.db.query.bookingRequests.findMany({
-      where: (bookingRequests, { eq }) => {
-        return eq(bookingRequests.receiverId, receiverId);
+      where: (bookingRequests, { eq, and }) => {
+        return and(
+          eq(bookingRequests.receiverId, receiverId),
+          eq(bookingRequests.status, status)
+        );
       },
       with: {
         sender: {

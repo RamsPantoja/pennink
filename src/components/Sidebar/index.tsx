@@ -8,13 +8,13 @@ import CustomAlertDialog from "../common/AlertDialog";
 import useSidebarLogic from "./useSidebarLogic";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import {
+  Cog6ToothIcon,
   CurrencyDollarIcon,
+  EllipsisVerticalIcon,
+  PaperAirplaneIcon,
+  PowerIcon,
   UserGroupIcon,
   UserIcon,
-  EllipsisVerticalIcon,
-  Cog6ToothIcon,
-  PowerIcon,
-  PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 import { BuuddyButton } from "../common/BuuddyButton";
 import BuuddyLogotype from "../common/BuuddyLogotype";
@@ -42,11 +42,13 @@ const Sidebar = ({ session }: SidebarProps) => {
       </div>
       <ul className="flex h-full w-full flex-col">
         <SibedarItem Icon={UserGroupIcon} label="Rent and connect" href="/" />
-        <SibedarItem
-          Icon={PaperAirplaneIcon}
-          label="Booking requests"
-          href="/booking_requests"
-        />
+        {session && (
+          <SibedarItem
+            Icon={PaperAirplaneIcon}
+            label="Booking requests"
+            href="/booking_requests"
+          />
+        )}
         {session && (
           <SibedarItem
             Icon={CurrencyDollarIcon}

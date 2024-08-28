@@ -2,9 +2,9 @@ import { type Session } from "next-auth";
 import RoleList from "./RoleList";
 import AvailableHours from "./AvailableHours";
 import Profile from "./Profile";
-import BookingRequestBuuddyList from "./BookingRequests/BookingRequestBuuddyList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import ConnectPayment from "./ConnectPayment";
+import ProfileEditor from "./ProfileEditor";
 
 type YourBuuddyContainerProps = {
   session: Session;
@@ -16,14 +16,15 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
       <Profile session={session} />
       <div className="flex h-full w-full overflow-hidden">
         <Tabs
-          defaultValue="roles_availability"
+          defaultValue="booking"
           className="flex h-full w-full flex-col items-start overflow-hidden"
         >
           <TabsList>
+            <TabsTrigger value="booking">Booking</TabsTrigger>
             <TabsTrigger value="roles_availability">
               Roles and availability
             </TabsTrigger>
-            <TabsTrigger value="booking">Booking</TabsTrigger>
+            <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="payment">Payment</TabsTrigger>
           </TabsList>
           <TabsContent asChild value="roles_availability">
@@ -33,15 +34,14 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
             </div>
           </TabsContent>
           <TabsContent asChild value="booking">
-            <div className="flex h-full w-full flex-1 overflow-hidden">
-              <div className="flex w-full flex-[0.4]">
-                <BookingRequestBuuddyList receiverId={session.user.id} />
-              </div>
-              <div className="flex flex-[0.6]"></div>
-            </div>
           </TabsContent>
           <TabsContent asChild value="payment">
             <ConnectPayment />
+          </TabsContent>
+          <TabsContent asChild value="profile">
+            <div className="flex h-full w-full overflow-hidden">
+              <ProfileEditor />
+            </div>
           </TabsContent>
         </Tabs>
       </div>
