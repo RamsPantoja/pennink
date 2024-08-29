@@ -1,8 +1,9 @@
 import { type Session } from "next-auth";
 import { Card } from "../ui/card";
 import BookingRequestFilters from "./BookingRequestFilters";
-import BookingRequestBuuddyList from "./BookingRequests/BookingRequestBuuddyList";
+import BookingRequestBuuddyList from "./BuuddyBookingRequests/BookingRequestBuuddyList";
 import useBookingRequestManagerLogic from "./useBookingRequestManagerLogic";
+import BookingRequests from "./BookingRequests";
 
 type BookingRequestManagerProps = {
   session: Session;
@@ -24,6 +25,13 @@ const BookingRequestManager = ({ session }: BookingRequestManagerProps) => {
         (
           <BookingRequestBuuddyList
             receiverId={session.user.id}
+            filters={bookingRequestFilters}
+          />
+        )}
+      {bookingRequestFilters.bookingRequestType === "SENT" &&
+        (
+          <BookingRequests
+            senderId={session.user.id}
             filters={bookingRequestFilters}
           />
         )}

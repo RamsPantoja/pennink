@@ -17,7 +17,7 @@ export const bookingRequestRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       return await ctx
         .services({ ctx })
-        .bookingRequestService.getBookingRequestsBySenderId(input.senderId);
+        .bookingRequestService.getBookingRequestsBySenderId(input);
     }),
   bookingRequestsByReceiver: protectedProcedure
     .input(bookingRequestsByReceiverInputSchema)
