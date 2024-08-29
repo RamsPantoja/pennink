@@ -97,7 +97,7 @@ class BookingRequestService {
     });
   }
 
-  public async acceptBookingRequest(bookingRequestId: string) {
+  public async accept(bookingRequestId: string) {
     const [bookingRequest] = await this.ctx.db.update(bookingRequests).set({
       status: "ACCEPTED",
     })
@@ -114,9 +114,26 @@ class BookingRequestService {
     return bookingRequest;
   }
 
-  public async rejectBookingRequest(bookingRequestId: string) {
+  public async reject(bookingRequestId: string) {
     const [bookingRequest] = await this.ctx.db.update(bookingRequests).set({
       status: "REJECTED",
+    })
+      .where(eq(bookingRequests.id, bookingRequestId))
+      .returning();
+
+    if (!bookingRequest) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Booking request not found",
+      });
+    }
+
+    return bookingRequest;
+  }
+
+  public async cancel(bookingRequestId: string) {
+    const [bookingRequest] = await this.ctx.db.update(bookingRequests).set({
+      status: "CANCELED",
     })
       .where(eq(bookingRequests.id, bookingRequestId))
       .returning();

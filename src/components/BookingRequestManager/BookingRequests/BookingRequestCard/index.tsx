@@ -3,8 +3,12 @@ import { BuuddyButton } from "~/components/common/BuuddyButton";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Card } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
+import useBookingRequestCardLogic from "./useBookingRequestCardLogic";
+import CustomAlertDialog from "~/components/common/AlertDialog";
+import { type BookingRequestStatus } from "~/lib/enum";
 
 type BookingRequestCardProps = {
+  id: string;
   bookingTime: string;
   bookingDate: Date;
   message: string | null;
@@ -12,11 +16,29 @@ type BookingRequestCardProps = {
   receiverAvatar: string;
   receiverHeadline: string;
   receiverUsername: string;
+  status: BookingRequestStatus
 }
 
-const BookingRequestCard = ({ bookingDate, bookingTime, message, receiverName, receiverAvatar, receiverHeadline, receiverUsername }: BookingRequestCardProps) => {
+const BookingRequestCard = ({ bookingDate, bookingTime, message, receiverName, receiverAvatar, receiverHeadline, receiverUsername, id, status }: BookingRequestCardProps) => {
+  const {
+    displayCancelAlert,
+    setDisplayCancelAlert,
+    createBookingRequestIsPending,
+    onCancel
+  } = useBookingRequestCardLogic({ bookingRequestId: id });
+
   return (
     <Card className="flex flex-col gap-2 bg-mochaMantle p-4 max-w-sm max-h-80 min-h-80">
+      <CustomAlertDialog
+        open={displayCancelAlert}
+        title="Cancel Booking Request"
+        description="Are you sure you want to cancel this booking request?"
+        cancelText="Close"
+        actionText="Cancel"
+        onAction={onCancel}
+        onCancel={() => setDisplayCancelAlert(false)}
+        isPending={createBookingRequestIsPending}
+      />
       <div className="flex justify-between gap-2">
         <div className="flex basis-full items-center gap-4 overflow-hidden">
           <Avatar className="h-12 min-w-12">
@@ -35,7 +57,7 @@ const BookingRequestCard = ({ bookingDate, bookingTime, message, receiverName, r
             </span>
           </div>
         </div>
-        <span className="text-sm text-mochaMauve">Pending</span>
+        <span className="text-sm text-mochaMauve">{status}</span>
       </div>
       <div className="flex flex-col gap-2 pb-2 pt-2">
         <div className="flex items-center justify-between">
@@ -56,13 +78,39 @@ const BookingRequestCard = ({ bookingDate, bookingTime, message, receiverName, r
         </div>
       </div>
       <div className="flex w-full flex-1 items-end justify-end">
-        <BuuddyButton
-          variant="outline"
-          className="w-fit"
-          onClick={() => console.log("Decline")}
-        >
-          Cancel
-        </BuuddyButton>
+        {
+          status === "PENDING" && (
+            <BuuddyButton
+              variant="outline"
+              className="w-fit"
+              onClick={() => setDisplayCancelAlert(true)}
+            >
+              Cancel
+            </BuuddyButton>
+          )
+        }
+        {
+          status === "ACCEPTED" && (
+            <BuuddyButton
+              variant="outline"
+              className="w-fit"
+              onClick={() => console.log("PAY")}
+            >
+              Go to pay
+            </BuuddyButton>
+          )
+        }
+        {
+          status === "PAID" && (
+            <BuuddyButton
+              variant="outline"
+              className="w-fit"
+              onClick={() => console.log("PAY")}
+            >
+              Details
+            </BuuddyButton>
+          )
+        }
       </div>
     </Card>
   );

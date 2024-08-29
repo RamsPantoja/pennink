@@ -1,3 +1,4 @@
+import { type BookingRequestStatus } from "~/lib/enum";
 import { type RouterOutputs } from "~/utils/api";
 
 type BookingRequestsByReceiver = {
@@ -10,12 +11,17 @@ type BookingRequestsByReceiver = {
     image: string;
     profile: {
       headline: string;
-      username: string
-    }
-  }
+      username: string;
+    };
+  };
+  status: BookingRequestStatus;
 };
 
-const bookingRequestsByReceiverAdapter = (input: RouterOutputs["bookingRequest"]["bookingRequestsByReceiver"] | undefined): BookingRequestsByReceiver[] | undefined => {
+const bookingRequestsByReceiverAdapter = (
+  input:
+    | RouterOutputs["bookingRequest"]["bookingRequestsByReceiver"]
+    | undefined,
+): BookingRequestsByReceiver[] | undefined => {
   if (input) {
     return input.map((item) => {
       return {
@@ -28,11 +34,12 @@ const bookingRequestsByReceiverAdapter = (input: RouterOutputs["bookingRequest"]
           image: item.sender.image,
           profile: {
             headline: item.sender.profile.headline,
-            username: item.sender.profile.username
-          }
-        }
-      }
-    })
+            username: item.sender.profile.username,
+          },
+        },
+        status: item.status,
+      };
+    });
   }
 };
 

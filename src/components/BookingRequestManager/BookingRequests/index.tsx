@@ -36,6 +36,7 @@ const BookingRequests = ({ senderId, filters }: BookingRequestsProps) => {
           return (
             <BookingRequestCard
               key={item.id}
+              id={item.id}
               bookingDate={item.bookingDate}
               bookingTime={item.bookingTime}
               message={item.message}
@@ -43,6 +44,7 @@ const BookingRequests = ({ senderId, filters }: BookingRequestsProps) => {
               receiverAvatar={item.receiver.image}
               receiverHeadline={item.receiver.profile.headline}
               receiverUsername={item.receiver.profile.username}
+              status={item.status}
             />
           );
         })}

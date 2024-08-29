@@ -45,6 +45,8 @@ const BookingRequestBuuddyList = (
               senderAvatar={item.sender.image}
               senderHeadline={item.sender.profile.headline}
               senderUsername={item.sender.profile.username}
+              id={item.id}
+              status={item.status}
             />
           );
         })}

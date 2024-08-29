@@ -21,3 +21,7 @@ export const bookingRequestsByReceiverInputSchema = z.object({
   receiverId: z.string().uuid(),
   status: z.enum(bookingRequestStatusEnum.enumValues),
 });
+
+export const cancelBookingRequestInputSchema = z.object({
+  id: z.string().uuid(),
+});
