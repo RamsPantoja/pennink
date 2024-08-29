@@ -25,6 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import Notifications from "../Notifications";
 
 type SidebarProps = {
   session: Session | null;
@@ -88,6 +89,16 @@ const Sidebar = ({ session }: SidebarProps) => {
               isPending={false}
               open={displaySignOutAlert}
             />
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Notifications session={session} />
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                Notifications
+              </TooltipContent>
+            </Tooltip>
             <DropdownMenu>
               <Tooltip>
                 <TooltipTrigger asChild>
