@@ -6,6 +6,7 @@ import { Card } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import { type BookingRequestStatus } from "~/lib/enum";
 import { isDateExpired } from "~/utils/date";
+import useBookingRequestBuuddyCardLogic from "./BookingRequestBuuddyCardLogic";
 
 type BookingRequestCardBuuddyProps = {
   id: string;
@@ -30,6 +31,7 @@ const BookingRequestBuuddyCard = ({
   id,
   status,
 }: BookingRequestCardBuuddyProps) => {
+  const { handleAccept, handleDecline } = useBookingRequestBuuddyCardLogic();
   const isBookingDateExpired = isDateExpired(bookingDate);
 
   return (
@@ -78,14 +80,11 @@ const BookingRequestBuuddyCard = ({
             <BuuddyButton
               variant="outline"
               className="w-fit"
-              onClick={() => console.log("Decline")}
+              onClick={handleDecline}
             >
               Reject
             </BuuddyButton>
-            <BuuddyButton
-              className="w-fit"
-              onClick={() => console.log("Accept")}
-            >
+            <BuuddyButton className="w-fit" onClick={handleAccept}>
               Accept
             </BuuddyButton>
           </Fragment>

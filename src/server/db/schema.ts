@@ -89,6 +89,7 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   profile: one(profiles, { fields: [users.id], references: [profiles.userId] }),
   sentBookingRequests: many(bookingRequests, { relationName: "sender" }),
   receivedBookingRequests: many(bookingRequests, { relationName: "receiver" }),
+  notifications: many(notifications),
 }));
 
 export const userAnalytics = createTable("user_analytic", {
@@ -523,3 +524,31 @@ export const bookingRequestsRelations = relations(
     }),
   }),
 );
+
+export const notifications = createTable("notification", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  content: text("content").notNull(),
+  iconUrl: text("iconUrl").notNull(),
+  link: text("link").notNull(),
+  seen: boolean("seen").notNull().default(false),
+  receiverId: uuid("receiverId")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("createdAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updatedAt", {
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+});
+
+export const notificationsRelations = relations(notifications, ({ one }) => ({
+  receiver: one(users, {
+    fields: [notifications.receiverId],
+    references: [users.id],
+  }),
+}));

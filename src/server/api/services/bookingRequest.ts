@@ -8,6 +8,9 @@ import { type TRPCContext } from "../trpc";
 import { bookingRequests } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
+import type EmailService from "./email";
+import newBookingRequestEmailTemplate from "../templates/new_booking_request";
+import { env } from "~/env";
 
 type BookingRequestServiceContructor = {
   ctx: TRPCContext;
@@ -35,6 +38,7 @@ class BookingRequestService {
 
   public async create(
     input: CreateBookingRequestInput,
+    emailService: EmailService,
   ): Promise<BookingRequest> {
     const [bookingRequest] = await this.ctx.db
       .insert(bookingRequests)
@@ -43,12 +47,56 @@ class BookingRequestService {
       })
       .returning();
 
+    const receiver = await this.ctx.db.query.users.findFirst({
+      where: (users, { eq }) => {
+        return eq(users.id, input.receiverId);
+      },
+    });
+
+    const sender = await this.ctx.db.query.users.findFirst({
+      where: (users, { eq }) => {
+        return eq(users.id, input.senderId);
+      },
+      with: {
+        profile: true,
+      },
+    });
+
+    if (!receiver) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Receiver not found",
+      });
+    }
+
+    if (!sender) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Sender not found",
+      });
+    }
+
     if (!bookingRequest) {
       throw new TRPCError({
         code: "CONFLICT",
         message: "Fail to create booking request",
       });
     }
+
+    await emailService.send({
+      to: [receiver.email],
+      from: "Acme <onboarding@resend.dev>", // "Buuddy <no-reply@buuddy.io>"
+      subject: "New booking request",
+      html: newBookingRequestEmailTemplate({
+        bookingDate: input.bookingDate.toDateString(),
+        link: `${env.NEXT_PUBLIC_BASE_URL}/booking_requests`,
+        senderName: sender.name,
+        bookingTime: input.bookingTime,
+        message: input.message ? input.message : "Without message",
+        senderAvatar: sender.image,
+        senderHeadline: sender.profile.headline,
+      }),
+    });
 
     return bookingRequest;
   }
@@ -98,9 +146,11 @@ class BookingRequestService {
   }
 
   public async accept(bookingRequestId: string) {
-    const [bookingRequest] = await this.ctx.db.update(bookingRequests).set({
-      status: "ACCEPTED",
-    })
+    const [bookingRequest] = await this.ctx.db
+      .update(bookingRequests)
+      .set({
+        status: "ACCEPTED",
+      })
       .where(eq(bookingRequests.id, bookingRequestId))
       .returning();
 
@@ -110,14 +160,18 @@ class BookingRequestService {
         message: "Booking request not found",
       });
     }
+
+    //TODO: Sent a email notification to the sender
 
     return bookingRequest;
   }
 
   public async reject(bookingRequestId: string) {
-    const [bookingRequest] = await this.ctx.db.update(bookingRequests).set({
-      status: "REJECTED",
-    })
+    const [bookingRequest] = await this.ctx.db
+      .update(bookingRequests)
+      .set({
+        status: "REJECTED",
+      })
       .where(eq(bookingRequests.id, bookingRequestId))
       .returning();
 
@@ -128,13 +182,17 @@ class BookingRequestService {
       });
     }
 
+    //TODO: Sent a email notification to the sender
+
     return bookingRequest;
   }
 
   public async cancel(bookingRequestId: string) {
-    const [bookingRequest] = await this.ctx.db.update(bookingRequests).set({
-      status: "CANCELED",
-    })
+    const [bookingRequest] = await this.ctx.db
+      .update(bookingRequests)
+      .set({
+        status: "CANCELED",
+      })
       .where(eq(bookingRequests.id, bookingRequestId))
       .returning();
 

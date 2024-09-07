@@ -11,7 +11,12 @@ export const bookingRequestRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createBookingRequestInputSchema)
     .mutation(async ({ input, ctx }) => {
-      return await ctx.services({ ctx }).bookingRequestService.create(input);
+      return await ctx
+        .services({ ctx })
+        .bookingRequestService.create(
+          input,
+          ctx.services({ ctx }).emailService,
+        );
     }),
   bookingRequestsBySender: protectedProcedure
     .input(bookingRequestsBySenderInputSchema)
@@ -30,7 +35,6 @@ export const bookingRequestRouter = createTRPCRouter({
   cancel: protectedProcedure
     .input(cancelBookingRequestInputSchema)
     .mutation(async ({ input, ctx }) => {
-      return await ctx.services({ ctx }).bookingRequestService
-        .cancel(input.id);
+      return await ctx.services({ ctx }).bookingRequestService.cancel(input.id);
     }),
 });

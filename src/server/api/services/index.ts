@@ -7,6 +7,7 @@ import UserService from "./user";
 import UserRoleService from "./userRole";
 import UserTimeService from "./userTime";
 import WeeklyDaysService from "./weeklyDays";
+import EmailService from "./email";
 
 export type ServicesContext = {
   userRoleService: UserRoleService;
@@ -17,6 +18,7 @@ export type ServicesContext = {
   interestService: InterestService;
   profileService: ProfileService;
   bookingRequestService: BookingRequestService;
+  emailService: EmailService;
 };
 
 export type ServicesConfig = {
@@ -33,6 +35,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
     interestService: new InterestService({ ctx }),
     profileService: new ProfileService({ ctx }),
     bookingRequestService: new BookingRequestService({ ctx }),
+    emailService: new EmailService({ ctx }),
   };
 };
 
