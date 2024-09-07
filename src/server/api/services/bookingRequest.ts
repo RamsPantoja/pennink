@@ -88,7 +88,7 @@ class BookingRequestService {
       from: "Acme <onboarding@resend.dev>", // "Buuddy <no-reply@buuddy.io>"
       subject: "New booking request",
       html: newBookingRequestEmailTemplate({
-        bookingDate: input.bookingDate.toDateString(),
+        bookingDate: input.bookingDate.toLocaleDateString(),
         link: `${env.NEXT_PUBLIC_BASE_URL}/booking_requests`,
         senderName: sender.name,
         bookingTime: input.bookingTime,

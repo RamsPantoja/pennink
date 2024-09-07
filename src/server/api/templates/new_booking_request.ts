@@ -26,7 +26,11 @@ const newBookingRequestEmailTemplate = ({
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>New Booking Request</title>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link
+              rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossorigin="anonymous"
+          />
           <link
               href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
               rel="stylesheet"
@@ -98,7 +102,7 @@ const newBookingRequestEmailTemplate = ({
                   <h1 style="color: #bac2de; text-align: center; font-size: 24px">
                       Booking Request
                   </h1>
-                  <p style="color: #bac2de">
+                  <p style="color: #bac2de; font-size: 14px">
                       You have received a new booking request for the date:
                       <b>${bookingDate}</b> at <b>${bookingTime}</b>.
                   </p>
@@ -116,7 +120,7 @@ const newBookingRequestEmailTemplate = ({
                           "
                       />
                       <div style="display: inline-block; padding-left: 10px">
-                          <p style="margin-bottom: 5px; font-size: 16px">
+                          <p style="margin: 0; font-size: 16px">
                               <b>${senderName}</b>
                           </p>
                           <p style="margin: 0; font-size: 14px">
@@ -124,7 +128,9 @@ const newBookingRequestEmailTemplate = ({
                           </p>
                       </div>
                   </div>
-                  <p style="color: #bac2de"><b>Message:</b> ${message}</p>
+                  <p style="color: #bac2de; font-size: 14px">
+                      <b>Message:</b> ${message}
+                  </p>
                   <a
                       href="${link}"
                       style="
@@ -138,16 +144,15 @@ const newBookingRequestEmailTemplate = ({
                       "
                       >View Request</a
                   >
-                  <p style="color: #bac2de">
+                  <p style="color: #bac2de; font-size: 14px">
                       If you have any questions or comments, please do not
                       hesitate to contact us.
                   </p>
-                  <p style="color: #bac2de">Thank you!</p>
+                  <p style="color: #bac2de; font-size: 14px">Thank you!</p>
               </div>
           </div>
       </body>
   </html>
-
         `;
 };
 
