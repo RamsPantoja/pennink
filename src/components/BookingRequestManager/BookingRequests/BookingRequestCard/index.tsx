@@ -6,6 +6,7 @@ import { Separator } from "~/components/ui/separator";
 import useBookingRequestCardLogic from "./useBookingRequestCardLogic";
 import CustomAlertDialog from "~/components/common/AlertDialog";
 import { type BookingRequestStatus } from "~/lib/enum";
+import { isDateExpired } from "~/utils/date";
 
 type BookingRequestCardProps = {
   id: string;
@@ -16,19 +17,31 @@ type BookingRequestCardProps = {
   receiverAvatar: string;
   receiverHeadline: string;
   receiverUsername: string;
-  status: BookingRequestStatus
-}
+  status: BookingRequestStatus;
+};
 
-const BookingRequestCard = ({ bookingDate, bookingTime, message, receiverName, receiverAvatar, receiverHeadline, receiverUsername, id, status }: BookingRequestCardProps) => {
+const BookingRequestCard = ({
+  bookingDate,
+  bookingTime,
+  message,
+  receiverName,
+  receiverAvatar,
+  receiverHeadline,
+  receiverUsername,
+  id,
+  status,
+}: BookingRequestCardProps) => {
   const {
     displayCancelAlert,
     setDisplayCancelAlert,
     createBookingRequestIsPending,
-    onCancel
+    onCancel,
   } = useBookingRequestCardLogic({ bookingRequestId: id });
 
+  const isBookingDateExpired = isDateExpired(bookingDate);
+
   return (
-    <Card className="flex flex-col gap-2 bg-mochaMantle p-4 max-w-sm max-h-80 min-h-80">
+    <Card className="flex max-h-80 min-h-80 max-w-sm flex-col gap-2 bg-mochaMantle p-4">
       <CustomAlertDialog
         open={displayCancelAlert}
         title="Cancel Booking Request"
@@ -78,42 +91,46 @@ const BookingRequestCard = ({ bookingDate, bookingTime, message, receiverName, r
         </div>
       </div>
       <div className="flex w-full flex-1 items-end justify-end">
-        {
-          status === "PENDING" && (
-            <BuuddyButton
-              variant="outline"
-              className="w-fit"
-              onClick={() => setDisplayCancelAlert(true)}
-            >
-              Cancel
-            </BuuddyButton>
-          )
-        }
-        {
-          status === "ACCEPTED" && (
-            <BuuddyButton
-              variant="outline"
-              className="w-fit"
-              onClick={() => console.log("PAY")}
-            >
-              Go to pay
-            </BuuddyButton>
-          )
-        }
-        {
-          status === "PAID" && (
-            <BuuddyButton
-              variant="outline"
-              className="w-fit"
-              onClick={() => console.log("PAY")}
-            >
-              Details
-            </BuuddyButton>
-          )
-        }
+        {status === "PENDING" && !isBookingDateExpired && (
+          <BuuddyButton
+            variant="outline"
+            className="w-fit"
+            onClick={() => setDisplayCancelAlert(true)}
+          >
+            Cancel
+          </BuuddyButton>
+        )}
+        {status === "ACCEPTED" && (
+          <BuuddyButton
+            variant="outline"
+            className="w-fit"
+            onClick={() => console.log("PAY")}
+          >
+            Go to pay
+          </BuuddyButton>
+        )}
+        {status === "PAID" && (
+          <BuuddyButton
+            variant="outline"
+            className="w-fit"
+            onClick={() => console.log("PAY")}
+          >
+            Details
+          </BuuddyButton>
+        )}
+        {status === "REJECTED" && (
+          <span className="text-sm text-mochaSubText">
+            Rejected by the buuddy
+          </span>
+        )}
+        {status === "PENDING" && isBookingDateExpired && (
+          <span className="text-sm text-mochaSubText">
+            Booking request expired
+          </span>
+        )}
       </div>
     </Card>
   );
-}
+};
 
 export default BookingRequestCard;
