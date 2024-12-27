@@ -4,23 +4,45 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+	width: 9px;
+	height: 9px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 5px;
+	background: transparent;
+	border-radius: 5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #b4befe;
-  border-radius: 5px;
+	background: #b4befe;
+	border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-corner {
-  background: transparent;
+	background: transparent;
+}
+@layer base {
+	:root {
+		--sidebar-background: #181825;
+		--sidebar-foreground: #bac2de;
+		--sidebar-primary: #cba6f7;
+		--sidebar-primary-foreground: #cba6f7;
+		--sidebar-accent: #cba6f7;
+		--sidebar-accent-foreground: #181825;
+		--sidebar-border: #1e1e2e;
+		--sidebar-ring: #cba6f7;
+	}
+	.dark {
+		--sidebar-background: #181825;
+		--sidebar-foreground: #181825;
+		--sidebar-primary: #cba6f7;
+		--sidebar-primary-foreground: #cba6f7;
+		--sidebar-accent: #cba6f7;
+		--sidebar-accent-foreground: #cba6f7;
+		--sidebar-border: #1e1e2e;
+		--sidebar-ring: #cba6f7;
+	}
 }
