@@ -11,9 +11,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	return (
 		<SidebarProvider>
 			<AppSidebar session={session} />
-			<main className="bg-mochaMantle flex h-screen w-full">
-				<div className="flex p-2">
-					<SidebarTrigger className="text-mochaMauve min-w-5 h-5" />
+			<main className="bg-mochaBase flex h-screen w-full">
+				<div className="flex p-4">
+					<SidebarTrigger className="text-mochaLavender min-w-5 h-5" />
 				</div>
 				<div className="flex h-full w-full">
 					<div className="flex h-full w-full flex-col gap-2 rounded-md">
