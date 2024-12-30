@@ -1,25 +1,25 @@
 const BuuddyLogotype = () => {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="m-w-6 h-6">
-        <svg
-          version="1.1"
-          id="Layer_1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          x="0px"
-          y="0px"
-          width="100%"
-          height="100%"
-          viewBox="0 0 500 500"
-          enableBackground="new 0 0 500 500"
-          xmlSpace="preserve"
-        >
-          <path
-            fill="#00000000"
-            opacity="1.000000"
-            stroke="none"
-            d="
+	return (
+		<div className="flex items-center gap-2 p-2">
+			<div className="min-w-5 h-5">
+				<svg
+					version="1.1"
+					id="Layer_1"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlnsXlink="http://www.w3.org/1999/xlink"
+					x="0px"
+					y="0px"
+					width="100%"
+					height="100%"
+					viewBox="0 0 500 500"
+					enableBackground="new 0 0 500 500"
+					xmlSpace="preserve"
+				>
+					<path
+						fill="#00000000"
+						opacity="1.000000"
+						stroke="none"
+						d="
 M501.000000,194.000000
 	C501.000000,296.666656 501.000000,398.833282 501.000000,500.999939
 	C334.333405,500.999969 167.666794,500.999969 1.000144,501.000000
@@ -43,12 +43,12 @@ M208.558182,478.005219
 	C53.399258,362.287689 80.243721,405.684845 123.157730,439.025543
 	C148.242432,458.514313 176.650757,471.209229 208.558182,478.005219
 z"
-          />
-          <path
-            fill="#cba6f7"
-            opacity="1.000000"
-            stroke="none"
-            d="
+					/>
+					<path
+						fill="#cba6f7"
+						opacity="1.000000"
+						stroke="none"
+						d="
 M208.137299,477.957458
 	C176.650757,471.209229 148.242432,458.514313 123.157730,439.025543
 	C80.243721,405.684845 53.399258,362.287689 44.004696,308.604431
@@ -72,12 +72,12 @@ M275.976593,374.552856
 	C134.892212,243.699493 136.357498,306.238403 174.659302,345.104675
 	C202.486221,373.341675 236.329086,382.999573 275.976593,374.552856
 z"
-          />
-          <path
-            fill="#00000000"
-            opacity="1.000000"
-            stroke="none"
-            d="
+					/>
+					<path
+						fill="#00000000"
+						opacity="1.000000"
+						stroke="none"
+						d="
 M275.580261,374.679962
 	C236.329086,382.999573 202.486221,373.341675 174.659302,345.104675
 	C136.357498,306.238403 134.892212,243.699493 170.817856,202.529938
@@ -85,12 +85,12 @@ M275.580261,374.679962
 	C310.265717,170.716400 348.841248,208.637512 355.758728,257.564636
 	C363.355499,311.296326 328.549347,361.622742 275.580261,374.679962
 z"
-          />
-        </svg>
-      </div>
-      <p className="text-2xl font-black">buuddy</p>
-    </div>
-  );
+					/>
+				</svg>
+			</div>
+			<p className="text-2xl font-black truncate">buuddy</p>
+		</div>
+	);
 };
 
 export default BuuddyLogotype;
