@@ -18,7 +18,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	return (
 		<SidebarProvider>
 			<AppSidebar session={session} />
-			<main className="bg-mochaBase flex h-screen w-full flex-col">
+			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
 				<div className="flex p-4 gap-4 items-center justify-between w-full">
 					<SidebarTrigger className="text-mochaLavender min-w-5 h-5" />
 					{!session && (
@@ -40,10 +40,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						</Tooltip>
 					)}
 				</div>
-				<div className="flex h-full w-full flex-col gap-2 rounded-md overflow-hidden">
-					<div className="bg-mochaBase flex h-full w-full overflow-hidden rounded-md">
-						{children}
-					</div>
+				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden">
+					{children}
 				</div>
 			</main>
 		</SidebarProvider>

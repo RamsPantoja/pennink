@@ -6,7 +6,11 @@ import { Separator } from "~/components/ui/separator";
 import useBookingRequestCardLogic from "./useBookingRequestCardLogic";
 import CustomAlertDialog from "~/components/common/AlertDialog";
 import type { BookingRequestStatus } from "~/lib/enum";
-import { isExpiredDateAndTime, isoDateFromDateAndTime } from "~/lib/utils";
+import {
+	convertTo12HourFormat,
+	isExpiredDateAndTime,
+	isoDateFromDateAndTime,
+} from "~/lib/utils";
 
 type BookingRequestCardProps = {
 	id: string;
@@ -87,7 +91,9 @@ const BookingRequestCard = ({
 				<Separator />
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-mochaSubText">Time</span>
-					<span className="text-mochaText">{bookingTime}</span>
+					<span className="text-mochaText">
+						{convertTo12HourFormat(bookingTime)}
+					</span>
 				</div>
 				<Separator />
 				<div className="flex flex-col">

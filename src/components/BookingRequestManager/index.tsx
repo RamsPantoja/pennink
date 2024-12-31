@@ -6,37 +6,25 @@ import useBookingRequestManagerLogic from "./useBookingRequestManagerLogic";
 import BookingRequests from "./BookingRequests";
 
 type BookingRequestManagerProps = {
-  session: Session;
+	session: Session;
 };
 
 const BookingRequestManager = ({ session }: BookingRequestManagerProps) => {
-  const {
-    bookingRequestFilters,
-    onChangeFilters,
-  } = useBookingRequestManagerLogic();
+	const { bookingRequestFilters, onChangeFilters } =
+		useBookingRequestManagerLogic();
 
-  return (
-    <Card className="flex flex-col gap-4 w-full">
-      <BookingRequestFilters
-        filters={bookingRequestFilters}
-        onChangeFilters={onChangeFilters}
-      />
-      {bookingRequestFilters.bookingRequestType === "INBOX" &&
-        (
-          <BookingRequestBuuddyList
-            receiverId={session.user.id}
-            filters={bookingRequestFilters}
-          />
-        )}
-      {bookingRequestFilters.bookingRequestType === "SENT" &&
-        (
-          <BookingRequests
-            senderId={session.user.id}
-            filters={bookingRequestFilters}
-          />
-        )}
-    </Card>
-  );
+	return (
+		<Card className="flex flex-col gap-4 w-full pl-4 pr-4 pt-0 pb-4">
+			<BookingRequestFilters
+				filters={bookingRequestFilters}
+				onChangeFilters={onChangeFilters}
+			/>
+			<BookingRequests
+				senderId={session.user.id}
+				filters={bookingRequestFilters}
+			/>
+		</Card>
+	);
 };
 
 export default BookingRequestManager;
