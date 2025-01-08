@@ -14,7 +14,7 @@ export type TimeCardProps = {
 
 const TimeCard = ({ hour, onSendRequest }: TimeCardProps) => {
 	return (
-		<Card className="flex min-w-80 flex-col gap-2 bg-mochaMantle">
+		<Card className="flex flex-col gap-4 bg-mochaMantle">
 			<div className="flex items-center justify-between gap-4">
 				<span className="font-bold text-mochaText">
 					{convertTo12HourFormat(hour)}

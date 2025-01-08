@@ -2,7 +2,7 @@ import type { Session } from "next-auth";
 import { Card } from "../ui/card";
 import useBookingRequestManagerLogic from "../BookingRequestManager/useBookingRequestManagerLogic";
 import BookingRequestFilters from "../BookingRequestManager/BookingRequestFilters";
-import BookingRequestBuuddyList from "../BookingRequestManager/BuuddyBookingRequests/BookingRequestBuuddyList";
+import BookingRequestBuuddyList from "./BuuddyBookingRequests/BookingRequestBuuddyList";
 
 type BookingRequestManagerProps = {
 	session: Session;

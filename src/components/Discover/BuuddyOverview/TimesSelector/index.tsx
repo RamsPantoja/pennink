@@ -4,6 +4,14 @@ import useTimesSelectorLogic from "./useTimesSelectorLogic";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { Skeleton } from "~/components/ui/skeleton";
 import TimeList from "./TimeList";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "~/components/ui/select";
+import { Fragment } from "react";
 
 type TimesSelectorProps = {
 	buuddyId: string | undefined;
@@ -18,6 +26,8 @@ const TimesSelector = ({ buuddyId }: TimesSelectorProps) => {
 		date,
 		notAllowedWeeklyDays,
 		timesToDisplay,
+		handleSelectRoleTimes,
+		roleTimes,
 	} = useTimesSelectorLogic({ buuddyId });
 
 	return (
@@ -48,7 +58,7 @@ const TimesSelector = ({ buuddyId }: TimesSelectorProps) => {
 				!userTimesIsError &&
 				userTimesData &&
 				userTimesData.length > 0 && (
-					<div className="flex gap-2 w-full h-full flex-col md:flex-row overflow-hidden">
+					<div className="flex gap-2 w-full h-full flex-col 2xl:flex-row overflow-hidden">
 						<Calendar
 							mode="single"
 							selected={date}
@@ -59,23 +69,37 @@ const TimesSelector = ({ buuddyId }: TimesSelectorProps) => {
 							]}
 							className="flex w-fit h-fit"
 						/>
-						<div className="flex h-full w-full flex-col overflow-hidden">
-							<span className="text-sm font-bold text-mochaSubText">Times</span>
-							<div className="flex flex-col gap-4 overflow-auto w-full h-fit">
-								{timesToDisplay.length > 0 &&
-									timesToDisplay.map((time) => {
-										return (
-											<TimeList key={time.id} time={time} selectedDate={date} />
-										);
-									})}
-								{timesToDisplay.length === 0 && (
-									<FeedbackMessage
-										status="INFORMATION"
-										message="No times to display"
-									/>
+						{Boolean(date) && (
+							<div className="flex h-full w-full flex-col overflow-hidden p-1 gap-4">
+								<span className="text-sm font-bold text-mochaSubText">
+									Times
+								</span>
+								{timesToDisplay.length > 0 && (
+									<Fragment key={date?.toLocaleString()}>
+										<Select
+											onValueChange={handleSelectRoleTimes}
+											defaultValue={timesToDisplay[0]?.id}
+										>
+											<SelectTrigger className="w-[180px]">
+												<SelectValue placeholder="Select a role" />
+											</SelectTrigger>
+											<SelectContent>
+												{timesToDisplay?.map((item) => {
+													return (
+														<SelectItem key={item.id} value={item.id}>
+															{item.userRole.role.name}
+														</SelectItem>
+													);
+												})}
+											</SelectContent>
+										</Select>
+										{roleTimes && (
+											<TimeList roleTimes={roleTimes} selectedDate={date} />
+										)}
+									</Fragment>
 								)}
 							</div>
-						</div>
+						)}
 					</div>
 				)}
 			{!userTimesIsLoading &&

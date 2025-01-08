@@ -6,13 +6,14 @@ import BookingRequestForm from "../BookingRequestForm";
 import { useSession } from "next-auth/react";
 import CustomAlertDialog from "~/components/common/AlertDialog";
 import { useRouter } from "next/router";
+import { Fragment } from "react";
 
 type TimeListProps = {
-	time: RouterOutputs["userTime"]["userTimes"][number];
+	roleTimes: RouterOutputs["userTime"]["userTimes"][number];
 	selectedDate: Date | undefined;
 };
 
-const TimeList = ({ time, selectedDate }: TimeListProps) => {
+const TimeList = ({ roleTimes, selectedDate }: TimeListProps) => {
 	const router = useRouter();
 	const {
 		times,
@@ -22,23 +23,23 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
 		selectedTime,
 		displaySignInWarning,
 		setDisplaySignInWarning,
-	} = useTimeListLogic({ time, selectedDate });
+	} = useTimeListLogic({ roleTimes, selectedDate });
 
 	const { data: session, status } = useSession();
 
 	return (
-		<div className="flex flex-col gap-4 p-2">
+		<Fragment>
 			{status !== "loading" && session && (
 				<BookingRequestForm
 					open={displaySendBookingRequestForm}
 					onOpenChange={onCloseBookingRequestForm}
 					time={selectedTime}
 					date={selectedDate}
-					buuddyId={time.userId}
+					buuddyId={roleTimes.userId}
 					senderId={session.user.id}
 					senderTimezoneIANA={Intl.DateTimeFormat().resolvedOptions().timeZone}
-					buuddyTimezoneIANA={time.timezoneIANA}
-					userRoleId={time.userRoleId}
+					buuddyTimezoneIANA={roleTimes.timezoneIANA}
+					userRoleId={roleTimes.userRoleId}
 				/>
 			)}
 			<CustomAlertDialog
@@ -53,10 +54,7 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
 				onCancel={() => setDisplaySignInWarning(false)}
 				isPending={false}
 			/>
-			<span className="text-sm font-bold text-mochaText">
-				{time.userRole.role.name}
-			</span>
-			<div className="flex flex-col gap-2">
+			<div className="flex flex-col gap-2 overflow-auto p-2">
 				{times.length === 0 && (
 					<FeedbackMessage
 						status="INFORMATION"
@@ -74,7 +72,7 @@ const TimeList = ({ time, selectedDate }: TimeListProps) => {
 						);
 					})}
 			</div>
-		</div>
+		</Fragment>
 	);
 };
 

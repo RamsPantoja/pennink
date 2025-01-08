@@ -23,6 +23,8 @@ type BookingRequestCardProps = {
 	receiverUsername: string;
 	status: BookingRequestStatus;
 	senderTimezone: string;
+	role: string;
+	price: string;
 };
 
 const BookingRequestCard = ({
@@ -36,6 +38,8 @@ const BookingRequestCard = ({
 	id,
 	status,
 	senderTimezone,
+	role,
+	price,
 }: BookingRequestCardProps) => {
 	const {
 		displayCancelAlert,
@@ -50,7 +54,7 @@ const BookingRequestCard = ({
 	);
 
 	return (
-		<Card className="flex max-h-80 min-h-80 max-w-sm flex-col gap-2 bg-mochaMantle p-4">
+		<Card className="flex max-h-80 min-h-96 max-w-sm flex-col gap-2 bg-mochaMantle p-4">
 			<CustomAlertDialog
 				open={displayCancelAlert}
 				title="Cancel Booking Request"
@@ -84,16 +88,26 @@ const BookingRequestCard = ({
 			<div className="flex flex-col gap-2 pb-2 pt-2">
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-mochaSubText">Date</span>
-					<span className="text-mochaText">
+					<span className="text-mochaText font-bold">
 						{bookingDate.toLocaleDateString()}
 					</span>
 				</div>
 				<Separator />
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-mochaSubText">Time</span>
-					<span className="text-mochaText">
+					<span className="text-mochaText font-bold">
 						{convertTo12HourFormat(bookingTime)}
 					</span>
+				</div>
+				<Separator />
+				<div className="flex items-center justify-between">
+					<span className="text-sm text-mochaSubText">Role</span>
+					<span className="text-mochaText font-bold">{role}</span>
+				</div>
+				<Separator />
+				<div className="flex items-center justify-between">
+					<span className="text-sm text-mochaSubText">Price</span>
+					<span className="text-mochaText font-bold">${price} USD</span>
 				</div>
 				<Separator />
 				<div className="flex flex-col">
@@ -112,11 +126,7 @@ const BookingRequestCard = ({
 					</BuuddyButton>
 				)}
 				{status === "ACCEPTED" && (
-					<BuuddyButton
-						variant="outline"
-						className="w-fit"
-						onClick={() => console.log("PAY")}
-					>
+					<BuuddyButton className="w-fit" onClick={() => console.log("PAY")}>
 						Go to pay
 					</BuuddyButton>
 				)}

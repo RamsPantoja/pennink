@@ -16,6 +16,8 @@ type BookingRequestsByReceiver = {
 		};
 	};
 	status: BookingRequestStatus;
+	role: string;
+	price: string;
 };
 
 const bookingRequestsByReceiverAdapter = (
@@ -40,6 +42,8 @@ const bookingRequestsByReceiverAdapter = (
 					},
 				},
 				status: item.status,
+				role: item.userRole.role.name,
+				price: item.userRole.hourPrice,
 			};
 		});
 	}

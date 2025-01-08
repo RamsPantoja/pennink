@@ -5,7 +5,7 @@ import BookingRequestBuuddyCardSkeleton from "./BookingRequestBuuddyCard/Booking
 import { Fragment } from "react";
 import BookingRequestBuuddyCard from "./BookingRequestBuuddyCard";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
-import type { BookingRequestFilters } from "../BookingRequestFilters";
+import type { BookingRequestFilters } from "~/components/BookingRequestManager/BookingRequestFilters";
 
 type BookingRequestProps = {
 	receiverId: string;
@@ -49,6 +49,8 @@ const BookingRequestBuuddyList = ({
 							receiverTimezone={item.receiverTimezone}
 							id={item.id}
 							status={item.status}
+							role={item.role}
+							price={item.price}
 						/>
 					);
 				})}

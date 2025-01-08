@@ -11,6 +11,7 @@ import {
 	isExpiredDateAndTime,
 	isoDateFromDateAndTime,
 } from "~/lib/utils";
+import BookingRequestRejectForm from "../BookingRequestRejectForm";
 
 type BookingRequestCardBuuddyProps = {
 	id: string;
@@ -23,6 +24,8 @@ type BookingRequestCardBuuddyProps = {
 	senderHeadline: string;
 	senderUsername: string;
 	receiverTimezone: string;
+	role: string;
+	price: string;
 };
 
 const BookingRequestBuuddyCard = ({
@@ -36,8 +39,15 @@ const BookingRequestBuuddyCard = ({
 	id,
 	status,
 	receiverTimezone,
+	role,
+	price,
 }: BookingRequestCardBuuddyProps) => {
-	const { handleAccept, handleDecline } = useBookingRequestBuuddyCardLogic();
+	const {
+		displayRejectDialog,
+		setDisplayRejectDialog,
+		handleAccept,
+		acceptBookingRequestMutationIsPending,
+	} = useBookingRequestBuuddyCardLogic({ bookingRequestId: id });
 
 	const expiryResult = isExpiredDateAndTime(
 		isoDateFromDateAndTime(bookingDate, bookingTime),
@@ -45,7 +55,17 @@ const BookingRequestBuuddyCard = ({
 	);
 
 	return (
-		<Card className="flex max-h-80 min-h-80 max-w-sm flex-col gap-2 bg-mochaMantle p-4">
+		<Card className="flex max-h-80 min-h-96 max-w-sm flex-col gap-2 bg-mochaMantle p-4">
+			{displayRejectDialog && (
+				<BookingRequestRejectForm
+					open={displayRejectDialog}
+					onOpenChange={setDisplayRejectDialog}
+					bookingRequestId={id}
+					onSuccess={() => {
+						setDisplayRejectDialog(false);
+					}}
+				/>
+			)}
 			<div className="flex justify-between gap-2">
 				<div className="flex basis-full items-center gap-4 overflow-hidden">
 					<Avatar className="h-12 min-w-12">
@@ -69,16 +89,26 @@ const BookingRequestBuuddyCard = ({
 			<div className="flex flex-col gap-2 pb-2 pt-2">
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-mochaSubText">Date</span>
-					<span className="text-mochaText">
+					<span className="text-mochaText font-bold">
 						{bookingDate.toLocaleDateString()}
 					</span>
 				</div>
 				<Separator />
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-mochaSubText">Time</span>
-					<span className="text-mochaText">
+					<span className="text-mochaText font-bold">
 						{convertTo12HourFormat(bookingTime)}
 					</span>
+				</div>
+				<Separator />
+				<div className="flex items-center justify-between">
+					<span className="text-sm text-mochaSubText">Role</span>
+					<span className="text-mochaText font-bold">{role}</span>
+				</div>
+				<Separator />
+				<div className="flex items-center justify-between">
+					<span className="text-sm text-mochaSubText">Price</span>
+					<span className="text-mochaText font-bold">${price} USD</span>
 				</div>
 				<Separator />
 				<div className="flex flex-col">
@@ -92,11 +122,16 @@ const BookingRequestBuuddyCard = ({
 						<BuuddyButton
 							variant="outline"
 							className="w-fit"
-							onClick={handleDecline}
+							disabled={acceptBookingRequestMutationIsPending}
+							onClick={() => setDisplayRejectDialog(true)}
 						>
 							Reject
 						</BuuddyButton>
-						<BuuddyButton className="w-fit" onClick={handleAccept}>
+						<BuuddyButton
+							isPending={acceptBookingRequestMutationIsPending}
+							className="w-fit"
+							onClick={handleAccept}
+						>
 							Accept
 						</BuuddyButton>
 					</Fragment>

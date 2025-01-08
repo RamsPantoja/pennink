@@ -5,11 +5,14 @@ import type { RouterOutputs } from "~/utils/api";
 import { useSession } from "next-auth/react";
 
 type UseTimeListLogicProps = {
-	time: RouterOutputs["userTime"]["userTimes"][number];
+	roleTimes: RouterOutputs["userTime"]["userTimes"][number];
 	selectedDate: Date | undefined;
 };
 
-const useTimeListLogic = ({ time, selectedDate }: UseTimeListLogicProps) => {
+const useTimeListLogic = ({
+	roleTimes,
+	selectedDate,
+}: UseTimeListLogicProps) => {
 	const [displaySendBookingRequestForm, setDisplaySentBookingRequest] =
 		useState<boolean>(false);
 	const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -18,7 +21,7 @@ const useTimeListLogic = ({ time, selectedDate }: UseTimeListLogicProps) => {
 	const { data: session } = useSession();
 
 	const times: number[] = useMemo(() => {
-		if (selectedDate && time) {
+		if (selectedDate && roleTimes) {
 			const generateTimeArray = (interval: {
 				startTime: string;
 				endTime: string;
@@ -31,7 +34,7 @@ const useTimeListLogic = ({ time, selectedDate }: UseTimeListLogicProps) => {
 				const timeInSourceTimezone = DateTime.fromMillis(
 					selectedDate.getTime(),
 					{
-						zone: time.timezoneIANA,
+						zone: roleTimes.timezoneIANA,
 					},
 				);
 
@@ -78,15 +81,15 @@ const useTimeListLogic = ({ time, selectedDate }: UseTimeListLogicProps) => {
 			};
 
 			const formatedTimes = generateTimeArray({
-				startTime: time.startTime,
-				endTime: time.endTime,
+				startTime: roleTimes.startTime,
+				endTime: roleTimes.endTime,
 			});
 
 			return formatedTimes;
 		}
 
 		return [];
-	}, [time, selectedDate]);
+	}, [roleTimes, selectedDate]);
 
 	const onDisplayBookingRequestForm = (time: string) => {
 		if (session) {

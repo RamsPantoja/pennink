@@ -4,7 +4,7 @@ import BookingRequestCard from "./BookingRequestCard";
 import useBookingRequestLogic from "./useBookingRequestLogic";
 import { Fragment } from "react";
 import { mapSkeletons } from "~/lib/utils";
-import BookingRequestBuuddyCardSkeleton from "../BuuddyBookingRequests/BookingRequestBuuddyCard/BookingRequestBuuddyCardSkeleton";
+import BookingRequestBuuddyCardSkeleton from "../../YourBuuddy/BuuddyBookingRequests/BookingRequestBuuddyCard/BookingRequestBuuddyCardSkeleton";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 
 type BookingRequestsProps = {
@@ -46,6 +46,8 @@ const BookingRequests = ({ senderId, filters }: BookingRequestsProps) => {
 							receiverUsername={item.receiver.profile.username}
 							senderTimezone={item.senderTimezoneIANA}
 							status={item.status}
+							role={item.userRole.role.name}
+							price={item.userRole.hourPrice}
 						/>
 					);
 				})}
