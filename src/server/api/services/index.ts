@@ -1,4 +1,4 @@
-import { type TRPCContext } from "../trpc";
+import type { TRPCContext } from "../trpc";
 import BookingRequestService from "./bookingRequest";
 import InterestService from "./interest";
 import ProfileService from "./profile";
@@ -8,35 +8,38 @@ import UserRoleService from "./userRole";
 import UserTimeService from "./userTime";
 import WeeklyDaysService from "./weeklyDays";
 import EmailService from "./email";
+import PaymentService from "./payment";
 
 export type ServicesContext = {
-  userRoleService: UserRoleService;
-  roleService: RoleService;
-  weeklyDaysService: WeeklyDaysService;
-  userTimeService: UserTimeService;
-  userService: UserService;
-  interestService: InterestService;
-  profileService: ProfileService;
-  bookingRequestService: BookingRequestService;
-  emailService: EmailService;
+	userRoleService: UserRoleService;
+	roleService: RoleService;
+	weeklyDaysService: WeeklyDaysService;
+	userTimeService: UserTimeService;
+	userService: UserService;
+	interestService: InterestService;
+	profileService: ProfileService;
+	bookingRequestService: BookingRequestService;
+	emailService: EmailService;
+	paymentService: PaymentService;
 };
 
 export type ServicesConfig = {
-  ctx: TRPCContext;
+	ctx: TRPCContext;
 };
 
 const Services = ({ ctx }: ServicesConfig): ServicesContext => {
-  return {
-    userRoleService: new UserRoleService({ ctx }),
-    roleService: new RoleService({ ctx }),
-    weeklyDaysService: new WeeklyDaysService({ ctx }),
-    userTimeService: new UserTimeService({ ctx }),
-    userService: new UserService({ ctx }),
-    interestService: new InterestService({ ctx }),
-    profileService: new ProfileService({ ctx }),
-    bookingRequestService: new BookingRequestService({ ctx }),
-    emailService: new EmailService({ ctx }),
-  };
+	return {
+		userRoleService: new UserRoleService({ ctx }),
+		roleService: new RoleService({ ctx }),
+		weeklyDaysService: new WeeklyDaysService({ ctx }),
+		userTimeService: new UserTimeService({ ctx }),
+		userService: new UserService({ ctx }),
+		interestService: new InterestService({ ctx }),
+		profileService: new ProfileService({ ctx }),
+		bookingRequestService: new BookingRequestService({ ctx }),
+		emailService: new EmailService({ ctx }),
+		paymentService: new PaymentService({ ctx }),
+	};
 };
 
 export default Services;

@@ -1,0 +1,31 @@
+import { z } from "zod";
+
+export const createStripeAccountInputSchema = z.object({
+	accountId: z.string(),
+});
+
+export const stripeItemSchema = z.object({
+	unitPrice: z.number({
+		required_error: "unitPrice is required",
+	}),
+	quantity: z.number({
+		required_error: "quantity is required",
+	}),
+	concept: z.string({
+		required_error: "concept is required",
+	}),
+});
+
+export const stripePaymentProcessInput = z.object({
+	metadata: z.any().nullable(),
+	id: z.string(),
+	amount: z.number().nullable(),
+});
+
+export const newStripePaymentInput = z.object({
+	accountId: z.string(),
+});
+
+export const updateStripeConnectOnBoardingInput = z.object({
+	accountId: z.string(),
+});

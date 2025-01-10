@@ -6,8 +6,9 @@ import { userTimeRouter } from "./routers/userTime";
 import { userRouter } from "./routers/user";
 import { interestRouter } from "./routers/interest";
 import { profileRouter } from "./routers/profile";
-import { type inferRouterOutputs } from "@trpc/server";
+import type { inferRouterOutputs } from "@trpc/server";
 import { bookingRequestRouter } from "./routers/bookingRequest";
+import { paymentRouter } from "./routers/payment";
 
 /**
  * This is the primary router for your server.
@@ -15,14 +16,15 @@ import { bookingRequestRouter } from "./routers/bookingRequest";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  role: roleRouter,
-  userRole: userRoleRouter,
-  weeklyDays: weeklyDaysRouter,
-  userTime: userTimeRouter,
-  user: userRouter,
-  interest: interestRouter,
-  profile: profileRouter,
-  bookingRequest: bookingRequestRouter,
+	role: roleRouter,
+	userRole: userRoleRouter,
+	weeklyDays: weeklyDaysRouter,
+	userTime: userTimeRouter,
+	user: userRouter,
+	interest: interestRouter,
+	profile: profileRouter,
+	bookingRequest: bookingRequestRouter,
+	payment: paymentRouter,
 });
 
 // export type definition of API
@@ -35,5 +37,6 @@ export type AppRouter = typeof appRouter;
  * const res = await trpc.post.all();
  *       ^? Post[]
  */
+
 export const createCaller = createCallerFactory(appRouter);
 export type RouterOutput = inferRouterOutputs<AppRouter>;
