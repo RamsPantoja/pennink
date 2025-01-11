@@ -102,7 +102,7 @@ class PaymentService {
 		return newAccount;
 	}
 
-	async newAccountLink(accountId: string): Promise<Stripe.AccountLink> {
+	async newAccountLink(accountId: string) {
 		const accountLink = await this.stripe.accountLinks.create({
 			account: accountId,
 			refresh_url: `${env.NEXTAUTH_URL}/api/stripe/connect/refresh_link`,

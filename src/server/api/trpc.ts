@@ -8,15 +8,18 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { type Session } from "next-auth";
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type { Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
-import Services, { type ServicesConfig, type ServicesContext } from "./services";
+import Services, {
+	type ServicesConfig,
+	type ServicesContext,
+} from "./services";
 import type * as schema from "../db/schema";
 
 /**
@@ -28,16 +31,16 @@ import type * as schema from "../db/schema";
  */
 
 interface CreateContextOptions {
-  session: Session | null;
-  opts: CreateNextContextOptions
+	session: Session | null;
+	opts: CreateNextContextOptions;
 }
 
 export type TRPCContext = {
-  db: PostgresJsDatabase<typeof schema>
-  session: Session | null
-  services: (config: ServicesConfig) => ServicesContext
-  opts: CreateNextContextOptions
-}
+	db: PostgresJsDatabase<typeof schema>;
+	session: Session | null;
+	services: (config: ServicesConfig) => ServicesContext;
+	opts: CreateNextContextOptions;
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -50,12 +53,12 @@ export type TRPCContext = {
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 const createInnerTRPCContext = (opts: CreateContextOptions): TRPCContext => {
-  return {
-    session: opts.session,
-    db,
-    services: (config) => Services(config),
-    opts: opts.opts
-  };
+	return {
+		session: opts.session,
+		db,
+		services: (config) => Services(config),
+		opts: opts.opts,
+	};
 };
 
 /**
@@ -65,15 +68,15 @@ const createInnerTRPCContext = (opts: CreateContextOptions): TRPCContext => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
+	const { req, res } = opts;
 
-  // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
+	// Get the session from the server using the getServerSession wrapper function
+	const session = await getServerAuthSession({ req, res });
 
-  return createInnerTRPCContext({
-    session,
-    opts
-  });
+	return createInnerTRPCContext({
+		session,
+		opts,
+	});
 };
 
 /**
@@ -85,17 +88,17 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
+	transformer: superjson,
+	errorFormatter({ shape, error }) {
+		return {
+			...shape,
+			data: {
+				...shape.data,
+				zodError:
+					error.cause instanceof ZodError ? error.cause.flatten() : null,
+			},
+		};
+	},
 });
 
 /**
@@ -137,13 +140,13 @@ export const publicProcedure = t.procedure;
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-  return next({
-    ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
-    },
-  });
+	if (!ctx.session || !ctx.session.user) {
+		throw new TRPCError({ code: "UNAUTHORIZED" });
+	}
+	return next({
+		ctx: {
+			// infers the `session` as non-nullable
+			session: { ...ctx.session, user: ctx.session.user },
+		},
+	});
 });
