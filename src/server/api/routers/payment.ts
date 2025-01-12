@@ -24,10 +24,10 @@ export const paymentRouter = createTRPCRouter({
 			.services({ ctx })
 			.paymentService.stripeAccountByUserId(ctx.session);
 	}),
-	stripeAccountFlow: protectedProcedure.mutation(async ({ ctx }) => {
+	connectStripe: protectedProcedure.mutation(async ({ ctx }) => {
 		return await ctx
 			.services({ ctx })
-			.paymentService.stripeAccountFlow(ctx.session);
+			.paymentService.connectStripeConnect(ctx.session);
 	}),
 	newAccountLink: protectedProcedure
 		.input(newStripePaymentInput)

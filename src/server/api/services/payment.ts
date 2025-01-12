@@ -158,7 +158,7 @@ class PaymentService {
 		);
 	}
 
-	async stripeAccountFlow(session: Session): Promise<StripeFlowObject> {
+	async connectStripeConnect(session: Session): Promise<StripeFlowObject> {
 		let generateOnboardingLink: Stripe.AccountLink;
 
 		const stripeAccount = await this.stripeAccountByUserId(session);
