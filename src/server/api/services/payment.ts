@@ -6,7 +6,10 @@ import { Stripe } from "stripe";
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
 import { payments, stripeAccounts } from "~/server/db/schema";
-import type { stripeItemSchema } from "../schemas/payment";
+import type {
+	stripeItemSchema,
+	updateStripeConnectOnBoardingInput,
+} from "../schemas/payment";
 import type { PaymentType } from "~/lib/enum";
 
 type AccountServiceContructor = {
@@ -48,6 +51,9 @@ export type MetadataPayment = {
 
 export type StripeAccount = typeof stripeAccounts.$inferInsert;
 export type StripeItem = z.infer<typeof stripeItemSchema>;
+export type UpdateOnboardingInput = z.infer<
+	typeof updateStripeConnectOnBoardingInput
+>;
 
 class PaymentService {
 	ctx: TRPCContext;
@@ -106,8 +112,11 @@ class PaymentService {
 		const accountLink = await this.stripe.accountLinks.create({
 			account: accountId,
 			refresh_url: `${env.NEXTAUTH_URL}/api/stripe/connect/refresh_link`,
-			return_url: `${env.NEXTAUTH_URL}/dashboard/balance`,
+			return_url: `${env.NEXTAUTH_URL}/your_buuddy`,
 			type: "account_onboarding",
+			collection_options: {
+				fields: "currently_due",
+			},
 		});
 
 		if (!accountLink) {
@@ -120,7 +129,9 @@ class PaymentService {
 		return accountLink;
 	}
 
-	async updateOnboarding(accountId: string): Promise<object | undefined> {
+	async updateOnboarding(input: UpdateOnboardingInput) {
+		const { accountId, state } = input;
+
 		const userStripeAccount = await this.ctx.db.query.stripeAccounts.findFirst({
 			where: (stripeAccounts, { eq }) => {
 				return eq(stripeAccounts.accountId, accountId);
@@ -136,8 +147,8 @@ class PaymentService {
 
 		const updateOnboarState = await this.ctx.db
 			.update(stripeAccounts)
-			.set({ onboarding: true })
-			.where(eq(stripeAccounts.accountId, userStripeAccount?.accountId))
+			.set({ onboarding: state })
+			.where(eq(stripeAccounts.accountId, userStripeAccount.accountId))
 			.returning();
 
 		return updateOnboarState;

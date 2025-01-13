@@ -39,9 +39,7 @@ export const paymentRouter = createTRPCRouter({
 	updateOnboarding: publicProcedure
 		.input(updateStripeConnectOnBoardingInput)
 		.mutation(async ({ ctx, input }) => {
-			return await ctx
-				.services({ ctx })
-				.paymentService.updateOnboarding(input.accountId);
+			return await ctx.services({ ctx }).paymentService.updateOnboarding(input);
 		}),
 	createStripeDashboardLink: protectedProcedure.mutation(async ({ ctx }) => {
 		return await ctx

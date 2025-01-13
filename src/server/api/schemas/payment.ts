@@ -28,4 +28,5 @@ export const newStripePaymentInput = z.object({
 
 export const updateStripeConnectOnBoardingInput = z.object({
 	accountId: z.string(),
+	state: z.boolean(),
 });
