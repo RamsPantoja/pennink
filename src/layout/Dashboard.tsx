@@ -21,24 +21,32 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
 				<div className="flex p-4 gap-4 items-center justify-between w-full">
 					<SidebarTrigger className="text-mochaLavender min-w-5 h-5" />
-					{!session && (
+					<div className="flex items-center gap-4">
 						<Link
-							className="text-mochaCrust font-bold bg-mochaMauve pl-4 pr-4 pt-2 pb-2 rounded-md"
-							href="/sign_in"
+							className="text-mochaMauve border-1 border-mochaMauve font-bold bg-mochaMantle pl-4 pr-4 pt-2 pb-2 rounded-full"
+							href="/become_a_buuddy"
 						>
-							Sign in
+							Become a Buuddy
 						</Link>
-					)}
-					{session && (
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<span>
-									<Notifications session={session} />
-								</span>
-							</TooltipTrigger>
-							<TooltipContent>Notifications</TooltipContent>
-						</Tooltip>
-					)}
+						{!session && (
+							<Link
+								className="text-mochaCrust font-bold bg-mochaMauve pl-4 pr-4 pt-2 pb-2 rounded-full"
+								href="/sign_in"
+							>
+								Sign in
+							</Link>
+						)}
+						{session && (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<span>
+										<Notifications session={session} />
+									</span>
+								</TooltipTrigger>
+								<TooltipContent>Notifications</TooltipContent>
+							</Tooltip>
+						)}
+					</div>
 				</div>
 				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden">
 					{children}

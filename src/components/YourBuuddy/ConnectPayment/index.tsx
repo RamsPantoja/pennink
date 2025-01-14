@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { BuuddyButton } from "~/components/common/BuuddyButton";
+import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { Card } from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
 import { api } from "~/utils/api";
 
 const ConnectPayment = () => {
@@ -19,40 +21,82 @@ const ConnectPayment = () => {
 			},
 		});
 
+	const {
+		data: connectedAccountData,
+		isError: connectedAccountIsError,
+		isLoading: connectedAccountIsLoading,
+	} = api.payment.stripeAccountByUserId.useQuery();
+
 	const handleConnectStripe = async () => {
 		connectStripeMutation();
 	};
 
+	console.log(connectedAccountData);
+
 	return (
-		<Card className="flex flex-col gap-2">
-			<div className="flex items-center gap-1">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="#635bff"
-					stroke="#ffffff"
-					strokeWidth="1.5"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					className="icon icon-tabler icons-tabler-outline icon-tabler-brand-stripe"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-					<path d="M11.453 8.056c0 -.623 .518 -.979 1.442 -.979c1.69 0 3.41 .343 4.605 .923l.5 -4c-.948 -.449 -2.82 -1 -5.5 -1c-1.895 0 -3.373 .087 -4.5 1c-1.172 .956 -2 2.33 -2 4c0 3.03 1.958 4.906 5 6c1.961 .69 3 .743 3 1.5c0 .735 -.851 1.5 -2 1.5c-1.423 0 -3.963 -.609 -5.5 -1.5l-.5 4c1.321 .734 3.474 1.5 6 1.5c2 0 3.957 -.468 5.084 -1.36c1.263 -.979 1.916 -2.268 1.916 -4.14c0 -3.096 -1.915 -4.547 -5 -5.637c-1.646 -.605 -2.544 -1.07 -2.544 -1.807z" />
-				</svg>
-				<p className="font-bold text-mochaText">stripe</p>
-			</div>
-			<p className="text-sm text-mochaSubText">
-				Let people pay using credit or debit cards, Apple Pay, Google Pay and
-				more!
-			</p>
-			<BuuddyButton
-				isPending={connectStripeIsPending}
-				onClick={handleConnectStripe}
-			>
-				Connect
-			</BuuddyButton>
+		<Card className="flex w-full flex-col gap-2">
+			<h1 className="text-xl text-mochaText font-bold">Payout</h1>
+			{connectedAccountData?.accountId &&
+				!connectedAccountData?.onboarding &&
+				!connectedAccountIsLoading &&
+				!connectedAccountIsError && (
+					<Card className="flex flex-col gap-4 bg-mochaMantle w-fit">
+						<p className="text-mochaSubText text-lg font-semibold">
+							Your payout information has been saved!
+						</p>
+						<p className="text-mochaSubText text-sm">
+							Fill out the remaining information to start receiving payments.
+						</p>
+						<BuuddyButton
+							className="w-fit"
+							isPending={connectStripeIsPending}
+							onClick={handleConnectStripe}
+						>
+							Complete payouts information
+						</BuuddyButton>
+					</Card>
+				)}
+			{!connectedAccountData &&
+				!connectedAccountIsLoading &&
+				!connectedAccountIsError && (
+					<Card className="flex flex-col gap-4 bg-mochaMantle w-fit">
+						<p className="text-mochaSubText text-lg font-semibold">
+							Enter your payout information to start receiving payments!
+						</p>
+						<p className="text-mochaSubText text-sm">
+							To enable payouts, you will need to provide your bank account
+							details to our payment partner, Stripe.
+						</p>
+						<BuuddyButton
+							className="w-fit"
+							isPending={connectStripeIsPending}
+							onClick={handleConnectStripe}
+						>
+							Set up payouts
+						</BuuddyButton>
+					</Card>
+				)}
+			{connectedAccountIsLoading && (
+				<Card className="w-full gap-2 flex flex-col">
+					<Skeleton className="h-16 w-full max-w-screen-md" />
+					<Skeleton className="h-12 w-full max-w-screen-sm" />
+					<Skeleton className="h-12 w-40" />
+					<Card className="w-full gap-2 flex flex-col">
+						<Skeleton className="h-16 w-full" />
+						<Skeleton className="h-16 w-full" />
+						<Skeleton className="h-16 w-full" />
+						<Skeleton className="h-16 w-full" />
+						<Skeleton className="h-16 w-full" />
+						<Skeleton className="h-16 w-full" />
+					</Card>
+				</Card>
+			)}
+			{connectedAccountIsError && (
+				<FeedbackMessage
+					status="ERROR"
+					message="An error occurred while fetching your payout information."
+				/>
+			)}
 		</Card>
 	);
 };

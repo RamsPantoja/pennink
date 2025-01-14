@@ -82,8 +82,8 @@ export function AppSidebar({ session }: AppSidebarProps) {
 									<SidebarMenuButton className="font-semibold" asChild>
 										<SibedarItem
 											Icon={CurrencyDollarIcon}
-											label="Orders"
-											href="/payments"
+											label="Payouts"
+											href="/payouts"
 										/>
 									</SidebarMenuButton>
 								</SidebarMenuItem>

@@ -17,7 +17,7 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
 			<Profile session={session} />
 			<div className="flex h-full w-full overflow-hidden">
 				<Tabs
-					defaultValue="booking"
+					defaultValue={"booking"}
 					className="flex h-full w-full flex-col items-start overflow-hidden"
 				>
 					<TabsList>
@@ -26,7 +26,6 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
 							Roles and availability
 						</TabsTrigger>
 						<TabsTrigger value="profile">Profile</TabsTrigger>
-						<TabsTrigger value="payment">Payment</TabsTrigger>
 					</TabsList>
 					<TabsContent asChild value="roles_availability">
 						<div className="flex h-full w-full overflow-hidden">
@@ -36,9 +35,6 @@ const YourBuuddyContainer = ({ session }: YourBuuddyContainerProps) => {
 					</TabsContent>
 					<TabsContent asChild value="booking">
 						<BookingRequestManager session={session} />
-					</TabsContent>
-					<TabsContent asChild value="payment">
-						<ConnectPayment />
 					</TabsContent>
 					<TabsContent asChild value="profile">
 						<div className="flex h-full w-full overflow-hidden">

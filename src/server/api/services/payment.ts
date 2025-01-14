@@ -111,8 +111,8 @@ class PaymentService {
 	async newAccountLink(accountId: string) {
 		const accountLink = await this.stripe.accountLinks.create({
 			account: accountId,
-			refresh_url: `${env.NEXTAUTH_URL}/api/stripe/connect/refresh_link`,
-			return_url: `${env.NEXTAUTH_URL}/your_buuddy`,
+			refresh_url: `${env.NEXTAUTH_URL}/api/stripe/connect/refresh`,
+			return_url: `${env.NEXTAUTH_URL}/payouts`,
 			type: "account_onboarding",
 			collection_options: {
 				fields: "currently_due",
