@@ -1,40 +1,38 @@
 import { BellIcon } from "@heroicons/react/24/outline";
-import { Button } from "../ui/button";
-import { type Session } from "next-auth";
-import { Fragment } from "react";
+import type { Session } from "next-auth";
 import FeedbackMessage from "../common/FeedbackMessage";
-import NotificationCard from "./NotificationCard";
 import NotificationSkeletonCard from "./NotificationSkeletonCard";
 import { mapSkeletons } from "~/lib/utils";
 import useNotificationsLogic from "./useNotificationsLogic";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../common/Button";
 
 type NotificationsProps = {
-  session: Session
-}
+	session: Session;
+};
 
 const Notifications = ({ session }: NotificationsProps) => {
-  // const {
-  //   notificationsData,
-  //   notificationsIsLoading,
-  //   notificationsError,
-  //   onSeeNotification
-  // } = useNotificationsLogic({ session });
+	// const {
+	//   notificationsData,
+	//   notificationsIsLoading,
+	//   notificationsError,
+	//   onSeeNotification
+	// } = useNotificationsLogic({ session });
 
-  const skeletons = mapSkeletons({ numberOfSkeletons: 10, skeleton: <NotificationSkeletonCard /> });
+	const skeletons = mapSkeletons({
+		numberOfSkeletons: 10,
+		skeleton: <NotificationSkeletonCard />,
+	});
 
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant='ghost'
-          size='icon'
-        >
-          <BellIcon className="w-4 h-4 text-mochaText" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="max-h-[--radix-popover-content-available-height] overflow-auto p-0">
-        {/* {
+	return (
+		<Popover>
+			<PopoverTrigger asChild>
+				<Button variant="ghost" size="icon">
+					<BellIcon className="w-4 h-4 text-mochaText" />
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent className="max-h-[--radix-popover-content-available-height] overflow-auto p-0">
+				{/* {
           notificationsIsLoading && skeletons.map((skeleton, index) => {
             return <Fragment key={index}>
               {skeleton}
@@ -70,12 +68,12 @@ const Notifications = ({ session }: NotificationsProps) => {
             <FeedbackMessage status="ERROR" message="Algo salio mal! No se pueden obtener las notificaciones." />
           </div>
         } */}
-        <div className="p-4">
-          <FeedbackMessage status="INFORMATION" message="No notifications" />
-        </div>
-      </PopoverContent>
-    </Popover >
-  )
-}
+				<div className="p-4">
+					<FeedbackMessage status="INFORMATION" message="No notifications" />
+				</div>
+			</PopoverContent>
+		</Popover>
+	);
+};
 
 export default Notifications;

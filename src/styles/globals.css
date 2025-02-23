@@ -26,14 +26,14 @@
 }
 @layer base {
 	:root {
-		--sidebar-background: #1e1e2e;
-		--sidebar-foreground: #bac2de;
-		--sidebar-primary: #1e1e2e;
-		--sidebar-primary-foreground: #1e1e2e;
-		--sidebar-accent: #cba6f7;
-		--sidebar-accent-foreground: #1e1e2e;
-		--sidebar-border: #cba6f7;
-		--sidebar-ring: #1e1e2e;
+		--sidebar-background: #ffffff;
+		--sidebar-foreground: #4c4f69;
+		--sidebar-primary: #4c4f69;
+		--sidebar-primary-foreground: #4c4f69;
+		--sidebar-accent: #eff1f5;
+		--sidebar-accent-foreground: #000000;
+		--sidebar-border: #000000;
+		--sidebar-ring: #000000;
 	}
 	.dark {
 		--sidebar-background: #181825;

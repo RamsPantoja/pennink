@@ -1,7 +1,6 @@
 import {
 	Sidebar,
 	SidebarContent,
-	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
@@ -11,33 +10,30 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from "~/components/ui/sidebar";
-import BuuddyLogotype from "../common/BuuddyLogotype";
-import SibedarItem from "./SidebarItem";
 import {
 	ArrowRightStartOnRectangleIcon,
 	ChevronUpDownIcon,
 	Cog6ToothIcon,
-	CurrencyDollarIcon,
-	EllipsisVerticalIcon,
-	PaperAirplaneIcon,
-	UserGroupIcon,
-	UserIcon,
+	PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import CustomAlertDialog from "../common/AlertDialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import Notifications from "../Notifications";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { BuuddyButton } from "../common/BuuddyButton";
 import useSidebarLogic from "./useSidebarLogic";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
+import { mapSkeletons } from "~/lib/utils";
+import { Skeleton } from "../ui/skeleton";
+import FeedbackMessage from "../common/FeedbackMessage";
+import { Fragment } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Button } from "../common/Button";
 
 type AppSidebarProps = {
 	session: Session | null;
@@ -46,64 +42,24 @@ type AppSidebarProps = {
 export function AppSidebar({ session }: AppSidebarProps) {
 	const router = useRouter();
 
-	const { displaySignOutAlert, setDisplaySignOutAlert } = useSidebarLogic();
+	const {
+		displaySignOutAlert,
+		setDisplaySignOutAlert,
+		notebooksData,
+		notebooksIsLoading,
+		notebooksIsError,
+		onCreateNotebook,
+		createNotebookIsPending,
+	} = useSidebarLogic();
+
+	const skeletons = mapSkeletons({
+		numberOfSkeletons: 15,
+		skeleton: <Skeleton className="w-full rounded-lg h-10" />,
+	});
 
 	return (
-		<Sidebar collapsible="icon">
+		<Sidebar collapsible="offcanvas">
 			<SidebarHeader>
-				<BuuddyLogotype />
-			</SidebarHeader>
-			<SidebarContent>
-				<SidebarGroup>
-					<SidebarGroupContent>
-						<SidebarMenu>
-							<SidebarMenuItem>
-								<SidebarMenuButton className="font-semibold" asChild>
-									<SibedarItem
-										Icon={UserGroupIcon}
-										label="Rent and connect"
-										href="/"
-									/>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
-							{session && (
-								<SidebarMenuItem>
-									<SidebarMenuButton className="font-semibold" asChild>
-										<SibedarItem
-											Icon={PaperAirplaneIcon}
-											label="Booking requests"
-											href="/booking_requests"
-										/>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							)}
-							{session && (
-								<SidebarMenuItem>
-									<SidebarMenuButton className="font-semibold" asChild>
-										<SibedarItem
-											Icon={CurrencyDollarIcon}
-											label="Payouts"
-											href="/payouts"
-										/>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							)}
-							{session && (
-								<SidebarMenuItem>
-									<SidebarMenuButton className="font-semibold" asChild>
-										<SibedarItem
-											Icon={UserIcon}
-											label="Your buuddy"
-											href="/your_buuddy"
-										/>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							)}
-						</SidebarMenu>
-					</SidebarGroupContent>
-				</SidebarGroup>
-			</SidebarContent>
-			<SidebarFooter>
 				<CustomAlertDialog
 					cancelText="Cancel"
 					actionText="Sign out"
@@ -122,7 +78,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 							<div className="p-1 rounded-md flex w-full flex-row items-center justify-between gap-2 overflow-hidden cursor-pointer hover:bg-mochaMantle">
 								<div className="flex flex-row items-center gap-2 min-w-32">
 									<Avatar className="h-7 w-7">
-										<AvatarImage src={session.user.image!} />
+										<AvatarImage src={session.user.image as string} />
 										<AvatarFallback>Tú</AvatarFallback>
 									</Avatar>
 									<div className="flex flex-col w-full">
@@ -163,7 +119,68 @@ export function AppSidebar({ session }: AppSidebarProps) {
 						</DropdownMenuContent>
 					</DropdownMenu>
 				)}
-			</SidebarFooter>
+			</SidebarHeader>
+			<SidebarContent>
+				<SidebarGroup>
+					<SidebarGroupLabel asChild>
+						<div className="flex items-center gap-4 justify-between">
+							<span>Cuadernos</span>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										onClick={onCreateNotebook}
+										variant="ghost"
+										size="icon"
+										isPending={createNotebookIsPending}
+									>
+										<PencilSquareIcon className="min-w-5 w-5 h-5" />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Nuevo cuaderno</TooltipContent>
+							</Tooltip>
+						</div>
+					</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							{notebooksIsLoading &&
+								skeletons.map((skeleton, index) => {
+									return <Fragment key={index}>{skeleton}</Fragment>;
+								})}
+							{!notebooksIsLoading &&
+								!notebooksIsError &&
+								notebooksData &&
+								notebooksData.map((notebook) => {
+									return (
+										<SidebarMenuItem key={notebook.id}>
+											<SidebarMenuButton className="font-semibold" asChild>
+												<SidebarMenuItem>{notebook.name}</SidebarMenuItem>
+											</SidebarMenuButton>
+										</SidebarMenuItem>
+									);
+								})}
+							{!notebooksIsLoading &&
+								!notebooksIsError &&
+								notebooksData &&
+								notebooksData.length === 0 && (
+									<div className="p-4">
+										<FeedbackMessage
+											status="INFORMATION"
+											message="No hay cuadernos para mostrar"
+										/>
+									</div>
+								)}
+							{!notebooksIsLoading && notebooksIsError && (
+								<div className="p-4">
+									<FeedbackMessage
+										status="ERROR"
+										message="Something went wrong!"
+									/>
+								</div>
+							)}
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+			</SidebarContent>
 			<SidebarRail className="bg-mochaBase after:bg-mochaMantle" />
 		</Sidebar>
 	);

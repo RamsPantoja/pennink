@@ -20,14 +20,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			<AppSidebar session={session} />
 			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
 				<div className="flex p-4 gap-4 items-center justify-between w-full">
-					<SidebarTrigger className="text-mochaLavender min-w-5 h-5" />
+					<SidebarTrigger className="text-mochaSubtext1 min-w-5 h-5" />
 					<div className="flex items-center gap-4">
-						<Link
-							className="text-mochaMauve border-1 border-mochaMauve font-bold bg-mochaMantle pl-4 pr-4 pt-2 pb-2 rounded-full"
-							href="/become_a_buuddy"
-						>
-							Become a Buuddy
-						</Link>
 						{!session && (
 							<Link
 								className="text-mochaCrust font-bold bg-mochaMauve pl-4 pr-4 pt-2 pb-2 rounded-full"

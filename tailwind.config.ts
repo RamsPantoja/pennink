@@ -14,14 +14,15 @@ export default {
 		},
 		extend: {
 			colors: {
-				mochaBase: "#1e1e2e",
-				mochaMantle: "#181825",
-				mochaText: "#cdd6f4",
-				mochaSubText: "#bac2de",
-				mochaLavender: "#b4befe",
-				mochaMauve: "#cba6f7",
-				mochaCrust: "#181926",
-				mochaTeal: "#a6e3a1",
+				mochaBase: "#ffffff",
+				mochaMantle: "#e6e9ef",
+				mochaText: "#000000",
+				mochaSubText: "#4c4f69",
+				mochaSubtext1: "#6c6f85",
+				mochaLavender: "#7287fd",
+				mochaMauve: "#000000",
+				mochaCrust: "#dce0e8",
+				mochaTeal: "#179299",
 				sidebar: {
 					DEFAULT: "var(--sidebar-background)",
 					foreground: "var(--sidebar-foreground)",
