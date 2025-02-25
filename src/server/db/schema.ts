@@ -226,3 +226,126 @@ export const notebooksRelations = relations(notebooks, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export const chats = createTable("chat", {
+	id: customId.notNull().primaryKey(),
+	notebookId: uuid("notebookId")
+		.notNull()
+		.references(() => notebooks.id),
+	userId: uuid("userId")
+		.notNull()
+		.references(() => users.id),
+	createdAt: timestamp("createdAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp("updatedAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const chatsRelations = relations(chats, ({ one }) => ({
+	user: one(users, {
+		fields: [chats.userId],
+		references: [users.id],
+	}),
+}));
+
+export const messages = createTable("message", {
+	id: customId.notNull().primaryKey(),
+	chatId: uuid("chatId")
+		.notNull()
+		.references(() => chats.id),
+	content: text("content").notNull(),
+	userId: uuid("userId")
+		.notNull()
+		.references(() => users.id),
+	createdAt: timestamp("createdAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp("updatedAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const messagesRelations = relations(messages, ({ one }) => ({
+	chat: one(chats, {
+		fields: [messages.chatId],
+		references: [chats.id],
+	}),
+	user: one(users, {
+		fields: [messages.userId],
+		references: [users.id],
+	}),
+}));
+
+const summary = createTable("summary", {
+	id: customId.notNull().primaryKey(),
+	notebookId: uuid("notebook")
+		.notNull()
+		.references(() => notebooks.id),
+	content: text("content").notNull(),
+	userId: uuid("userId")
+		.notNull()
+		.references(() => users.id),
+	createdAt: timestamp("createdAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp("updatedAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const summaryRelations = relations(summary, ({ one }) => ({
+	notebook: one(notebooks, {
+		fields: [summary.notebookId],
+		references: [notebooks.id],
+	}),
+	user: one(users, {
+		fields: [summary.userId],
+		references: [users.id],
+	}),
+}));
+
+export const notes = createTable("note", {
+	id: customId.notNull().primaryKey(),
+	notebookId: uuid("notebook")
+		.notNull()
+		.references(() => notebooks.id),
+	content: text("content").notNull(),
+	userId: uuid("userId")
+		.notNull()
+		.references(() => users.id),
+	createdAt: timestamp("createdAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp("updatedAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const notesRelations = relations(notes, ({ one }) => ({
+	notebook: one(notebooks, {
+		fields: [notes.notebookId],
+		references: [notebooks.id],
+	}),
+	user: one(users, {
+		fields: [notes.userId],
+		references: [users.id],
+	}),
+}));

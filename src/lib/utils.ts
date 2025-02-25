@@ -3,6 +3,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import { DateTime, type Duration } from "luxon";
+import { marked } from "marked";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -218,4 +219,15 @@ export const isoDateFromDateAndTime = (date: Date, time: string) => {
 	});
 
 	return isoDate;
+};
+
+export const markdownToHtml = (markdown: string) => {
+	// remove the most common zerowidth characters from the start of the file
+	const markdownCleaned = markdown.replace(
+		/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,
+		"",
+	);
+
+	const htmlString = marked.parse(markdownCleaned) as string;
+	return htmlString;
 };
