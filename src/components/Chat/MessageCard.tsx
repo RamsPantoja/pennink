@@ -27,7 +27,7 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 			<div
 				ref={messageContainerRef}
 				id="message-content"
-				className="flex flex-col"
+				className="llm-response-styles"
 			/>
 			<div className="flex items-center gap-2">
 				<Button variant="ghost" size="icon">

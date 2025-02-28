@@ -3,7 +3,8 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import { DateTime, type Duration } from "luxon";
-import { marked } from "marked";
+import markdownit from "markdown-it";
+import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -228,6 +229,8 @@ export const markdownToHtml = (markdown: string) => {
 		"",
 	);
 
-	const htmlString = marked.parse(markdownCleaned) as string;
+	const mdit = markdownit();
+
+	const htmlString = mdit.use(digitalMarkdownPlugin).render(markdownCleaned);
 	return htmlString;
 };
