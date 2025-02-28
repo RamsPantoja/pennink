@@ -28,8 +28,6 @@ export const useChatLogic = ({}: UseChatLogicProps) => {
 		},
 	});
 
-	console.log(currentAssistantMessage);
-
 	const onSentPrompt = async (data: ChatValidationSchema) => {
 		setChatIsPending(true);
 		try {
@@ -71,7 +69,7 @@ export const useChatLogic = ({}: UseChatLogicProps) => {
 								userId: typeid().toString(),
 								createdAt: new Date(),
 								updatedAt: new Date(),
-								content: "",
+								content: "".concat(textDecoder.decode(value)),
 							};
 						});
 					}

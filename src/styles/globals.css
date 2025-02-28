@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://prismjs.catppuccin.com/mocha.css");
 
 /* width */
 ::-webkit-scrollbar {
@@ -54,7 +55,151 @@
 }
 
 @layer utilities {
-	.llm-response-styles {
+	.prismjs-theme {
+		code[class*="language-"],
+		pre[class*="language-"] {
+			color: #c6d0f5;
+			padding: 12px;
+			border-radius: 8px;
+			overflow: auto;
+			font-size: 12px;
+			max-height: 480px;
+			margin-top: 8px;
+			margin-bottom: 8px;
+		}
+
+		:not(pre) > code[class*="language-"],
+		pre[class*="language-"] {
+			background: #292c3c;
+		}
+
+		/* https://prismjs.com/tokens.html */
+
+		.token.keyword {
+			color: #ca9ee6;
+		}
+
+		.token.builtin {
+			color: #e78284;
+		}
+
+		.token.class-name {
+			color: #e5c890;
+		}
+
+		.token.function {
+			color: #8caaee;
+		}
+
+		.token.boolean,
+		.token.number {
+			color: #ef9f76;
+		}
+
+		.token.string,
+		.token.char {
+			color: #a6d189;
+		}
+
+		.token.symbol {
+			color: #e5c890;
+		}
+
+		.token.regex {
+			color: #f4b8e4;
+		}
+
+		.token.url {
+			color: #a6d189;
+		}
+
+		.token.operator {
+			color: #99d1db;
+		}
+
+		.token.variable {
+			color: #c6d0f5;
+		}
+
+		.token.constant {
+			color: #ef9f76;
+		}
+
+		.token.property {
+			color: #8caaee;
+		}
+
+		.token.punctuation {
+			color: #949cbb;
+		}
+
+		.token.important {
+			color: #ca9ee6;
+		}
+
+		.token.comment {
+			color: #949cbb;
+		}
+
+		.token.tag {
+			color: #8caaee;
+		}
+
+		.token.attr-name {
+			color: #e5c890;
+		}
+
+		.token.attr-value {
+			color: #a6d189;
+		}
+
+		.token.namespace {
+			color: #e5c890;
+		}
+
+		.token.prolog,
+		.token.doctype {
+			color: #ca9ee6;
+		}
+
+		.token.cdata {
+			color: #81c8be;
+		}
+
+		.token.entity {
+			color: #e78284;
+		}
+
+		.token.atrule {
+			color: #ca9ee6;
+		}
+
+		.token.selector {
+			color: #8caaee;
+		}
+
+		/* Diff */
+
+		.token.deleted {
+			color: #e78284;
+		}
+
+		.token.inserted {
+			color: #a6d189;
+		}
+
+		/* Other */
+
+		.token.important,
+		.token.bold {
+			font-weight: bold;
+		}
+		.token.italic {
+			font-style: italic;
+		}
+	}
+
+	.markdown-styles {
 		h1 {
 			font-size: 2rem;
 			font-weight: bold;
@@ -103,12 +248,6 @@
 		blockquote {
 			font-style: italic;
 			margin-left: 1rem;
-			margin-bottom: 1rem;
-		}
-		pre {
-			font-family: monospace;
-			font-size: 0.875rem;
-			line-height: 1.5;
 			margin-bottom: 1rem;
 		}
 		table {

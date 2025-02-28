@@ -13,21 +13,21 @@ type MessageCardProps = {
 };
 
 export const MessageCard = ({ message }: MessageCardProps) => {
-	const html = markdownToHtml(message.content);
 	const messageContainerRef = useRef<HTMLDivElement | null>(null);
+	console.log(message);
 
 	useEffect(() => {
-		if (messageContainerRef.current && html) {
+		if (messageContainerRef.current) {
+			const html = markdownToHtml(message.content);
 			messageContainerRef.current.innerHTML = html;
 		}
-	}, [html]);
+	}, [message.content]);
 
 	return (
 		<Card className="flex flex-col">
 			<div
 				ref={messageContainerRef}
-				id="message-content"
-				className="llm-response-styles"
+				className="markdown-styles prismjs-theme"
 			/>
 			<div className="flex items-center gap-2">
 				<Button variant="ghost" size="icon">

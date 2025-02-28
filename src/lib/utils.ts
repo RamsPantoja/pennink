@@ -223,14 +223,7 @@ export const isoDateFromDateAndTime = (date: Date, time: string) => {
 };
 
 export const markdownToHtml = (markdown: string) => {
-	// remove the most common zerowidth characters from the start of the file
-	const markdownCleaned = markdown.replace(
-		/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,
-		"",
-	);
-
 	const mdit = markdownit();
-
-	const htmlString = mdit.use(digitalMarkdownPlugin).render(markdownCleaned);
+	const htmlString = mdit.use(digitalMarkdownPlugin).render(markdown);
 	return htmlString;
 };
