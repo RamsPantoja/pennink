@@ -1,6 +1,6 @@
-import type { Message } from "~/server/api/services/aiChat";
+import type { Message } from "~/server/api/services/chat";
 import { Card } from "../ui/card";
-import { markdownToHtml } from "~/lib/utils";
+import { cn, markdownToHtml } from "~/lib/utils";
 import { Button } from "../common/Button";
 import {
 	HandThumbDownIcon,
@@ -14,7 +14,6 @@ type MessageCardProps = {
 
 export const MessageCard = ({ message }: MessageCardProps) => {
 	const messageContainerRef = useRef<HTMLDivElement | null>(null);
-	console.log(message);
 
 	useEffect(() => {
 		if (messageContainerRef.current) {
@@ -24,19 +23,40 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 	}, [message.content]);
 
 	return (
-		<Card className="flex flex-col">
-			<div
-				ref={messageContainerRef}
-				className="markdown-styles prismjs-theme"
-			/>
-			<div className="flex items-center gap-2">
-				<Button variant="ghost" size="icon">
-					<HandThumbUpIcon className="min-w-5 h-5" />
-				</Button>
-				<Button variant="ghost" size="icon">
-					<HandThumbDownIcon className="min-w-5 h-5" />
-				</Button>
-			</div>
-		</Card>
+		<div
+			className={cn([
+				"flex flex-col",
+				{
+					"items-start": message.role === "AGENT",
+					"items-end": message.role === "USER",
+				},
+			])}
+		>
+			<Card
+				className={cn([
+					"flex flex-col",
+					{
+						"w-fit": message.role === "AGENT",
+						"bg-mochaMauve text-mochaBase items-end w-fit":
+							message.role === "USER",
+					},
+				])}
+			>
+				<div
+					ref={messageContainerRef}
+					className="markdown-styles prismjs-theme flex flex-col"
+				/>
+				{message.role === "AGENT" && (
+					<div className="flex items-center gap-2">
+						<Button variant="ghost" size="icon">
+							<HandThumbUpIcon className="min-w-5 h-5" />
+						</Button>
+						<Button variant="ghost" size="icon">
+							<HandThumbDownIcon className="min-w-5 h-5" />
+						</Button>
+					</div>
+				)}
+			</Card>
+		</div>
 	);
 };

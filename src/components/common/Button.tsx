@@ -15,7 +15,7 @@ const buttonVariants = cva(
 					"border border-mochaMauve bg-mochaMantle text-mochaMauve hover:bg-accent hover:text-accent-foreground",
 				secondary: "bg-mochaMantle text-mochaMauve hover:bg-mochaMantle/80",
 				ghost:
-					"hover:bg-accent hover:text-accent-foreground hover:bg-mochaMantle/80",
+					"hover:bg-accent hover:text-accent-foreground hover:bg-mochaMantle/80 hover:text-mochaMauve",
 				link: "text-mochaSubText underline-offset-4 hover:underline ",
 			},
 			size: {

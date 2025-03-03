@@ -9,6 +9,7 @@ import {
 	text,
 	timestamp,
 	uuid,
+	json,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { typeid } from "typeid-js";
@@ -29,6 +30,12 @@ export const suscriptionEnum = pgEnum("suscription", [
 	"BASIC",
 	"PREMIUM",
 	"FREE",
+]);
+
+export const messageRoleEnum = pgEnum("messageType", [
+	"SYSTEM",
+	"USER",
+	"AGENT",
 ]);
 
 export const users = createTable("user", {
@@ -208,6 +215,15 @@ export const notebooks = createTable("notebook", {
 	userId: uuid("userId")
 		.notNull()
 		.references(() => users.id),
+	chatId: uuid("chatId")
+		.notNull()
+		.references(() => chats.id),
+	noteId: uuid("noteId")
+		.notNull()
+		.references(() => notes.id),
+	summaryId: uuid("summaryId")
+		.notNull()
+		.references(() => summaries.id),
 	createdAt: timestamp("createdAt", {
 		mode: "date",
 	})
@@ -225,13 +241,22 @@ export const notebooksRelations = relations(notebooks, ({ one }) => ({
 		fields: [notebooks.userId],
 		references: [users.id],
 	}),
+	chat: one(chats, {
+		fields: [notebooks.chatId],
+		references: [chats.id],
+	}),
+	summary: one(summaries, {
+		fields: [notebooks.summaryId],
+		references: [summaries.id],
+	}),
+	note: one(notes, {
+		fields: [notebooks.noteId],
+		references: [notes.id],
+	}),
 }));
 
 export const chats = createTable("chat", {
 	id: customId.notNull().primaryKey(),
-	notebookId: uuid("notebookId")
-		.notNull()
-		.references(() => notebooks.id),
 	userId: uuid("userId")
 		.notNull()
 		.references(() => users.id),
@@ -260,6 +285,7 @@ export const messages = createTable("message", {
 		.notNull()
 		.references(() => chats.id),
 	content: text("content").notNull(),
+	role: messageRoleEnum("role").notNull().default("SYSTEM"),
 	userId: uuid("userId")
 		.notNull()
 		.references(() => users.id),
@@ -286,11 +312,8 @@ export const messagesRelations = relations(messages, ({ one }) => ({
 	}),
 }));
 
-const summary = createTable("summary", {
+export const summaries = createTable("summary", {
 	id: customId.notNull().primaryKey(),
-	notebookId: uuid("notebook")
-		.notNull()
-		.references(() => notebooks.id),
 	content: text("content").notNull(),
 	userId: uuid("userId")
 		.notNull()
@@ -307,23 +330,38 @@ const summary = createTable("summary", {
 		.defaultNow(),
 });
 
-export const summaryRelations = relations(summary, ({ one }) => ({
-	notebook: one(notebooks, {
-		fields: [summary.notebookId],
-		references: [notebooks.id],
-	}),
+export const summariesRelations = relations(summaries, ({ one }) => ({
 	user: one(users, {
-		fields: [summary.userId],
+		fields: [summaries.userId],
 		references: [users.id],
 	}),
 }));
 
+//#Notes
+const defaultJsonContent = {
+	time: new Date().getTime(),
+	blocks: [],
+	version: "2.30.8",
+};
+
+type Block = {
+	id: string;
+	type: string;
+	data: any;
+};
+
+type NoteContent = {
+	time: number;
+	blocks: Block[];
+	version: string;
+};
+
 export const notes = createTable("note", {
 	id: customId.notNull().primaryKey(),
-	notebookId: uuid("notebook")
-		.notNull()
-		.references(() => notebooks.id),
-	content: text("content").notNull(),
+	content: json("content")
+		.default(defaultJsonContent)
+		.$type<NoteContent>()
+		.notNull(),
 	userId: uuid("userId")
 		.notNull()
 		.references(() => users.id),
@@ -340,10 +378,6 @@ export const notes = createTable("note", {
 });
 
 export const notesRelations = relations(notes, ({ one }) => ({
-	notebook: one(notebooks, {
-		fields: [notes.notebookId],
-		references: [notebooks.id],
-	}),
 	user: one(users, {
 		fields: [notes.userId],
 		references: [users.id],

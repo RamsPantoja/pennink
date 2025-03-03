@@ -17,6 +17,7 @@
     "@ai-sdk/mistral": "^1.1.13",
     "@auth/drizzle-adapter": "^1.1.0",
     "@digitalocean/do-markdownit": "^1.16.0",
+    "@editorjs/editorjs": "^2.30.8",
     "@heroicons/react": "^2.1.3",
     "@hookform/resolvers": "^3.3.4",
     "@langchain/mistralai": "^0.2.0",

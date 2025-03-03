@@ -3,7 +3,7 @@ import type { inferRouterOutputs } from "@trpc/server";
 import { userRouter } from "./routers/user";
 import { paymentRouter } from "./routers/payment";
 import { notebookRouter } from "./routers/notebook";
-import { aiChatRouter } from "./routers/aiChat";
+import { chatRouter } from "./routers/chat";
 
 /**
  * This is the primary router for your server.
@@ -14,7 +14,7 @@ export const appRouter = createTRPCRouter({
 	user: userRouter,
 	payment: paymentRouter,
 	notebook: notebookRouter,
-	aiChat: aiChatRouter,
+	chat: chatRouter,
 });
 
 // export type definition of API

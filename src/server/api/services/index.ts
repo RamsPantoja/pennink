@@ -10,7 +10,7 @@ import WeeklyDaysService from "./weeklyDays";
 import EmailService from "./email";
 import PaymentService from "./payment";
 import { NotebookService } from "./notebook";
-import { AIChatService } from "./aiChat";
+import { Chat } from "./chat";
 
 export type ServicesContext = {
 	userRoleService: UserRoleService;
@@ -24,7 +24,7 @@ export type ServicesContext = {
 	emailService: EmailService;
 	paymentService: PaymentService;
 	notebookService: NotebookService;
-	aiChatService: AIChatService;
+	chatService: Chat;
 };
 
 export type ServicesConfig = {
@@ -44,7 +44,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		emailService: new EmailService({ ctx }),
 		paymentService: new PaymentService({ ctx }),
 		notebookService: new NotebookService({ ctx }),
-		aiChatService: new AIChatService({ ctx }),
+		chatService: new Chat({ ctx }),
 	};
 };
 

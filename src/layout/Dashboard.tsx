@@ -18,9 +18,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	return (
 		<SidebarProvider>
 			<AppSidebar session={session} />
-			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
-				<div className="flex p-4 gap-4 items-center justify-between w-full">
-					<SidebarTrigger className="text-mochaSubtext1 min-w-5 h-5" />
+			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden pl-2">
+				<div className="flex p-2 gap-4 items-center justify-between w-full">
+					<SidebarTrigger />
 					<div className="flex items-center gap-4">
 						{!session && (
 							<Link
@@ -42,7 +42,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						)}
 					</div>
 				</div>
-				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden">
+				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden p-2">
 					{children}
 				</div>
 			</main>

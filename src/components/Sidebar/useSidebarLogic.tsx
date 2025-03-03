@@ -1,8 +1,10 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "~/utils/api";
 
 const useSidebarLogic = () => {
+	const router = useRouter();
 	const [displaySignOutAlert, setDisplaySignOutAlert] =
 		useState<boolean>(false);
 
@@ -12,20 +14,8 @@ const useSidebarLogic = () => {
 		isError: notebooksIsError,
 	} = api.notebook.notebooks.useQuery();
 
-	const { mutate: createNotebook, isPending: createNotebookIsPending } =
-		api.notebook.create.useMutation({
-			onSuccess: async (data) => {
-				toast.success("Cuardo creado correctamente y listo para usar");
-			},
-			onError: (error) => {
-				toast.error(error.message);
-			},
-		});
-
-	const onCreateNotebook = () => {
-		createNotebook({
-			name: "Hola mundo!",
-		});
+	const onNewNotebook = () => {
+		router.push("/");
 	};
 
 	return {
@@ -34,8 +24,7 @@ const useSidebarLogic = () => {
 		notebooksData,
 		notebooksIsLoading,
 		notebooksIsError,
-		onCreateNotebook,
-		createNotebookIsPending,
+		onNewNotebook,
 	};
 };
 

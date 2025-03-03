@@ -41,6 +41,7 @@ type AppSidebarProps = {
 
 export function AppSidebar({ session }: AppSidebarProps) {
 	const router = useRouter();
+	const { id } = router.query;
 
 	const {
 		displaySignOutAlert,
@@ -48,8 +49,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 		notebooksData,
 		notebooksIsLoading,
 		notebooksIsError,
-		onCreateNotebook,
-		createNotebookIsPending,
+		onNewNotebook,
 	} = useSidebarLogic();
 
 	const skeletons = mapSkeletons({
@@ -127,12 +127,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 							<span>Cuadernos</span>
 							<Tooltip>
 								<TooltipTrigger asChild>
-									<Button
-										onClick={onCreateNotebook}
-										variant="ghost"
-										size="icon"
-										isPending={createNotebookIsPending}
-									>
+									<Button onClick={onNewNotebook} variant="ghost" size="icon">
 										<PencilSquareIcon className="min-w-5 w-5 h-5" />
 									</Button>
 								</TooltipTrigger>
@@ -152,7 +147,14 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								notebooksData.map((notebook) => {
 									return (
 										<SidebarMenuItem key={notebook.id}>
-											<SidebarMenuButton className="font-semibold" asChild>
+											<SidebarMenuButton
+												onClick={() => {
+													router.push(`/notebook/${notebook.id}`);
+												}}
+												className="font-semibold cursor-pointer"
+												asChild
+												isActive={notebook.id === id}
+											>
 												<SidebarMenuItem>{notebook.name}</SidebarMenuItem>
 											</SidebarMenuButton>
 										</SidebarMenuItem>

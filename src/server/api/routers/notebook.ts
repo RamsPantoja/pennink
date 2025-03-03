@@ -1,5 +1,8 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { createNotebookInputSchema } from "../schemas/notebook";
+import {
+	createNotebookInputSchema,
+	notebookByIdInputSchema,
+} from "../schemas/notebook";
 
 export const notebookRouter = createTRPCRouter({
 	notebooks: protectedProcedure.query(async ({ ctx }) => {
@@ -7,6 +10,13 @@ export const notebookRouter = createTRPCRouter({
 			.services({ ctx })
 			.notebookService.getNotebooks(ctx.session.user.id);
 	}),
+	notebookById: protectedProcedure
+		.input(notebookByIdInputSchema)
+		.query(async ({ input, ctx }) => {
+			return await ctx
+				.services({ ctx })
+				.notebookService.getNotebookById(input.id);
+		}),
 	create: protectedProcedure
 		.input(createNotebookInputSchema)
 		.mutation(async ({ input, ctx }) => {
