@@ -5,6 +5,17 @@ import { Chat } from "../Chat";
 import { Skeleton } from "../ui/skeleton";
 import { SkeletonNotebook } from "./Skeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
+import {
+	ResizableHandle,
+	ResizablePanel,
+	ResizablePanelGroup,
+} from "../ui/resizable";
+import dynamic from "next/dynamic";
+import { Loading } from "../common/Loading";
+const DynamicEditor = dynamic(() => import("../Editor"), {
+	ssr: false,
+	loading: () => <Loading />,
+});
 
 type NotebookProps = {};
 
@@ -21,7 +32,7 @@ export const Notebook = ({}: NotebookProps) => {
 	});
 
 	return (
-		<Card className="w-full h-full flex flex-col items-center">
+		<Card className="w-full h-full flex flex-col items-center p-0">
 			{notebookIsLoading && <SkeletonNotebook />}
 			{notebookIsError && (
 				<FeedbackMessage
@@ -30,9 +41,22 @@ export const Notebook = ({}: NotebookProps) => {
 				/>
 			)}
 			{notebookData && (
-				<div className="w-full h-full flex  max-w-screen-lg">
-					<Chat id={notebookData.chatId} />
-				</div>
+				<ResizablePanelGroup
+					direction="horizontal"
+					className="min-h-[200px] w-fullrounded-lg border rounded-xl md:min-w-[450px]"
+				>
+					<ResizablePanel defaultSize={50}>
+						<div className="w-full h-full flex">
+							<Chat id={notebookData.chatId} isNew={false} />
+						</div>
+					</ResizablePanel>
+					<ResizableHandle withHandle />
+					<ResizablePanel defaultSize={50}>
+						<div className="w-full h-full flex">
+							<DynamicEditor onSave={() => {}} />
+						</div>
+					</ResizablePanel>
+				</ResizablePanelGroup>
 			)}
 		</Card>
 	);

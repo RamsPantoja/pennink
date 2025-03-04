@@ -42,7 +42,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						)}
 					</div>
 				</div>
-				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden p-2">
+				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden pl-2 pr-2 pb-2">
 					{children}
 				</div>
 			</main>
