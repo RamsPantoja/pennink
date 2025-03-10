@@ -3,7 +3,7 @@ import Header from "@editorjs/header";
 import EditorjsList from "@editorjs/list";
 // import Quote from "@editorjs/quote";
 // import Table from "@editorjs/table";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "../ui/card";
 
 export type EditorProps = {
@@ -11,14 +11,13 @@ export type EditorProps = {
 };
 
 const Editor = ({ onSave }: EditorProps) => {
+	const [editor, setEditor] = useState<EditorJS | undefined>(undefined);
 	const editorRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
-		let editor: EditorJS | undefined;
-
-		if (editorRef.current) {
-			console.log("a");
-			editor = new EditorJS({
+		console.log(editor);
+		if (editorRef.current && !editor) {
+			const editorInstance = new EditorJS({
 				holder: editorRef.current,
 				placeholder: "Escribe, `/` para comandos...",
 				tools: {
@@ -30,6 +29,8 @@ const Editor = ({ onSave }: EditorProps) => {
 					},
 				},
 			});
+
+			setEditor(editorInstance);
 		}
 
 		// Cleanup: clear interval
@@ -38,7 +39,7 @@ const Editor = ({ onSave }: EditorProps) => {
 				editor?.destroy();
 			}
 		};
-	}, []);
+	}, [editor]);
 
 	return <Card ref={editorRef} id="editorjs" className="w-full h-full flex" />;
 };
