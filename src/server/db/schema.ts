@@ -1,3 +1,4 @@
+import type { OutputData } from "@editorjs/editorjs";
 import { relations, sql } from "drizzle-orm";
 import {
 	boolean,
@@ -344,23 +345,11 @@ const defaultJsonContent = {
 	version: "2.30.8",
 };
 
-type Block = {
-	id: string;
-	type: string;
-	data: any;
-};
-
-type NoteContent = {
-	time: number;
-	blocks: Block[];
-	version: string;
-};
-
 export const notes = createTable("note", {
 	id: customId.notNull().primaryKey(),
 	content: json("content")
 		.default(defaultJsonContent)
-		.$type<NoteContent>()
+		.$type<OutputData>()
 		.notNull(),
 	userId: uuid("userId")
 		.notNull()

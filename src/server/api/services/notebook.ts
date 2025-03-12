@@ -97,6 +97,9 @@ export class NotebookService {
 			where: (notebooks, { eq }) => {
 				return eq(notebooks.id, id);
 			},
+			with: {
+				note: true,
+			},
 		});
 
 		if (!notebook) {

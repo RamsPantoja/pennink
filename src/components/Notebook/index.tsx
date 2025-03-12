@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { Card } from "../ui/card";
 import { api } from "~/utils/api";
 import { Chat } from "../Chat";
-import { Skeleton } from "../ui/skeleton";
 import { SkeletonNotebook } from "./Skeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
 import {
@@ -12,6 +11,8 @@ import {
 } from "../ui/resizable";
 import dynamic from "next/dynamic";
 import { Loading } from "../common/Loading";
+import type { OutputData } from "@editorjs/editorjs";
+import { toast } from "sonner";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -22,6 +23,7 @@ type NotebookProps = {};
 export const Notebook = ({}: NotebookProps) => {
 	const router = useRouter();
 	const { id } = router.query;
+	const utils = api.useUtils();
 
 	const {
 		data: notebookData,
@@ -30,6 +32,34 @@ export const Notebook = ({}: NotebookProps) => {
 	} = api.notebook.notebookById.useQuery({
 		id: id as string,
 	});
+
+	const { mutate: updateNote, isPending: updateNoteIsPending } =
+		api.note.updateNote.useMutation({
+			onSuccess: async () => {
+				await utils.notebook.notebookById.invalidate();
+			},
+			onError: (error) => {
+				toast(error.message);
+			},
+		});
+
+	const getNoteContent = async (data: OutputData) => {
+		const { version, time, blocks } = data;
+
+		if (!notebookData?.noteId) {
+			toast("Invalid note ID");
+			return;
+		}
+
+		updateNote({
+			noteId: notebookData.noteId,
+			content: {
+				version,
+				time,
+				blocks,
+			},
+		});
+	};
 
 	return (
 		<Card className="w-full h-full flex flex-col items-center p-0">
@@ -43,7 +73,7 @@ export const Notebook = ({}: NotebookProps) => {
 			{notebookData && (
 				<ResizablePanelGroup
 					direction="horizontal"
-					className="min-h-[200px] w-fullrounded-lg border rounded-xl md:min-w-[450px]"
+					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full gap-4"
 				>
 					<ResizablePanel defaultSize={50}>
 						<div className="w-full h-full flex">
@@ -52,9 +82,17 @@ export const Notebook = ({}: NotebookProps) => {
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
-						<div className="w-full h-full flex">
-							<DynamicEditor onSave={() => {}} />
-						</div>
+						<Card className="flex w-full h-full pl-0 pr-0">
+							<Card
+								className="w-full h-full flex border rounded-l-xl rounded-r-none"
+								key={id as string}
+							>
+								<DynamicEditor
+									data={notebookData.note.content}
+									onSave={getNoteContent}
+								/>
+							</Card>
+						</Card>
 					</ResizablePanel>
 				</ResizablePanelGroup>
 			)}

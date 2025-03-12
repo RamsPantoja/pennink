@@ -11,6 +11,7 @@ import EmailService from "./email";
 import PaymentService from "./payment";
 import { NotebookService } from "./notebook";
 import { Chat } from "./chat";
+import { NoteService } from "./note";
 
 export type ServicesContext = {
 	userRoleService: UserRoleService;
@@ -25,6 +26,7 @@ export type ServicesContext = {
 	paymentService: PaymentService;
 	notebookService: NotebookService;
 	chatService: Chat;
+	noteService: NoteService;
 };
 
 export type ServicesConfig = {
@@ -45,6 +47,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		paymentService: new PaymentService({ ctx }),
 		notebookService: new NotebookService({ ctx }),
 		chatService: new Chat({ ctx }),
+		noteService: new NoteService({ ctx }),
 	};
 };
 

@@ -1,4 +1,7 @@
-import EditorJS, { type BlockToolConstructable } from "@editorjs/editorjs";
+import EditorJS, {
+	type OutputData,
+	type BlockToolConstructable,
+} from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import EditorjsList from "@editorjs/list";
 // import Quote from "@editorjs/quote";
@@ -7,18 +10,17 @@ import { useEffect, useRef, useState } from "react";
 import { Card } from "../ui/card";
 
 export type EditorProps = {
-	onSave: () => void;
+	onSave: (data: OutputData) => void;
+	data: OutputData | null | undefined;
 };
 
-const Editor = ({ onSave }: EditorProps) => {
-	const [editor, setEditor] = useState<EditorJS | undefined>(undefined);
-	const editorRef = useRef<HTMLDivElement | null>(null);
+const Editor = ({ onSave, data }: EditorProps) => {
+	const editorInstance = useRef<EditorJS | null>(null);
 
 	useEffect(() => {
-		console.log(editor);
-		if (editorRef.current && !editor) {
-			const editorInstance = new EditorJS({
-				holder: editorRef.current,
+		if (!editorInstance.current) {
+			const editor = new EditorJS({
+				holder: "editorjs",
 				placeholder: "Escribe, `/` para comandos...",
 				tools: {
 					header: {
@@ -28,20 +30,32 @@ const Editor = ({ onSave }: EditorProps) => {
 						class: EditorjsList as unknown as BlockToolConstructable,
 					},
 				},
+				data: data ?? undefined,
+				onChange: (api, event) => {
+					api.saver.save().then((outputData) => {
+						onSave(outputData);
+					});
+				},
 			});
 
-			setEditor(editorInstance);
+			editorInstance.current = editor;
 		}
 
 		// Cleanup: clear interval
 		return () => {
-			if (typeof editor?.destroy === "function") {
-				editor?.destroy();
+			if (typeof editorInstance.current?.destroy === "function") {
+				editorInstance.current.destroy();
+				editorInstance.current = null;
 			}
 		};
-	}, [editor]);
+	}, []);
 
-	return <Card ref={editorRef} id="editorjs" className="w-full h-full flex" />;
+	return (
+		<Card
+			id="editorjs"
+			className="w-full h-full flex flex-col pl-20 markdown-styles prismjs-theme"
+		/>
+	);
 };
 
 export default Editor;
