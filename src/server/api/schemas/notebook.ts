@@ -20,3 +20,8 @@ export const createNotebookInputSchema = z.object({
 export const notebookByIdInputSchema = z.object({
 	id: z.string(),
 });
+
+export const updateNotebookNameInputSchema = z.object({
+	id: z.string(),
+	name: z.string().min(1),
+});

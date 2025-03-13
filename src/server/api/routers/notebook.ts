@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
 	createNotebookInputSchema,
 	notebookByIdInputSchema,
+	updateNotebookNameInputSchema,
 } from "../schemas/notebook";
 
 export const notebookRouter = createTRPCRouter({
@@ -23,5 +24,12 @@ export const notebookRouter = createTRPCRouter({
 			return await ctx
 				.services({ ctx })
 				.notebookService.create(input, ctx.session.user.id);
+		}),
+	updateName: protectedProcedure
+		.input(updateNotebookNameInputSchema)
+		.mutation(async ({ input, ctx }) => {
+			return await ctx
+				.services({ ctx })
+				.notebookService.updateNotebookName(input);
 		}),
 });

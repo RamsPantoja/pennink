@@ -34,6 +34,7 @@ import FeedbackMessage from "../common/FeedbackMessage";
 import { Fragment } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../common/Button";
+import { NotebookCard } from "./NotebookCard";
 
 type AppSidebarProps = {
 	session: Session | null;
@@ -123,7 +124,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel asChild>
-						<div className="flex items-center gap-4 justify-between">
+						<div className="flex items-center gap-4 justify-between mb-2">
 							<span>Cuadernos</span>
 							<Tooltip>
 								<TooltipTrigger asChild>
@@ -146,18 +147,12 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								notebooksData &&
 								notebooksData.map((notebook) => {
 									return (
-										<SidebarMenuItem key={notebook.id}>
-											<SidebarMenuButton
-												onClick={() => {
-													router.push(`/notebook/${notebook.id}`);
-												}}
-												className="font-semibold cursor-pointer"
-												asChild
-												isActive={notebook.id === id}
-											>
-												<SidebarMenuItem>{notebook.name}</SidebarMenuItem>
-											</SidebarMenuButton>
-										</SidebarMenuItem>
+										<NotebookCard
+											key={notebook.id}
+											id={notebook.id}
+											name={notebook.name}
+											selectedNotebookId={id as string}
+										/>
 									);
 								})}
 							{!notebooksIsLoading &&

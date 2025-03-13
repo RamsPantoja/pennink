@@ -1,5 +1,8 @@
 import type { z } from "zod";
-import type { createNotebookInputSchema } from "../schemas/notebook";
+import type {
+	createNotebookInputSchema,
+	updateNotebookNameInputSchema,
+} from "../schemas/notebook";
 import type { TRPCContext } from "../trpc";
 import {
 	chats,
@@ -9,12 +12,14 @@ import {
 	messages as messagesSchema,
 } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
+import { eq } from "drizzle-orm";
 
 type NotebookServiceContructor = {
 	ctx: TRPCContext;
 };
 
 type createNotebookInput = z.infer<typeof createNotebookInputSchema>;
+type updateNotebookNameInput = z.infer<typeof updateNotebookNameInputSchema>;
 
 export class NotebookService {
 	ctx: TRPCContext;
@@ -110,5 +115,34 @@ export class NotebookService {
 		}
 
 		return notebook;
+	}
+
+	public async updateNotebookName(input: updateNotebookNameInput) {
+		const notebook = await this.ctx.db.query.notebooks.findFirst({
+			where: (notebooks, { eq }) => {
+				return eq(notebooks.id, input.id);
+			},
+		});
+
+		if (!notebook) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Notebook not found",
+			});
+		}
+
+		const [updatedNotebook] = await this.ctx.db
+			.update(notebooks)
+			.set({
+				name: input.name,
+			})
+			.where(eq(notebooks.id, input.id))
+			.returning();
+
+		if (!updatedNotebook) {
+			throw new Error("Failed to update notebook");
+		}
+
+		return updatedNotebook;
 	}
 }

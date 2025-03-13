@@ -26,6 +26,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		createNotebookIsPending,
 		messagesIsLoading,
 		messagesIsError,
+		chatContainer,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { register, handleSubmit, watch } = useChatForm;
@@ -37,7 +38,10 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				<FeedbackMessage status="ERROR" message="Error fetching messages" />
 			)}
 			{!messagesIsLoading && !messagesIsError && (
-				<div className="flex flex-col gap-4 overflow-auto h-full p-4">
+				<div
+					ref={chatContainer}
+					className="flex flex-col gap-4 overflow-auto h-full p-4"
+				>
 					{messages.map((message) => (
 						<MessageCard key={message.id} message={message} />
 					))}

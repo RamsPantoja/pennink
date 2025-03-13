@@ -1,13 +1,13 @@
-import { toast } from "sonner";
 import { api } from "~/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Message } from "~/server/api/services/chat";
 import { typeid } from "typeid-js";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { messageRoleVercelSDK } from "~/lib/utils";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -27,6 +27,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [currentAssistantMessage, setCurrentAssistantMessage] =
 		useState<Message | null>(null);
 	const [chatIsPending, setChatIsPending] = useState(false);
+	const chatContainer = useRef<HTMLDivElement | null>(null);
 
 	const {
 		data: messagesData,
@@ -66,6 +67,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
 		setChatIsPending(true);
+		useChatForm.setValue("prompt", "");
 
 		try {
 			if (!session) {
@@ -91,7 +93,15 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ prompt: data.prompt }),
+				body: JSON.stringify({
+					prompt: data.prompt,
+					context: {
+						messages: messages.map((message) => ({
+							content: message.content,
+							role: messageRoleVercelSDK[message.role],
+						})),
+					},
+				}),
 			});
 
 			const stream = agentResponse.body;
@@ -128,6 +138,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						});
 
 						if (router.pathname === "/") {
+							localStorage.setItem(
+								"buuddy.new-notebook-messages",
+								JSON.stringify([newUserMessage, newAgentMessage]),
+							);
+
 							createNotebook({
 								name: "...",
 								messages: [newUserMessage, newAgentMessage],
@@ -146,6 +161,24 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 	};
 
+	useEffect(() => {
+		const lastMessage = messages[messages.length - 1];
+
+		if (chatContainer.current && lastMessage?.role === "USER") {
+			chatContainer.current.scrollTo({
+				top: chatContainer.current.scrollHeight,
+			});
+		}
+	}, [chatContainer, messages.length]);
+
+	useEffect(() => {
+		if (chatContainer.current) {
+			chatContainer.current.scrollTo({
+				top: chatContainer.current.scrollHeight,
+			});
+		}
+	}, [chatContainer.current]);
+
 	return {
 		onSentPrompt,
 		useChatForm,
@@ -156,5 +189,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		router,
 		messagesIsLoading,
 		messagesIsError,
+		chatContainer,
 	};
 };

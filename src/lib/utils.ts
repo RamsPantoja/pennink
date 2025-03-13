@@ -5,6 +5,7 @@ import { z } from "zod";
 import { DateTime, type Duration } from "luxon";
 import markdownit from "markdown-it";
 import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
+import { MessageRole } from "./enum";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -226,4 +227,10 @@ export const markdownToHtml = (markdown: string) => {
 	const mdit = markdownit();
 	const htmlString = mdit.use(digitalMarkdownPlugin).render(markdown);
 	return htmlString;
+};
+
+export const messageRoleVercelSDK: Record<MessageRole, string> = {
+	AGENT: "assistant",
+	USER: "user",
+	SYSTEM: "system",
 };
