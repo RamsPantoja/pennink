@@ -1,5 +1,8 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { getMessagesByChatIdInputSchema } from "../schemas/chat";
+import {
+	createMessageInputSchema,
+	getMessagesByChatIdInputSchema,
+} from "../schemas/chat";
 
 export const chatRouter = createTRPCRouter({
 	messagesByChatId: protectedProcedure
@@ -8,5 +11,10 @@ export const chatRouter = createTRPCRouter({
 			return await ctx
 				.services({ ctx })
 				.chatService.getMessagesByChatId(input.chatId);
+		}),
+	createMessage: protectedProcedure
+		.input(createMessageInputSchema)
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.services({ ctx }).chatService.createMessage(input);
 		}),
 });

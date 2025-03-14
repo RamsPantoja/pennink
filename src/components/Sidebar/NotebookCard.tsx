@@ -93,7 +93,7 @@ export const NotebookCard = ({
 	});
 
 	useEffect(() => {
-		if (notebookTitleData) {
+		if (notebookTitleData && id === selectedNotebookId) {
 			const handleStream = async () => {
 				const stream = notebookTitleData.body;
 
@@ -128,7 +128,7 @@ export const NotebookCard = ({
 
 			handleStream();
 		}
-	}, [notebookTitleData]);
+	}, [notebookTitleData, id, selectedNotebookId]);
 
 	return (
 		<SidebarMenuItem>

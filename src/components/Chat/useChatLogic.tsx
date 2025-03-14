@@ -65,6 +65,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			},
 		});
 
+	const { mutate: createMessage, isPending: createMessageIsPending } =
+		api.chat.createMessage.useMutation({
+			onError: (error) => {
+				console.error(error.message);
+			},
+		});
+
 	const onSentPrompt = async (data: ChatValidationSchema) => {
 		setChatIsPending(true);
 		useChatForm.setValue("prompt", "");
@@ -83,6 +90,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				content: data.prompt,
 				role: "USER",
 			};
+
+			if (!isNew && router.pathname !== "/") {
+				createMessage({
+					chatId,
+					message: newUserMessage,
+				});
+			}
 
 			setMessages((prevMessages) => {
 				return [...prevMessages, newUserMessage];
@@ -137,7 +151,14 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 							return [...prev, newAgentMessage];
 						});
 
-						if (router.pathname === "/") {
+						if (!isNew && router.pathname !== "/") {
+							createMessage({
+								chatId,
+								message: newAgentMessage,
+							});
+						}
+
+						if (router.pathname === "/" && isNew) {
 							localStorage.setItem(
 								"buuddy.new-notebook-messages",
 								JSON.stringify([newUserMessage, newAgentMessage]),

@@ -70,7 +70,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					{chatIsPending && (
 						<Button
 							onClick={handleSubmit(onSentPrompt)}
-							variant="ghost"
 							size="icon"
 							disabled={false}
 						>
@@ -80,7 +79,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					{!chatIsPending && (
 						<Button
 							onClick={handleSubmit(onSentPrompt)}
-							variant="ghost"
 							size="icon"
 							disabled={
 								chatIsPending || createNotebookIsPending || !watch("prompt")

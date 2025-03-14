@@ -77,12 +77,12 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<div className="p-1 rounded-md flex w-full flex-row items-center justify-between gap-2 overflow-hidden cursor-pointer hover:bg-mochaMantle">
-								<div className="flex flex-row items-center gap-2 min-w-32">
+								<div className="flex flex-row items-center gap-2 min-w-32 w-full">
 									<Avatar className="h-7 w-7">
 										<AvatarImage src={session.user.image as string} />
 										<AvatarFallback>Tú</AvatarFallback>
 									</Avatar>
-									<div className="flex flex-col w-full">
+									<div className="flex flex-col w-full overflow-hidden">
 										<p className="truncate text-sm font-bold text-mochaText">
 											{session.user.name}
 										</p>
