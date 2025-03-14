@@ -14,7 +14,7 @@ import {
 	ArrowRightStartOnRectangleIcon,
 	ChevronUpDownIcon,
 	Cog6ToothIcon,
-	PencilSquareIcon,
+	DocumentPlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -80,7 +80,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								<div className="flex flex-row items-center gap-2 min-w-32 w-full">
 									<Avatar className="h-7 w-7">
 										<AvatarImage src={session.user.image as string} />
-										<AvatarFallback>Tú</AvatarFallback>
+										<AvatarFallback>You</AvatarFallback>
 									</Avatar>
 									<div className="flex flex-col w-full overflow-hidden">
 										<p className="truncate text-sm font-bold text-mochaText">
@@ -125,14 +125,14 @@ export function AppSidebar({ session }: AppSidebarProps) {
 				<SidebarGroup>
 					<SidebarGroupLabel asChild>
 						<div className="flex items-center gap-4 justify-between mb-2">
-							<span>Cuadernos</span>
+							<span>Notebooks</span>
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button onClick={onNewNotebook} variant="ghost" size="icon">
-										<PencilSquareIcon className="min-w-5 w-5 h-5" />
+										<DocumentPlusIcon className="min-w-5 w-5 h-5" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Nuevo cuaderno</TooltipContent>
+								<TooltipContent>New notebook</TooltipContent>
 							</Tooltip>
 						</div>
 					</SidebarGroupLabel>

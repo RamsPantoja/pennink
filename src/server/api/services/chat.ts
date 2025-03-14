@@ -24,6 +24,7 @@ export class Chat {
 			where: (messages, { eq }) => {
 				return eq(messages.chatId, id);
 			},
+			orderBy: (messages, { asc }) => [asc(messages.id)],
 		});
 
 		return messages;

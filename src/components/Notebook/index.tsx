@@ -73,7 +73,7 @@ export const Notebook = ({}: NotebookProps) => {
 			{notebookData && (
 				<ResizablePanelGroup
 					direction="horizontal"
-					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full gap-4"
+					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
 						<div className="w-full h-full flex">
@@ -82,16 +82,11 @@ export const Notebook = ({}: NotebookProps) => {
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
-						<Card className="flex w-full h-full pl-0 pr-0">
-							<Card
-								className="w-full h-full flex border rounded-l-xl rounded-r-none"
-								key={id as string}
-							>
-								<DynamicEditor
-									data={notebookData.note.content}
-									onSave={getNoteContent}
-								/>
-							</Card>
+						<Card className="w-full h-full flex" key={id as string}>
+							<DynamicEditor
+								data={notebookData.note.content}
+								onSave={getNoteContent}
+							/>
 						</Card>
 					</ResizablePanel>
 				</ResizablePanelGroup>

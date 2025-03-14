@@ -6,7 +6,11 @@ import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { cn, messageRoleVercelSDK } from "~/lib/utils";
 import type { Message } from "~/server/api/services/chat";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import {
+	EllipsisVerticalIcon,
+	PencilSquareIcon,
+	TrashIcon,
+} from "@heroicons/react/24/outline";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -170,10 +174,15 @@ export const NotebookCard = ({
 								onSelect={async () => {
 									await router.push("/settings");
 								}}
+								className="flex gap-2"
 							>
-								Settings
+								<PencilSquareIcon className="min-w-5 w-5 h-5" />
+								Rename
 							</DropdownMenuItem>
-							<DropdownMenuItem>Sign out</DropdownMenuItem>
+							<DropdownMenuItem className="flex gap-2 text-red-500">
+								<TrashIcon className="min-w-5 w-5 h-5" />
+								Delete
+							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</div>
