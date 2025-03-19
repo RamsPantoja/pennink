@@ -8,6 +8,7 @@ import { typeid } from "typeid-js";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { messageRoleVercelSDK } from "~/lib/utils";
+import { toast } from "sonner";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -178,6 +179,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		} catch (error) {
 			setChatIsPending(false);
+			toast("An error occurred while sending your message.");
 			console.error(error);
 		}
 	};
