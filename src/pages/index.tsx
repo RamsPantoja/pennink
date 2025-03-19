@@ -29,5 +29,14 @@ type ServerSideProps = {
 export const getServerSideProps = (async ({ req, res }) => {
 	const session = await getServerSession(req, res, authOptions);
 
+	if (!session) {
+		return {
+			redirect: {
+				destination: "/sign_in",
+				permanent: false,
+			},
+		};
+	}
+
 	return { props: { session } };
 }) satisfies GetServerSideProps<ServerSideProps>;

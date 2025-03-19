@@ -1,12 +1,22 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { drizzle } from "drizzle-orm/neon-serverless";
 import { env } from "~/env";
 import * as schema from "./schema";
-
-const connectionString = env.DATABASE_URL;
+import ws from "ws";
+// Disable prefetch as it is not supported for "Transaction" pool mode
+import { Pool } from "@neondatabase/serverless";
 
 export type DrizzleSchema = typeof schema;
 
-// Disable prefetch as it is not supported for "Transaction" pool mode
-const client = postgres(connectionString, { prepare: false });
-export const db = drizzle<DrizzleSchema>(client, { schema });
+/**
+ * Cache the database connection in development. This avoids creating a new connection on every HMR
+ * update.
+ */
+const globalForDb = globalThis as unknown as {
+	conn: Pool | undefined;
+};
+
+const conn =
+	globalForDb.conn ?? new Pool({ connectionString: env.DATABASE_URL });
+if (env.NODE_ENV !== "production") globalForDb.conn = conn;
+
+export const db = drizzle<DrizzleSchema>(conn, { schema });

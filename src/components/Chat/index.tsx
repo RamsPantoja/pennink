@@ -50,7 +50,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					)}
 				</div>
 			)}
-			<Card className="border-2 w-full bg-white flex flex-col gap-4">
+			<Card className="border-1 w-full bg-white flex flex-col gap-4 shadow-md">
 				<Input
 					placeholder="Escribe un mensaje, sube un archivo o pega un link de youtube"
 					className="resize-none bg-mochaBase"

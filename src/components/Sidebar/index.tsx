@@ -178,7 +178,6 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
-			<SidebarRail className="bg-mochaBase after:bg-mochaMantle" />
 		</Sidebar>
 	);
 }

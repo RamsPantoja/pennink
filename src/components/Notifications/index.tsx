@@ -28,7 +28,7 @@ const Notifications = ({ session }: NotificationsProps) => {
 		<Popover>
 			<PopoverTrigger asChild>
 				<Button variant="ghost" size="icon">
-					<BellIcon className="w-4 h-4 text-mochaText" />
+					<BellIcon className="min-w-5 h-5" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="max-h-[--radix-popover-content-available-height] overflow-auto p-0">

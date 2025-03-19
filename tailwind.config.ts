@@ -15,14 +15,14 @@ export default {
 		extend: {
 			colors: {
 				mochaBase: "#ffffff",
-				mochaMantle: "#e6e9ef",
-				mochaText: "#000000",
-				mochaSubText: "#4c4f69",
+				mochaMantle: "#f6f6f6",
+				mochaText: "#4c4f69",
+				mochaSubText: "#5c5f77",
 				mochaSubtext1: "#6c6f85",
 				mochaLavender: "#7287fd",
 				mochaMauve: "#000000",
-				mochaCrust: "#dce0e8",
-				mochaTeal: "#179299",
+				mochaCrust: "#fafafa",
+				mochaTeal: "#dbe0c3",
 				sidebar: {
 					DEFAULT: "var(--sidebar-background)",
 					foreground: "var(--sidebar-foreground)",

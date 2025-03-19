@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import BuuddyLogotype from "../common/BuuddyLogotype";
+import { Logo } from "../common/Logo";
 import { Button } from "../common/Button";
 
 type SignInFormProps = {
@@ -21,13 +21,13 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 	};
 
 	return (
-		<Card className="max-w-72 bg-mochaMantle p-0">
+		<Card className="max-w-72 bg-mochaBase p-0">
 			<CardHeader>
 				<CardTitle>
 					<div className="flex flex-col items-center justify-center gap-4 text-mochaText">
-						<BuuddyLogotype />
-						<p className="text-base font-black text-mochaText">
-							Rent and Connect with People
+						<Logo />
+						<p className="text-base text-mochaText text-center">
+							AI that speeds up learning and writing
 						</p>
 					</div>
 				</CardTitle>
