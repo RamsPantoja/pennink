@@ -10,10 +10,10 @@ export const HomeComponent = () => {
 	const chatId = typeid().toUUID();
 
 	return (
-		<div className="flex w-full pl-4 pr-4 pt-0 pb-4 h-full justify-center">
-			<Card className="max-w-screen-lg w-full gap-8 flex flex-col">
+		<div className="flex w-full pl-4 pr-4 pt-0 pb-4 h-full justify-center items-center">
+			<Card className="max-w-screen-lg gap-4 flex flex-col w-full justify-center h-full">
 				<p className="text-center text-3xl font-bold">
-					¿Que quieres aprender hoy?
+					What do you want to learn today?
 				</p>
 				<Chat id={chatId} isNew={true} />
 			</Card>

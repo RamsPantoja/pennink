@@ -10,6 +10,7 @@ import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { Fragment } from "react";
+import { cn } from "~/lib/utils";
 
 type ChatProps = {
 	id: string;
@@ -32,15 +33,22 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	const { register, handleSubmit, watch } = useChatForm;
 
 	return (
-		<Card className="flex flex-1 flex-col gap-4 overflow-hidden">
+		<Card
+			className={cn([
+				"flex flex-col gap-4 overflow-hidden",
+				{
+					"flex-1": messages.length > 0,
+				},
+			])}
+		>
 			{messagesIsLoading && <ChatSkeleton />}
 			{!messagesIsLoading && messagesIsError && (
 				<FeedbackMessage status="ERROR" message="Error fetching messages" />
 			)}
-			{!messagesIsLoading && !messagesIsError && (
+			{!messagesIsLoading && !messagesIsError && messages.length > 0 && (
 				<div
 					ref={chatContainer}
-					className="flex flex-col gap-4 overflow-auto h-full p-4"
+					className="flex flex-col gap-4 overflow-auto p-4 flex-1"
 				>
 					{messages.map((message) => (
 						<MessageCard key={message.id} message={message} />
