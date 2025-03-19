@@ -37,38 +37,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					});
 				}
 				break;
-			case "account.updated":
-				console.log(event.data.object.requirements);
-				{
-					if (
-						event.data.object.requirements?.past_due &&
-						event.data.object.requirements?.past_due.length !== 0
-					) {
-						//Stripe connect needs more information therefore onboarding is not completed
-						await caller.payment.updateOnboarding({
-							accountId: event.data.object.id,
-							state: false,
-						});
-					} else {
-						if (
-							event.data.object.requirements?.currently_due &&
-							event.data.object.requirements?.currently_due.length !== 0
-						) {
-							//Stripe connect needs more information therefore onboarding is not completed
-							await caller.payment.updateOnboarding({
-								accountId: event.data.object.id,
-								state: false,
-							});
-						} else {
-							//Onboarding is completed
-							await caller.payment.updateOnboarding({
-								accountId: event.data.object.id,
-								state: true,
-							});
-						}
-					}
-				}
-				break;
 			default:
 				break;
 		}

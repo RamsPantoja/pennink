@@ -20,7 +20,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			<AppSidebar session={session} />
 			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
 				<div className="flex p-1 gap-4 items-center justify-between w-full border border-l-0">
-					<SidebarTrigger className="min-w-8 h-8" />
+					<SidebarTrigger className="min-w-8 h-8">
+						<span>Toggle</span>
+					</SidebarTrigger>
 					<div className="flex items-center gap-4">
 						{!session && (
 							<Link

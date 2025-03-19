@@ -5,7 +5,7 @@ import { TRPCError } from "@trpc/server";
 import { Stripe } from "stripe";
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
-import { payments, stripeAccounts } from "~/server/db/schema";
+import { payments } from "~/server/db/schema";
 import type {
 	stripeItemSchema,
 	updateStripeConnectOnBoardingInput,
@@ -49,7 +49,6 @@ export type MetadataPayment = {
 	paymentType?: PaymentType;
 };
 
-export type StripeAccount = typeof stripeAccounts.$inferInsert;
 export type StripeItem = z.infer<typeof stripeItemSchema>;
 export type UpdateOnboardingInput = z.infer<
 	typeof updateStripeConnectOnBoardingInput
@@ -61,43 +60,6 @@ class PaymentService {
 
 	constructor({ ctx }: AccountServiceContructor) {
 		this.ctx = ctx;
-	}
-
-	async createStripeAccount(
-		accountId: string,
-		session: Session,
-	): Promise<StripeAccount> {
-		const [stripeAccount] = await this.ctx.db
-			.insert(stripeAccounts)
-			.values({
-				accountId: accountId,
-				userId: session.user.id,
-			})
-			.returning();
-
-		if (!stripeAccount) {
-			throw new TRPCError({
-				code: "CONFLICT",
-				message: "StripeAccount not created",
-			});
-		}
-
-		return stripeAccount;
-	}
-
-	async stripeAccountByUserId(session: Session): Promise<StripeAccount | null> {
-		const accountFound = await this.ctx.db.query.stripeAccounts.findFirst({
-			where: (stripeAccounts, { eq }) => {
-				return eq(stripeAccounts.userId, session.user.id);
-			},
-		});
-
-		if (accountFound) {
-			// return null make the error whit query returning undefinded disappear
-			return accountFound;
-		}
-
-		return null;
 	}
 
 	async createStripeConnectAccount() {
@@ -127,69 +89,6 @@ class PaymentService {
 		}
 
 		return accountLink;
-	}
-
-	async updateOnboarding(input: UpdateOnboardingInput) {
-		const { accountId, state } = input;
-
-		const userStripeAccount = await this.ctx.db.query.stripeAccounts.findFirst({
-			where: (stripeAccounts, { eq }) => {
-				return eq(stripeAccounts.accountId, accountId);
-			},
-		});
-
-		if (!userStripeAccount) {
-			throw new TRPCError({
-				code: "CONFLICT",
-				message: "Account not found",
-			});
-		}
-
-		const updateOnboarState = await this.ctx.db
-			.update(stripeAccounts)
-			.set({ onboarding: state })
-			.where(eq(stripeAccounts.accountId, userStripeAccount.accountId))
-			.returning();
-
-		return updateOnboarState;
-	}
-
-	async createStripeDshboardLink(session: Session): Promise<Stripe.LoginLink> {
-		const userStripeAccount = await this.stripeAccountByUserId(session);
-
-		if (!userStripeAccount) {
-			throw new TRPCError({
-				code: "NOT_FOUND",
-				message: "User not found",
-			});
-		}
-
-		return await this.stripe.accounts.createLoginLink(
-			userStripeAccount.accountId,
-		);
-	}
-
-	async connectStripeConnect(session: Session): Promise<StripeFlowObject> {
-		let generateOnboardingLink: Stripe.AccountLink;
-
-		const stripeAccount = await this.stripeAccountByUserId(session);
-
-		if (!stripeAccount) {
-			const newStripeAccount = await this.createStripeConnectAccount();
-
-			const stripeAccountDB = await this.createStripeAccount(
-				newStripeAccount.id,
-				session,
-			);
-
-			generateOnboardingLink = await this.newAccountLink(newStripeAccount.id);
-
-			return { generateOnboardingLink, newStripeAccount, stripeAccountDB };
-		}
-
-		generateOnboardingLink = await this.newAccountLink(stripeAccount.accountId);
-
-		return { generateOnboardingLink };
 	}
 
 	private parseStripeItems(items: StripeItem[], currency: string) {
@@ -230,14 +129,6 @@ class PaymentService {
 			currency: "MXN",
 			customer: customer.id,
 			payment_method_types: ["card"],
-			// payment_method_options: {
-			// 	customer_balance: {
-			// 		funding_type: "bank_transfer",
-			// 		bank_transfer: {
-			// 			type: "mx_bank_transfer",
-			// 		},
-			// 	},
-			// },
 			success_url: config.successUrl,
 			cancel_url: config.cancelUrl,
 			phone_number_collection: {
@@ -259,6 +150,7 @@ class PaymentService {
 				userId: input.userId,
 				checkoutSessionId: input.checkoutSessionId,
 				paymentType: input.paymentType,
+				paymentIntentId: "test",
 			})
 			.returning();
 
@@ -297,15 +189,15 @@ class PaymentService {
 		// 	paymentType,
 		// });
 
-		switch (paymentType) {
-			case "BOOKING":
-				{
-					await this.onBookingPaymentSuccess();
-				}
-				break;
-			default:
-				break;
-		}
+		// switch (paymentType) {
+		// 	case "BOOKING":
+		// 		{
+		// 			await this.onBookingPaymentSuccess();
+		// 		}
+		// 		break;
+		// 	default:
+		// 		break;
+		// }
 	}
 
 	private async onBookingPaymentSuccess() {

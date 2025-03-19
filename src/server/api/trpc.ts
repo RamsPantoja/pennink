@@ -9,7 +9,6 @@
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -21,6 +20,7 @@ import Services, {
 	type ServicesContext,
 } from "./services";
 import type * as schema from "../db/schema";
+import type { NeonDatabase } from "drizzle-orm/neon-serverless";
 
 /**
  * 1. CONTEXT
@@ -36,7 +36,7 @@ interface CreateContextOptions {
 }
 
 export type TRPCContext = {
-	db: PostgresJsDatabase<typeof schema>;
+	db: NeonDatabase<typeof schema>;
 	session: Session | null;
 	services: (config: ServicesConfig) => ServicesContext;
 	opts: CreateNextContextOptions;
