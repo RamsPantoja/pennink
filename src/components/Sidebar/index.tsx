@@ -162,7 +162,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 									<div className="p-4">
 										<FeedbackMessage
 											status="INFORMATION"
-											message="No hay cuadernos para mostrar"
+											message="No notebooks to show"
 										/>
 									</div>
 								)}

@@ -60,7 +60,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 			)}
 			<Card className="border-1 w-full bg-white flex flex-col gap-4 shadow-md">
 				<Input
-					placeholder="Escribe un mensaje, sube un archivo o pega un link de youtube"
+					placeholder="Write a message, upload a file or paste a youtube link"
 					className="resize-none bg-mochaBase"
 					{...register("prompt")}
 				/>
@@ -72,7 +72,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 									<PaperClipIcon className="min-w-5 w-5 h-5" />
 								</Button>
 							</TooltipTrigger>
-							<TooltipContent>Sube archivos y más</TooltipContent>
+							<TooltipContent>Upload files and more</TooltipContent>
 						</Tooltip>
 					</div>
 					{chatIsPending && (

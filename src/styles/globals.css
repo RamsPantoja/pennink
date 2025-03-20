@@ -58,7 +58,7 @@
 	.prismjs-theme {
 		code[class*="language-"],
 		pre[class*="language-"] {
-			color: #c6d0f5;
+			color: #4c4f69;
 			padding: 12px;
 			border-radius: 8px;
 			overflow: auto;
@@ -70,122 +70,122 @@
 
 		:not(pre) > code[class*="language-"],
 		pre[class*="language-"] {
-			background: #292c3c;
+			background: #e6e9ef;
 		}
 
 		/* https://prismjs.com/tokens.html */
 
 		.token.keyword {
-			color: #ca9ee6;
+			color: #8839ef;
 		}
 
 		.token.builtin {
-			color: #e78284;
+			color: #d20f39;
 		}
 
 		.token.class-name {
-			color: #e5c890;
+			color: #df8e1d;
 		}
 
 		.token.function {
-			color: #8caaee;
+			color: #1e66f5;
 		}
 
 		.token.boolean,
 		.token.number {
-			color: #ef9f76;
+			color: #fe640b;
 		}
 
 		.token.string,
 		.token.char {
-			color: #a6d189;
+			color: #40a02b;
 		}
 
 		.token.symbol {
-			color: #e5c890;
+			color: #df8e1d;
 		}
 
 		.token.regex {
-			color: #f4b8e4;
+			color: #ea76cb;
 		}
 
 		.token.url {
-			color: #a6d189;
+			color: #40a02b;
 		}
 
 		.token.operator {
-			color: #99d1db;
+			color: #04a5e5;
 		}
 
 		.token.variable {
-			color: #c6d0f5;
+			color: #4c4f69;
 		}
 
 		.token.constant {
-			color: #ef9f76;
+			color: #fe640b;
 		}
 
 		.token.property {
-			color: #8caaee;
+			color: #1e66f5;
 		}
 
 		.token.punctuation {
-			color: #949cbb;
+			color: #7c7f93;
 		}
 
 		.token.important {
-			color: #ca9ee6;
+			color: #8839ef;
 		}
 
 		.token.comment {
-			color: #949cbb;
+			color: #7c7f93;
 		}
 
 		.token.tag {
-			color: #8caaee;
+			color: #1e66f5;
 		}
 
 		.token.attr-name {
-			color: #e5c890;
+			color: #df8e1d;
 		}
 
 		.token.attr-value {
-			color: #a6d189;
+			color: #40a02b;
 		}
 
 		.token.namespace {
-			color: #e5c890;
+			color: #df8e1d;
 		}
 
 		.token.prolog,
 		.token.doctype {
-			color: #ca9ee6;
+			color: #8839ef;
 		}
 
 		.token.cdata {
-			color: #81c8be;
+			color: #179299;
 		}
 
 		.token.entity {
-			color: #e78284;
+			color: #d20f39;
 		}
 
 		.token.atrule {
-			color: #ca9ee6;
+			color: #8839ef;
 		}
 
 		.token.selector {
-			color: #8caaee;
+			color: #1e66f5;
 		}
 
 		/* Diff */
 
 		.token.deleted {
-			color: #e78284;
+			color: #d20f39;
 		}
 
 		.token.inserted {
-			color: #a6d189;
+			color: #40a02b;
 		}
 
 		/* Other */
