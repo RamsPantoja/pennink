@@ -11,6 +11,7 @@ import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { Fragment } from "react";
 import { cn } from "~/lib/utils";
+import { ScrollToBottomButton } from "../common/ScrollToBottomButton";
 
 type ChatProps = {
 	id: string;
@@ -35,7 +36,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	return (
 		<Card
 			className={cn([
-				"flex flex-col gap-4 overflow-hidden",
+				"flex flex-col gap-4 overflow-hidden relative",
 				{
 					"flex-1": messages.length > 0,
 				},
@@ -47,15 +48,21 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 			)}
 			{!messagesIsLoading && !messagesIsError && messages.length > 0 && (
 				<div
-					ref={chatContainer}
-					className="flex flex-col gap-4 overflow-auto p-4 flex-1"
+					id="chat-container"
+					className="flex flex-1 overflow-hidden relative"
 				>
-					{messages.map((message) => (
-						<MessageCard key={message.id} message={message} />
-					))}
-					{currentAssistantMessage && (
-						<MessageCard message={currentAssistantMessage} />
-					)}
+					<div
+						ref={chatContainer}
+						className="flex flex-col gap-4 overflow-auto p-4 flex-1 relative"
+					>
+						{messages.map((message) => (
+							<MessageCard key={message.id} message={message} />
+						))}
+						{currentAssistantMessage && (
+							<MessageCard message={currentAssistantMessage} />
+						)}
+					</div>
+					<ScrollToBottomButton scrollableElementId="chat-container" />
 				</div>
 			)}
 			<Card className="border-1 w-full bg-white flex flex-col gap-4 shadow-md">

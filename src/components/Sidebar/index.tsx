@@ -14,7 +14,7 @@ import {
 	ArrowRightStartOnRectangleIcon,
 	ChevronUpDownIcon,
 	Cog6ToothIcon,
-	DocumentPlusIcon,
+	SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -50,7 +50,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 		notebooksData,
 		notebooksIsLoading,
 		notebooksIsError,
-		onNewNotebook,
+		onNewWorkspace,
 	} = useSidebarLogic();
 
 	const skeletons = mapSkeletons({
@@ -125,14 +125,14 @@ export function AppSidebar({ session }: AppSidebarProps) {
 				<SidebarGroup>
 					<SidebarGroupLabel asChild>
 						<div className="flex items-center gap-4 justify-between mb-2">
-							<span>Notebooks</span>
+							<span>Workspaces</span>
 							<Tooltip>
 								<TooltipTrigger asChild>
-									<Button onClick={onNewNotebook} variant="ghost" size="icon">
-										<DocumentPlusIcon className="min-w-5 w-5 h-5" />
+									<Button onClick={onNewWorkspace} size="icon">
+										<SquaresPlusIcon className="min-w-5 w-5 h-5" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>New notebook</TooltipContent>
+								<TooltipContent>New workspace</TooltipContent>
 							</Tooltip>
 						</div>
 					</SidebarGroupLabel>

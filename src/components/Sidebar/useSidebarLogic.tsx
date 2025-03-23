@@ -14,7 +14,7 @@ const useSidebarLogic = () => {
 		isError: notebooksIsError,
 	} = api.notebook.notebooks.useQuery();
 
-	const onNewNotebook = () => {
+	const onNewWorkspace = () => {
 		router.push("/");
 	};
 
@@ -24,7 +24,7 @@ const useSidebarLogic = () => {
 		notebooksData,
 		notebooksIsLoading,
 		notebooksIsError,
-		onNewNotebook,
+		onNewWorkspace,
 	};
 };
 

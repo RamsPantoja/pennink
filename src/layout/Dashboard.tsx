@@ -1,7 +1,10 @@
+import { SquaresPlusIcon } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Notifications from "~/components/Notifications";
 import { AppSidebar } from "~/components/Sidebar";
+import { Button } from "~/components/common/Button";
 import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
 import {
 	Tooltip,
@@ -15,6 +18,11 @@ type DashboardProps = {
 };
 
 const Dashboard = ({ children, session }: DashboardProps) => {
+	const router = useRouter();
+	const onNewWorkspace = () => {
+		router.push("/");
+	};
+
 	return (
 		<SidebarProvider>
 			<AppSidebar session={session} />
@@ -23,6 +31,14 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 					<SidebarTrigger className="min-w-8 h-8">
 						<span>Toggle</span>
 					</SidebarTrigger>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button onClick={onNewWorkspace} variant="default" size="icon">
+								<SquaresPlusIcon className="min-w-5 w-5 h-5" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>New workspace</TooltipContent>
+					</Tooltip>
 					<div className="flex items-center gap-4">
 						{!session && (
 							<Link
