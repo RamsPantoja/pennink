@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Card } from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import { api } from "~/utils/api";
 import { Chat } from "../Chat";
 import { SkeletonNotebook } from "./Skeleton";
@@ -13,7 +13,13 @@ import dynamic from "next/dynamic";
 import { Loading } from "../common/Loading";
 import type { OutputData } from "@editorjs/editorjs";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 const DynamicEditor = dynamic(() => import("../Editor"), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -24,6 +30,32 @@ export const Notebook = ({}: NotebookProps) => {
 	const router = useRouter();
 	const { id } = router.query;
 	const utils = api.useUtils();
+	const [file, setFile] = useState<File | null>(null);
+	const [url, setUrl] = useState<string | null>(null);
+
+	// Clean up object URLs when component unmounts
+	useEffect(() => {
+		return () => {
+			if (url) {
+				URL.revokeObjectURL(url);
+			}
+		};
+	}, []);
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const selectedFile = e.target.files?.[0];
+		if (selectedFile) {
+			// Clean up previous URL if it exists
+			if (url) {
+				URL.revokeObjectURL(url);
+			}
+
+			setFile(selectedFile);
+			// Create a URL for the file
+			const fileUrl = URL.createObjectURL(selectedFile);
+			setUrl(fileUrl);
+		}
+	};
 
 	const {
 		data: notebookData,
@@ -82,11 +114,15 @@ export const Notebook = ({}: NotebookProps) => {
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
-						<Card className="w-full h-full flex" key={id as string}>
-							<DynamicEditor
+						<Card
+							className="w-full h-full flex bg-mochaCrust rounded-none"
+							key={id as string}
+						>
+							{/* <DynamicEditor
 								data={notebookData.note.content}
 								onSave={getNoteContent}
-							/>
+							/> */}
+							<DynamicPDFViewer />
 						</Card>
 					</ResizablePanel>
 				</ResizablePanelGroup>

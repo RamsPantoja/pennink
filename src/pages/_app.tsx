@@ -16,41 +16,41 @@ import { SessionProvider } from "next-auth/react";
 const font = Nunito({ subsets: ["latin"] });
 
 const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps,
+	Component,
+	pageProps,
 }) => {
-  const router = useRouter();
+	const router = useRouter();
 
-  useEffect(() => {
-    const handleStart = () => {
-      nProgress.start();
-    };
+	useEffect(() => {
+		const handleStart = () => {
+			nProgress.start();
+		};
 
-    const handleStop = () => {
-      nProgress.done();
-    };
+		const handleStop = () => {
+			nProgress.done();
+		};
 
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleStop);
-    router.events.on("routeChangeError", handleStop);
+		router.events.on("routeChangeStart", handleStart);
+		router.events.on("routeChangeComplete", handleStop);
+		router.events.on("routeChangeError", handleStop);
 
-    return () => {
-      router.events.off("routeChangeStart", handleStart);
-      router.events.off("routeChangeComplete", handleStop);
-      router.events.off("routeChangeError", handleStop);
-    };
-  }, [router]);
+		return () => {
+			router.events.off("routeChangeStart", handleStart);
+			router.events.off("routeChangeComplete", handleStop);
+			router.events.off("routeChangeError", handleStop);
+		};
+	}, [router]);
 
-  return (
-    <SessionProvider session={pageProps.session}>
-      <main className={font.className}>
-        <TooltipProvider delayDuration={500}>
-          <Toaster richColors />
-          <Component {...pageProps} />
-        </TooltipProvider>
-      </main>
-    </SessionProvider>
-  );
+	return (
+		<SessionProvider session={pageProps.session}>
+			<main className={font.className}>
+				<TooltipProvider>
+					<Toaster richColors />
+					<Component {...pageProps} />
+				</TooltipProvider>
+			</main>
+		</SessionProvider>
+	);
 };
 
 export default api.withTRPC(MyApp);
