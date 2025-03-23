@@ -14,6 +14,7 @@ import { Loading } from "../common/Loading";
 import type { OutputData } from "@editorjs/editorjs";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -94,7 +95,7 @@ export const Notebook = ({}: NotebookProps) => {
 	};
 
 	return (
-		<Card className="w-full h-full flex flex-col items-center p-0">
+		<Card className="w-full h-full flex flex-col items-center p-0 rounded-none">
 			{notebookIsLoading && <SkeletonNotebook />}
 			{notebookIsError && (
 				<FeedbackMessage
@@ -108,21 +109,40 @@ export const Notebook = ({}: NotebookProps) => {
 					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
-						<div className="w-full h-full flex">
-							<Chat id={notebookData.chatId} isNew={false} />
-						</div>
+						<DynamicPDFViewer />
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
 						<Card
-							className="w-full h-full flex bg-mochaCrust rounded-none"
+							className="w-full h-full flex p-0 rounded-none"
 							key={id as string}
 						>
-							{/* <DynamicEditor
-								data={notebookData.note.content}
-								onSave={getNoteContent}
-							/> */}
-							<DynamicPDFViewer />
+							<Tabs
+								defaultValue="chat"
+								className="w-full flex flex-col gap-4 h-full"
+							>
+								<TabsList className="grid w-full grid-cols-2">
+									<TabsTrigger value="chat">Chat</TabsTrigger>
+									<TabsTrigger value="notes">Notes</TabsTrigger>
+								</TabsList>
+								<TabsContent
+									value="chat"
+									className="w-full h-full overflow-hidden"
+								>
+									<div className="w-full h-full flex">
+										<Chat id={notebookData.chatId} isNew={false} />
+									</div>
+								</TabsContent>
+								<TabsContent
+									value="notes"
+									className="w-full h-full overflow-hidden"
+								>
+									<DynamicEditor
+										data={notebookData.note.content}
+										onSave={getNoteContent}
+									/>
+								</TabsContent>
+							</Tabs>
 						</Card>
 					</ResizablePanel>
 				</ResizablePanelGroup>

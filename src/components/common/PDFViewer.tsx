@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { pdfjs, Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
@@ -269,7 +269,7 @@ export default function PDFViewer() {
 	};
 
 	return (
-		<div className="flex border w-full h-full flex-col rounded-2xl overflow-hidden bg-mochaBase">
+		<div className="flex w-full h-full flex-col overflow-hidden bg-mochaBase">
 			<div className="flex gap-4 p-4 justify-between">
 				<div className="flex flex-col gap-2">
 					<div className="flex items-center gap-2 relative">
@@ -299,15 +299,6 @@ export default function PDFViewer() {
 						)}
 					</div>
 					<div className="flex items-center justify-between gap-2">
-						<div className="flex items-center space-x-2">
-							<Switch
-								id="case-sensitive"
-								checked={caseSensitive}
-								onCheckedChange={setCaseSensitive}
-							/>
-							<Label htmlFor="case-sensitive">Case sensitive</Label>
-						</div>
-
 						{matches.length > 0 && (
 							<div className="flex items-center gap-2">
 								<span className="text-sm">
@@ -331,6 +322,14 @@ export default function PDFViewer() {
 								</Button>
 							</div>
 						)}
+						<div className="flex items-center space-x-2">
+							<Switch
+								id="case-sensitive"
+								checked={caseSensitive}
+								onCheckedChange={setCaseSensitive}
+							/>
+							<Label htmlFor="case-sensitive">Case sensitive</Label>
+						</div>
 					</div>
 				</div>
 				<div className="flex items-center gap-2 h-fit">
@@ -378,7 +377,7 @@ export default function PDFViewer() {
 			</div>
 			<Card className="flex flex-1 overflow-hidden pt-0 pb-0 rounded-none">
 				<Document
-					file={"/sample.pdf"}
+					file={"/hscodes.pdf"}
 					onLoadSuccess={onDocumentLoadSuccess}
 					options={options}
 					loading={<Loading />}
