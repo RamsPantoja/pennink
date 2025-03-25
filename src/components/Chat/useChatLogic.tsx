@@ -138,6 +138,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					const { done, value } = await reader.read();
 
 					if (value) {
+						console.log(textDecoder.decode(value));
 						newAgentMessage.content = newAgentMessage.content.concat(
 							textDecoder.decode(value),
 						);

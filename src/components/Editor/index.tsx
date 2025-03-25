@@ -21,7 +21,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 		if (!editorInstance.current) {
 			const editor = new EditorJS({
 				holder: "editorjs",
-				placeholder: "Escribe, `/` para comandos...",
+				placeholder: "Type, `/` for commands...",
 				tools: {
 					header: {
 						class: Header as unknown as BlockToolConstructable,

@@ -15,6 +15,12 @@ import type { OutputData } from "@editorjs/editorjs";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import {
+	BookOpenIcon,
+	ChatBubbleLeftIcon,
+	ChatBubbleLeftRightIcon,
+	DocumentTextIcon,
+} from "@heroicons/react/24/outline";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -109,7 +115,9 @@ export const Notebook = ({}: NotebookProps) => {
 					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
-						<DynamicPDFViewer />
+						<div className="w-full h-full flex">
+							<Chat id={notebookData.chatId} isNew={false} />
+						</div>
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
@@ -118,21 +126,18 @@ export const Notebook = ({}: NotebookProps) => {
 							key={id as string}
 						>
 							<Tabs
-								defaultValue="chat"
-								className="w-full flex flex-col gap-4 h-full"
+								defaultValue="notes"
+								className="w-full flex flex-col gap-2 h-full"
 							>
 								<TabsList className="grid w-full grid-cols-2">
-									<TabsTrigger value="chat">Chat</TabsTrigger>
-									<TabsTrigger value="notes">Notes</TabsTrigger>
+									<TabsTrigger value="notes">
+										<DocumentTextIcon className="min-w-5 h-5 mr-2" />
+										Notes
+									</TabsTrigger>
+									<TabsTrigger value="reader">
+										<BookOpenIcon className="min-w-5 h-5 mr-2" /> Reader
+									</TabsTrigger>
 								</TabsList>
-								<TabsContent
-									value="chat"
-									className="w-full h-full overflow-hidden"
-								>
-									<div className="w-full h-full flex">
-										<Chat id={notebookData.chatId} isNew={false} />
-									</div>
-								</TabsContent>
 								<TabsContent
 									value="notes"
 									className="w-full h-full overflow-hidden"
@@ -141,6 +146,12 @@ export const Notebook = ({}: NotebookProps) => {
 										data={notebookData.note.content}
 										onSave={getNoteContent}
 									/>
+								</TabsContent>
+								<TabsContent
+									value="reader"
+									className="w-full h-full overflow-hidden"
+								>
+									<DynamicPDFViewer />
 								</TabsContent>
 							</Tabs>
 						</Card>
