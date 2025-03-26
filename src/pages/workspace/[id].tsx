@@ -1,12 +1,11 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { type Session, getServerSession } from "next-auth";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { Notebook } from "~/components/Notebook";
+import { Workspace } from "~/components/Workspace";
 import Dashboard from "~/layout/Dashboard";
 import { authOptions } from "~/server/auth";
 
-const NotebookPage = ({
+const WorkspacePage = ({
 	session,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	return (
@@ -17,7 +16,7 @@ const NotebookPage = ({
 					<meta name="description" content="Find a partner to do anything!" />
 					<link rel="icon" href="/favicon.ico" />
 				</Head>
-				<Notebook />
+				<Workspace />
 			</>
 		</Dashboard>
 	);
@@ -33,4 +32,4 @@ export const getServerSideProps = (async ({ req, res }) => {
 	return { props: { session } };
 }) satisfies GetServerSideProps<ServerSideProps>;
 
-export default NotebookPage;
+export default WorkspacePage;

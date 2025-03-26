@@ -49,18 +49,13 @@ export const ScrollToBottomButton = ({
 		<>
 			{isVisible && (
 				<div className="absolute bottom-2 w-full flex justify-center ring-0 left-0">
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								size="icon"
-								className="rounded-full animate-bounce"
-								onClick={handleScrollToBottom}
-							>
-								<ArrowDownIcon className="min-w-5 h-5" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent>Scroll to bottom</TooltipContent>
-					</Tooltip>
+					<Button
+						size="icon"
+						className="rounded-full animate-bounce"
+						onClick={handleScrollToBottom}
+					>
+						<ArrowDownIcon className="min-w-5 h-5" />
+					</Button>
 				</div>
 			)}
 		</>

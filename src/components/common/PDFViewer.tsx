@@ -83,7 +83,7 @@ export default function PDFViewer() {
 			{
 				root: null,
 				rootMargin: "0px",
-				threshold: 0.5, // Adjust threshold as needed
+				threshold: 0.2, // Adjust threshold as needed
 			},
 		);
 
@@ -269,9 +269,9 @@ export default function PDFViewer() {
 	};
 
 	return (
-		<div className="flex w-full h-full flex-col overflow-hidden bg-mochaBase">
+		<div className="flex w-full h-full flex-col bg-mochaBase">
 			<div className="flex gap-4 p-4 justify-between">
-				<div className="flex flex-col gap-2">
+				{/* <div className="flex flex-col gap-2">
 					<div className="flex items-center gap-2 relative">
 						<Input
 							type="text"
@@ -331,7 +331,7 @@ export default function PDFViewer() {
 							<Label htmlFor="case-sensitive">Case sensitive</Label>
 						</div>
 					</div>
-				</div>
+				</div> */}
 				<div className="flex items-center gap-2 h-fit">
 					<span className="text-xs font-bold">{(zoom * 100).toFixed(0)}%</span>
 					<Tooltip>

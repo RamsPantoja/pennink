@@ -34,7 +34,7 @@ import FeedbackMessage from "../common/FeedbackMessage";
 import { Fragment } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../common/Button";
-import { NotebookCard } from "./NotebookCard";
+import { WorkspaceCard } from "./WorkspaceCard";
 
 type AppSidebarProps = {
 	session: Session | null;
@@ -47,9 +47,9 @@ export function AppSidebar({ session }: AppSidebarProps) {
 	const {
 		displaySignOutAlert,
 		setDisplaySignOutAlert,
-		notebooksData,
-		notebooksIsLoading,
-		notebooksIsError,
+		workspacesData,
+		workspacesIsLoading,
+		workspacesIsError,
 		onNewWorkspace,
 	} = useSidebarLogic();
 
@@ -138,35 +138,35 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{notebooksIsLoading &&
+							{workspacesIsLoading &&
 								skeletons.map((skeleton, index) => {
 									return <Fragment key={index}>{skeleton}</Fragment>;
 								})}
-							{!notebooksIsLoading &&
-								!notebooksIsError &&
-								notebooksData &&
-								notebooksData.map((notebook) => {
+							{!workspacesIsLoading &&
+								!workspacesIsError &&
+								workspacesData &&
+								workspacesData.map((workspace) => {
 									return (
-										<NotebookCard
-											key={notebook.id}
-											id={notebook.id}
-											name={notebook.name}
-											selectedNotebookId={id as string}
+										<WorkspaceCard
+											key={workspace.id}
+											id={workspace.id}
+											name={workspace.name}
+											selectedWorkspaceId={id as string}
 										/>
 									);
 								})}
-							{!notebooksIsLoading &&
-								!notebooksIsError &&
-								notebooksData &&
-								notebooksData.length === 0 && (
+							{!workspacesIsLoading &&
+								!workspacesIsError &&
+								workspacesData &&
+								workspacesData.length === 0 && (
 									<div className="p-4">
 										<FeedbackMessage
 											status="INFORMATION"
-											message="No notebooks to show"
+											message="No workspaces to show"
 										/>
 									</div>
 								)}
-							{!notebooksIsLoading && notebooksIsError && (
+							{!workspacesIsLoading && workspacesIsError && (
 								<div className="p-4">
 									<FeedbackMessage
 										status="ERROR"

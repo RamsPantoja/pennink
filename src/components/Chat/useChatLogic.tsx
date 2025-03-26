@@ -56,10 +56,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	});
 
-	const { mutate: createNotebook, isPending: createNotebookIsPending } =
-		api.notebook.create.useMutation({
+	const { mutate: createWorkspace, isPending: createWorkspaceIsPending } =
+		api.workspace.create.useMutation({
 			onSuccess: async (data) => {
-				router.push(`/notebook/${data.id}`);
+				router.push(`/workspace/${data.id}`);
 			},
 			onError: (error) => {
 				console.error(error.message);
@@ -138,7 +138,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					const { done, value } = await reader.read();
 
 					if (value) {
-						console.log(textDecoder.decode(value));
 						newAgentMessage.content = newAgentMessage.content.concat(
 							textDecoder.decode(value),
 						);
@@ -162,11 +161,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 						if (router.pathname === "/" && isNew) {
 							localStorage.setItem(
-								"buuddy.new-notebook-messages",
+								"buuddy.new-workspace-messages",
 								JSON.stringify([newUserMessage, newAgentMessage]),
 							);
 
-							createNotebook({
+							createWorkspace({
 								name: "...",
 								messages: [newUserMessage, newAgentMessage],
 								chatId,
@@ -209,7 +208,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		currentAssistantMessage,
 		messages,
 		chatIsPending,
-		createNotebookIsPending,
+		createWorkspaceIsPending,
 		router,
 		messagesIsLoading,
 		messagesIsError,

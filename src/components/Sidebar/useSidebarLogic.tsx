@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { toast } from "sonner";
 import { api } from "~/utils/api";
 
 const useSidebarLogic = () => {
@@ -9,10 +8,10 @@ const useSidebarLogic = () => {
 		useState<boolean>(false);
 
 	const {
-		data: notebooksData,
-		isLoading: notebooksIsLoading,
-		isError: notebooksIsError,
-	} = api.notebook.notebooks.useQuery();
+		data: workspacesData,
+		isLoading: workspacesIsLoading,
+		isError: workspacesIsError,
+	} = api.workspace.workspaces.useQuery();
 
 	const onNewWorkspace = () => {
 		router.push("/");
@@ -21,9 +20,9 @@ const useSidebarLogic = () => {
 	return {
 		displaySignOutAlert,
 		setDisplaySignOutAlert,
-		notebooksData,
-		notebooksIsLoading,
-		notebooksIsError,
+		workspacesData,
+		workspacesIsLoading,
+		workspacesIsError,
 		onNewWorkspace,
 	};
 };

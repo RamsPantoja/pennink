@@ -1,6 +1,6 @@
 import { Skeleton } from "../ui/skeleton";
 
-export const SkeletonNotebook = () => {
+export const SkeletonWorkspace = () => {
 	return (
 		<div className="flex flex-col gap-4 w-full h-full p-4 max-w-screen-md">
 			{/* Left aligned message */}

@@ -1,18 +1,17 @@
 import { z } from "zod";
-import { messageRoleEnum } from "~/server/db/schema";
 import { messageSchema } from "./chat";
 
-export const createNotebookInputSchema = z.object({
+export const createWorkspaceInputSchema = z.object({
 	name: z.string().min(2).max(100),
 	messages: z.array(messageSchema).min(1),
 	chatId: z.string().uuid(),
 });
 
-export const notebookByIdInputSchema = z.object({
+export const workspaceByIdInputSchema = z.object({
 	id: z.string(),
 });
 
-export const updateNotebookNameInputSchema = z.object({
+export const updateWorkspaceNameInputSchema = z.object({
 	id: z.string(),
 	name: z.string().min(1),
 });

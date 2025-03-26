@@ -210,7 +210,7 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
 	}),
 }));
 
-export const notebooks = createTable("notebook", {
+export const workspaces = createTable("workspace", {
 	id: customId.notNull().primaryKey(),
 	name: text("name").notNull(),
 	userId: uuid("userId")
@@ -237,21 +237,21 @@ export const notebooks = createTable("notebook", {
 		.defaultNow(),
 });
 
-export const notebooksRelations = relations(notebooks, ({ one }) => ({
+export const workspacesRelations = relations(workspaces, ({ one }) => ({
 	user: one(users, {
-		fields: [notebooks.userId],
+		fields: [workspaces.userId],
 		references: [users.id],
 	}),
 	chat: one(chats, {
-		fields: [notebooks.chatId],
+		fields: [workspaces.chatId],
 		references: [chats.id],
 	}),
 	summary: one(summaries, {
-		fields: [notebooks.summaryId],
+		fields: [workspaces.summaryId],
 		references: [summaries.id],
 	}),
 	note: one(notes, {
-		fields: [notebooks.noteId],
+		fields: [workspaces.noteId],
 		references: [notes.id],
 	}),
 }));

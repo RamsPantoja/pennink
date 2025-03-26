@@ -2,7 +2,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import type { inferRouterOutputs } from "@trpc/server";
 import { userRouter } from "./routers/user";
 import { paymentRouter } from "./routers/payment";
-import { notebookRouter } from "./routers/notebook";
+import { workspaceRouter } from "./routers/workspace";
 import { chatRouter } from "./routers/chat";
 import { noteRouter } from "./routers/note";
 
@@ -14,7 +14,7 @@ import { noteRouter } from "./routers/note";
 export const appRouter = createTRPCRouter({
 	user: userRouter,
 	payment: paymentRouter,
-	notebook: notebookRouter,
+	workspace: workspaceRouter,
 	chat: chatRouter,
 	note: noteRouter,
 });

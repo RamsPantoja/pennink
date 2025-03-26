@@ -1,7 +1,6 @@
 import { PaperClipIcon, StopIcon } from "@heroicons/react/24/outline";
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
-import { Textarea } from "../ui/textarea";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { ArrowUpIcon } from "lucide-react";
 import { useChatLogic } from "./useChatLogic";
@@ -9,7 +8,6 @@ import { Input } from "../ui/input";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
-import { Fragment } from "react";
 import { cn } from "~/lib/utils";
 import { ScrollToBottomButton } from "../common/ScrollToBottomButton";
 
@@ -25,7 +23,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		currentAssistantMessage,
 		messages,
 		chatIsPending,
-		createNotebookIsPending,
+		createWorkspaceIsPending,
 		messagesIsLoading,
 		messagesIsError,
 		chatContainer,
@@ -47,13 +45,11 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				<FeedbackMessage status="ERROR" message="Error fetching messages" />
 			)}
 			{!messagesIsLoading && !messagesIsError && messages.length > 0 && (
-				<div
-					id="chat-container"
-					className="flex flex-1 overflow-hidden relative"
-				>
+				<div className="flex flex-1 overflow-hidden relative">
 					<div
 						ref={chatContainer}
 						className="flex flex-col gap-4 overflow-auto p-4 flex-1 relative"
+						id="chat-container"
 					>
 						{messages.map((message) => (
 							<MessageCard key={message.id} message={message} />
@@ -96,7 +92,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							onClick={handleSubmit(onSentPrompt)}
 							size="icon"
 							disabled={
-								chatIsPending || createNotebookIsPending || !watch("prompt")
+								chatIsPending || createWorkspaceIsPending || !watch("prompt")
 							}
 						>
 							<ArrowUpIcon className="min-w-5 w-5 h-5" />

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { Card, CardContent } from "../ui/card";
 import { api } from "~/utils/api";
 import { Chat } from "../Chat";
-import { SkeletonNotebook } from "./Skeleton";
+import { SkeletonWorkspace } from "./Skeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
 import {
 	ResizableHandle,
@@ -21,6 +21,7 @@ import {
 	ChatBubbleLeftRightIcon,
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";
+import PDFUploader from "../PDFUploader";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -31,9 +32,9 @@ const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	loading: () => <Loading />,
 });
 
-type NotebookProps = {};
+type WorkspaceProps = {};
 
-export const Notebook = ({}: NotebookProps) => {
+export const Workspace = ({}: WorkspaceProps) => {
 	const router = useRouter();
 	const { id } = router.query;
 	const utils = api.useUtils();
@@ -65,17 +66,17 @@ export const Notebook = ({}: NotebookProps) => {
 	};
 
 	const {
-		data: notebookData,
-		isLoading: notebookIsLoading,
-		isError: notebookIsError,
-	} = api.notebook.notebookById.useQuery({
+		data: workspaceData,
+		isLoading: workspaceIsLoading,
+		isError: workspaceIsError,
+	} = api.workspace.workspaceById.useQuery({
 		id: id as string,
 	});
 
-	const { mutate: updateNote, isPending: updateNoteIsPending } =
+	const { mutate: updateWorkspace, isPending: updateWorkspaceIsPending } =
 		api.note.updateNote.useMutation({
 			onSuccess: async () => {
-				await utils.notebook.notebookById.invalidate();
+				await utils.workspace.workspaceById.invalidate();
 			},
 			onError: (error) => {
 				toast(error.message);
@@ -85,13 +86,13 @@ export const Notebook = ({}: NotebookProps) => {
 	const getNoteContent = async (data: OutputData) => {
 		const { version, time, blocks } = data;
 
-		if (!notebookData?.noteId) {
+		if (!workspaceData?.noteId) {
 			toast("Invalid note ID");
 			return;
 		}
 
-		updateNote({
-			noteId: notebookData.noteId,
+		updateWorkspace({
+			noteId: workspaceData.noteId,
 			content: {
 				version,
 				time,
@@ -102,21 +103,21 @@ export const Notebook = ({}: NotebookProps) => {
 
 	return (
 		<Card className="w-full h-full flex flex-col items-center p-0 rounded-none">
-			{notebookIsLoading && <SkeletonNotebook />}
-			{notebookIsError && (
+			{workspaceIsLoading && <SkeletonWorkspace />}
+			{workspaceIsError && (
 				<FeedbackMessage
 					status="ERROR"
 					message="Algo salió mal, inténtalo de nuevo más tarde."
 				/>
 			)}
-			{notebookData && (
+			{workspaceData && (
 				<ResizablePanelGroup
 					direction="horizontal"
 					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
 						<div className="w-full h-full flex">
-							<Chat id={notebookData.chatId} isNew={false} />
+							<Chat id={workspaceData.chatId} isNew={false} />
 						</div>
 					</ResizablePanel>
 					<ResizableHandle withHandle />
@@ -143,7 +144,7 @@ export const Notebook = ({}: NotebookProps) => {
 									className="w-full h-full overflow-hidden"
 								>
 									<DynamicEditor
-										data={notebookData.note.content}
+										data={workspaceData.note.content}
 										onSave={getNoteContent}
 									/>
 								</TabsContent>
@@ -151,7 +152,12 @@ export const Notebook = ({}: NotebookProps) => {
 									value="reader"
 									className="w-full h-full overflow-hidden"
 								>
-									<DynamicPDFViewer />
+									<div className="flex overflow-hidden h-full w-full flex-col gap-2 items-center">
+										<PDFUploader />
+										<div className="flex flex-1 overflow-hidden w-full">
+											<DynamicPDFViewer />
+										</div>
+									</div>
 								</TabsContent>
 							</Tabs>
 						</Card>

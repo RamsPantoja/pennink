@@ -19,35 +19,37 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../common/Button";
 
-type NotebookCardProps = {
+type WorkspaceCardProps = {
 	id: string;
-	selectedNotebookId: string;
+	selectedWorkspaceId: string;
 	name: string;
 };
 
-export const NotebookCard = ({
+export const WorkspaceCard = ({
 	id,
-	selectedNotebookId,
+	selectedWorkspaceId,
 	name,
-}: NotebookCardProps) => {
+}: WorkspaceCardProps) => {
 	const { data: session } = useSession();
-	const [notebookTitle, setNotebookTitle] = useState<string>(name);
+	const [workspaceTitle, setWorkspaceTitle] = useState<string>(name);
 
-	const { mutate: updateNotebookName, isPending: updateNotebookNameIsPending } =
-		api.notebook.updateName.useMutation({
-			onSuccess: (data) => {
-				localStorage.removeItem("buuddy.new-notebook-messages");
-			},
-			onError: (error) => {
-				console.error(error.message);
-			},
-		});
+	const {
+		mutate: updateWorkspaceName,
+		isPending: updateWorkspaceNameIsPending,
+	} = api.workspace.updateName.useMutation({
+		onSuccess: (data) => {
+			localStorage.removeItem("buuddy.new-workspace-messages");
+		},
+		onError: (error) => {
+			console.error(error.message);
+		},
+	});
 
 	const router = useRouter();
 
-	const generateNotebookTitle = async () => {
-		const newNotebookMessages = localStorage.getItem(
-			"buuddy.new-notebook-messages",
+	const generateWorkspaceTitle = async () => {
+		const newWorkspaceMessages = localStorage.getItem(
+			"buuddy.new-workspace-messages",
 		);
 
 		const messages: Message[] = [];
@@ -57,15 +59,15 @@ export const NotebookCard = ({
 				throw new Error("User is not authenticated");
 			}
 
-			if (newNotebookMessages) {
-				const newNotebookMessagesParsed = JSON.parse(
-					newNotebookMessages,
+			if (newWorkspaceMessages) {
+				const newWorkspaceMessagesParsed = JSON.parse(
+					newWorkspaceMessages,
 				) as Message[];
 
-				messages.push(...newNotebookMessagesParsed);
+				messages.push(...newWorkspaceMessagesParsed);
 			}
 
-			const res = await fetch("/api/ai/notebook-title", {
+			const res = await fetch("/api/ai/workspace-title", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -87,19 +89,19 @@ export const NotebookCard = ({
 	};
 
 	const {
-		data: notebookTitleData,
-		isLoading: isLoadingNotebookTitle,
-		isError: isErrorNotebookTitle,
+		data: workspaceTitleData,
+		isLoading: isLoadingWorkspaceTitle,
+		isError: isErrorWorkspaceTitle,
 	} = useQuery({
-		queryKey: ["notebook-title", id],
-		queryFn: generateNotebookTitle,
-		enabled: notebookTitle === "..." && selectedNotebookId === id,
+		queryKey: ["workspace-title", id],
+		queryFn: generateWorkspaceTitle,
+		enabled: workspaceTitle === "..." && selectedWorkspaceId === id,
 	});
 
 	useEffect(() => {
-		if (notebookTitleData && id === selectedNotebookId) {
+		if (workspaceTitleData && id === selectedWorkspaceId) {
 			const handleStream = async () => {
-				const stream = notebookTitleData.body;
+				const stream = workspaceTitleData.body;
 
 				if (!stream) return;
 
@@ -113,12 +115,12 @@ export const NotebookCard = ({
 
 						if (value) {
 							title = title.concat(textDecoder.decode(value));
-							setNotebookTitle(title);
+							setWorkspaceTitle(title);
 						}
 
 						if (done) {
 							reader.releaseLock();
-							updateNotebookName({
+							updateWorkspaceName({
 								id,
 								name: title,
 							});
@@ -132,30 +134,30 @@ export const NotebookCard = ({
 
 			handleStream();
 		}
-	}, [notebookTitleData, id, selectedNotebookId]);
+	}, [workspaceTitleData, id, selectedWorkspaceId]);
 
 	return (
 		<SidebarMenuItem>
 			<SidebarMenuButton
 				onClick={() => {
-					router.push(`/notebook/${id}`);
+					router.push(`/workspace/${id}`);
 				}}
 				asChild
-				isActive={id === selectedNotebookId}
+				isActive={id === selectedWorkspaceId}
 				className="pr-0"
 			>
 				<div className="flex items-center w-full">
 					<span
-						title={notebookTitle}
+						title={workspaceTitle}
 						className={cn([
 							"font-semibold cursor-pointer truncate w-full ",
 							{
 								"animate-pulse":
-									updateNotebookNameIsPending || isLoadingNotebookTitle,
+									updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,
 							},
 						])}
 					>
-						{notebookTitle}
+						{workspaceTitle}
 					</span>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
