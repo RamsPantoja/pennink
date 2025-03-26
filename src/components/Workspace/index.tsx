@@ -153,10 +153,7 @@ export const Workspace = ({}: WorkspaceProps) => {
 									className="w-full h-full overflow-hidden"
 								>
 									<div className="flex overflow-hidden h-full w-full flex-col gap-2 items-center">
-										<PDFUploader />
-										<div className="flex flex-1 overflow-hidden w-full">
-											<DynamicPDFViewer />
-										</div>
+										{/* <PDFUploader /> */}
 									</div>
 								</TabsContent>
 							</Tabs>

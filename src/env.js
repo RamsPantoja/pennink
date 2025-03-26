@@ -27,6 +27,9 @@ export const env = createEnv({
 		RESEND_API_KEY: z.string(),
 		STRIPE_SECRET_KEY: z.string(),
 		GOOGLE_GENERATIVE_AI_API_KEY: z.string(),
+		CF_ACCOUNT_ID: z.string(),
+		CF_PUBLIC_R2_KEY: z.string(),
+		CF_SECRET_R2_KEY: z.string(),
 	},
 
 	/**
@@ -53,6 +56,9 @@ export const env = createEnv({
 		RESEND_API_KEY: process.env.RESEND_API_KEY,
 		STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
 		GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+		CF_ACCOUNT_ID: process.env.CF_ACCOUNT_ID,
+		CF_PUBLIC_R2_KEY: process.env.CF_PUBLIC_R2_KEY,
+		CF_SECRET_R2_KEY: process.env.CF_SECRET_R2_KEY,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

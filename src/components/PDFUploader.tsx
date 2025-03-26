@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FileIcon, UploadIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -15,15 +15,38 @@ import { Input } from "./ui/input";
 import {
 	ArrowUpTrayIcon,
 	DocumentIcon,
+	EyeIcon,
+	SparklesIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-export default function PDFUploader() {
+type PDFUploaderProps = {
+	onUpload: (file: File) => void;
+};
+
+export default function PDFUploader({}: PDFUploaderProps) {
 	const [file, setFile] = useState<File | null>(null);
 	const [uploading, setUploading] = useState(false);
 	const [progress, setProgress] = useState(0);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const [showPreview, setShowPreview] = useState(false);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (file) {
+			// Create a URL for the file preview
+			const url = URL.createObjectURL(file);
+			setPreviewUrl(url);
+
+			// Clean up the URL when component unmounts or file changes
+			return () => {
+				URL.revokeObjectURL(url);
+				setPreviewUrl(null);
+				setShowPreview(false);
+			};
+		}
+	}, [file]);
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
@@ -104,9 +127,7 @@ export default function PDFUploader() {
 			<CardContent>
 				<div
 					className={`border-2 border-dashed rounded-lg p-6 text-center ${
-						file
-							? "border-mochaTeal bg-mochaCrust"
-							: "border-muted-foreground/25"
+						file ? "border-mochaMauve" : "border-muted-foreground/25"
 					}`}
 					onDragOver={handleDragOver}
 					onDrop={handleDrop}
@@ -145,7 +166,7 @@ export default function PDFUploader() {
 							<div className="flex items-center justify-between gap-2">
 								<DocumentIcon className="h-8 w-8" />
 								<div className="text-left">
-									<p className="text-sm font-medium truncate max-w-[200px]">
+									<p className="text-sm font-semibold text-mochaMauve truncate max-w-[200px]">
 										{file.name}
 									</p>
 									<p className="text-xs text-muted-foreground">
@@ -167,6 +188,15 @@ export default function PDFUploader() {
 									<TooltipContent>Remove file</TooltipContent>
 								</Tooltip>
 							</div>
+							{previewUrl && (
+								<div className="mt-4 border rounded-lg overflow-hidden h-[400px] bg-background">
+									<iframe
+										src={previewUrl}
+										className="w-full h-full"
+										title={`Preview of ${file?.name}`}
+									/>
+								</div>
+							)}
 							{uploading && (
 								<div className="space-y-2">
 									{/* <Progress value={progress} className="h-2" /> */}
@@ -184,8 +214,9 @@ export default function PDFUploader() {
 					className="w-full"
 					disabled={!file || uploading}
 					onClick={handleUpload}
+					endIcon={<SparklesIcon className="min-w-5 h-5" />}
 				>
-					{uploading ? "Uploading..." : "Read PDF"}
+					{uploading ? "Uploading..." : "Ask"}
 				</Button>
 			</CardFooter>
 		</Card>

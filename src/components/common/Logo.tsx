@@ -11,7 +11,7 @@ export const Logo = () => {
 					layout="fill"
 				/>
 			</div>
-			<p className="text-2xl font-black truncate text-mochaMauve">Pluma</p>
+			<p className="text-2xl font-semibold truncate text-mochaMauve">Pennink</p>
 		</div>
 	);
 };
