@@ -22,6 +22,10 @@ import {
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import PDFUploader from "../PDFUploader";
+import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
+import type { Session } from "next-auth";
+import { Separator } from "../ui/separator";
+import { DocumentLoader } from "./DocumentLoader";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -32,38 +36,14 @@ const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	loading: () => <Loading />,
 });
 
-type WorkspaceProps = {};
+type WorkspaceProps = {
+	session: Session;
+};
 
-export const Workspace = ({}: WorkspaceProps) => {
+export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { id } = router.query;
 	const utils = api.useUtils();
-	const [file, setFile] = useState<File | null>(null);
-	const [url, setUrl] = useState<string | null>(null);
-
-	// Clean up object URLs when component unmounts
-	useEffect(() => {
-		return () => {
-			if (url) {
-				URL.revokeObjectURL(url);
-			}
-		};
-	}, []);
-
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const selectedFile = e.target.files?.[0];
-		if (selectedFile) {
-			// Clean up previous URL if it exists
-			if (url) {
-				URL.revokeObjectURL(url);
-			}
-
-			setFile(selectedFile);
-			// Create a URL for the file
-			const fileUrl = URL.createObjectURL(selectedFile);
-			setUrl(fileUrl);
-		}
-	};
 
 	const {
 		data: workspaceData,
@@ -73,15 +53,49 @@ export const Workspace = ({}: WorkspaceProps) => {
 		id: id as string,
 	});
 
-	const { mutate: updateWorkspace, isPending: updateWorkspaceIsPending } =
-		api.note.updateNote.useMutation({
+	const { loading, onUploadFile } = useUploadObjectToStorage();
+
+	const { mutate: updateWorkspace } = api.note.updateNote.useMutation({
+		onSuccess: async () => {
+			await utils.workspace.workspaceById.invalidate();
+		},
+		onError: (error) => {
+			toast(error.message);
+		},
+	});
+
+	const { mutate: createFile, isPending: createFileIsPending } =
+		api.workspace.createFile.useMutation({
 			onSuccess: async () => {
-				await utils.workspace.workspaceById.invalidate();
+				toast("You can now ask to your document!");
 			},
 			onError: (error) => {
 				toast(error.message);
 			},
 		});
+
+	const onUploadDocument = async (file: File) => {
+		if (typeof id !== "string") {
+			toast("Invalid workspace ID");
+			return;
+		}
+
+		const res = await onUploadFile({
+			file,
+			path: `workspace/documents/${session.user.id}`,
+		});
+
+		if (!res) {
+			return;
+		}
+
+		createFile({
+			type: file.type,
+			filename: file.name,
+			key: res.key,
+			workspaceId: id,
+		});
+	};
 
 	const getNoteContent = async (data: OutputData) => {
 		const { version, time, blocks } = data;
@@ -153,7 +167,10 @@ export const Workspace = ({}: WorkspaceProps) => {
 									className="w-full h-full overflow-hidden"
 								>
 									<div className="flex overflow-hidden h-full w-full flex-col gap-2 items-center">
-										{/* <PDFUploader /> */}
+										<DocumentLoader
+											onUpload={onUploadDocument}
+											isPending={loading || createFileIsPending}
+										/>
 									</div>
 								</TabsContent>
 							</Tabs>

@@ -11,7 +11,6 @@ export type onUploadFileInput = {
 
 export type UploadObjectToStorageResponse = {
 	key: string;
-	bucket: string;
 };
 
 const useUploadObjectToStorage = () => {
@@ -40,7 +39,7 @@ const useUploadObjectToStorage = () => {
 
 			setUploadingToStorage(true);
 
-			const res = await fetch(data.signedUrl, {
+			await fetch(data.signedUrl, {
 				method: "PUT",
 				body: input.file,
 				headers: {
@@ -48,9 +47,10 @@ const useUploadObjectToStorage = () => {
 				},
 			});
 
+			setUploadingToStorage(false);
+
 			return {
 				key: data.key,
-				bucket: "test",
 			};
 		} catch (error) {
 			setUploadingToStorage(false);

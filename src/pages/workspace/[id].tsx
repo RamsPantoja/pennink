@@ -16,7 +16,7 @@ const WorkspacePage = ({
 					<meta name="description" content="Find a partner to do anything!" />
 					<link rel="icon" href="/favicon.ico" />
 				</Head>
-				<Workspace />
+				<Workspace session={session} />
 			</>
 		</Dashboard>
 	);
@@ -28,6 +28,15 @@ type ServerSideProps = {
 
 export const getServerSideProps = (async ({ req, res }) => {
 	const session = await getServerSession(req, res, authOptions);
+
+	if (!session) {
+		return {
+			redirect: {
+				destination: "/sign-in",
+				permanent: false,
+			},
+		};
+	}
 
 	return { props: { session } };
 }) satisfies GetServerSideProps<ServerSideProps>;

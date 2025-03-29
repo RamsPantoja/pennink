@@ -1,5 +1,6 @@
 import type { z } from "zod";
 import type {
+	createFileInputSchema,
 	createWorkspaceInputSchema,
 	updateWorkspaceNameInputSchema,
 } from "../schemas/workspace";
@@ -10,9 +11,12 @@ import {
 	notes,
 	summaries,
 	messages as messagesSchema,
+	files,
+	filesToWorkspaces,
 } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
+import { env } from "~/env";
 
 type WorkspaceServiceContructor = {
 	ctx: TRPCContext;
@@ -20,6 +24,7 @@ type WorkspaceServiceContructor = {
 
 type createWorkspaceInput = z.infer<typeof createWorkspaceInputSchema>;
 type updateWorkspaceNameInput = z.infer<typeof updateWorkspaceNameInputSchema>;
+type CreateFileInput = z.infer<typeof createFileInputSchema>;
 
 export class WorkspaceService {
 	ctx: TRPCContext;
@@ -140,9 +145,51 @@ export class WorkspaceService {
 			.returning();
 
 		if (!updatedWorkspace) {
-			throw new Error("Failed to update workspace");
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Failed to update workspace",
+			});
 		}
 
 		return updatedWorkspace;
+	}
+
+	public async createFile(input: CreateFileInput, userId: string) {
+		try {
+			const { filename, type, key, workspaceId } = input;
+
+			const [file] = await this.ctx.db
+				.insert(files)
+				.values({
+					filename,
+					type,
+					key,
+					bucket: env.BUCKET,
+					userId,
+				})
+				.returning();
+
+			if (!file) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Failed to create file",
+				});
+			}
+
+			await this.ctx.db
+				.insert(filesToWorkspaces)
+				.values({
+					fileId: file.id,
+					workspaceId,
+				})
+				.returning();
+
+			return file;
+		} catch {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Failed to update workspace",
+			});
+		}
 	}
 }

@@ -43,7 +43,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						{!session && (
 							<Link
 								className="text-mochaCrust font-bold bg-mochaMauve pl-4 pr-4 pt-2 pb-2 rounded-full"
-								href="/sign_in"
+								href="/sign-in"
 							>
 								Sign in
 							</Link>

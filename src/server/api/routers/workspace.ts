@@ -3,6 +3,7 @@ import {
 	createWorkspaceInputSchema,
 	workspaceByIdInputSchema,
 	updateWorkspaceNameInputSchema,
+	createFileInputSchema,
 } from "../schemas/workspace";
 
 export const workspaceRouter = createTRPCRouter({
@@ -31,5 +32,12 @@ export const workspaceRouter = createTRPCRouter({
 			return await ctx
 				.services({ ctx })
 				.workspaceService.updateWorkspaceName(input);
+		}),
+	createFile: protectedProcedure
+		.input(createFileInputSchema)
+		.mutation(async ({ input, ctx }) => {
+			return await ctx
+				.services({ ctx })
+				.workspaceService.createFile(input, ctx.session.user.id);
 		}),
 });

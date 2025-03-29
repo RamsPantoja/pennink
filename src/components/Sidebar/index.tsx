@@ -69,7 +69,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					onCancel={() => {
 						setDisplaySignOutAlert(false);
 					}}
-					onAction={() => signOut({ callbackUrl: "/sign_in" })}
+					onAction={() => signOut({ callbackUrl: "/sign-in" })}
 					isPending={false}
 					open={displaySignOutAlert}
 				/>

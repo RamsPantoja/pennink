@@ -15,3 +15,10 @@ export const updateWorkspaceNameInputSchema = z.object({
 	id: z.string(),
 	name: z.string().min(1),
 });
+
+export const createFileInputSchema = z.object({
+	filename: z.string().min(1),
+	type: z.string().min(1),
+	key: z.string().min(1),
+	workspaceId: z.string().uuid(),
+});

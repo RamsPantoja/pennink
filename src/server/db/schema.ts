@@ -378,9 +378,7 @@ export const files = createTable("file", {
 	filename: text("filename").notNull(),
 	type: text("type").notNull(),
 	key: text("key").notNull(),
-	workspaceId: uuid("workspaceId")
-		.notNull()
-		.references(() => workspaces.id),
+	bucket: text("bucket").notNull(),
 	userId: uuid("userId")
 		.notNull()
 		.references(() => users.id),
@@ -401,8 +399,33 @@ export const filesRelations = relations(files, ({ one }) => ({
 		fields: [files.userId],
 		references: [users.id],
 	}),
-	workspace: one(workspaces, {
-		fields: [files.workspaceId],
-		references: [workspaces.id],
-	}),
 }));
+
+export const filesToWorkspaces = createTable(
+	"file_to_workspace",
+	{
+		fileId: uuid("fileId")
+			.notNull()
+			.references(() => files.id),
+		workspaceId: uuid("workspaceId")
+			.notNull()
+			.references(() => workspaces.id),
+	},
+	(t) => ({
+		compoundKey: primaryKey({ columns: [t.fileId, t.workspaceId] }),
+	}),
+);
+
+export const filesToWorkspacesRelations = relations(
+	filesToWorkspaces,
+	({ one }) => ({
+		file: one(files, {
+			fields: [filesToWorkspaces.fileId],
+			references: [files.id],
+		}),
+		workspace: one(workspaces, {
+			fields: [filesToWorkspaces.workspaceId],
+			references: [workspaces.id],
+		}),
+	}),
+);

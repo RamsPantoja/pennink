@@ -20,14 +20,15 @@ import {
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Loading } from "./common/Loading";
 
 type PDFUploaderProps = {
-	onUpload: (file: File) => void;
+	onUpload: (file: File) => Promise<void>;
+	isPending: boolean;
 };
 
-export default function PDFUploader({}: PDFUploaderProps) {
+export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 	const [file, setFile] = useState<File | null>(null);
-	const [uploading, setUploading] = useState(false);
 	const [progress, setProgress] = useState(0);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [showPreview, setShowPreview] = useState(false);
@@ -82,39 +83,6 @@ export default function PDFUploader({}: PDFUploaderProps) {
 		setFile(droppedFile);
 	};
 
-	const handleUpload = async () => {
-		if (!file) return;
-
-		setUploading(true);
-
-		// Simulate upload progress
-		const interval = setInterval(() => {
-			setProgress((prev) => {
-				if (prev >= 100) {
-					clearInterval(interval);
-					return 100;
-				}
-				return prev + 10;
-			});
-		}, 300);
-
-		try {
-			// This is where you would implement your actual file upload logic
-			// For example, using FormData to send to your API endpoint
-
-			// Simulating API call
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-
-			toast.success("Upload successful");
-		} catch (error) {
-			toast.error("Upload failed");
-		} finally {
-			clearInterval(interval);
-			setUploading(false);
-			setProgress(0);
-		}
-	};
-
 	const clearFile = () => {
 		setFile(null);
 		if (fileInputRef.current) {
@@ -123,8 +91,8 @@ export default function PDFUploader({}: PDFUploaderProps) {
 	};
 
 	return (
-		<Card className="w-full max-w-md flex flex-col">
-			<CardContent>
+		<Card className="w-full max-w-md flex flex-col p-0">
+			<CardContent className="flex flex-col gap-4 p-0">
 				<div
 					className={`border-2 border-dashed rounded-lg p-6 text-center ${
 						file ? "border-mochaMauve" : "border-muted-foreground/25"
@@ -180,7 +148,7 @@ export default function PDFUploader({}: PDFUploaderProps) {
 											size="icon"
 											className="ml-auto"
 											onClick={clearFile}
-											disabled={uploading}
+											disabled={isPending}
 										>
 											<XMarkIcon className="h-5 min-w-5" />
 										</Button>
@@ -197,28 +165,27 @@ export default function PDFUploader({}: PDFUploaderProps) {
 									/>
 								</div>
 							)}
-							{uploading && (
-								<div className="space-y-2">
-									{/* <Progress value={progress} className="h-2" /> */}
-									<p className="text-xs text-center text-muted-foreground">
-										Uploading... {progress}%
-									</p>
-								</div>
-							)}
+							{isPending && <Loading />}
 						</div>
 					)}
 				</div>
-			</CardContent>
-			<CardFooter>
 				<Button
 					className="w-full"
-					disabled={!file || uploading}
-					onClick={handleUpload}
+					disabled={!file || isPending}
+					onClick={() => {
+						if (!file) {
+							toast("Please select a file");
+							return;
+						}
+
+						onUpload(file);
+					}}
+					isPending={isPending}
 					endIcon={<SparklesIcon className="min-w-5 h-5" />}
 				>
-					{uploading ? "Uploading..." : "Ask"}
+					Upload and Ask
 				</Button>
-			</CardFooter>
+			</CardContent>
 		</Card>
 	);
 }
