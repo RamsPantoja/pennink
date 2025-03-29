@@ -18,6 +18,7 @@
     "@ai-sdk/mistral": "^1.1.13",
     "@auth/drizzle-adapter": "^1.1.0",
     "@aws-sdk/client-s3": "^3.775.0",
+    "@aws-sdk/s3-request-presigner": "^3.777.0",
     "@digitalocean/do-markdownit": "^1.16.0",
     "@editorjs/editorjs": "^2.30.8",
     "@editorjs/header": "^2.8.8",

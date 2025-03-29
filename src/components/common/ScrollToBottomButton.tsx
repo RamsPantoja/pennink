@@ -50,11 +50,11 @@ export const ScrollToBottomButton = ({
 			{isVisible && (
 				<div className="absolute bottom-2 w-full flex justify-center ring-0 left-0">
 					<Button
-						size="icon"
-						className="rounded-full animate-bounce"
+						className="rounded-full opacity-80 hover:bg-mochaMauve hover:opacity-100"
 						onClick={handleScrollToBottom}
+						endIcon={<ArrowDownIcon className="min-w-5 h-5 animate-bounce" />}
 					>
-						<ArrowDownIcon className="min-w-5 h-5" />
+						Scroll to bottom
 					</Button>
 				</div>
 			)}

@@ -372,3 +372,37 @@ export const notesRelations = relations(notes, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export const files = createTable("file", {
+	id: customId.notNull().primaryKey(),
+	filename: text("filename").notNull(),
+	type: text("type").notNull(),
+	key: text("key").notNull(),
+	workspaceId: uuid("workspaceId")
+		.notNull()
+		.references(() => workspaces.id),
+	userId: uuid("userId")
+		.notNull()
+		.references(() => users.id),
+	createdAt: timestamp("createdAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp("updatedAt", {
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const filesRelations = relations(files, ({ one }) => ({
+	user: one(users, {
+		fields: [files.userId],
+		references: [users.id],
+	}),
+	workspace: one(workspaces, {
+		fields: [files.workspaceId],
+		references: [workspaces.id],
+	}),
+}));

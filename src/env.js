@@ -30,6 +30,7 @@ export const env = createEnv({
 		CF_ACCOUNT_ID: z.string(),
 		CF_PUBLIC_R2_KEY: z.string(),
 		CF_SECRET_R2_KEY: z.string(),
+		BUCKET: z.string(),
 	},
 
 	/**
@@ -59,6 +60,7 @@ export const env = createEnv({
 		CF_ACCOUNT_ID: process.env.CF_ACCOUNT_ID,
 		CF_PUBLIC_R2_KEY: process.env.CF_PUBLIC_R2_KEY,
 		CF_SECRET_R2_KEY: process.env.CF_SECRET_R2_KEY,
+		BUCKET: process.env.BUCKET,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
