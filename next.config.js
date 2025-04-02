@@ -12,8 +12,17 @@ const config = {
 	 *
 	 * @see https://github.com/vercel/next.js/issues/41980
 	 */
-	webpack: (config) => {
+	webpack: (config, { isServer }) => {
 		config.resolve.alias.canvas = false;
+
+		// If client-side, don't polyfill `fs`
+		if (!isServer) {
+			config.resolve.fallback = {
+				...config.resolve.fallback,
+				fs: false,
+			};
+		}
+
 		return config;
 	},
 	i18n: {

@@ -39,7 +39,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						</TooltipTrigger>
 						<TooltipContent>New workspace</TooltipContent>
 					</Tooltip>
-					<div className="flex items-center gap-4">
+					{/* <div className="flex items-center gap-4">
 						{!session && (
 							<Link
 								className="text-mochaCrust font-bold bg-mochaMauve pl-4 pr-4 pt-2 pb-2 rounded-full"
@@ -58,7 +58,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 								<TooltipContent>Notifications</TooltipContent>
 							</Tooltip>
 						)}
-					</div>
+					</div> */}
 				</div>
 				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden">
 					{children}
