@@ -37,9 +37,9 @@ export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
 	isPending?: boolean;
-	children: string | JSX.Element;
-	startIcon?: JSX.Element;
-	endIcon?: JSX.Element;
+	children: string | React.ReactNode;
+	startIcon?: React.ReactNode;
+	endIcon?: React.ReactNode;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

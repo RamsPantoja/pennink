@@ -6,6 +6,7 @@ import { DateTime, type Duration } from "luxon";
 import markdownit from "markdown-it";
 import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
 import { MessageRole } from "./enum";
+import { ReactNode } from "react";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -23,14 +24,14 @@ interface ExpiryResult {
 
 type MapSkeletonsProps = {
 	numberOfSkeletons: number;
-	skeleton: JSX.Element;
+	skeleton: ReactNode;
 };
 
 export const mapSkeletons = ({
 	numberOfSkeletons,
 	skeleton,
 }: MapSkeletonsProps) => {
-	const skeletons: JSX.Element[] = [];
+	const skeletons: ReactNode[] = [];
 
 	for (let index = 0; index < numberOfSkeletons; index++) {
 		skeletons.push(skeleton);

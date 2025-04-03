@@ -2,13 +2,14 @@ import type { Stripe } from "stripe";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createCaller } from "~/server/api/root";
 import { createTRPCContext } from "~/server/api/trpc";
+import type { TRPCRequestInfo } from "@trpc/server/unstable-core-do-not-import";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		const trpcContext = await createTRPCContext({
 			req,
 			res,
-			info: { isBatchCall: false, calls: [] },
+			info: {} as TRPCRequestInfo,
 		});
 
 		const caller = createCaller(trpcContext);

@@ -10,9 +10,10 @@ import {
 	AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "./Button";
+import type { ReactNode } from "react";
 
 type CustomAlertDialogProps = {
-	trigger?: JSX.Element;
+	trigger?: ReactNode;
 	title: string;
 	description: string;
 	cancelText: string;

@@ -2,6 +2,7 @@ import { SquaresPlusIcon } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ReactNode } from "react";
 import Notifications from "~/components/Notifications";
 import { AppSidebar } from "~/components/Sidebar";
 import { Button } from "~/components/common/Button";
@@ -14,7 +15,7 @@ import {
 
 type DashboardProps = {
 	session: Session | null;
-	children: JSX.Element;
+	children: ReactNode;
 };
 
 const Dashboard = ({ children, session }: DashboardProps) => {
