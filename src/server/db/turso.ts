@@ -11,9 +11,5 @@ export const db = drizzle<DrizzleTursoSchema>({
 		authToken: env.TURSO_TOKEN,
 	},
 	schema,
+	casing: "snake_case",
 });
-
-await db.run(sql`
-  CREATE INDEX IF NOT EXISTS embedding_index
-  ON documents(libsql_vector_idx(embedding))
-`);

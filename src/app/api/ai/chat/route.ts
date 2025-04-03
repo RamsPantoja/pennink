@@ -1,9 +1,9 @@
-import { google } from "@ai-sdk/google";
-import { type LanguageModel, streamText } from "ai";
+import { mistral } from "@ai-sdk/mistral";
+import { streamText } from "ai";
 
 export async function POST(req: Request) {
 	try {
-		const model = google("gemini-2.0-flash-lite-preview-02-05");
+		const model = mistral("mistral-large-latest");
 		const systemTemplate = `You are a friendly and professional AI designed to engage users in natural, open-ended conversations. Your responses should be warm, engaging, and thoughtful, ensuring the conversation flows smoothly. Ask follow-up questions to keep the discussion dynamic, show genuine curiosity about the user's thoughts, and adapt your tone to match the user's communication style. Avoid sounding robotic or overly formal—aim for a conversational and approachable style while maintaining professionalism. Your goal is to make the user feel heard, understood, and comfortable sharing their thoughts.`;
 
 		const { prompt, context } = await req.json();
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 		}
 
 		const result = streamText({
-			model: model as LanguageModel,
+			model,
 			system: systemTemplate,
 			messages: [
 				...context.messages,

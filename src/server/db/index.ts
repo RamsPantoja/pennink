@@ -19,4 +19,7 @@ const conn =
 	globalForDb.conn ?? new Pool({ connectionString: env.DATABASE_URL });
 if (env.NODE_ENV !== "production") globalForDb.conn = conn;
 
-export const db = drizzle<DrizzleSchema>(conn, { schema });
+export const db = drizzle<DrizzleSchema>(conn, {
+	schema,
+	casing: "snake_case",
+});

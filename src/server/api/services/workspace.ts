@@ -15,8 +15,13 @@ import {
 	filesToWorkspaces,
 } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { env } from "~/env";
+import { mistral } from "@ai-sdk/mistral";
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import { embedMany } from "ai";
+import { embeddingDocuments } from "~/server/db/turso-schema";
 
 type WorkspaceServiceContructor = {
 	ctx: TRPCContext;
@@ -155,6 +160,12 @@ export class WorkspaceService {
 	}
 
 	public async createFile(input: CreateFileInput, userId: string) {
+		const model = mistral.textEmbeddingModel("mistral-embed");
+		const textSplitter = new RecursiveCharacterTextSplitter({
+			chunkSize: 1000,
+			chunkOverlap: 200,
+		});
+
 		try {
 			const { filename, type, key, workspaceId } = input;
 
@@ -184,8 +195,39 @@ export class WorkspaceService {
 				})
 				.returning();
 
+			const docFromCloudStorage = await fetch(
+				`${env.BUCKET_PUBLIC_DOMAIN}/${file.key}`,
+			);
+			const blob = await docFromCloudStorage.blob();
+			const loader = new PDFLoader(blob);
+			const docs = await loader.load();
+			const allSplits = await textSplitter.splitDocuments(docs);
+
+			const { embeddings, values } = await embedMany({
+				model,
+				values: allSplits.map((split) => split.pageContent),
+			});
+
+			//Create a vector index for the embedding column from the embedding_documents table
+			await this.ctx.tursoDb.run(
+				sql`CREATE INDEX IF NOT EXISTS embedding_index ON embedding_document(embedding)`,
+			);
+
+			await this.ctx.tursoDb.insert(embeddingDocuments).values(
+				embeddings.map((embedding, index) => {
+					return {
+						embedding,
+						fileId: file.id,
+						name: file.filename,
+						userId,
+						content: values[index] ?? "",
+					};
+				}),
+			);
+
 			return file;
-		} catch {
+		} catch (error) {
+			console.log(error);
 			throw new TRPCError({
 				code: "NOT_FOUND",
 				message: "Failed to update workspace",

@@ -15,12 +15,15 @@ import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import { db as tursoDb } from "~/server/db/turso";
 import Services, {
 	type ServicesConfig,
 	type ServicesContext,
 } from "./services";
 import type * as schema from "../db/schema";
+import type * as tursoSchema from "../db/turso-schema";
 import type { NeonDatabase } from "drizzle-orm/neon-serverless";
+import type { LibSQLDatabase } from "drizzle-orm/libsql/driver-core";
 
 /**
  * 1. CONTEXT
@@ -37,6 +40,7 @@ interface CreateContextOptions {
 
 export type TRPCContext = {
 	db: NeonDatabase<typeof schema>;
+	tursoDb: LibSQLDatabase<typeof tursoSchema>;
 	session: Session | null;
 	services: (config: ServicesConfig) => ServicesContext;
 	opts: CreateNextContextOptions;
@@ -56,6 +60,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions): TRPCContext => {
 	return {
 		session: opts.session,
 		db,
+		tursoDb,
 		services: (config) => Services(config),
 		opts: opts.opts,
 	};

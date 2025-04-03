@@ -33,7 +33,7 @@ export const suscriptionEnum = pgEnum("suscription", [
 	"FREE",
 ]);
 
-export const messageRoleEnum = pgEnum("messageType", [
+export const messageRoleEnum = pgEnum("message_type", [
 	"SYSTEM",
 	"USER",
 	"AGENT",
@@ -41,22 +41,22 @@ export const messageRoleEnum = pgEnum("messageType", [
 
 export const users = createTable("user", {
 	id: customId.notNull().primaryKey(),
-	name: text("name").notNull(),
-	email: text("email").notNull(),
-	emailVerified: timestamp("emailVerified", {
+	name: text().notNull(),
+	email: text().notNull(),
+	emailVerified: timestamp({
 		mode: "date",
 		withTimezone: true,
 	}).default(sql`CURRENT_TIMESTAMP`),
-	image: text("image").notNull(),
-	verified: boolean("verified").notNull().default(false),
-	suscription: suscriptionEnum("suscription").notNull().default("FREE"),
-	onBoardingCompleted: boolean("onBoardingCompleted").notNull().default(false),
-	createdAt: timestamp("createdAt", {
+	image: text().notNull(),
+	verified: boolean().notNull().default(false),
+	suscription: suscriptionEnum().notNull().default("FREE"),
+	onBoardingCompleted: boolean().notNull().default(false),
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -71,36 +71,36 @@ export const usersRelations = relations(users, ({ many, one }) => ({
 export const accounts = createTable(
 	"account",
 	{
-		userId: uuid("userId")
+		userId: uuid()
 			.notNull()
 			.references(() => users.id),
-		type: text("type").$type<AdapterAccount["type"]>().notNull(),
-		provider: text("provider").notNull(),
-		providerAccountId: text("providerAccountId").notNull(),
-		refresh_token: text("refresh_token"),
-		access_token: text("access_token"),
-		expires_at: integer("expires_at"),
-		token_type: text("token_type"),
-		scope: text("scope"),
-		id_token: text("id_token"),
-		session_state: text("session_state"),
-		createdAt: timestamp("createdAt", {
+		type: text().$type<AdapterAccount["type"]>().notNull(),
+		provider: text().notNull(),
+		providerAccountId: text().notNull(),
+		refresh_token: text(),
+		access_token: text(),
+		expires_at: integer(),
+		token_type: text(),
+		scope: text(),
+		id_token: text(),
+		session_state: text(),
+		createdAt: timestamp({
 			mode: "date",
 		})
 			.notNull()
 			.defaultNow(),
-		updatedAt: timestamp("updatedAt", {
+		updatedAt: timestamp({
 			mode: "date",
 		})
 			.notNull()
 			.defaultNow(),
 	},
-	(account) => ({
-		compoundKey: primaryKey({
+	(account) => [
+		primaryKey({
 			columns: [account.provider, account.providerAccountId],
 		}),
-		userIdIdx: index("account_userId_idx").on(account.userId),
-	}),
+		index("account_user_id_idx").on(account.userId),
+	],
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -110,28 +110,26 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessions = createTable(
 	"session",
 	{
-		sessionToken: text("sessionToken").notNull().primaryKey(),
-		userId: uuid("userId")
+		sessionToken: text().notNull().primaryKey(),
+		userId: uuid()
 			.notNull()
 			.references(() => users.id),
-		expires: timestamp("expires", {
+		expires: timestamp({
 			mode: "date",
 			withTimezone: true,
 		}).notNull(),
-		createdAt: timestamp("createdAt", {
+		createdAt: timestamp({
 			mode: "date",
 		})
 			.notNull()
 			.defaultNow(),
-		updatedAt: timestamp("updatedAt", {
+		updatedAt: timestamp({
 			mode: "date",
 		})
 			.notNull()
 			.defaultNow(),
 	},
-	(session) => ({
-		userIdIdx: index("session_userId_idx").on(session.userId),
-	}),
+	(session) => [index("session_user_id_idx").on(session.userId)],
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -139,35 +137,33 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 }));
 
 export const verificationTokens = createTable(
-	"verificationToken",
+	"verification_token",
 	{
-		identifier: text("identifier").notNull(),
-		token: text("token").notNull(),
-		expires: timestamp("expires", {
+		identifier: text().notNull(),
+		token: text().notNull(),
+		expires: timestamp({
 			mode: "date",
 			withTimezone: true,
 		}).notNull(),
 	},
-	(vt) => ({
-		compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-	}),
+	(vt) => [primaryKey({ columns: [vt.identifier, vt.token] })],
 );
 
 export const notifications = createTable("notification", {
 	id: customId.notNull().primaryKey(),
-	content: text("content").notNull(),
-	iconUrl: text("iconUrl").notNull(),
-	link: text("link").notNull(),
-	seen: boolean("seen").notNull().default(false),
-	receiverId: uuid("receiverId")
+	content: text().notNull(),
+	iconUrl: text().notNull(),
+	link: text().notNull(),
+	seen: boolean().notNull().default(false),
+	receiverId: uuid()
 		.notNull()
 		.references(() => users.id),
-	createdAt: timestamp("createdAt", {
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -185,18 +181,18 @@ export const paymentTypeEnum = pgEnum("payment_type", ["SUSCRIPTION"]);
 
 export const payments = createTable("payment", {
 	id: customId.notNull().primaryKey(),
-	userId: uuid("userId")
+	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	checkoutSessionId: text("checkoutSessionId").notNull(),
-	paymentIntentId: text("paymentIntentId").notNull(),
-	paymentType: paymentTypeEnum("paymentType").notNull(),
-	createdAt: timestamp("createdAt", {
+	checkoutSessionId: text().notNull(),
+	paymentIntentId: text().notNull(),
+	paymentType: paymentTypeEnum().notNull(),
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -212,25 +208,25 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
 
 export const workspaces = createTable("workspace", {
 	id: customId.notNull().primaryKey(),
-	name: text("name").notNull(),
-	userId: uuid("userId")
+	name: text().notNull(),
+	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	chatId: uuid("chatId")
+	chatId: uuid()
 		.notNull()
 		.references(() => chats.id),
-	noteId: uuid("noteId")
+	noteId: uuid()
 		.notNull()
 		.references(() => notes.id),
-	summaryId: uuid("summaryId")
+	summaryId: uuid()
 		.notNull()
 		.references(() => summaries.id),
-	createdAt: timestamp("createdAt", {
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -258,15 +254,15 @@ export const workspacesRelations = relations(workspaces, ({ one }) => ({
 
 export const chats = createTable("chat", {
 	id: customId.notNull().primaryKey(),
-	userId: uuid("userId")
+	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	createdAt: timestamp("createdAt", {
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -282,20 +278,20 @@ export const chatsRelations = relations(chats, ({ one }) => ({
 
 export const messages = createTable("message", {
 	id: customId.notNull().primaryKey(),
-	chatId: uuid("chatId")
+	chatId: uuid()
 		.notNull()
 		.references(() => chats.id),
-	content: text("content").notNull(),
-	role: messageRoleEnum("role").notNull().default("SYSTEM"),
-	userId: uuid("userId")
+	content: text().notNull(),
+	role: messageRoleEnum().notNull().default("SYSTEM"),
+	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	createdAt: timestamp("createdAt", {
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -315,16 +311,16 @@ export const messagesRelations = relations(messages, ({ one }) => ({
 
 export const summaries = createTable("summary", {
 	id: customId.notNull().primaryKey(),
-	content: text("content").notNull(),
-	userId: uuid("userId")
+	content: text().notNull(),
+	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	createdAt: timestamp("createdAt", {
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -347,19 +343,16 @@ const defaultJsonContent = {
 
 export const notes = createTable("note", {
 	id: customId.notNull().primaryKey(),
-	content: json("content")
-		.default(defaultJsonContent)
-		.$type<OutputData>()
-		.notNull(),
-	userId: uuid("userId")
+	content: json().default(defaultJsonContent).$type<OutputData>().notNull(),
+	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	createdAt: timestamp("createdAt", {
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -375,19 +368,19 @@ export const notesRelations = relations(notes, ({ one }) => ({
 
 export const files = createTable("file", {
 	id: customId.notNull().primaryKey(),
-	filename: text("filename").notNull(),
-	type: text("type").notNull(),
-	key: text("key").notNull(),
-	bucket: text("bucket").notNull(),
-	userId: uuid("userId")
+	filename: text().notNull(),
+	type: text().notNull(),
+	key: text().notNull(),
+	bucket: text().notNull(),
+	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	createdAt: timestamp("createdAt", {
+	createdAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
-	updatedAt: timestamp("updatedAt", {
+	updatedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
@@ -404,16 +397,14 @@ export const filesRelations = relations(files, ({ one }) => ({
 export const filesToWorkspaces = createTable(
 	"file_to_workspace",
 	{
-		fileId: uuid("fileId")
+		fileId: uuid()
 			.notNull()
 			.references(() => files.id),
-		workspaceId: uuid("workspaceId")
+		workspaceId: uuid()
 			.notNull()
 			.references(() => workspaces.id),
 	},
-	(t) => ({
-		compoundKey: primaryKey({ columns: [t.fileId, t.workspaceId] }),
-	}),
+	(t) => [primaryKey({ columns: [t.fileId, t.workspaceId] })],
 );
 
 export const filesToWorkspacesRelations = relations(

@@ -23,8 +23,12 @@ const float32Array = s.customType<{
 	},
 });
 
-export const documents = s.sqliteTable("documents", {
-	id: customId,
-	name: s.text("name").notNull(),
-	embedding: float32Array("embedding", { dimensions: 1536 }).notNull(),
+export const embeddingDocuments = s.sqliteTable("embedding_document", {
+	id: s.integer().primaryKey(),
+	uuid: customId.unique().notNull(),
+	fileId: s.text().notNull(),
+	name: s.text().notNull(),
+	content: s.text().notNull(),
+	embedding: float32Array({ dimensions: 4000 }).notNull(),
+	userId: s.text().notNull(),
 });
