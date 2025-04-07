@@ -21,11 +21,9 @@ import {
 	ChatBubbleLeftRightIcon,
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";
-import PDFUploader from "../PDFUploader";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import type { Session } from "next-auth";
-import { Separator } from "../ui/separator";
-import { DocumentLoader } from "./DocumentLoader";
+import { type Document, DocumentLoader } from "./DocumentLoader";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -44,6 +42,9 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { id } = router.query;
 	const utils = api.useUtils();
+	const [selectedDocument, setSelectedDocument] = useState<Document | null>(
+		null,
+	);
 
 	const {
 		data: workspaceData,
@@ -167,10 +168,18 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									className="w-full h-full overflow-hidden"
 								>
 									<div className="flex overflow-hidden h-full w-full flex-col gap-2 items-center">
-										<DocumentLoader
-											onUpload={onUploadDocument}
-											isPending={loading || createFileIsPending}
-										/>
+										{selectedDocument && (
+											<DynamicPDFViewer src={selectedDocument.src} />
+										)}
+										{!selectedDocument && (
+											<DocumentLoader
+												onUpload={onUploadDocument}
+												isPending={loading || createFileIsPending}
+												onSelect={(doc) => {
+													setSelectedDocument(doc);
+												}}
+											/>
+										)}
 									</div>
 								</TabsContent>
 							</Tabs>

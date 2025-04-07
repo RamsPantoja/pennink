@@ -44,6 +44,7 @@ export const env = createEnv({
 	 */
 	client: {
 		NEXT_PUBLIC_BASE_URL: z.string(),
+		NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN: z.string(),
 	},
 
 	/**
@@ -69,6 +70,8 @@ export const env = createEnv({
 		TURSO_URL: process.env.TURSO_URL,
 		MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
 		BUCKET_PUBLIC_DOMAIN: process.env.BUCKET_PUBLIC_DOMAIN,
+		NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN:
+			process.env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

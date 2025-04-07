@@ -24,6 +24,7 @@ import { ZoomableDiv } from "./ZoomableDiv";
 import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
+import { Virtuoso } from "react-virtuoso";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 	workerSrc,
@@ -41,7 +42,11 @@ const maxWidth = 800;
 
 type PDFFile = string | File | null;
 
-export default function PDFViewer() {
+type DynamicPDFViewerProps = {
+	src: PDFFile;
+};
+
+export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 	const [pageNumbers, setPageNumbers] = useState<number[]>([]);
 	const [numPages, setNumPages] = useState<number>();
 	const [containerWidth, setContainerWidth] = useState<number>();
@@ -377,33 +382,35 @@ export default function PDFViewer() {
 			</div>
 			<Card className="flex flex-1 overflow-hidden pt-0 pb-0 rounded-none">
 				<Document
-					file={"/hscodes.pdf"}
+					file={src}
 					onLoadSuccess={onDocumentLoadSuccess}
 					options={options}
 					loading={<Loading />}
 					inputRef={contentRef}
-					className="w-full h-full overflow-auto flex flex-col gap-4 pl-2 pr-2 pb-2"
+					className="w-full h-full overflow-auto flex flex-col"
 				>
-					{pageNumbers.map((pageNumber) => {
-						return (
-							<div
-								key={`page_${pageNumber + 1}`}
-								id={`page_${pageNumber + 1}`}
-								className="flex w-full justify-center min-w-fit"
-							>
-								<Card className="border">
-									<span className="text-xs font-bold">
-										Page {pageNumber + 1}
-									</span>
-									<Page
-										pageNumber={pageNumber + 1}
-										loading={<Loading />}
-										scale={zoom}
-									/>
-								</Card>
-							</div>
-						);
-					})}
+					<Virtuoso
+						style={{ height: "100%" }}
+						totalCount={numPages}
+						itemContent={(index) => {
+							return (
+								<div
+									key={`page_${index + 1}`}
+									id={`page_${index + 1}`}
+									className="flex w-full justify-center min-w-fit p-2"
+								>
+									<Card className="border flex w-full flex-col">
+										<span className="text-xs font-bold">Page {index + 1}</span>
+										<Page
+											pageNumber={index + 1}
+											loading={<Loading />}
+											scale={zoom}
+										/>
+									</Card>
+								</div>
+							);
+						}}
+					/>
 				</Document>
 			</Card>
 			<div className="p-4">

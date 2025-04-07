@@ -12,6 +12,11 @@ export const workspaceRouter = createTRPCRouter({
 			.services({ ctx })
 			.workspaceService.getWorkspaces(ctx.session.user.id);
 	}),
+	filesByUserId: protectedProcedure.query(async ({ input, ctx }) => {
+		return await ctx
+			.services({ ctx })
+			.workspaceService.getFilesByUserId(ctx.session.user.id);
+	}),
 	workspaceById: protectedProcedure
 		.input(workspaceByIdInputSchema)
 		.query(async ({ input, ctx }) => {

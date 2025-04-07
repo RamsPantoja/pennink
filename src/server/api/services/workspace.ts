@@ -162,7 +162,7 @@ export class WorkspaceService {
 	public async createFile(input: CreateFileInput, userId: string) {
 		const model = mistral.textEmbeddingModel("mistral-embed");
 		const textSplitter = new RecursiveCharacterTextSplitter({
-			chunkSize: 1000,
+			chunkSize: 2000,
 			chunkOverlap: 200,
 		});
 
@@ -233,5 +233,15 @@ export class WorkspaceService {
 				message: "Failed to update workspace",
 			});
 		}
+	}
+
+	public async getFilesByUserId(userId: string) {
+		const files = await this.ctx.db.query.files.findMany({
+			where: (files, { eq }) => {
+				return eq(files.userId, userId);
+			},
+		});
+
+		return files;
 	}
 }
