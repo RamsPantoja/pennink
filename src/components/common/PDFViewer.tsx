@@ -397,9 +397,9 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 								<div
 									key={`page_${index + 1}`}
 									id={`page_${index + 1}`}
-									className="flex w-full justify-center min-w-fit p-2"
+									className="flex justify-center min-w-fit p-2"
 								>
-									<Card className="border flex w-full flex-col">
+									<Card className="border flex flex-col">
 										<span className="text-xs font-bold">Page {index + 1}</span>
 										<Page
 											pageNumber={index + 1}
