@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/theme";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
 	darkMode: ["class"],
@@ -9,8 +10,7 @@ export default {
 	],
 	theme: {
 		fontFamily: {
-			sans: ["__Nunito_14f33d", "__Nunito_Fallback_14f33d", "sans-serif"],
-			serif: ["__Nunito_14f33d", "__Nunito_Fallback_14f33d", "serif"],
+			sans: [...fontFamily.sans],
 		},
 		extend: {
 			colors: {

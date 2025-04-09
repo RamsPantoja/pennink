@@ -150,7 +150,7 @@ export const WorkspaceCard = ({
 					<span
 						title={workspaceTitle}
 						className={cn([
-							"font-semibold cursor-pointer truncate w-full ",
+							"font-semibold text-xs cursor-pointer truncate w-full ",
 							{
 								"animate-pulse":
 									updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,

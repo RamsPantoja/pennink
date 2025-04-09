@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Card, CardContent } from "../ui/card";
+import { Card } from "../ui/card";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,15 +13,15 @@ import {
 	EllipsisVerticalIcon,
 	TrashIcon,
 } from "@heroicons/react/24/outline";
-import type { Document } from "./DocumentLoader";
 import { env } from "~/env";
+import type { PenninkDocument } from "./useWorkspaceStore";
 
 type DocumentCardProps = {
 	id: string;
 	title: string;
 	type: "pdf" | "doc" | "image" | "zip" | string;
 	date: string;
-	onSelect: (doc: Document) => void;
+	onSelect: (doc: PenninkDocument) => void;
 	storageKey: string;
 };
 

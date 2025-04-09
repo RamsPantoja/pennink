@@ -126,14 +126,16 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					<SidebarGroupLabel asChild>
 						<div className="flex items-center gap-4 justify-between mb-2">
 							<span>Workspaces</span>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button onClick={onNewWorkspace} size="icon">
-										<SquaresPlusIcon className="min-w-5 w-5 h-5" />
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>New workspace</TooltipContent>
-							</Tooltip>
+							{router.asPath !== "/" && (
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button onClick={onNewWorkspace} size="icon">
+											<SquaresPlusIcon className="min-w-5 w-5 h-5" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>New workspace</TooltipContent>
+								</Tooltip>
+							)}
 						</div>
 					</SidebarGroupLabel>
 					<SidebarGroupContent>

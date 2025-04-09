@@ -413,13 +413,13 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					/>
 				</Document>
 			</Card>
-			<div className="p-4">
+			{/* <div className="p-4">
 				{numPages && (
 					<p className="text-xs">
 						Page {pageNumber} of {numPages}
 					</p>
 				)}
-			</div>
+			</div> */}
 		</div>
 	);
 }

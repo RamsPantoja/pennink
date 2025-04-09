@@ -34,7 +34,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	return (
 		<Card
 			className={cn([
-				"flex flex-col gap-4 overflow-hidden relative",
+				"flex flex-col gap-4 overflow-hidden relative w-full",
 				{
 					"flex-1": messages.length > 0,
 				},
@@ -44,23 +44,21 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 			{!messagesIsLoading && messagesIsError && (
 				<FeedbackMessage status="ERROR" message="Error fetching messages" />
 			)}
-			{!messagesIsLoading && !messagesIsError && messages.length > 0 && (
-				<div className="flex flex-1 overflow-hidden relative">
-					<div
-						ref={chatContainer}
-						className="flex flex-col gap-4 overflow-auto p-4 flex-1 relative"
-						id="chat-container"
-					>
-						{messages.map((message) => (
-							<MessageCard key={message.id} message={message} />
-						))}
-						{currentAssistantMessage && (
-							<MessageCard message={currentAssistantMessage} />
-						)}
-					</div>
-					<ScrollToBottomButton scrollableElementId="chat-container" />
+			<div className="flex flex-1 overflow-hidden relative">
+				<div
+					ref={chatContainer}
+					className="flex flex-col gap-4 overflow-auto p-4 flex-1 relative"
+					id="chat-container"
+				>
+					{messages.map((message) => (
+						<MessageCard key={message.id} message={message} />
+					))}
+					{currentAssistantMessage && (
+						<MessageCard message={currentAssistantMessage} />
+					)}
 				</div>
-			)}
+				<ScrollToBottomButton scrollableElementId="chat-container" />
+			</div>
 			<Card className="border-1 w-full bg-white flex flex-col gap-4 shadow-md">
 				<Input
 					placeholder="Write a message, upload a file or paste a youtube link"
