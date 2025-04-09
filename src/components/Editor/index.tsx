@@ -8,6 +8,8 @@ import EditorjsList from "@editorjs/list";
 // import Table from "@editorjs/table";
 import { useEffect, useRef, useState } from "react";
 import { Card } from "../ui/card";
+import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
+import { useShallow } from "zustand/react/shallow";
 
 export type EditorProps = {
 	onSave: (data: OutputData) => void;
@@ -15,10 +17,10 @@ export type EditorProps = {
 };
 
 const Editor = ({ onSave, data }: EditorProps) => {
-	const editorInstance = useRef<EditorJS | null>(null);
+	const { editorJS, setEditorJS } = useWorkspaceStore();
 
 	useEffect(() => {
-		if (!editorInstance.current) {
+		if (!editorJS) {
 			const editor = new EditorJS({
 				holder: "editorjs",
 				placeholder: "Type, `/` for commands...",
@@ -38,17 +40,16 @@ const Editor = ({ onSave, data }: EditorProps) => {
 				},
 			});
 
-			editorInstance.current = editor;
+			setEditorJS(editor);
 		}
 
-		// Cleanup: clear interval
 		return () => {
-			if (typeof editorInstance.current?.destroy === "function") {
-				editorInstance.current.destroy();
-				editorInstance.current = null;
+			if (typeof editorJS?.destroy === "function") {
+				editorJS.destroy();
+				setEditorJS(null);
 			}
 		};
-	}, []);
+	}, [editorJS]);
 
 	return (
 		<Card

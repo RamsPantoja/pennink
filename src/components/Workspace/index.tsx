@@ -131,9 +131,12 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
-						<div className="w-full h-full flex">
+						{selectedDocument && (
+							<DynamicPDFViewer src={selectedDocument.src} />
+						)}
+						{/* <div className="w-full h-full flex">
 							<Chat id={workspaceData.chatId} isNew={false} />
-						</div>
+						</div> */}
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>

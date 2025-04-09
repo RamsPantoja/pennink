@@ -46,9 +46,7 @@ export const DocumentLoader = ({
 		<div className="flex flex-col gap-8 p-4">
 			<Drawer direction="right">
 				<DrawerTrigger className="relative" asChild>
-					<Button className="relative" variant="outline">
-						Select document
-					</Button>
+					<Button className="relative">Select document</Button>
 				</DrawerTrigger>
 				<DrawerContent className="left-0 md:left-1/2 bg-white right-2 top-2 bottom-2 overflow-hidden fixed border z-50 rounded-xl outline-none mt-0">
 					<div className="bg-zinc-50 h-full w-full grow p-4 flex flex-col">
