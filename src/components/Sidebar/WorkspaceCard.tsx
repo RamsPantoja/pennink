@@ -147,13 +147,18 @@ export const WorkspaceCard = ({
 				}}
 				asChild
 				isActive={id === selectedWorkspaceId}
-				className="pr-0"
+				className={cn([
+					"pr-0 cursor-pointer",
+					{
+						"border border-mochaMauve": id === selectedWorkspaceId,
+					},
+				])}
 			>
 				<div className="flex items-center w-full">
 					<span
 						title={workspaceTitle}
 						className={cn([
-							"font-semibold text-xs cursor-pointer truncate w-full ",
+							"font-normal text-xs truncate w-full",
 							{
 								"animate-pulse":
 									updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,

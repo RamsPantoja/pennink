@@ -22,7 +22,7 @@ export default {
 				mochaLavender: "#7287fd",
 				mochaMauve: "#000000",
 				mochaCrust: "#fafafa",
-				mochaTeal: "#bcd1ca",
+				mochaTeal: "#f9dcf8",
 				sidebar: {
 					DEFAULT: "var(--sidebar-background)",
 					foreground: "var(--sidebar-foreground)",
