@@ -28,6 +28,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "~/components/ui/tooltip";
+import { env } from "~/env";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { api } from "~/utils/api";
 
@@ -46,8 +47,14 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 
 	const { mutate: createFile, isPending: createFileIsPending } =
 		api.workspace.createFile.useMutation({
-			onSuccess: async () => {
+			onSuccess: async (data) => {
 				toast("You can now ask to your document!");
+				setDocument({
+					id: data.id,
+					filename: data.filename,
+					type: data.type,
+					src: `${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${data.key}`,
+				});
 			},
 			onError: (error) => {
 				toast(error.message);
@@ -69,7 +76,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			return;
 		}
 
-		toast("Your file is processing, wait a minute, please...");
+		toast("Your file is processing, wait a moment, please...");
 
 		const res = await onUploadFile({
 			file: selectedFile,
@@ -88,8 +95,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 		});
 	};
 
-	const onNewWorkspace = () => {
-		router.push("/");
+	const onNewWorkspace = async () => {
+		await router.push("/");
+		setDocument(null);
 	};
 
 	return (

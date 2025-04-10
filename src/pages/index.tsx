@@ -16,14 +16,14 @@ export default function Home({
 					<meta name="description" content="Find a partner to do anything!" />
 					<link rel="icon" href="/favicon.ico" />
 				</Head>
-				<HomeComponent />
+				<HomeComponent session={session} />
 			</>
 		</Dashboard>
 	);
 }
 
 type ServerSideProps = {
-	session: Session | null;
+	session: Session;
 };
 
 export const getServerSideProps = (async ({ req, res }) => {

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Card, CardContent } from "../ui/card";
+import { Card } from "../ui/card";
 import { api } from "~/utils/api";
 import { Chat } from "../Chat";
 import { SkeletonWorkspace } from "./Skeleton";
@@ -13,16 +13,11 @@ import dynamic from "next/dynamic";
 import { Loading } from "../common/Loading";
 import type { OutputData } from "@editorjs/editorjs";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
-	BookOpenIcon,
-	ChatBubbleLeftIcon,
-	ChatBubbleLeftRightIcon,
 	ChatBubbleOvalLeftIcon,
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";
-import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import type { Session } from "next-auth";
 import { useWorkspaceStore } from "./useWorkspaceStore";
 const DynamicEditor = dynamic(() => import("../Editor"), {

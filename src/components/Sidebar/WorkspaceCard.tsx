@@ -18,6 +18,7 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../common/Button";
+import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 
 type WorkspaceCardProps = {
 	id: string;
@@ -32,6 +33,7 @@ export const WorkspaceCard = ({
 }: WorkspaceCardProps) => {
 	const { data: session } = useSession();
 	const [workspaceTitle, setWorkspaceTitle] = useState<string>(name);
+	const { setDocument } = useWorkspaceStore();
 
 	const {
 		mutate: updateWorkspaceName,
@@ -139,8 +141,9 @@ export const WorkspaceCard = ({
 	return (
 		<SidebarMenuItem>
 			<SidebarMenuButton
-				onClick={() => {
-					router.push(`/workspace/${id}`);
+				onClick={async () => {
+					await router.push(`/workspace/${id}`);
+					setDocument(null);
 				}}
 				asChild
 				isActive={id === selectedWorkspaceId}

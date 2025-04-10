@@ -42,6 +42,12 @@ export class WorkspaceService {
 		const { name, messages, chatId } = data;
 
 		const result = await this.ctx.db.transaction(async (tx) => {
+			const insertMessages = async () => {
+				if (messages.length > 0) {
+					return await tx.insert(messagesSchema).values(messages).returning();
+				}
+			};
+
 			const [[chat], [summary], [note]] = await Promise.all([
 				await tx
 					.insert(chats)
@@ -66,7 +72,7 @@ export class WorkspaceService {
 					})
 					.returning(),
 
-				await tx.insert(messagesSchema).values(messages),
+				await insertMessages(),
 			]);
 
 			if (!chat || !summary || !note) {

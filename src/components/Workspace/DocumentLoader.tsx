@@ -48,7 +48,7 @@ export const DocumentLoader = ({
 							Select a document to read from all saved documents
 						</DrawerDescription>
 					</DrawerHeader>
-					<div className="grid gap-2">
+					<div className="grid gap-2 h-full overflow-auto">
 						{filesByUserLoading && <Loading />}
 						{!filesByUserLoading && filesByUserError && (
 							<FeedbackMessage
