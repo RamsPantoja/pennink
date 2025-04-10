@@ -8,7 +8,8 @@ import type { Session } from "next-auth";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { toast } from "sonner";
 import Notifications from "~/components/Notifications";
 import { AppSidebar } from "~/components/Sidebar";
 import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
@@ -20,28 +21,87 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { Input } from "~/components/ui/input";
 import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 } from "~/components/ui/tooltip";
+import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
+import { api } from "~/utils/api";
 
 type DashboardProps = {
-	session: Session | null;
+	session: Session;
 	children: ReactNode;
 };
 
 const Dashboard = ({ children, session }: DashboardProps) => {
-	const [openDocumentLoader, setOpenDocumentLoader] = useState<boolean>(false);
-	const { setDocument } = useWorkspaceStore();
 	const router = useRouter();
+	const [openDocumentLoader, setOpenDocumentLoader] = useState<boolean>(false);
+	const { workspaceId } = router.query;
+	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
+	const fileInputRef = useRef<HTMLInputElement>(null);
+	const { setDocument } = useWorkspaceStore();
+
+	const { mutate: createFile, isPending: createFileIsPending } =
+		api.workspace.createFile.useMutation({
+			onSuccess: async () => {
+				toast("You can now ask to your document!");
+			},
+			onError: (error) => {
+				toast(error.message);
+			},
+		});
+
+	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const selectedFile = e.target.files?.[0];
+
+		if (!selectedFile) return;
+
+		if (selectedFile.type !== "application/pdf") {
+			toast("Invalid file type");
+			return;
+		}
+
+		if (typeof workspaceId !== "string") {
+			toast("Invalid workspace ID");
+			return;
+		}
+
+		toast("Your file is processing, wait a minute, please...");
+
+		const res = await onUploadFile({
+			file: selectedFile,
+			path: `workspace/documents/${session.user.id}`,
+		});
+
+		if (!res) {
+			return;
+		}
+
+		createFile({
+			type: selectedFile.type,
+			filename: selectedFile.name,
+			key: res.key,
+			workspaceId,
+		});
+	};
+
 	const onNewWorkspace = () => {
 		router.push("/");
 	};
 
 	return (
 		<SidebarProvider>
+			<Input
+				ref={fileInputRef}
+				type="file"
+				accept="application/pdf"
+				className="hidden"
+				onChange={handleFileChange}
+				data-testid="file-input"
+			/>
 			<AppSidebar session={session} />
 			<DocumentLoader
 				onSelect={(doc) => {
@@ -62,12 +122,16 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<DropdownMenuTrigger asChild>
-											<Button variant="default" size="icon">
+											<Button
+												variant="default"
+												size="icon"
+												isPending={uploadingFile || createFileIsPending}
+											>
 												<DocumentPlusIcon className="min-w-5 w-5 h-5" />
 											</Button>
 										</DropdownMenuTrigger>
 									</TooltipTrigger>
-									<TooltipContent>Load new document</TooltipContent>
+									<TooltipContent>Load a document</TooltipContent>
 								</Tooltip>
 								<DropdownMenuContent
 									side="right"
@@ -77,9 +141,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 									}}
 								>
 									<DropdownMenuItem
-										onSelect={async () => {
-											await router.push("/settings");
-										}}
+										onClick={() => fileInputRef.current?.click()}
 										className="flex gap-2"
 									>
 										<ArrowUpTrayIcon className="min-w-5 w-5 h-5" />

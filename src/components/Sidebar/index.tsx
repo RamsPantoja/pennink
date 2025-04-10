@@ -42,7 +42,7 @@ type AppSidebarProps = {
 
 export function AppSidebar({ session }: AppSidebarProps) {
 	const router = useRouter();
-	const { id } = router.query;
+	const { workspaceId } = router.query;
 
 	const {
 		displaySignOutAlert,
@@ -153,7 +153,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 											key={workspace.id}
 											id={workspace.id}
 											name={workspace.name}
-											selectedWorkspaceId={id as string}
+											selectedWorkspaceId={workspaceId as string}
 										/>
 									);
 								})}

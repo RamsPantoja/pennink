@@ -34,7 +34,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	return (
 		<Card
 			className={cn([
-				"flex flex-col gap-4 overflow-hidden relative w-full",
+				"flex flex-col gap-4 overflow-hidden relative w-full p-0",
 				{
 					"flex-1": messages.length > 0,
 				},
@@ -59,22 +59,22 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
-			<Card className="border-1 w-full bg-white flex flex-col gap-4 shadow-md">
+			<Card className="w-full bg-mochaBase flex flex-col shadow-md border p-2">
 				<Input
-					placeholder="Write a message, upload a file or paste a youtube link"
+					placeholder="Ask anything"
 					className="resize-none bg-mochaBase"
 					{...register("prompt")}
 				/>
 				<div className="flex w-full gap-4 justify-between items-center">
 					<div className="flex items-center gap-4">
-						<Tooltip>
+						{/* <Tooltip>
 							<TooltipTrigger asChild>
 								<Button variant="ghost" size="icon">
 									<PaperClipIcon className="min-w-5 w-5 h-5" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>Upload files and more</TooltipContent>
-						</Tooltip>
+						</Tooltip> */}
 					</div>
 					{chatIsPending && (
 						<Button

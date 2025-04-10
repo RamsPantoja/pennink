@@ -41,19 +41,17 @@ type WorkspaceProps = {
 
 export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
-	const { id } = router.query;
+	const { workspaceId } = router.query;
 	const utils = api.useUtils();
+	const { document } = useWorkspaceStore();
+
 	const {
 		data: workspaceData,
 		isLoading: workspaceIsLoading,
 		isError: workspaceIsError,
 	} = api.workspace.workspaceById.useQuery({
-		id: id as string,
+		id: workspaceId as string,
 	});
-
-	const { document } = useWorkspaceStore();
-
-	const { loading, onUploadFile } = useUploadObjectToStorage();
 
 	const { mutate: updateWorkspace } = api.note.updateNote.useMutation({
 		onSuccess: async () => {
@@ -63,39 +61,6 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 			toast(error.message);
 		},
 	});
-
-	const { mutate: createFile, isPending: createFileIsPending } =
-		api.workspace.createFile.useMutation({
-			onSuccess: async () => {
-				toast("You can now ask to your document!");
-			},
-			onError: (error) => {
-				toast(error.message);
-			},
-		});
-
-	const onUploadDocument = async (file: File) => {
-		if (typeof id !== "string") {
-			toast("Invalid workspace ID");
-			return;
-		}
-
-		const res = await onUploadFile({
-			file,
-			path: `workspace/documents/${session.user.id}`,
-		});
-
-		if (!res) {
-			return;
-		}
-
-		createFile({
-			type: file.type,
-			filename: file.name,
-			key: res.key,
-			workspaceId: id,
-		});
-	};
 
 	const getNoteContent = async (data: OutputData) => {
 		const { version, time, blocks } = data;
@@ -132,7 +97,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					<ResizablePanel defaultSize={50}>
 						{document && <DynamicPDFViewer src={document.src} />}
 						{!document && (
-							<div className="w-full h-full flex">
+							<div className="w-full h-full flex p-4">
 								<Chat id={workspaceData.chatId} isNew={false} />
 							</div>
 						)}
@@ -142,7 +107,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						{document && (
 							<Card
 								className="w-full h-full flex p-0 rounded-none"
-								key={id as string}
+								key={workspaceId as string}
 							>
 								<Tabs
 									defaultValue="notes"
@@ -171,7 +136,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 										value="chat"
 										className="w-full h-full overflow-hidden"
 									>
-										<div className="w-full h-full flex">
+										<div className="w-full h-full flex p-4">
 											<Chat id={workspaceData.chatId} isNew={false} />
 										</div>
 									</TabsContent>

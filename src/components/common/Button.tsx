@@ -60,10 +60,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 		return (
 			<Comp
+				{...props}
 				className={cn(buttonVariants({ variant, size, className }))}
 				ref={ref}
 				disabled={isPending}
-				{...props}
 			>
 				{isPending && (
 					<svg
@@ -88,7 +88,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					</svg>
 				)}
 				{!isPending && startIcon}
-				{isPending ? "Wait..." : children}
+				{isPending && size !== "icon" && "Wait..."}
+				{!isPending && children}
 				{!isPending && endIcon}
 			</Comp>
 		);
