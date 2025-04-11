@@ -4,10 +4,7 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
 	darkMode: ["class"],
-	content: [
-		"./src/**/*.tsx",
-		"./node_modules/@nextui-org/theme/dist/components/(slider|snippet).js",
-	],
+	content: ["./src/**/*.tsx"],
 	theme: {
 		fontFamily: {
 			sans: [...fontFamily.sans],
@@ -63,5 +60,5 @@ export default {
 			},
 		},
 	},
-	plugins: [require("tailwindcss-animate"), nextui()],
+	plugins: [require("tailwindcss-animate")],
 } satisfies Config;

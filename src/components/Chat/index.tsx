@@ -59,7 +59,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
-			<Card className="w-full bg-mochaBase flex flex-col shadow-md border p-2">
+			<Card className="w-full bg-mochaBase flex flex-col shadow-md border p-2 border-mochaMauve">
 				<Input
 					placeholder="Ask anything"
 					className="resize-none bg-mochaBase"
