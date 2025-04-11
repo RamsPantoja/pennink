@@ -1,23 +1,73 @@
-import type React from "react";
-
 import { useEffect, useRef, useState } from "react";
-import { Bold, Italic, Copy, Link, Share2, Trash } from "lucide-react";
+import { Separator } from "../ui/separator";
+import { ClipboardIcon } from "@heroicons/react/24/outline";
 
-interface SelectionToolbarProps {
-	selection: {
-		text: string;
-		range: Range | null;
-	};
-	onClose: () => void;
-}
+type SelectionToolbarProps = {
+	children: React.ReactNode;
+	tools: React.ReactNode[];
+};
 
-export function SelectionToolbar({
-	selection,
-	onClose,
-}: SelectionToolbarProps) {
+export function SelectionToolbar({ children, tools }: SelectionToolbarProps) {
 	const toolbarRef = useRef<HTMLDivElement>(null);
 	const [position, setPosition] = useState({ top: 0, left: 0 });
 	const [visible, setVisible] = useState(false);
+	const [selection, setSelection] = useState<{
+		text: string;
+		range: Range | null;
+	}>({
+		text: "",
+		range: null,
+	});
+	const contentRef = useRef<HTMLDivElement>(null);
+
+	const onClose = () => {
+		setSelection({ text: "", range: null });
+	};
+
+	useEffect(() => {
+		const handleMouseUp = () => {
+			const selection = window.getSelection();
+
+			if (!selection || selection.isCollapsed || !contentRef.current) {
+				setSelection({ text: "", range: null });
+				return;
+			}
+
+			// Check if selection is within our content area
+			let node = selection.anchorNode;
+			let isWithinContent = false;
+
+			while (node) {
+				if (node === contentRef.current) {
+					isWithinContent = true;
+					break;
+				}
+				node = node.parentNode;
+			}
+
+			if (!isWithinContent) {
+				setSelection({ text: "", range: null });
+				return;
+			}
+
+			const text = selection.toString().trim();
+			if (text) {
+				setSelection({
+					text,
+					range: selection.getRangeAt(0),
+				});
+			} else {
+				setSelection({ text: "", range: null });
+			}
+		};
+
+		// Only listen for mouseup events, not selectionchange
+		document.addEventListener("mouseup", handleMouseUp);
+
+		return () => {
+			document.removeEventListener("mouseup", handleMouseUp);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (selection.range && toolbarRef.current) {
@@ -96,61 +146,35 @@ export function SelectionToolbar({
 	};
 
 	return (
-		<div
-			ref={toolbarRef}
-			className={`fixed z-50 flex items-center rounded-lg shadow-lg transition-all duration-200 ${
-				visible
-					? "opacity-100 transform translate-y-0"
-					: "opacity-0 transform -translate-y-2"
-			}`}
-			style={{
-				top: `${position.top}px`,
-				left: `${position.left}px`,
-			}}
-		>
-			{/* Main toolbar */}
-			<div className="bg-gray-900 rounded-lg flex items-center p-1.5 gap-1">
-				<ToolbarButton
-					icon={<Bold size={16} />}
-					label="Bold"
-					onClick={() => handleFormat("bold")}
-				/>
-
-				<ToolbarButton
-					icon={<Italic size={16} />}
-					label="Italic"
-					onClick={() => handleFormat("italic")}
-				/>
-
-				<div className="w-px h-5 bg-gray-700 mx-1" />
-
-				<ToolbarButton
-					icon={<Copy size={16} />}
-					label="Copy"
-					onClick={handleCopy}
-				/>
-
-				<ToolbarButton
-					icon={<Link size={16} />}
-					label="Link"
-					onClick={() => {}}
-				/>
-
-				<ToolbarButton
-					icon={<Share2 size={16} />}
-					label="Share"
-					onClick={() => {}}
-				/>
-
-				<div className="w-px h-5 bg-gray-700 mx-1" />
-
-				<ToolbarButton
-					icon={<Trash size={16} />}
-					label="Delete"
-					onClick={() => {}}
-					className="text-red-400 hover:text-red-300 hover:bg-gray-800"
-				/>
-			</div>
+		<div className="w-full h-full flex" ref={contentRef}>
+			{selection.range && (
+				<div
+					ref={toolbarRef}
+					className={`fixed z-50 flex rounded-lg shadow-lg transition-all duration-200 ${
+						visible
+							? "opacity-100 transform translate-y-0"
+							: "opacity-0 transform -translate-y-2"
+					}`}
+					style={{
+						top: `${position.top}px`,
+						left: `${position.left}px`,
+					}}
+				>
+					{/* Main toolbar */}
+					<div className="bg-mochaTeal border border-mochaMauve rounded-lg flex items-center p-1.5 gap-1 w-fit h-full">
+						{tools.map((tool) => {
+							return tool;
+						})}
+						<Separator className="bg-mochaMauve" orientation="vertical" />
+						<ToolbarButton
+							icon={<ClipboardIcon className="min-w-5 h-5" />}
+							label="Copy"
+							onClick={handleCopy}
+						/>
+					</div>
+				</div>
+			)}
+			{children}
 		</div>
 	);
 }
@@ -172,7 +196,7 @@ function ToolbarButton({
 		<button
 			type="button"
 			onClick={onClick}
-			className={`flex items-center justify-center h-8 w-8 rounded-md text-gray-200 hover:bg-gray-800 hover:text-white transition-colors ${className}`}
+			className={`flex items-center justify-center h-8 w-8 rounded-md text-mochaMauve hover:bg-mochaMauve hover:text-mochaBase transition-colors ${className}`}
 			title={label}
 		>
 			{icon}

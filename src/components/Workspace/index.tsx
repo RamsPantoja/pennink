@@ -20,6 +20,8 @@ import {
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { useWorkspaceStore } from "./useWorkspaceStore";
+import { SelectionToolbar } from "../common/SelectionToolbar";
+import { Button } from "../common/Button";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -76,7 +78,10 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	};
 
 	return (
-		<Card className="w-full h-full flex flex-col items-center p-0 rounded-none">
+		<Card
+			className="w-full h-full flex flex-col items-center p-0 rounded-none"
+			key={workspaceId as string}
+		>
 			{workspaceIsLoading && <SkeletonWorkspace />}
 			{workspaceIsError && (
 				<FeedbackMessage
@@ -84,13 +89,23 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					message="Algo salió mal, inténtalo de nuevo más tarde."
 				/>
 			)}
-			{workspaceData && (
+			{!workspaceIsLoading && !workspaceIsError && workspaceData && (
 				<ResizablePanelGroup
 					direction="horizontal"
 					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
-						{document && <DynamicPDFViewer src={document.src} />}
+						{document && (
+							<SelectionToolbar
+								tools={[
+									<Button key="summarize">Summarize</Button>,
+									<Button key="chat">Chat</Button>,
+									<Button key="explain">Explain</Button>,
+								]}
+							>
+								<DynamicPDFViewer src={document.src} />
+							</SelectionToolbar>
+						)}
 						{!document && (
 							<div className="w-full h-full flex p-4">
 								<Chat id={workspaceData.chatId} isNew={false} />
@@ -100,10 +115,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
 						{document && (
-							<Card
-								className="w-full h-full flex p-0 rounded-none"
-								key={workspaceId as string}
-							>
+							<Card className="w-full h-full flex p-0 rounded-none">
 								<Tabs
 									defaultValue="notes"
 									className="w-full flex flex-col h-full"
