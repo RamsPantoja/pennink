@@ -230,7 +230,9 @@ export const markdownToHtml = (markdown: string) => {
 	return htmlString;
 };
 
-export const messageRoleVercelSDK: Record<MessageRole, string> = {
+type Role = "assistant" | "user" | "system";
+
+export const messageRoleVercelSDK: Record<MessageRole, Role> = {
 	AGENT: "assistant",
 	USER: "user",
 	SYSTEM: "system",

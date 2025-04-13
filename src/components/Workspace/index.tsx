@@ -98,9 +98,33 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						{document && (
 							<SelectionToolbar
 								tools={[
-									<Button key="summarize">Summarize</Button>,
-									<Button key="chat">Chat</Button>,
-									<Button key="explain">Explain</Button>,
+									<Button
+										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+										key="summarize"
+										onClick={() => {
+											console.log("a");
+										}}
+									>
+										Summarize
+									</Button>,
+									<Button
+										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+										key="chat"
+										onClick={() => {
+											console.log("b");
+										}}
+									>
+										Chat
+									</Button>,
+									<Button
+										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+										key="explain"
+										onClick={() => {
+											console.log("c");
+										}}
+									>
+										Explain
+									</Button>,
 								]}
 							>
 								<DynamicPDFViewer src={document.src} />

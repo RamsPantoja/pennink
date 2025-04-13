@@ -14,7 +14,7 @@ const WorkspacePage = ({
 				<Head>
 					<title>AI & Learning - AI tutor for learning and teaching!</title>
 					<meta name="description" content="Find a partner to do anything!" />
-					<link rel="icon" href="/favicon.ico" />
+					<link rel="icon" href="/icon.ico" />
 				</Head>
 				<Workspace session={session} />
 			</>

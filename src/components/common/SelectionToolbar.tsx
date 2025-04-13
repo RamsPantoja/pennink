@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Separator } from "../ui/separator";
 import { ClipboardIcon } from "@heroicons/react/24/outline";
+import { Button } from "./Button";
 
 type SelectionToolbarProps = {
 	children: React.ReactNode;
@@ -51,6 +52,7 @@ export function SelectionToolbar({ children, tools }: SelectionToolbarProps) {
 			}
 
 			const text = selection.toString().trim();
+
 			if (text) {
 				setSelection({
 					text,
@@ -115,7 +117,7 @@ export function SelectionToolbar({ children, tools }: SelectionToolbarProps) {
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, [onClose]);
+	}, []);
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
@@ -129,18 +131,10 @@ export function SelectionToolbar({ children, tools }: SelectionToolbarProps) {
 		return () => {
 			document.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [onClose]);
+	}, []);
 
 	const handleCopy = () => {
 		navigator.clipboard.writeText(selection.text);
-		setVisible(false);
-		setTimeout(onClose, 200);
-	};
-
-	const handleFormat = (format: string) => {
-		if (!selection.range) return;
-
-		document.execCommand(format);
 		setVisible(false);
 		setTimeout(onClose, 200);
 	};
@@ -165,42 +159,24 @@ export function SelectionToolbar({ children, tools }: SelectionToolbarProps) {
 						{tools.map((tool) => {
 							return tool;
 						})}
-						<Separator className="bg-mochaMauve" orientation="vertical" />
-						<ToolbarButton
-							icon={<ClipboardIcon className="min-w-5 h-5" />}
-							label="Copy"
-							onClick={handleCopy}
+						<Separator
+							className="bg-mochaMauve min-h-8"
+							orientation="vertical"
 						/>
+						<Button
+							type="button"
+							onClick={handleCopy}
+							size="icon"
+							variant="ghost"
+							className="hover:bg-mochaMauve hover:text-mochaBase"
+							title={"Copy"}
+						>
+							<ClipboardIcon className="min-w-5 h-5" />
+						</Button>
 					</div>
 				</div>
 			)}
 			{children}
 		</div>
-	);
-}
-
-interface ToolbarButtonProps {
-	icon: React.ReactNode;
-	label: string;
-	onClick: () => void;
-	className?: string;
-}
-
-function ToolbarButton({
-	icon,
-	label,
-	onClick,
-	className = "",
-}: ToolbarButtonProps) {
-	return (
-		<button
-			type="button"
-			onClick={onClick}
-			className={`flex items-center justify-center h-8 w-8 rounded-md text-mochaMauve hover:bg-mochaMauve hover:text-mochaBase transition-colors ${className}`}
-			title={label}
-		>
-			{icon}
-			<span className="sr-only">{label}</span>
-		</button>
 	);
 }

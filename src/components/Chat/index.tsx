@@ -10,6 +10,8 @@ import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { cn } from "~/lib/utils";
 import { ScrollToBottomButton } from "../common/ScrollToBottomButton";
+import { AutoResizeTextarea } from "../common/AutoSizeTextarea";
+import { Controller } from "react-hook-form";
 
 type ChatProps = {
 	id: string;
@@ -29,7 +31,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		chatContainer,
 	} = useChatLogic({ chatId: id, isNew });
 
-	const { register, handleSubmit, watch } = useChatForm;
+	const { handleSubmit, watch, control } = useChatForm;
 
 	return (
 		<Card
@@ -59,11 +61,17 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
-			<Card className="w-full bg-mochaBase flex flex-col shadow-md border p-2 border-mochaMauve">
-				<Input
-					placeholder="Ask anything"
-					className="resize-none bg-mochaBase"
-					{...register("prompt")}
+			<Card className="w-full bg-mochaBase flex flex-col border border-mochaText p-2 focus:border-mochaMauve">
+				<Controller
+					control={control}
+					name="prompt"
+					render={({ field }) => (
+						<AutoResizeTextarea
+							placeholder="Ask anything"
+							className="border-none ring-0 text-mochaMauve"
+							onChange={field.onChange}
+						/>
+					)}
 				/>
 				<div className="flex w-full gap-4 justify-between items-center">
 					<div className="flex items-center gap-4">
@@ -77,11 +85,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						</Tooltip> */}
 					</div>
 					{chatIsPending && (
-						<Button
-							onClick={handleSubmit(onSentPrompt)}
-							size="icon"
-							disabled={false}
-						>
+						<Button size="icon" disabled={false}>
 							<StopIcon className="min-w-5 w-5 h-5" />
 						</Button>
 					)}
