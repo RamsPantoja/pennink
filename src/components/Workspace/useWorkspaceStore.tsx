@@ -10,16 +10,23 @@ export type PenninkDocument = {
 	src: string;
 };
 
+type ReaderEventType =
+	| "reader-on-summarize"
+	| "reader-on-explain"
+	| "reader-on-chat";
+
+type ReaderEvent = {
+	type: ReaderEventType;
+	data: string;
+};
+
 type WorkspaceStore = {
 	editorJS: EditorJS | null;
 	setEditorJS: (editorJS: EditorJS | null) => void;
 	document: PenninkDocument | null;
 	setDocument: (document: PenninkDocument | null) => void;
-	messages: Message[];
-	setMessages: (messages: Message[]) => void;
-
-	chatIsPending: boolean;
-	setChatIsPending: (isPending: boolean) => void;
+	readerEvent: ReaderEvent | null;
+	setReaderEvent: (event: ReaderEvent | null) => void;
 };
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
@@ -27,8 +34,6 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	setEditorJS: (editorJS) => set(() => ({ editorJS })),
 	document: null,
 	setDocument: (document) => set(() => ({ document })),
-	messages: [],
-	setMessages: (messages) => set(() => ({ messages })),
-	chatIsPending: false,
-	setChatIsPending: (isPending) => set(() => ({ chatIsPending: isPending })),
+	readerEvent: null,
+	setReaderEvent: (event) => set(() => ({ readerEvent: event })),
 }));

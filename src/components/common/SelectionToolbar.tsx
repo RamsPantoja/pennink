@@ -5,20 +5,24 @@ import { Button } from "./Button";
 
 type SelectionToolbarProps = {
 	children: React.ReactNode;
+	selection: {
+		text: string;
+		range: Range | null;
+	};
 	tools: React.ReactNode[];
+	setSelection: (selection: { text: string; range: Range | null }) => void;
 };
 
-export function SelectionToolbar({ children, tools }: SelectionToolbarProps) {
+export function SelectionToolbar({
+	children,
+	tools,
+	selection,
+	setSelection,
+}: SelectionToolbarProps) {
 	const toolbarRef = useRef<HTMLDivElement>(null);
 	const [position, setPosition] = useState({ top: 0, left: 0 });
 	const [visible, setVisible] = useState(false);
-	const [selection, setSelection] = useState<{
-		text: string;
-		range: Range | null;
-	}>({
-		text: "",
-		range: null,
-	});
+
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	const onClose = () => {

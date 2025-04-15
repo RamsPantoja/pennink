@@ -24,11 +24,12 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		useChatForm,
 		currentAssistantMessage,
 		messages,
-		chatIsPending,
 		createWorkspaceIsPending,
 		messagesIsLoading,
 		messagesIsError,
 		chatContainer,
+		onSentPromptMutationIsPending,
+		isStreamingLLMResponse,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
@@ -84,17 +85,20 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							<TooltipContent>Upload files and more</TooltipContent>
 						</Tooltip> */}
 					</div>
-					{chatIsPending && (
+					{(onSentPromptMutationIsPending || isStreamingLLMResponse) && (
 						<Button size="icon" disabled={false}>
 							<StopIcon className="min-w-5 w-5 h-5" />
 						</Button>
 					)}
-					{!chatIsPending && (
+					{!(onSentPromptMutationIsPending || isStreamingLLMResponse) && (
 						<Button
 							onClick={handleSubmit(onSentPrompt)}
 							size="icon"
 							disabled={
-								chatIsPending || createWorkspaceIsPending || !watch("prompt")
+								onSentPromptMutationIsPending ||
+								isStreamingLLMResponse ||
+								createWorkspaceIsPending ||
+								!watch("prompt")
 							}
 						>
 							<ArrowUpIcon className="min-w-5 w-5 h-5" />

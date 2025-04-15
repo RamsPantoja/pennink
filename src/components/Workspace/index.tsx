@@ -22,6 +22,7 @@ import type { Session } from "next-auth";
 import { useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
+import { useState } from "react";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -40,7 +41,14 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { workspaceId } = router.query;
 	const utils = api.useUtils();
-	const { document } = useWorkspaceStore();
+	const { document, setReaderEvent } = useWorkspaceStore();
+	const [selection, setSelection] = useState<{
+		text: string;
+		range: Range | null;
+	}>({
+		text: "",
+		range: null,
+	});
 
 	const {
 		data: workspaceData,
@@ -77,6 +85,18 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		});
 	};
 
+	const onSummarizeFromReader = () => {
+		setReaderEvent({ type: "reader-on-summarize", data: selection.text });
+	};
+
+	// const onChatFromReader = () => {
+	// 	setReaderEvent({ type: "reader-on-chat", data: selection.text });
+	// };
+
+	const onExplainFromReader = () => {
+		setReaderEvent({ type: "reader-on-explain", data: selection.text });
+	};
+
 	return (
 		<Card
 			className="w-full h-full flex flex-col items-center p-0 rounded-none"
@@ -97,31 +117,27 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					<ResizablePanel defaultSize={50}>
 						{document && (
 							<SelectionToolbar
+								selection={selection}
+								setSelection={setSelection}
 								tools={[
 									<Button
 										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
 										key="summarize"
-										onClick={() => {
-											console.log("a");
-										}}
+										onClick={onSummarizeFromReader}
 									>
 										Summarize
 									</Button>,
-									<Button
-										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
-										key="chat"
-										onClick={() => {
-											console.log("b");
-										}}
-									>
-										Chat
-									</Button>,
+									// <Button
+									// 	className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+									// 	key="chat"
+									// 	onClick={onChatFromReader}
+									// >
+									// 	Chat
+									// </Button>,
 									<Button
 										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
 										key="explain"
-										onClick={() => {
-											console.log("c");
-										}}
+										onClick={onExplainFromReader}
 									>
 										Explain
 									</Button>,

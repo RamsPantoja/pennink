@@ -29,9 +29,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const { data: session } = useSession();
 	const [currentAssistantMessage, setCurrentAssistantMessage] =
 		useState<Message | null>(null);
+	const [messages, setMessages] = useState<Message[]>([]);
 	const chatContainer = useRef<HTMLDivElement | null>(null);
-	const { setMessages, setChatIsPending, chatIsPending, messages } =
-		useWorkspaceStore();
+	const { readerEvent, setReaderEvent } = useWorkspaceStore();
+	const [isStreamingLLMResponse, setIsStreamingLLMResponse] =
+		useState<boolean>(false);
 
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 
@@ -86,7 +88,9 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						if (done) {
 							reader.releaseLock();
 							setCurrentAssistantMessage(null);
-							setMessages([...messages, newAgentMessage]);
+							setMessages((prev) => {
+								return [...prev, newAgentMessage];
+							});
 
 							if (!isNew && router.pathname !== "/") {
 								createMessage({
@@ -108,7 +112,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 								});
 							}
 
-							setChatIsPending(false);
 							break;
 						}
 					}
@@ -169,7 +172,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		});
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
-		setChatIsPending(true);
 		useChatForm.setValue("prompt", "");
 
 		if (!session) {
@@ -195,7 +197,9 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 
 		setLastUserMessage(message);
-		setMessages([...messages, message]);
+		setMessages((prev) => {
+			return [...prev, message];
+		});
 
 		await onSentPromptMutation({
 			prompt: data.prompt,
@@ -226,17 +230,103 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 	}, [chatContainer.current]);
 
+	//ReaderEvent listener
+	useEffect(() => {
+		if (readerEvent) {
+			//Warning! It's very important set to null the event before executing any process or method.
+			//This is for avoid unnecesary rerenders or duplicated executions
+			setReaderEvent(null);
+
+			if (!session) {
+				toast("User is not authenticated");
+				return;
+			}
+
+			const readerOnSummarize = async () => {
+				const prompt = `Summarize: ${readerEvent.data}`;
+
+				const message: Message = {
+					id: typeid().toUUID(),
+					chatId,
+					userId: session.user.id,
+					createdAt: new Date(),
+					updatedAt: new Date(),
+					content: prompt,
+					role: "USER",
+				};
+
+				createMessage({
+					chatId,
+					message,
+				});
+
+				setMessages((prev) => {
+					return [...prev, message];
+				});
+
+				await onSentPromptMutation({
+					prompt: prompt,
+					context: {
+						messages: [],
+					},
+				});
+			};
+
+			const readerOnExplain = async () => {
+				const prompt = `Explain: ${readerEvent.data}`;
+
+				const message: Message = {
+					id: typeid().toUUID(),
+					chatId,
+					userId: session.user.id,
+					createdAt: new Date(),
+					updatedAt: new Date(),
+					content: prompt,
+					role: "USER",
+				};
+
+				createMessage({
+					chatId,
+					message,
+				});
+
+				setMessages((prev) => {
+					return [...prev, message];
+				});
+
+				await onSentPromptMutation({
+					prompt: prompt,
+					context: {
+						messages: [],
+					},
+				});
+			};
+
+			if (readerEvent.type === "reader-on-summarize") {
+				readerOnSummarize();
+			}
+
+			if (readerEvent.type === "reader-on-explain") {
+				readerOnExplain();
+			}
+
+			if (readerEvent.type === "reader-on-chat") {
+				console.log(readerEvent);
+			}
+		}
+	}, [readerEvent, session, chatId]);
+
 	return {
 		onSentPrompt,
 		useChatForm,
 		currentAssistantMessage,
 		messages,
-		chatIsPending,
 		createWorkspaceIsPending,
 		router,
 		messagesIsLoading,
 		messagesIsError,
 		chatContainer,
 		onSentPromptMutationIsPending,
+		isStreamingLLMResponse,
 	};
 };
