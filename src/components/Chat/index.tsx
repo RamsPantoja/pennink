@@ -1,5 +1,6 @@
 import {
 	ArrowTurnDownRightIcon,
+	DocumentTextIcon,
 	StopIcon,
 	XCircleIcon,
 } from "@heroicons/react/24/outline";
@@ -15,6 +16,7 @@ import { cn } from "~/lib/utils";
 import { ScrollToBottomButton } from "../common/ScrollToBottomButton";
 import { AutoResizeTextarea } from "../common/AutoSizeTextarea";
 import { Controller } from "react-hook-form";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 
 type ChatProps = {
 	id: string;
@@ -42,7 +44,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	return (
 		<Card
 			className={cn([
-				"flex flex-col gap-4 overflow-hidden relative w-full p-0",
+				"flex flex-col gap-4 overflow-hidden relative w-full p-0 rounded-none",
 				{
 					"flex-1": messages.length > 0,
 				},
@@ -86,7 +88,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						</Tooltip>
 					</Card>
 				)}
-
 				<Controller
 					control={control}
 					name="prompt"
@@ -95,19 +96,28 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							placeholder="Ask anything"
 							className="border-none ring-0 text-mochaMauve"
 							onChange={field.onChange}
+							value={field.value}
 						/>
 					)}
 				/>
 				<div className="flex w-full gap-4 justify-between items-center">
 					<div className="flex items-center gap-4">
-						{/* <Tooltip>
-							<TooltipTrigger asChild>
-								<Button variant="ghost" size="icon">
-									<PaperClipIcon className="min-w-5 w-5 h-5" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent>Upload files and more</TooltipContent>
-						</Tooltip> */}
+						<ToggleGroup type="multiple">
+							<Tooltip>
+								<TooltipTrigger>
+									<ToggleGroupItem
+										value="bold"
+										variant="outline"
+										aria-label="Toggle bold"
+										className="rounded-full"
+									>
+										<DocumentTextIcon className="min-w-5 w-5 h-5 mr-2" />
+										Ask mode
+									</ToggleGroupItem>
+								</TooltipTrigger>
+								<TooltipContent>Ask from content</TooltipContent>
+							</Tooltip>
+						</ToggleGroup>
 					</div>
 					{(onSentPromptMutationIsPending || isStreamingLLMResponse) && (
 						<Button size="icon" disabled={false}>
