@@ -34,6 +34,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const { readerEvent, setReaderEvent } = useWorkspaceStore();
 	const [isStreamingLLMResponse, setIsStreamingLLMResponse] =
 		useState<boolean>(false);
+	const [quote, setQuote] = useState<string | null>(null);
 
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 
@@ -201,6 +202,23 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			return [...prev, message];
 		});
 
+		if (quote) {
+			setQuote(null);
+			await onSentPromptMutation({
+				prompt: data.prompt,
+				context: {
+					messages: [
+						{
+							content: `Use the following context quote to enhance your response: "${quote}"`,
+							role: "system",
+						},
+					],
+				},
+			});
+
+			return;
+		}
+
 		await onSentPromptMutation({
 			prompt: data.prompt,
 			context: {
@@ -311,10 +329,14 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 
 			if (readerEvent.type === "reader-on-chat") {
-				console.log(readerEvent);
+				setQuote(readerEvent.data);
 			}
 		}
 	}, [readerEvent, session, chatId]);
+
+	const onRemoveQuote = () => {
+		setQuote(null);
+	};
 
 	return {
 		onSentPrompt,
@@ -328,5 +350,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		chatContainer,
 		onSentPromptMutationIsPending,
 		isStreamingLLMResponse,
+		quote,
+		onRemoveQuote,
 	};
 };

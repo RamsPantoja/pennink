@@ -1,10 +1,13 @@
-import { PaperClipIcon, StopIcon } from "@heroicons/react/24/outline";
+import {
+	ArrowTurnDownRightIcon,
+	StopIcon,
+	XCircleIcon,
+} from "@heroicons/react/24/outline";
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { ArrowUpIcon } from "lucide-react";
 import { useChatLogic } from "./useChatLogic";
-import { Input } from "../ui/input";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
@@ -30,6 +33,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		chatContainer,
 		onSentPromptMutationIsPending,
 		isStreamingLLMResponse,
+		quote,
+		onRemoveQuote,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
@@ -63,6 +68,25 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
 			<Card className="w-full bg-mochaBase flex flex-col border border-mochaText p-2 focus:border-mochaMauve">
+				{quote && (
+					<Card className="flex items-start gap-2 bg-mochaMantle border">
+						<ArrowTurnDownRightIcon className="min-w-5 h-5 text-mochaText" />
+						<p className="text-mochaText text-xs flex-1">{quote}</p>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<button
+									type="button"
+									onClick={onRemoveQuote}
+									className="w-fit h-fit"
+								>
+									<XCircleIcon className="min-w-5 h-5 hover:text-mochaMauve" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>Remove Quote</TooltipContent>
+						</Tooltip>
+					</Card>
+				)}
+
 				<Controller
 					control={control}
 					name="prompt"

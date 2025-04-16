@@ -87,14 +87,17 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 
 	const onSummarizeFromReader = () => {
 		setReaderEvent({ type: "reader-on-summarize", data: selection.text });
+		setSelection({ text: "", range: null });
 	};
 
-	// const onChatFromReader = () => {
-	// 	setReaderEvent({ type: "reader-on-chat", data: selection.text });
-	// };
+	const onChatFromReader = () => {
+		setReaderEvent({ type: "reader-on-chat", data: selection.text });
+		setSelection({ text: "", range: null });
+	};
 
 	const onExplainFromReader = () => {
 		setReaderEvent({ type: "reader-on-explain", data: selection.text });
+		setSelection({ text: "", range: null });
 	};
 
 	return (
@@ -127,13 +130,13 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									>
 										Summarize
 									</Button>,
-									// <Button
-									// 	className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
-									// 	key="chat"
-									// 	onClick={onChatFromReader}
-									// >
-									// 	Chat
-									// </Button>,
+									<Button
+										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+										key="chat"
+										onClick={onChatFromReader}
+									>
+										Chat
+									</Button>,
 									<Button
 										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
 										key="explain"
