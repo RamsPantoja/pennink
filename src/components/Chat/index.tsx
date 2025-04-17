@@ -8,7 +8,7 @@ import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { ArrowUpIcon } from "lucide-react";
-import { useChatLogic } from "./useChatLogic";
+import { type ChatModes, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
@@ -37,6 +37,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		isStreamingLLMResponse,
 		quote,
 		onRemoveQuote,
+		onToggleChatModes,
+		chatModes,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
@@ -102,18 +104,27 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				/>
 				<div className="flex w-full gap-4 justify-between items-center">
 					<div className="flex items-center gap-4">
-						<ToggleGroup type="multiple">
+						<ToggleGroup
+							type="multiple"
+							onValueChange={(value: ChatModes[]) => {
+								onToggleChatModes(value);
+							}}
+							value={chatModes}
+						>
 							<Tooltip>
-								<TooltipTrigger>
-									<ToggleGroupItem
-										value="bold"
-										variant="outline"
-										aria-label="Toggle bold"
-										className="rounded-full"
-									>
-										<DocumentTextIcon className="min-w-5 w-5 h-5 mr-2" />
-										Ask mode
-									</ToggleGroupItem>
+								<TooltipTrigger asChild>
+									<span>
+										<ToggleGroupItem
+											value="ask-mode"
+											variant="outline"
+											aria-label="Toggle ask mode"
+											className="rounded-full"
+											type="button"
+										>
+											<DocumentTextIcon className="min-w-5 w-5 h-5 mr-2" />
+											Ask mode
+										</ToggleGroupItem>
+									</span>
 								</TooltipTrigger>
 								<TooltipContent>Ask from content</TooltipContent>
 							</Tooltip>

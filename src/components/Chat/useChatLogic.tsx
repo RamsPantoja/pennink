@@ -24,6 +24,8 @@ type UseChatLogicProps = {
 	isNew: boolean;
 };
 
+export type ChatModes = "ask-mode" | "web-search-mode" | "reasoning-mode";
+
 export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const router = useRouter();
 	const { data: session } = useSession();
@@ -35,8 +37,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [isStreamingLLMResponse, setIsStreamingLLMResponse] =
 		useState<boolean>(false);
 	const [quote, setQuote] = useState<string | null>(null);
-
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
+	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
+
+	console.log(chatModes);
 
 	const {
 		mutateAsync: onSentPromptMutation,
@@ -338,6 +342,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		setQuote(null);
 	};
 
+	const onToggleChatModes = (modes: ChatModes[]) => {
+		setChatModes(modes);
+	};
+
 	return {
 		onSentPrompt,
 		useChatForm,
@@ -352,5 +360,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		isStreamingLLMResponse,
 		quote,
 		onRemoveQuote,
+		onToggleChatModes,
+		chatModes,
 	};
 };

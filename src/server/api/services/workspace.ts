@@ -250,4 +250,8 @@ export class WorkspaceService {
 
 		return files;
 	}
+
+	public async documentVectorSearch() {
+		console.log("Yeah!");
+	}
 }

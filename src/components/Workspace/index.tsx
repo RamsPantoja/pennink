@@ -119,35 +119,40 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 				>
 					<ResizablePanel defaultSize={50}>
 						{document && (
-							<SelectionToolbar
-								selection={selection}
-								setSelection={setSelection}
-								tools={[
-									<Button
-										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
-										key="summarize"
-										onClick={onSummarizeFromReader}
-									>
-										Summarize
-									</Button>,
-									<Button
-										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
-										key="chat"
-										onClick={onChatFromReader}
-									>
-										Chat
-									</Button>,
-									<Button
-										className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
-										key="explain"
-										onClick={onExplainFromReader}
-									>
-										Explain
-									</Button>,
-								]}
-							>
-								<DynamicPDFViewer src={document.src} />
-							</SelectionToolbar>
+							<div className="flex w-full h-full flex-col">
+								<p className="text-center text-xs pt-4 text-mochaMauve font-bold">
+									Content
+								</p>
+								<SelectionToolbar
+									selection={selection}
+									setSelection={setSelection}
+									tools={[
+										<Button
+											className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+											key="summarize"
+											onClick={onSummarizeFromReader}
+										>
+											Summarize
+										</Button>,
+										<Button
+											className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+											key="chat"
+											onClick={onChatFromReader}
+										>
+											Chat
+										</Button>,
+										<Button
+											className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+											key="explain"
+											onClick={onExplainFromReader}
+										>
+											Explain
+										</Button>,
+									]}
+								>
+									<DynamicPDFViewer src={document.src} />
+								</SelectionToolbar>
+							</div>
 						)}
 						{!document && (
 							<div className="w-full h-full flex p-4">

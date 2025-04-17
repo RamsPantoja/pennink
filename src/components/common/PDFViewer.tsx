@@ -275,7 +275,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 
 	return (
 		<div className="flex w-full h-full flex-col bg-mochaBase">
-			<div className="flex gap-4 p-4 justify-between">
+			<div className="flex gap-4 p-4 justify-around">
 				{/* <div className="flex flex-col gap-2">
 					<div className="flex items-center gap-2 relative">
 						<Input
