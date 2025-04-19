@@ -1,7 +1,7 @@
 // components/ScrollToBottomButton.js
 import React, { useEffect, useState } from "react";
 import { Button } from "./Button";
-import { ArrowDownIcon } from "@heroicons/react/24/outline";
+import { ArrowDownIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type ScrollToBottomButtonProps = {
@@ -48,14 +48,19 @@ export const ScrollToBottomButton = ({
 	return (
 		<>
 			{isVisible && (
-				<div className="absolute bottom-2 w-full flex justify-center ring-0 left-0">
-					<Button
-						className="rounded-full opacity-80 hover:bg-mochaMauve hover:opacity-100"
-						onClick={handleScrollToBottom}
-						endIcon={<ArrowDownIcon className="min-w-5 h-5 animate-bounce" />}
-					>
-						Scroll to bottom
-					</Button>
+				<div className="absolute bottom-2 w-fit flex justify-center m-auto items-center left-0 right-0">
+					<Tooltip>
+						<TooltipTrigger>
+							<Button
+								size="icon"
+								className="rounded-full animate-bounce border border-mochaText"
+								onClick={handleScrollToBottom}
+							>
+								<ChevronDownIcon className="min-w-5 h-5" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>Scroll to bottom</TooltipContent>
+					</Tooltip>
 				</div>
 			)}
 		</>
