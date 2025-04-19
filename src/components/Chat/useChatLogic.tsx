@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
 import type { AgentChatRequestData } from "~/app/api/ai/chat/route";
+import { CoreMessage } from "ai";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -33,7 +34,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		useState<Message | null>(null);
 	const [messages, setMessages] = useState<Message[]>([]);
 	const chatContainer = useRef<HTMLDivElement | null>(null);
-	const { readerEvent, setReaderEvent } = useWorkspaceStore();
+	const { readerEvent, setReaderEvent, document } = useWorkspaceStore();
 	const [isStreamingLLMResponse, setIsStreamingLLMResponse] =
 		useState<boolean>(false);
 	const [quote, setQuote] = useState<string | null>(null);
@@ -41,6 +42,19 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
 
 	console.log(chatModes);
+
+	const {
+		mutateAsync: documentVectorSearchMutation,
+		isPending: documentVectorSearchMutationIsPending,
+	} = api.workspace.documentVectorSearch.useMutation({
+		onSuccess: (data) => {
+			console.log(data);
+		},
+		onError: (error) => {
+			console.error("Mutation failed:", error);
+			toast.error("An error occurred while sending your message.");
+		},
+	});
 
 	const {
 		mutateAsync: onSentPromptMutation,
@@ -194,17 +208,48 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			role: "USER",
 		};
 
-		if (!isNew && router.pathname !== "/") {
-			createMessage({
-				chatId,
-				message,
-			});
-		}
+		// if (!isNew && router.pathname !== "/") {
+		// 	createMessage({
+		// 		chatId,
+		// 		message,
+		// 	});
+		// }
 
 		setLastUserMessage(message);
 		setMessages((prev) => {
 			return [...prev, message];
 		});
+
+		if (chatModes.includes("ask-mode")) {
+			const messages: CoreMessage[] = [];
+
+			if (quote) {
+				setQuote(null);
+				messages.push({
+					content: `Use the following context quote to enhance your response: "${quote}"`,
+					role: "system",
+				});
+			}
+
+			if (!document) {
+				toast("Select a document before asking");
+				return;
+			}
+
+			const documentContext = await documentVectorSearchMutation({
+				query: data.prompt,
+				fileId: document.id,
+			});
+
+			// await onSentPromptMutation({
+			// 	prompt: data.prompt,
+			// 	context: {
+			// 		messages,
+			// 	},
+			// });
+
+			return;
+		}
 
 		if (quote) {
 			setQuote(null);
@@ -362,5 +407,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		onRemoveQuote,
 		onToggleChatModes,
 		chatModes,
+		documentVectorSearchMutationIsPending,
+		document,
 	};
 };

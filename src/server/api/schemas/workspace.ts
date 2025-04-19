@@ -22,3 +22,8 @@ export const createFileInputSchema = z.object({
 	key: z.string().min(1),
 	workspaceId: z.string().uuid(),
 });
+
+export const documentVectorSearchInputSchema = z.object({
+	query: z.string().min(1).trim(),
+	fileId: z.string().uuid(),
+});

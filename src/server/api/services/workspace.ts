@@ -2,6 +2,7 @@ import type { z } from "zod";
 import type {
 	createFileInputSchema,
 	createWorkspaceInputSchema,
+	documentVectorSearchInputSchema,
 	updateWorkspaceNameInputSchema,
 } from "../schemas/workspace";
 import type { TRPCContext } from "../trpc";
@@ -20,7 +21,7 @@ import { env } from "~/env";
 import { mistral } from "@ai-sdk/mistral";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { embedMany } from "ai";
+import { embedMany, embed } from "ai";
 import { embeddingDocuments } from "~/server/db/turso-schema";
 
 type WorkspaceServiceContructor = {
@@ -30,6 +31,9 @@ type WorkspaceServiceContructor = {
 type createWorkspaceInput = z.infer<typeof createWorkspaceInputSchema>;
 type updateWorkspaceNameInput = z.infer<typeof updateWorkspaceNameInputSchema>;
 type CreateFileInput = z.infer<typeof createFileInputSchema>;
+type DocumentVectorSearchInput = z.infer<
+	typeof documentVectorSearchInputSchema
+>;
 
 export class WorkspaceService {
 	ctx: TRPCContext;
@@ -168,7 +172,7 @@ export class WorkspaceService {
 	public async createFile(input: CreateFileInput, userId: string) {
 		const model = mistral.textEmbeddingModel("mistral-embed");
 		const textSplitter = new RecursiveCharacterTextSplitter({
-			chunkSize: 2000,
+			chunkSize: 1600,
 			chunkOverlap: 200,
 		});
 
@@ -216,13 +220,13 @@ export class WorkspaceService {
 
 			//Create a vector index for the embedding column from the embedding_documents table
 			await this.ctx.tursoDb.run(
-				sql`CREATE INDEX IF NOT EXISTS embedding_index ON embedding_document(embedding)`,
+				sql`CREATE INDEX IF NOT EXISTS embedding_index ON embedding_document(libsql_vector_idx(embedding))`,
 			);
 
 			await this.ctx.tursoDb.insert(embeddingDocuments).values(
 				embeddings.map((embedding, index) => {
 					return {
-						embedding,
+						embedding: sql`vector32(${JSON.stringify(embedding)})`,
 						fileId: file.id,
 						name: file.filename,
 						userId,
@@ -251,7 +255,29 @@ export class WorkspaceService {
 		return files;
 	}
 
-	public async documentVectorSearch() {
-		console.log("Yeah!");
+	public async documentVectorSearch(input: DocumentVectorSearchInput) {
+		try {
+			const model = mistral.textEmbeddingModel("mistral-embed");
+
+			const embedding = await embed({
+				model,
+				value: input.query,
+			});
+
+			const topK = await this.ctx.tursoDb
+				.select()
+				.from(
+					sql`vector_top_k('embedding_index', vector32(${JSON.stringify(embedding.embedding)}), 5)`,
+				)
+				.leftJoin(
+					embeddingDocuments,
+					eq(embeddingDocuments.id, sql`vector_top_k.id`),
+				)
+				.where(eq(embeddingDocuments.fileId, input.fileId));
+
+			console.log(topK);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }

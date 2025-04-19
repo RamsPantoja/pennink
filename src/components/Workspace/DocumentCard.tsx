@@ -51,7 +51,7 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 
 	return (
 		<Card
-			className="hover:bg-accent/50 transition-colors cursor-pointer border"
+			className="hover:bg-accent/50 transition-colors cursor-pointer border h-fit w-full"
 			onClick={onSelectDocument}
 		>
 			<div className="flex items-center justify-between">

@@ -29,6 +29,6 @@ export const embeddingDocuments = s.sqliteTable("embedding_document", {
 	fileId: s.text().notNull(),
 	name: s.text().notNull(),
 	content: s.text().notNull(),
-	embedding: float32Array({ dimensions: 4000 }).notNull(),
+	embedding: float32Array({ dimensions: 1024 }).notNull(),
 	userId: s.text().notNull(),
 });

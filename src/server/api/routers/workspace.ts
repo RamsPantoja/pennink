@@ -4,6 +4,7 @@ import {
 	workspaceByIdInputSchema,
 	updateWorkspaceNameInputSchema,
 	createFileInputSchema,
+	documentVectorSearchInputSchema,
 } from "../schemas/workspace";
 
 export const workspaceRouter = createTRPCRouter({
@@ -44,5 +45,12 @@ export const workspaceRouter = createTRPCRouter({
 			return await ctx
 				.services({ ctx })
 				.workspaceService.createFile(input, ctx.session.user.id);
+		}),
+	documentVectorSearch: protectedProcedure
+		.input(documentVectorSearchInputSchema)
+		.mutation(async ({ input, ctx }) => {
+			return await ctx
+				.services({ ctx })
+				.workspaceService.documentVectorSearch(input);
 		}),
 });

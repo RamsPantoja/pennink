@@ -36,6 +36,8 @@ export const DocumentLoader = ({
 		isError: filesByUserError,
 	} = api.workspace.filesByUserId.useQuery();
 
+	console.log(filesByUser);
+
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
 			<DrawerContent className="left-0 md:left-1/2 bg-white right-2 top-2 bottom-2 overflow-hidden fixed border z-50 rounded-xl outline-none mt-0">
@@ -68,7 +70,7 @@ export const DocumentLoader = ({
 						{!filesByUserLoading &&
 							!filesByUserError &&
 							filesByUser &&
-							filesByUser.length > 1 && (
+							filesByUser.length > 0 && (
 								<div className="grid gap-2">
 									{filesByUser.map((doc) => (
 										<DocumentCard

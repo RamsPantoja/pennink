@@ -39,6 +39,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		onRemoveQuote,
 		onToggleChatModes,
 		chatModes,
+		document,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
@@ -111,23 +112,25 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							}}
 							value={chatModes}
 						>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<span>
-										<ToggleGroupItem
-											value="ask-mode"
-											variant="outline"
-											aria-label="Toggle ask mode"
-											className="rounded-full"
-											type="button"
-										>
-											<DocumentTextIcon className="min-w-5 w-5 h-5 mr-2" />
-											Ask mode
-										</ToggleGroupItem>
-									</span>
-								</TooltipTrigger>
-								<TooltipContent>Ask from content</TooltipContent>
-							</Tooltip>
+							{document && (
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<span>
+											<ToggleGroupItem
+												value="ask-mode"
+												variant="outline"
+												aria-label="Toggle ask mode"
+												className="rounded-full"
+												type="button"
+											>
+												<DocumentTextIcon className="min-w-5 w-5 h-5 mr-2" />
+												Ask mode
+											</ToggleGroupItem>
+										</span>
+									</TooltipTrigger>
+									<TooltipContent>Ask from content</TooltipContent>
+								</Tooltip>
+							)}
 						</ToggleGroup>
 					</div>
 					{(onSentPromptMutationIsPending || isStreamingLLMResponse) && (
