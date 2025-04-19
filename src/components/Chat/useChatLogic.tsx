@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
 import type { AgentChatRequestData } from "~/app/api/ai/chat/route";
-import { CoreMessage } from "ai";
+import type { CoreMessage } from "ai";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -41,15 +41,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
 
-	console.log(chatModes);
-
 	const {
 		mutateAsync: documentVectorSearchMutation,
 		isPending: documentVectorSearchMutationIsPending,
 	} = api.workspace.documentVectorSearch.useMutation({
-		onSuccess: (data) => {
-			console.log(data);
-		},
 		onError: (error) => {
 			console.error("Mutation failed:", error);
 			toast.error("An error occurred while sending your message.");

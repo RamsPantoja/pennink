@@ -231,6 +231,9 @@ export const workspaces = createTable("workspace", {
 	})
 		.notNull()
 		.defaultNow(),
+	deletedAt: timestamp({
+		mode: "date",
+	}),
 });
 
 export const workspacesRelations = relations(workspaces, ({ one }) => ({

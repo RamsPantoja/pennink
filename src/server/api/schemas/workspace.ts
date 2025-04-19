@@ -27,3 +27,7 @@ export const documentVectorSearchInputSchema = z.object({
 	query: z.string().min(1).trim(),
 	fileId: z.string().uuid(),
 });
+
+export const deleteWorkspaceInputSchema = z.object({
+	id: z.string().uuid(),
+});

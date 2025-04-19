@@ -5,6 +5,7 @@ import {
 	updateWorkspaceNameInputSchema,
 	createFileInputSchema,
 	documentVectorSearchInputSchema,
+	deleteWorkspaceInputSchema,
 } from "../schemas/workspace";
 
 export const workspaceRouter = createTRPCRouter({
@@ -52,5 +53,12 @@ export const workspaceRouter = createTRPCRouter({
 			return await ctx
 				.services({ ctx })
 				.workspaceService.documentVectorSearch(input);
+		}),
+	deleteWorkspace: protectedProcedure
+		.input(deleteWorkspaceInputSchema)
+		.mutation(async ({ input, ctx }) => {
+			return await ctx
+				.services({ ctx })
+				.workspaceService.delete(input.id, ctx.session.user.id);
 		}),
 });

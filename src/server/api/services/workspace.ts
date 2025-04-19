@@ -16,7 +16,7 @@ import {
 	filesToWorkspaces,
 } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { env } from "~/env";
 import { mistral } from "@ai-sdk/mistral";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
@@ -110,7 +110,7 @@ export class WorkspaceService {
 	public async getWorkspaces(userId: string) {
 		const workspaces = await this.ctx.db.query.workspaces.findMany({
 			where: (workspaces, { eq, and }) => {
-				return and(eq(workspaces.userId, userId));
+				return and(eq(workspaces.userId, userId), isNull(workspaces.deletedAt));
 			},
 		});
 
@@ -281,6 +281,31 @@ export class WorkspaceService {
 			throw new TRPCError({
 				code: "NOT_FOUND",
 				message: "Failed to search documents",
+			});
+		}
+	}
+
+	public async delete(id: string, userId: string) {
+		try {
+			const [workspace] = await this.ctx.db
+				.update(workspaces)
+				.set({ deletedAt: new Date() })
+				.where(and(eq(workspaces.id, id), eq(workspaces.userId, userId)))
+				.returning();
+
+			if (!workspace) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "Workspace not found",
+				});
+			}
+
+			return workspace;
+		} catch (error) {
+			console.log(error);
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Failed to delete workspace",
 			});
 		}
 	}

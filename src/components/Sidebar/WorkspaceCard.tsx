@@ -19,6 +19,9 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../common/Button";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
+import { toast } from "sonner";
+import { AlertDialog } from "../ui/alert-dialog";
+import CustomAlertDialog from "../common/AlertDialog";
 
 type WorkspaceCardProps = {
 	id: string;
@@ -34,6 +37,9 @@ export const WorkspaceCard = ({
 	const { data: session } = useSession();
 	const [workspaceTitle, setWorkspaceTitle] = useState<string>(name);
 	const { setDocument } = useWorkspaceStore();
+	const [displayDeleteWorkspaceAlert, setDisplayDeleteWorkspaceAlert] =
+		useState<boolean>(false);
+	const utils = api.useUtils();
 
 	const {
 		mutate: updateWorkspaceName,
@@ -46,6 +52,24 @@ export const WorkspaceCard = ({
 			console.error(error.message);
 		},
 	});
+
+	const { mutate: deleteWorkspace, isPending: deleteWorkspaceIsPending } =
+		api.workspace.deleteWorkspace.useMutation({
+			onSuccess: async (data) => {
+				setDisplayDeleteWorkspaceAlert(false);
+
+				if (data.id === selectedWorkspaceId) {
+					setDocument(null);
+					router.push("/");
+				}
+
+				await utils.workspace.workspaces.invalidate();
+			},
+			onError: (error) => {
+				console.error(error.message);
+				toast.error("Failed to delete workspace");
+			},
+		});
 
 	const router = useRouter();
 
@@ -90,15 +114,12 @@ export const WorkspaceCard = ({
 		}
 	};
 
-	const {
-		data: workspaceTitleData,
-		isLoading: isLoadingWorkspaceTitle,
-		isError: isErrorWorkspaceTitle,
-	} = useQuery({
-		queryKey: ["workspace-title", id],
-		queryFn: generateWorkspaceTitle,
-		enabled: workspaceTitle === "..." && selectedWorkspaceId === id,
-	});
+	const { data: workspaceTitleData, isLoading: isLoadingWorkspaceTitle } =
+		useQuery({
+			queryKey: ["workspace-title", id],
+			queryFn: generateWorkspaceTitle,
+			enabled: workspaceTitle === "..." && selectedWorkspaceId === id,
+		});
 
 	useEffect(() => {
 		if (workspaceTitleData && id === selectedWorkspaceId) {
@@ -138,8 +159,26 @@ export const WorkspaceCard = ({
 		}
 	}, [workspaceTitleData, id, selectedWorkspaceId]);
 
+	const onDeleteWorkspace = () => {
+		deleteWorkspace({
+			id,
+		});
+	};
+
 	return (
 		<SidebarMenuItem>
+			<CustomAlertDialog
+				cancelText="Cancel"
+				actionText="Delete"
+				title="Delete chat?"
+				description={"Warning! Are you sure you want to delete this chat?"}
+				onCancel={() => {
+					setDisplayDeleteWorkspaceAlert(false);
+				}}
+				onAction={onDeleteWorkspace}
+				isPending={deleteWorkspaceIsPending}
+				open={displayDeleteWorkspaceAlert}
+			/>
 			<SidebarMenuButton
 				onClick={async () => {
 					await router.push(`/workspace/${id}`);
@@ -181,7 +220,9 @@ export const WorkspaceCard = ({
 							}}
 						>
 							<DropdownMenuItem
-								onSelect={async () => {
+								onSelect={async (e) => {
+									e.preventDefault();
+									e.stopPropagation();
 									await router.push("/settings");
 								}}
 								className="flex gap-2"
@@ -189,7 +230,14 @@ export const WorkspaceCard = ({
 								<PencilSquareIcon className="min-w-5 w-5 h-5" />
 								Rename
 							</DropdownMenuItem>
-							<DropdownMenuItem className="flex gap-2 text-red-500">
+							<DropdownMenuItem
+								onClick={async (e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									setDisplayDeleteWorkspaceAlert(true);
+								}}
+								className="flex gap-2 text-red-500"
+							>
 								<TrashIcon className="min-w-5 w-5 h-5" />
 								Delete
 							</DropdownMenuItem>
