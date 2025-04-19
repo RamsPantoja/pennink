@@ -165,7 +165,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						{document && (
 							<Card className="w-full h-full flex p-0 rounded-none">
 								<Tabs
-									defaultValue="notes"
+									defaultValue="chat"
 									className="w-full flex flex-col h-full"
 								>
 									<TabsList className="grid w-full grid-cols-2">

@@ -1,5 +1,6 @@
 import {
 	ArrowTurnDownRightIcon,
+	ChatBubbleOvalLeftIcon,
 	DocumentTextIcon,
 	StopIcon,
 	XCircleIcon,
@@ -64,9 +65,19 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					className="flex flex-col gap-4 overflow-auto p-4 flex-1 relative"
 					id="chat-container"
 				>
-					{messages.map((message) => (
-						<MessageCard key={message.id} message={message} />
-					))}
+					{messages.length === 0 && (
+						<Card className="flex flex-col gap-2 items-center justify-center flex-1">
+							<ChatBubbleOvalLeftIcon className="min-w-16 h-16" />
+							<p className="font-bold">Chat with AI</p>
+							<p className="text-sm">
+								Ask anything or use the tools available below
+							</p>
+						</Card>
+					)}
+					{messages.length > 0 &&
+						messages.map((message) => (
+							<MessageCard key={message.id} message={message} />
+						))}
 					{currentAssistantMessage && (
 						<MessageCard message={currentAssistantMessage} />
 					)}
