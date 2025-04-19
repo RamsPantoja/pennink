@@ -63,7 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				{...props}
 				className={cn(buttonVariants({ variant, size, className }))}
 				ref={ref}
-				disabled={isPending}
+				disabled={isPending || props.disabled}
 			>
 				{isPending && (
 					<svg

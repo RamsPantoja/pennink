@@ -40,6 +40,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		onToggleChatModes,
 		chatModes,
 		document,
+		documentVectorSearchMutationIsPending,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
@@ -123,7 +124,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 												className="rounded-full"
 												type="button"
 											>
-												<DocumentTextIcon className="min-w-5 w-5 h-5 mr-2" />
+												<DocumentTextIcon className="min-w-4 w-4 h-4 mr-2" />
 												Ask mode
 											</ToggleGroupItem>
 										</span>
@@ -133,12 +134,18 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							)}
 						</ToggleGroup>
 					</div>
-					{(onSentPromptMutationIsPending || isStreamingLLMResponse) && (
+					{(onSentPromptMutationIsPending ||
+						isStreamingLLMResponse ||
+						documentVectorSearchMutationIsPending) && (
 						<Button size="icon" disabled={false}>
 							<StopIcon className="min-w-5 w-5 h-5" />
 						</Button>
 					)}
-					{!(onSentPromptMutationIsPending || isStreamingLLMResponse) && (
+					{!(
+						onSentPromptMutationIsPending ||
+						isStreamingLLMResponse ||
+						documentVectorSearchMutationIsPending
+					) && (
 						<Button
 							onClick={handleSubmit(onSentPrompt)}
 							size="icon"

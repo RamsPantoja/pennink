@@ -183,12 +183,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			},
 		});
 
-	const { mutate: createMessage, isPending: createMessageIsPending } =
-		api.chat.createMessage.useMutation({
-			onError: (error) => {
-				console.error(error.message);
-			},
-		});
+	const { mutate: createMessage } = api.chat.createMessage.useMutation({
+		onError: (error) => {
+			console.error(error.message);
+		},
+	});
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
 		useChatForm.setValue("prompt", "");
@@ -208,12 +207,12 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			role: "USER",
 		};
 
-		// if (!isNew && router.pathname !== "/") {
-		// 	createMessage({
-		// 		chatId,
-		// 		message,
-		// 	});
-		// }
+		if (!isNew && router.pathname !== "/") {
+			createMessage({
+				chatId,
+				message,
+			});
+		}
 
 		setLastUserMessage(message);
 		setMessages((prev) => {
@@ -226,7 +225,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			if (quote) {
 				setQuote(null);
 				messages.push({
-					content: `Use the following context quote to enhance your response: "${quote}"`,
+					content: `Quote context information: "${quote}"`,
 					role: "system",
 				});
 			}
@@ -241,12 +240,26 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				fileId: document.id,
 			});
 
-			// await onSentPromptMutation({
-			// 	prompt: data.prompt,
-			// 	context: {
-			// 		messages,
-			// 	},
-			// });
+			if (documentContext.length > 0) {
+				messages.push({
+					content: `Context information: ${documentContext.map((context) => context.embedding_document?.content).join(", ")}`,
+					role: "system",
+				});
+			}
+
+			await onSentPromptMutation({
+				prompt: data.prompt,
+				context: {
+					messages: [
+						...messages,
+						{
+							content:
+								"Only use the Quote context information and the Context information to enhance your response. Do not use any other information.",
+							role: "system",
+						},
+					],
+				},
+			});
 
 			return;
 		}

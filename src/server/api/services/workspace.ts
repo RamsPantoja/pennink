@@ -275,9 +275,13 @@ export class WorkspaceService {
 				)
 				.where(eq(embeddingDocuments.fileId, input.fileId));
 
-			console.log(topK);
+			return topK;
 		} catch (error) {
 			console.log(error);
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Failed to search documents",
+			});
 		}
 	}
 }
