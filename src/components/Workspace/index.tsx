@@ -105,7 +105,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 			className="w-full h-full flex flex-col items-center p-0 rounded-none"
 			key={workspaceId as string}
 		>
-			{workspaceIsLoading && <SkeletonWorkspace />}
+			{workspaceIsLoading && <Loading />}
 			{workspaceIsError && (
 				<FeedbackMessage
 					status="ERROR"
