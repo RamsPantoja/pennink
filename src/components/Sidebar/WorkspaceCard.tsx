@@ -20,8 +20,12 @@ import {
 import { Button } from "../common/Button";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { toast } from "sonner";
-import { AlertDialog } from "../ui/alert-dialog";
 import CustomAlertDialog from "../common/AlertDialog";
+import { Input } from "../ui/input";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { isWeakMap } from "node:util/types";
 
 type WorkspaceCardProps = {
 	id: string;
@@ -29,17 +33,36 @@ type WorkspaceCardProps = {
 	name: string;
 };
 
+const workspaceNameSchemaValidation = z.object({
+	name: z.string().min(2).max(100),
+});
+
+type WorkspaceNameForm = z.infer<typeof workspaceNameSchemaValidation>;
+
 export const WorkspaceCard = ({
 	id,
 	selectedWorkspaceId,
 	name,
 }: WorkspaceCardProps) => {
 	const { data: session } = useSession();
-	const [workspaceTitle, setWorkspaceTitle] = useState<string>(name);
+	const [workspaceName, setWorkspaceName] = useState<string>(name);
 	const { setDocument } = useWorkspaceStore();
 	const [displayDeleteWorkspaceAlert, setDisplayDeleteWorkspaceAlert] =
 		useState<boolean>(false);
 	const utils = api.useUtils();
+	const [isWorkspaceNameEditable, setIsWorkspaceNameEditable] =
+		useState<boolean>(false);
+
+	const {
+		register,
+		handleSubmit,
+		setFocus,
+		formState: { errors },
+		watch,
+	} = useForm<WorkspaceNameForm>({
+		resolver: zodResolver(workspaceNameSchemaValidation),
+		defaultValues: { name: workspaceName },
+	});
 
 	const {
 		mutate: updateWorkspaceName,
@@ -47,6 +70,7 @@ export const WorkspaceCard = ({
 	} = api.workspace.updateName.useMutation({
 		onSuccess: (data) => {
 			localStorage.removeItem("buuddy.new-workspace-messages");
+			setWorkspaceName(data.name);
 		},
 		onError: (error) => {
 			console.error(error.message);
@@ -118,7 +142,7 @@ export const WorkspaceCard = ({
 		useQuery({
 			queryKey: ["workspace-title", id],
 			queryFn: generateWorkspaceTitle,
-			enabled: workspaceTitle === "..." && selectedWorkspaceId === id,
+			enabled: workspaceName === "..." && selectedWorkspaceId === id,
 		});
 
 	useEffect(() => {
@@ -138,7 +162,7 @@ export const WorkspaceCard = ({
 
 						if (value) {
 							title = title.concat(textDecoder.decode(value));
-							setWorkspaceTitle(title);
+							setWorkspaceName(title);
 						}
 
 						if (done) {
@@ -165,6 +189,12 @@ export const WorkspaceCard = ({
 		});
 	};
 
+	useEffect(() => {
+		if (isWorkspaceNameEditable) {
+			setFocus("name");
+		}
+	}, [isWorkspaceNameEditable, setFocus]);
+
 	return (
 		<SidebarMenuItem>
 			<CustomAlertDialog
@@ -179,72 +209,88 @@ export const WorkspaceCard = ({
 				isPending={deleteWorkspaceIsPending}
 				open={displayDeleteWorkspaceAlert}
 			/>
-			<SidebarMenuButton
-				onClick={async () => {
-					await router.push(`/workspace/${id}`);
-					setDocument(null);
-				}}
-				asChild
-				isActive={id === selectedWorkspaceId}
-				className={cn([
-					"pr-0 cursor-pointer",
-					{
-						"border border-mochaMauve": id === selectedWorkspaceId,
-					},
-				])}
-			>
-				<div className="flex items-center w-full">
-					<span
-						title={workspaceTitle}
-						className={cn([
-							"font-normal text-xs truncate w-full",
-							{
-								"animate-pulse":
-									updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,
-							},
-						])}
-					>
-						{workspaceTitle}
-					</span>
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" size="icon">
-								<EllipsisVerticalIcon className="h-5 min-w-5" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent
-							side="right"
-							onCloseAutoFocus={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-							}}
+			{isWorkspaceNameEditable && (
+				<Input
+					{...register("name")}
+					onBlur={() => {
+						setIsWorkspaceNameEditable(false);
+						handleSubmit((data: WorkspaceNameForm) => {
+							updateWorkspaceName({
+								id,
+								name: data.name,
+							});
+						})();
+					}}
+				/>
+			)}
+			{!isWorkspaceNameEditable && (
+				<SidebarMenuButton
+					onClick={async () => {
+						await router.push(`/workspace/${id}`);
+						setDocument(null);
+					}}
+					asChild
+					isActive={id === selectedWorkspaceId}
+					className={cn([
+						"pr-0 cursor-pointer",
+						{
+							"border border-mochaMauve": id === selectedWorkspaceId,
+						},
+					])}
+				>
+					<div className="flex items-center w-full">
+						<span
+							title={workspaceName}
+							className={cn([
+								"font-normal text-xs truncate w-full",
+								{
+									"animate-pulse":
+										updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,
+								},
+							])}
 						>
-							<DropdownMenuItem
-								onSelect={async (e) => {
+							{workspaceName}
+						</span>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost" size="icon">
+									<EllipsisVerticalIcon className="h-5 min-w-5" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent
+								side="right"
+								onCloseAutoFocus={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
-									await router.push("/settings");
 								}}
-								className="flex gap-2"
 							>
-								<PencilSquareIcon className="min-w-5 w-5 h-5" />
-								Rename
-							</DropdownMenuItem>
-							<DropdownMenuItem
-								onClick={async (e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									setDisplayDeleteWorkspaceAlert(true);
-								}}
-								className="flex gap-2 text-red-500"
-							>
-								<TrashIcon className="min-w-5 w-5 h-5" />
-								Delete
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
-			</SidebarMenuButton>
+								<DropdownMenuItem
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										setIsWorkspaceNameEditable(true);
+									}}
+									className="flex gap-2"
+								>
+									<PencilSquareIcon className="min-w-5 w-5 h-5" />
+									Rename
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										setDisplayDeleteWorkspaceAlert(true);
+									}}
+									className="flex gap-2 text-red-500"
+								>
+									<TrashIcon className="min-w-5 w-5 h-5" />
+									Delete
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					</div>
+				</SidebarMenuButton>
+			)}
 		</SidebarMenuItem>
 	);
 };
