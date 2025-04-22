@@ -35,6 +35,7 @@ import { Fragment } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../common/Button";
 import { WorkspaceCard } from "./WorkspaceCard";
+import SubscriptionPlansModal from "../SubscriptionPlanSelector";
 
 type AppSidebarProps = {
 	session: Session | null;
@@ -116,6 +117,9 @@ export function AppSidebar({ session }: AppSidebarProps) {
 							>
 								<ArrowRightStartOnRectangleIcon className="mr-2 h-5 min-w-5 text-mochaText" />
 								Sign out
+							</DropdownMenuItem>
+							<DropdownMenuItem asChild>
+								<SubscriptionPlansModal />
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
