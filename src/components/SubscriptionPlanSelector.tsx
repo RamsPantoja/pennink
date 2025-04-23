@@ -50,10 +50,10 @@ export default function SubscriptionPlansModal({
 				</DialogHeader>
 
 				<Tabs defaultValue={currentSubscription} className="w-full mt-4">
-					<TabsList className="grid w-full grid-cols-3">
+					<TabsList className="grid w-full grid-cols-2">
 						<TabsTrigger value="FREE">Free</TabsTrigger>
 						<TabsTrigger value="PRO">Pro</TabsTrigger>
-						<TabsTrigger value="PREMIUM">Premium</TabsTrigger>
+						{/* <TabsTrigger value="PREMIUM">Premium</TabsTrigger> */}
 					</TabsList>
 
 					<TabsContent value="FREE" className="space-y-4">
@@ -62,10 +62,12 @@ export default function SubscriptionPlansModal({
 							price="$0"
 							description="Perfect for individuals just getting started"
 							features={[
-								"1 user",
-								"10 projects",
-								"5GB storage",
-								"Basic support",
+								"Up to 50 workspaces",
+								"Share workspaces",
+								"Free access to all features",
+								"5 upload files / day",
+								"Upload files, each up to 100 pages / 6 MB in size",
+								"Up to 250 MB storage",
 							]}
 							buttonText="Get Started"
 							subscriptionType="FREE"
@@ -79,11 +81,12 @@ export default function SubscriptionPlansModal({
 							price="$8"
 							description="Ideal for professionals"
 							features={[
-								"5 users",
-								"50 projects",
-								"25GB storage",
-								"Priority support",
-								"Advanced analytics",
+								"Everything in Free",
+								"Unlimited workspaces",
+								"10-20x more messages than Free",
+								"Unlimited upload files",
+								"Upload files, each up to 1000 pages / 50 MB in size",
+								"Up to 2GB storage",
 							]}
 							buttonText="Upgrade to Pennink Pro"
 							subscriptionType="PRO"
@@ -91,7 +94,7 @@ export default function SubscriptionPlansModal({
 						/>
 					</TabsContent>
 
-					<TabsContent value="PREMIUM">
+					{/* <TabsContent value="PREMIUM">
 						<PricingCard
 							title="Premium"
 							price="$20"
@@ -108,7 +111,7 @@ export default function SubscriptionPlansModal({
 							subscriptionType="PREMIUM"
 							currentSubscription={currentSubscription}
 						/>
-					</TabsContent>
+					</TabsContent> */}
 				</Tabs>
 			</DialogContent>
 		</Dialog>

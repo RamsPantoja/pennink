@@ -90,7 +90,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 											{session.user.name}
 										</p>
 										<p className="truncate text-xs text-mochaText">
-											{session.user.email}
+											{session.user.subscription}
 										</p>
 									</div>
 								</div>
