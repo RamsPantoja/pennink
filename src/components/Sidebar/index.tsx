@@ -45,6 +45,8 @@ export function AppSidebar({ session }: AppSidebarProps) {
 	const router = useRouter();
 	const { workspaceId } = router.query;
 
+	console.log(session);
+
 	const {
 		displaySignOutAlert,
 		setDisplaySignOutAlert,
@@ -119,7 +121,9 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								Sign out
 							</DropdownMenuItem>
 							<DropdownMenuItem asChild>
-								<SubscriptionPlansModal />
+								<SubscriptionPlansModal
+									currentSubscription={session.user.subscription}
+								/>
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

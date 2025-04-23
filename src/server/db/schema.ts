@@ -28,7 +28,7 @@ const customId = uuid("id").$defaultFn(() => {
 });
 
 export const suscriptionEnum = pgEnum("suscription", [
-	"BASIC",
+	"PRO",
 	"PREMIUM",
 	"FREE",
 ]);
@@ -49,7 +49,7 @@ export const users = createTable("user", {
 	}).default(sql`CURRENT_TIMESTAMP`),
 	image: text().notNull(),
 	verified: boolean().notNull().default(false),
-	suscription: suscriptionEnum().notNull().default("FREE"),
+	subscription: suscriptionEnum().notNull().default("FREE"),
 	onBoardingCompleted: boolean().notNull().default(false),
 	createdAt: timestamp({
 		mode: "date",

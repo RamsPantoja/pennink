@@ -20,8 +20,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card";
+import type { Subscription } from "~/lib/enum";
 
-export default function SubscriptionPlansModal() {
+type SubscriptionPlansModalProps = {
+	currentSubscription: Subscription;
+};
+
+export default function SubscriptionPlansModal({
+	currentSubscription,
+}: SubscriptionPlansModalProps) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -42,111 +49,65 @@ export default function SubscriptionPlansModal() {
 					</DialogDescription>
 				</DialogHeader>
 
-				<Tabs defaultValue="monthly" className="w-full mt-4">
-					<TabsList className="grid w-full grid-cols-2 mb-6">
-						<TabsTrigger value="monthly">Monthly</TabsTrigger>
-						<TabsTrigger value="yearly">Yearly (Save 20%)</TabsTrigger>
+				<Tabs defaultValue={currentSubscription} className="w-full mt-4">
+					<TabsList className="grid w-full grid-cols-3">
+						<TabsTrigger value="FREE">Free</TabsTrigger>
+						<TabsTrigger value="PRO">Pro</TabsTrigger>
+						<TabsTrigger value="PREMIUM">Premium</TabsTrigger>
 					</TabsList>
 
-					<TabsContent value="monthly" className="space-y-4">
-						<div className="grid gap-4 md:grid-cols-3">
-							<PricingCard
-								title="Basic"
-								price="$9"
-								description="Perfect for individuals just getting started"
-								features={[
-									"1 user",
-									"10 projects",
-									"5GB storage",
-									"Basic support",
-								]}
-								buttonText="Get Started"
-								popular={false}
-							/>
-
-							<PricingCard
-								title="Pro"
-								price="$19"
-								description="Ideal for professionals and small teams"
-								features={[
-									"5 users",
-									"50 projects",
-									"25GB storage",
-									"Priority support",
-									"Advanced analytics",
-								]}
-								buttonText="Get Started"
-								popular={true}
-							/>
-
-							<PricingCard
-								title="Enterprise"
-								price="$49"
-								description="For large teams with advanced needs"
-								features={[
-									"Unlimited users",
-									"Unlimited projects",
-									"100GB storage",
-									"24/7 dedicated support",
-									"Custom integrations",
-									"Advanced security",
-								]}
-								buttonText="Contact Sales"
-								popular={false}
-							/>
-						</div>
+					<TabsContent value="FREE" className="space-y-4">
+						<PricingCard
+							title="Free"
+							price="$0"
+							description="Perfect for individuals just getting started"
+							features={[
+								"1 user",
+								"10 projects",
+								"5GB storage",
+								"Basic support",
+							]}
+							buttonText="Get Started"
+							subscriptionType="FREE"
+							currentSubscription={currentSubscription}
+						/>
 					</TabsContent>
 
-					<TabsContent value="yearly" className="space-y-4">
-						<div className="grid gap-4 md:grid-cols-3">
-							<PricingCard
-								title="Basic"
-								price="$86"
-								period="per year"
-								description="Perfect for individuals just getting started"
-								features={[
-									"1 user",
-									"10 projects",
-									"5GB storage",
-									"Basic support",
-								]}
-								buttonText="Get Started"
-								popular={false}
-							/>
+					<TabsContent value="PRO" className="space-y-4">
+						<PricingCard
+							title="Pro"
+							price="$8"
+							description="Ideal for professionals"
+							features={[
+								"5 users",
+								"50 projects",
+								"25GB storage",
+								"Priority support",
+								"Advanced analytics",
+							]}
+							buttonText="Upgrade to Pennink Pro"
+							subscriptionType="PRO"
+							currentSubscription={currentSubscription}
+						/>
+					</TabsContent>
 
-							<PricingCard
-								title="Pro"
-								price="$182"
-								period="per year"
-								description="Ideal for professionals and small teams"
-								features={[
-									"5 users",
-									"50 projects",
-									"25GB storage",
-									"Priority support",
-									"Advanced analytics",
-								]}
-								buttonText="Get Started"
-								popular={true}
-							/>
-
-							<PricingCard
-								title="Enterprise"
-								price="$470"
-								period="per year"
-								description="For large teams with advanced needs"
-								features={[
-									"Unlimited users",
-									"Unlimited projects",
-									"100GB storage",
-									"24/7 dedicated support",
-									"Custom integrations",
-									"Advanced security",
-								]}
-								buttonText="Contact Sales"
-								popular={false}
-							/>
-						</div>
+					<TabsContent value="PREMIUM">
+						<PricingCard
+							title="Premium"
+							price="$20"
+							description="For professionals with advanced needs and extended resources"
+							features={[
+								"Unlimited users",
+								"Unlimited projects",
+								"100GB storage",
+								"24/7 dedicated support",
+								"Custom integrations",
+								"Advanced security",
+							]}
+							buttonText="Upgrade to Pennink Premium"
+							subscriptionType="PREMIUM"
+							currentSubscription={currentSubscription}
+						/>
 					</TabsContent>
 				</Tabs>
 			</DialogContent>
@@ -161,7 +122,8 @@ interface PricingCardProps {
 	description: string;
 	features: string[];
 	buttonText: string;
-	popular?: boolean;
+	subscriptionType: Subscription;
+	currentSubscription: Subscription;
 }
 
 function PricingCard({
@@ -171,17 +133,11 @@ function PricingCard({
 	description,
 	features,
 	buttonText,
-	popular = false,
+	currentSubscription,
+	subscriptionType,
 }: PricingCardProps) {
 	return (
-		<Card
-			className={`flex flex-col ${popular ? "border-primary shadow-lg relative" : ""}`}
-		>
-			{popular && (
-				<div className="absolute -top-3 left-0 right-0 mx-auto w-fit px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
-					Most Popular
-				</div>
-			)}
+		<Card className="flex flex-col border-2">
 			<CardHeader>
 				<CardTitle className="text-xl">{title}</CardTitle>
 				<div className="flex items-baseline mt-2">
@@ -201,11 +157,10 @@ function PricingCard({
 				</ul>
 			</CardContent>
 			<CardFooter>
-				<Button
-					className={`w-full ${popular ? "" : "bg-muted hover:bg-muted/80 text-foreground"}`}
-					variant={popular ? "default" : "outline"}
-				>
-					{buttonText}
+				<Button disabled={subscriptionType === currentSubscription}>
+					{subscriptionType === currentSubscription
+						? "Current Plan"
+						: buttonText}
 				</Button>
 			</CardFooter>
 		</Card>
