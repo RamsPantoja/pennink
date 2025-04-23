@@ -30,6 +30,12 @@ type PaymentLinkConfig = {
 	metadata: MetadataPayment;
 };
 
+type PaymentSubscriptionConfig = {
+	lookupKeys: string[];
+	successUrl: string;
+	cancelUrl: string;
+};
+
 type ProcessPaymentInput = {
 	data: {
 		metadata: Stripe.Metadata | null;
@@ -70,61 +76,11 @@ class PaymentService {
 		return newAccount;
 	}
 
-	async newAccountLink(accountId: string) {
-		const accountLink = await this.stripe.accountLinks.create({
-			account: accountId,
-			refresh_url: `${env.NEXTAUTH_URL}/api/stripe/connect/refresh`,
-			return_url: `${env.NEXTAUTH_URL}/payouts`,
-			type: "account_onboarding",
-			collection_options: {
-				fields: "currently_due",
-			},
-		});
-
-		if (!accountLink) {
-			throw new TRPCError({
-				code: "INTERNAL_SERVER_ERROR",
-				message: "Internal server error",
-			});
-		}
-
-		return accountLink;
-	}
-
-	private parseStripeItems(items: StripeItem[], currency: string) {
-		return items.map((item: StripeItem) => {
-			return {
-				price_data: {
-					currency,
-					unit_amount: Number.parseFloat((item.unitPrice * 100).toFixed(2)),
-					product_data: {
-						name: item.concept,
-					},
-				},
-				quantity: item.quantity,
-			};
-		});
-	}
-
-	private computeFee(items: StripeItem[]): number {
-		const percentFee = 0.04;
-		const totalPrice = items.reduce<number>((acc, item) => {
-			return acc + item.unitPrice * item.quantity;
-		}, 0);
-
-		if (totalPrice && totalPrice >= 0) {
-			return totalPrice * percentFee;
-		}
-
-		return 0;
-	}
-
 	public async createPaymentLink(config: PaymentLinkConfig) {
 		const customer = await this.stripe.customers.create();
-		const listItems = this.parseStripeItems(config.items, config.currency);
 
 		const session = await this.stripe.checkout.sessions.create({
-			line_items: listItems,
+			// line_items: listItems,
 			mode: "payment",
 			currency: "MXN",
 			customer: customer.id,
@@ -136,6 +92,28 @@ class PaymentService {
 			},
 			locale: "es",
 			metadata: config.metadata,
+		});
+
+		return {
+			paymentUrl: session.url,
+		};
+	}
+
+	public async createPaymentSubscription(config: PaymentSubscriptionConfig) {
+		const { lookupKeys, successUrl, cancelUrl } = config;
+		const customer = await this.stripe.customers.create();
+		const prices = await this.stripe.prices.list({ lookup_keys: lookupKeys });
+
+		const session = await this.stripe.checkout.sessions.create({
+			line_items: [
+				{
+					price: config.priceId,
+				},
+			],
+			mode: "subscription",
+			customer: customer.id,
+			success_url: successUrl,
+			cancel_url: cancelUrl,
 		});
 
 		return {
