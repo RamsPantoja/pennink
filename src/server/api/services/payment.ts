@@ -112,6 +112,11 @@ class PaymentService {
 			}),
 			mode: "subscription",
 			customer: customer.customerId,
+			subscription_data: {
+				metadata: {
+					userId,
+				},
+			},
 			success_url: successUrl,
 			cancel_url: cancelUrl,
 		});
@@ -145,38 +150,67 @@ class PaymentService {
 		return payment;
 	}
 
-	public async processPayment(paymentProcessInput: ProcessPaymentInput) {
-		const { metadata, checkoutSessionId, amount, mode } = paymentProcessInput;
+	public async processEvent(event: Stripe.Event) {
+		const { type, data } = event;
+		console.log(type);
 
-		switch (mode) {
-			case "payment":
-				{
-					const { userId } = metadata as MetadataPayment;
-
-					if (!userId) {
-						throw new TRPCError({
-							code: "CONFLICT",
-							message: "UserId is required",
-						});
-					}
-
-					await this.createPayment({
-						userId: userId,
-						checkoutSessionId,
-					});
-				}
+		switch (event.type) {
+			//Basic payments
+			case "checkout.session.completed":
 				break;
-			case "subscription":
+			//Recurring payments, subscriptions and invoices
+			case "invoice.paid":
 				{
-					await this.createSubscription({
-						userId: userId,
-						checkoutSessionId,
-					});
+					const { subscription: subscriptionId } = event.data.object;
+
+					if (typeof subscriptionId === "string") {
+						const subscription =
+							await this.stripe.subscriptions.retrieve(subscriptionId);
+
+						if (!subscription) {
+							throw new TRPCError({
+								code: "NOT_FOUND",
+								message: "[INVOICE PAID] Error: Subscription not found",
+							});
+						}
+
+						if (subscription.status === "active") {
+						}
+					}
 				}
+
+				break;
+			//Recurring payments, subscriptions and invoices
+			case "invoice.payment_failed":
+				{
+					console.log(event.data.object);
+				}
+				// The payment failed or the customer does not have a valid payment method.
+				// The subscription becomes past_due. Notify your customer and send them to the
+				// customer portal to update their payment information.
 				break;
 			default:
 				break;
 		}
+	}
+
+	private async createSubscription(userId: string, priceId: string) {
+		const customer = await this.verifyCustomer(userId);
+
+		const subscription = await this.stripe.subscriptions.create({
+			customer: customer.stripeId,
+			items: [{ price: priceId }],
+			expand: ["latest_invoice.payment_intent"],
+		});
+
+		await this.ctx.db.insert(subscriptions).values({
+			stripeId: subscription.id,
+			priceId: subscription.items.data[0].price.id,
+			customerId: customer.id,
+			status: subscription.status,
+		});
+
+		return subscription;
 	}
 
 	private async verifyCustomer(userId: string) {

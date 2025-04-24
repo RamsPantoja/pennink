@@ -208,8 +208,11 @@ export const subscriptions = createTable("subscription", {
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	checkoutSessionId: text().notNull(),
+	status: text().notNull(),
 	subscriptionId: text().notNull(),
+	currentPeriodEnd: text().notNull(),
+	currentPeriodStart: text().notNull(),
+	cancelAtPeriodEnd: text().notNull(),
 	customerId: text().notNull(),
 	createdAt: timestamp({
 		mode: "date",
