@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				{
 					//Card payment
 					if (event.data.object.payment_status === "paid") {
-						await caller.payment.paymentProcess({
+						await caller.payment.processPayment({
 							metadata: event.data.object.metadata,
 							id: event.data.object.id,
 							amount: event.data.object.amount_subtotal,
@@ -31,12 +31,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			case "checkout.session.async_payment_succeeded":
 				{
 					//Transaction payment
-					await caller.payment.paymentProcess({
+					await caller.payment.processPayment({
 						metadata: event.data.object.metadata,
 						id: event.data.object.id,
 						amount: event.data.object.amount_subtotal,
+						paymentIntentId: event.data.object.payment_intent,
 					});
 				}
+				break;
+			case "invoice.paid":
+				// Continue to provision the subscription as payments continue to be made.
+				// Store the status in your database and check when a user accesses your service.
+				// This approach helps you avoid hitting rate limits.
+				break;
+			case "invoice.payment_failed":
+				// The payment failed or the customer does not have a valid payment method.
+				// The subscription becomes past_due. Notify your customer and send them to the
+				// customer portal to update their payment information.
 				break;
 			default:
 				break;

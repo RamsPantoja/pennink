@@ -5,12 +5,11 @@ import { TRPCError } from "@trpc/server";
 import { Stripe } from "stripe";
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
-import { payments } from "~/server/db/schema";
+import { customers, payments } from "~/server/db/schema";
 import type {
 	stripeItemSchema,
 	updateStripeConnectOnBoardingInput,
 } from "../schemas/payment";
-import type { PaymentType } from "~/lib/enum";
 
 type AccountServiceContructor = {
 	ctx: TRPCContext;
@@ -37,22 +36,19 @@ type PaymentSubscriptionConfig = {
 };
 
 type ProcessPaymentInput = {
-	data: {
-		metadata: Stripe.Metadata | null;
-		id: string;
-		amount: number | null;
-	};
+	metadata: Stripe.Metadata | null;
+	checkoutSessionId: string;
+	amount: number | null;
+	mode: Stripe.Checkout.Session.Mode;
 };
 
 type CreatePaymentInput = {
 	userId: string;
 	checkoutSessionId: string;
-	paymentType: PaymentType;
 };
 
 export type MetadataPayment = {
 	userId?: string;
-	paymentType?: PaymentType;
 };
 
 export type StripeItem = z.infer<typeof stripeItemSchema>;
@@ -99,22 +95,30 @@ class PaymentService {
 		};
 	}
 
-	public async createPaymentSubscription(config: PaymentSubscriptionConfig) {
+	public async createPaymentSubscriptionLink(
+		config: PaymentSubscriptionConfig,
+		userId: string,
+	) {
 		const { lookupKeys, successUrl, cancelUrl } = config;
-		const customer = await this.stripe.customers.create();
+		const customer = await this.verifyCustomer(userId);
 		const prices = await this.stripe.prices.list({ lookup_keys: lookupKeys });
 
 		const session = await this.stripe.checkout.sessions.create({
-			line_items: [
-				{
-					price: config.priceId,
-				},
-			],
+			line_items: prices.data.map((price) => {
+				return {
+					price: price.id,
+					quantity: 1,
+				};
+			}),
 			mode: "subscription",
-			customer: customer.id,
+			customer: customer.customerId,
 			success_url: successUrl,
 			cancel_url: cancelUrl,
 		});
+
+		if (!session.url) {
+			throw new Error("Payment session URL not found");
+		}
 
 		return {
 			paymentUrl: session.url,
@@ -127,7 +131,6 @@ class PaymentService {
 			.values({
 				userId: input.userId,
 				checkoutSessionId: input.checkoutSessionId,
-				paymentType: input.paymentType,
 				paymentIntentId: "test",
 			})
 			.returning();
@@ -143,43 +146,85 @@ class PaymentService {
 	}
 
 	public async processPayment(paymentProcessInput: ProcessPaymentInput) {
-		const { data } = paymentProcessInput;
+		const { metadata, checkoutSessionId, amount, mode } = paymentProcessInput;
 
-		const { userId, paymentType } = data.metadata as MetadataPayment;
+		switch (mode) {
+			case "payment":
+				{
+					const { userId } = metadata as MetadataPayment;
 
-		if (!userId) {
-			throw new TRPCError({
-				code: "CONFLICT",
-				message: "UserId is required",
-			});
+					if (!userId) {
+						throw new TRPCError({
+							code: "CONFLICT",
+							message: "UserId is required",
+						});
+					}
+
+					await this.createPayment({
+						userId: userId,
+						checkoutSessionId,
+					});
+				}
+				break;
+			case "subscription":
+				{
+					await this.createSubscription({
+						userId: userId,
+						checkoutSessionId,
+					});
+				}
+				break;
+			default:
+				break;
 		}
-
-		if (!paymentType) {
-			throw new TRPCError({
-				code: "CONFLICT",
-				message: "paymentType is required",
-			});
-		}
-
-		// const payment = await this.createPayment({
-		// 	userId: userId,
-		// 	checkoutSessionId: data.id,
-		// 	paymentType,
-		// });
-
-		// switch (paymentType) {
-		// 	case "BOOKING":
-		// 		{
-		// 			await this.onBookingPaymentSuccess();
-		// 		}
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
 	}
 
-	private async onBookingPaymentSuccess() {
-		console.log("Payment booking success");
+	private async verifyCustomer(userId: string) {
+		const user = await this.ctx.db.query.users.findFirst({
+			where: (users, { eq }) => {
+				return eq(users.id, userId);
+			},
+		});
+
+		if (!user) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "User not found",
+			});
+		}
+
+		const customer = await this.ctx.db.query.customers.findFirst({
+			where: (customers, { eq }) => {
+				return eq(customers.userId, userId);
+			},
+		});
+
+		if (customer) {
+			return customer;
+		}
+
+		//Create a new customer record by user in Stripe
+		const stripeCustomerRecord = await this.stripe.customers.create({
+			email: user?.email,
+			name: user.name,
+		});
+
+		const [newCustomer] = await this.ctx.db
+			.insert(customers)
+			.values({
+				userId,
+				customerId: stripeCustomerRecord.id,
+			})
+			.returning();
+
+		if (!newCustomer) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "Failed to create customer",
+			});
+		}
+
+		return newCustomer;
 	}
 }
 

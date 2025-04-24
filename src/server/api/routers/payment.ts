@@ -5,14 +5,13 @@ import {
 } from "~/server/api/trpc";
 import type Stripe from "stripe";
 import {
-	createStripeAccountInputSchema,
-	newStripePaymentInput,
+	createPaymentSubscriptionInput,
 	stripePaymentProcessInput,
 	updateStripeConnectOnBoardingInput,
 } from "../schemas/payment";
 
 export const paymentRouter = createTRPCRouter({
-	paymentProcess: publicProcedure
+	processPayment: publicProcedure
 		.input(stripePaymentProcessInput)
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.services({ ctx }).paymentService.processPayment({
@@ -22,5 +21,15 @@ export const paymentRouter = createTRPCRouter({
 					amount: input.amount,
 				},
 			});
+		}),
+	getPaymentSubscriptionLink: protectedProcedure
+		.input(createPaymentSubscriptionInput)
+		.mutation(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.paymentService.createPaymentSubscriptionLink(
+					input,
+					ctx.session.user.id,
+				);
 		}),
 });

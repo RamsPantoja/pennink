@@ -18,8 +18,9 @@ export const stripeItemSchema = z.object({
 
 export const stripePaymentProcessInput = z.object({
 	metadata: z.any().nullable(),
-	id: z.string(),
+	checkoutSessionId: z.string(),
 	amount: z.number().nullable(),
+	paymentIntentId: z.string().nullable(),
 });
 
 export const newStripePaymentInput = z.object({
@@ -29,4 +30,10 @@ export const newStripePaymentInput = z.object({
 export const updateStripeConnectOnBoardingInput = z.object({
 	accountId: z.string(),
 	state: z.boolean(),
+});
+
+export const createPaymentSubscriptionInput = z.object({
+	lookupKeys: z.array(z.string()).default([]),
+	successUrl: z.string().url(),
+	cancelUrl: z.string().url(),
 });

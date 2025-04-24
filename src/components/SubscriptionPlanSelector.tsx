@@ -21,6 +21,10 @@ import {
 	CardTitle,
 } from "./ui/card";
 import type { Subscription } from "~/lib/enum";
+import { api } from "~/utils/api";
+import { toast } from "sonner";
+import { useRouter } from "next/router";
+import { env } from "~/env";
 
 type SubscriptionPlansModalProps = {
 	currentSubscription: Subscription;
@@ -72,6 +76,7 @@ export default function SubscriptionPlansModal({
 							buttonText="Get Started"
 							subscriptionType="FREE"
 							currentSubscription={currentSubscription}
+							lookupKey="pennink_free"
 						/>
 					</TabsContent>
 
@@ -91,6 +96,7 @@ export default function SubscriptionPlansModal({
 							buttonText="Upgrade to Pennink Pro"
 							subscriptionType="PRO"
 							currentSubscription={currentSubscription}
+							lookupKey="pennink_pro"
 						/>
 					</TabsContent>
 
@@ -127,6 +133,7 @@ interface PricingCardProps {
 	buttonText: string;
 	subscriptionType: Subscription;
 	currentSubscription: Subscription;
+	lookupKey: string;
 }
 
 function PricingCard({
@@ -138,7 +145,32 @@ function PricingCard({
 	buttonText,
 	currentSubscription,
 	subscriptionType,
+	lookupKey,
 }: PricingCardProps) {
+	const router = useRouter();
+
+	const {
+		mutate: paymentSubscriptionLink,
+		isPending: paymentSubscriptionLinkIsPending,
+	} = api.payment.getPaymentSubscriptionLink.useMutation({
+		onSuccess: (data) => {
+			router.push(data.paymentUrl);
+		},
+		onError: (error) => {
+			console.error("Mutation failed:", error.message);
+			toast.error("An error occurred");
+		},
+	});
+
+	const generatePaymentLink = () => {
+		// Implement payment link generation logic here
+		paymentSubscriptionLink({
+			lookupKeys: [lookupKey],
+			successUrl: `${env.NEXT_PUBLIC_BASE_URL}/subscription/success`,
+			cancelUrl: `${env.NEXT_PUBLIC_BASE_URL}${router.asPath}`,
+		});
+	};
+
 	return (
 		<Card className="flex flex-col border-2">
 			<CardHeader>
@@ -160,7 +192,11 @@ function PricingCard({
 				</ul>
 			</CardContent>
 			<CardFooter>
-				<Button disabled={subscriptionType === currentSubscription}>
+				<Button
+					onClick={generatePaymentLink}
+					isPending={paymentSubscriptionLinkIsPending}
+					disabled={subscriptionType === currentSubscription}
+				>
 					{subscriptionType === currentSubscription
 						? "Current Plan"
 						: buttonText}

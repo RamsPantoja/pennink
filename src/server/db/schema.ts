@@ -27,7 +27,7 @@ const customId = uuid("id").$defaultFn(() => {
 	return typeid().toUUID();
 });
 
-export const suscriptionEnum = pgEnum("suscription", [
+export const subscriptionEnum = pgEnum("subscription", [
 	"PRO",
 	"PREMIUM",
 	"FREE",
@@ -49,7 +49,7 @@ export const users = createTable("user", {
 	}).default(sql`CURRENT_TIMESTAMP`),
 	image: text().notNull(),
 	verified: boolean().notNull().default(false),
-	subscription: suscriptionEnum().notNull().default("FREE"),
+	subscription: subscriptionEnum().notNull().default("FREE"),
 	onBoardingCompleted: boolean().notNull().default(false),
 	createdAt: timestamp({
 		mode: "date",
@@ -177,8 +177,6 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
 	}),
 }));
 
-export const paymentTypeEnum = pgEnum("payment_type", ["SUSCRIPTION"]);
-
 export const payments = createTable("payment", {
 	id: customId.notNull().primaryKey(),
 	userId: uuid()
@@ -186,7 +184,6 @@ export const payments = createTable("payment", {
 		.references(() => users.id),
 	checkoutSessionId: text().notNull(),
 	paymentIntentId: text().notNull(),
-	paymentType: paymentTypeEnum().notNull(),
 	createdAt: timestamp({
 		mode: "date",
 	})
@@ -203,6 +200,37 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
 	user: one(users, {
 		fields: [payments.userId],
 		references: [users.id],
+	}),
+}));
+
+export const subscriptions = createTable("subscription", {
+	id: customId.notNull().primaryKey(),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
+	checkoutSessionId: text().notNull(),
+	subscriptionId: text().notNull(),
+	customerId: text().notNull(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
+	user: one(users, {
+		fields: [subscriptions.userId],
+		references: [users.id],
+	}),
+	customer: one(customers, {
+		fields: [subscriptions.customerId],
+		references: [customers.id],
 	}),
 }));
 
@@ -423,3 +451,28 @@ export const filesToWorkspacesRelations = relations(
 		}),
 	}),
 );
+
+export const customers = createTable("customer", {
+	id: customId.notNull().primaryKey(),
+	customerId: text().notNull(),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const customersRelations = relations(customers, ({ one }) => ({
+	user: one(users, {
+		fields: [customers.userId],
+		references: [users.id],
+	}),
+}));
