@@ -5,11 +5,14 @@ import { TRPCError } from "@trpc/server";
 import { Stripe } from "stripe";
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
-import { customers, payments } from "~/server/db/schema";
+import { customers, payments, subscriptions, users } from "~/server/db/schema";
 import type {
 	stripeItemSchema,
 	updateStripeConnectOnBoardingInput,
 } from "../schemas/payment";
+import type { Subscription } from "~/lib/enum";
+
+export type StripeProductKey = "PENNINK_PRO" | "PENNINK_PREMIUM";
 
 type AccountServiceContructor = {
 	ctx: TRPCContext;
@@ -175,6 +178,7 @@ class PaymentService {
 						}
 
 						if (subscription.status === "active") {
+							await this.createSubscription(subscription);
 						}
 					}
 				}
@@ -194,23 +198,87 @@ class PaymentService {
 		}
 	}
 
-	private async createSubscription(userId: string, priceId: string) {
-		const customer = await this.verifyCustomer(userId);
+	private async createSubscription(
+		subscriptionData: Stripe.Response<Stripe.Subscription>,
+	) {
+		const { customer: customerId, items } = subscriptionData;
 
-		const subscription = await this.stripe.subscriptions.create({
-			customer: customer.stripeId,
-			items: [{ price: priceId }],
-			expand: ["latest_invoice.payment_intent"],
+		if (typeof customerId !== "string") {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "Invalid customer ID: Customer ID must be a string",
+			});
+		}
+
+		const customer = await this.ctx.db.query.customers.findFirst({
+			where: (customers, { eq }) => {
+				return eq(customers.customerId, customerId);
+			},
 		});
 
-		await this.ctx.db.insert(subscriptions).values({
-			stripeId: subscription.id,
-			priceId: subscription.items.data[0].price.id,
-			customerId: customer.id,
-			status: subscription.status,
-		});
+		if (!customer) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Customer record not found in Pennink DB",
+			});
+		}
 
-		return subscription;
+		for await (const item of items.data) {
+			const { price } = item;
+			const productId = price.product;
+
+			if (typeof productId !== "string") {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message:
+						"Invalid product: Product ID must be a string to set the correct product subscription",
+				});
+			}
+
+			const product = await this.stripe.products.retrieve(productId);
+			const productKey = product.metadata.product_key;
+
+			if (!productKey) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message:
+						"Invalid product: Product key is missing and it is required to set the correct product subscription",
+				});
+			}
+
+			const [subscription] = await this.ctx.db
+				.insert(subscriptions)
+				.values({
+					userId: customer.userId,
+					customerId: customer.customerId,
+					subscriptionId: subscriptionData.id,
+					status: subscriptionData.status,
+					currentPeriodEnd: subscriptionData.current_period_end.toString(),
+					currentPeriodStart: subscriptionData.current_period_start.toString(),
+					cancelAtPeriodEnd: subscriptionData.cancel_at_period_end,
+				})
+				.returning();
+
+			if (!subscription) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Failed to create subscription in Pennink DB",
+				});
+			}
+
+			const availableSubscriptionsByProduct: Record<
+				StripeProductKey,
+				Subscription
+			> = {
+				PENNINK_PRO: "PRO",
+				PENNINK_PREMIUM: "PREMIUM",
+			};
+
+			await this.ctx.db.update(users).set({
+				subscription:
+					availableSubscriptionsByProduct[productKey as StripeProductKey],
+			});
+		}
 	}
 
 	private async verifyCustomer(userId: string) {

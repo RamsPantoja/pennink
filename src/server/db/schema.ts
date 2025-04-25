@@ -27,7 +27,7 @@ const customId = uuid("id").$defaultFn(() => {
 	return typeid().toUUID();
 });
 
-export const subscriptionEnum = pgEnum("subscription", [
+export const subscriptionEnum = pgEnum("subscription_type", [
 	"PRO",
 	"PREMIUM",
 	"FREE",
@@ -212,7 +212,7 @@ export const subscriptions = createTable("subscription", {
 	subscriptionId: text().notNull(),
 	currentPeriodEnd: text().notNull(),
 	currentPeriodStart: text().notNull(),
-	cancelAtPeriodEnd: text().notNull(),
+	cancelAtPeriodEnd: boolean().notNull(),
 	customerId: text().notNull(),
 	createdAt: timestamp({
 		mode: "date",
@@ -230,10 +230,6 @@ export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
 	user: one(users, {
 		fields: [subscriptions.userId],
 		references: [users.id],
-	}),
-	customer: one(customers, {
-		fields: [subscriptions.customerId],
-		references: [customers.id],
 	}),
 }));
 
