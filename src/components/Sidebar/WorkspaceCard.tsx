@@ -242,7 +242,7 @@ export const WorkspaceCard = ({
 						<span
 							title={workspaceName}
 							className={cn([
-								"font-normal text-xs truncate w-full",
+								"text-xs truncate w-full font-semibold",
 								{
 									"animate-pulse":
 										updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,

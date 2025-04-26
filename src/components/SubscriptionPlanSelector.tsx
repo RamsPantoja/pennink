@@ -73,7 +73,7 @@ export default function SubscriptionPlansModal({
 								"Upload files, each up to 100 pages / 6 MB in size",
 								"Up to 250 MB storage",
 							]}
-							buttonText="Get Started"
+							buttonText="Cancel current subscription"
 							subscriptionType="FREE"
 							currentSubscription={currentSubscription}
 							lookupKey="pennink_free"
