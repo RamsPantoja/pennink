@@ -2,9 +2,19 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { type Session, getServerSession } from "next-auth";
 import Head from "next/head";
 import { authOptions } from "~/server/auth";
-import { Card } from "~/components/ui/card";
+import {
+	Card,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "~/components/ui/card";
 import { Button } from "~/components/common/Button";
-import { ArrowLongLeftIcon } from "@heroicons/react/24/outline";
+import {
+	ArrowLongLeftIcon,
+	AtSymbolIcon,
+	DocumentTextIcon,
+	ShieldExclamationIcon,
+} from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -16,6 +26,29 @@ import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { DateTime } from "luxon";
 import { Fragment } from "react";
 import { toast } from "sonner";
+import { Separator } from "~/components/ui/separator";
+import Link from "next/link";
+
+const supportOptions = [
+	{
+		title: "Email Support",
+		description: "Get help via email",
+		icon: AtSymbolIcon,
+		link: "mailto:hola@pennink.xyz",
+	},
+	{
+		title: "Privacy Policy",
+		description: "Read our privacy policy",
+		icon: ShieldExclamationIcon,
+		link: "/privacy-policy",
+	},
+	{
+		title: "Terms of Service",
+		description: "Read our terms of service",
+		icon: DocumentTextIcon,
+		link: "/tos",
+	},
+];
 
 const Settings = ({
 	session,
@@ -71,13 +104,6 @@ const Settings = ({
 					>
 						Sign out
 					</Button>
-				</div>
-
-				<div>
-					<h1 className="text-3xl font-bold">Settings</h1>
-					<p className="text-muted-foreground">
-						Manage your account settings and preferences.
-					</p>
 				</div>
 				<Card className="flex gap-4 w-full justify-between flex-wrap">
 					<div className="flex flex-row items-center gap-4">
@@ -156,12 +182,40 @@ const Settings = ({
 												getCustomerPortalLink();
 											}}
 										>
-											Manage your subscription
+											Manage Billing
 										</Button>
 									</Card>
 								)}
 						</Fragment>
 					)}
+				</Card>
+				<Separator />
+				<Card className="flex flex-col gap-4">
+					<h2 className="font-semibold">Support and Resources</h2>
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{supportOptions.map((option, index) => (
+							<Link
+								key={index}
+								href={option.link}
+								target="_blank"
+								className="group"
+							>
+								<Card className="shadow-none hover:bg-gray-50 transition-colors border">
+									<CardHeader className="pb-2">
+										<div className="flex items-center gap-3 mb-2">
+											<option.icon className="h-5 w-5 text-gray-400 group-hover:text-gray-900 transition-colors" />
+											<CardTitle className="text-base font-medium">
+												{option.title}
+											</CardTitle>
+										</div>
+										<CardDescription className="text-sm">
+											{option.description}
+										</CardDescription>
+									</CardHeader>
+								</Card>
+							</Link>
+						))}
+					</div>
 				</Card>
 			</div>
 		</div>
