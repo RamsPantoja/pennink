@@ -19,6 +19,13 @@ export class Subscription {
 			},
 		});
 
+		if (!subscription) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Subscription not found",
+			});
+		}
+
 		return subscription;
 	}
 }

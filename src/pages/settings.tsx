@@ -38,6 +38,7 @@ import { api } from "~/utils/api";
 import { Skeleton } from "~/components/ui/skeleton";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { DateTime } from "luxon";
+import { Fragment } from "react";
 
 const Settings = ({
 	session,
@@ -46,9 +47,11 @@ const Settings = ({
 
 	const {
 		data: subscription,
-		isPending: isSubscriptionPending,
+		isLoading: isSubscriptionLoading,
 		isError: isSubscriptionError,
-	} = api.subscription.getSubscription.useQuery();
+	} = api.subscription.getSubscription.useQuery(undefined, {
+		enabled: session.user.subscription !== "FREE",
+	});
 
 	return (
 		<div className="flex w-full justify-center p-4">
@@ -107,59 +110,61 @@ const Settings = ({
 							currentSubscription={session.user.subscription}
 						/>
 					)}
-
-					{isSubscriptionPending && (
-						<Card className="flex flex-col p-0">
-							<div className="flex justify-between items-center mb-4 gap-4 flex-wrap animate-pulse">
-								<div>
-									<Skeleton className="h-6 w-32 mb-2" />
-									<Skeleton className="h-5 w-24 mb-2" />
-									<Skeleton className="h-5 w-20 rounded-full" />
-								</div>
-								<div className="flex items-end flex-col">
-									<Skeleton className="h-5 w-20 mb-2" />
-									<Skeleton className="h-5 w-32" />
-								</div>
-							</div>
-							<Skeleton className="h-9 mb-2" />
-						</Card>
-					)}
-					{!isSubscriptionPending && isSubscriptionError && (
-						<FeedbackMessage
-							status="ERROR"
-							message="Failed to load subscription details."
-						/>
-					)}
-					{session.user.subscription !== "FREE" &&
-						!isSubscriptionPending &&
-						!isSubscriptionError &&
-						subscription && (
-							<Card className="flex flex-col p-0">
-								<div className="flex justify-between items-center mb-4 gap-4 flex-wrap">
-									<div>
-										<h3 className="font-semibold">Current Plan</h3>
-										<p className="text-sm text-muted-foreground">
-											{session.user.subscription} Plan
-										</p>
-										<Badge variant="outline">{subscription.status}</Badge>
+					{session.user.subscription !== "FREE" && (
+						<Fragment>
+							{isSubscriptionLoading && (
+								<Card className="flex flex-col p-0">
+									<div className="flex justify-between items-center mb-4 gap-4 flex-wrap animate-pulse">
+										<div>
+											<Skeleton className="h-6 w-32 mb-2" />
+											<Skeleton className="h-5 w-24 mb-2" />
+											<Skeleton className="h-5 w-20 rounded-full" />
+										</div>
+										<div className="flex items-end flex-col">
+											<Skeleton className="h-5 w-20 mb-2" />
+											<Skeleton className="h-5 w-32" />
+										</div>
 									</div>
-									<div className="text-right">
-										{session.user.subscription === "PRO" && (
-											<p className="font-medium">$8/month</p>
-										)}
-										<p className="text-sm text-muted-foreground">
-											Renews on{" "}
-											{DateTime.fromSeconds(
-												Number.parseInt(subscription.currentPeriodEnd),
-											).toLocaleString(DateTime.DATE_FULL)}
-										</p>
-									</div>
-								</div>
-								<Button variant="outline" className="w-full sm:w-auto">
-									Cancel subscription
-								</Button>
-							</Card>
-						)}
+									<Skeleton className="h-9 mb-2" />
+								</Card>
+							)}
+							{!isSubscriptionLoading && isSubscriptionError && (
+								<FeedbackMessage
+									status="ERROR"
+									message="Failed to load subscription details."
+								/>
+							)}
+							{!isSubscriptionLoading &&
+								!isSubscriptionError &&
+								subscription && (
+									<Card className="flex flex-col p-0">
+										<div className="flex justify-between items-center mb-4 gap-4 flex-wrap">
+											<div>
+												<h3 className="font-semibold">Current Plan</h3>
+												<p className="text-sm text-muted-foreground">
+													{session.user.subscription} Plan
+												</p>
+												<Badge variant="outline">{subscription.status}</Badge>
+											</div>
+											<div className="text-right">
+												{session.user.subscription === "PRO" && (
+													<p className="font-medium">$8/month</p>
+												)}
+												<p className="text-sm text-muted-foreground">
+													Renews on{" "}
+													{DateTime.fromSeconds(
+														Number.parseInt(subscription.currentPeriodEnd),
+													).toLocaleString(DateTime.DATE_FULL)}
+												</p>
+											</div>
+										</div>
+										<Button variant="outline" className="w-full sm:w-auto">
+											Manage your subscription
+										</Button>
+									</Card>
+								)}
+						</Fragment>
+					)}
 				</Card>
 			</div>
 		</div>
