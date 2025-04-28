@@ -6,6 +6,7 @@ import { workspaceRouter } from "./routers/workspace";
 import { chatRouter } from "./routers/chat";
 import { noteRouter } from "./routers/note";
 import { storageRouter } from "./routers/storage";
+import { subscriptionRouter } from "./routers/subscription";
 
 /**
  * This is the primary router for your server.
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
 	chat: chatRouter,
 	note: noteRouter,
 	storage: storageRouter,
+	subscription: subscriptionRouter,
 });
 
 // export type definition of API

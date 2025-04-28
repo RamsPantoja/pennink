@@ -6,6 +6,7 @@ import { WorkspaceService } from "./workspace";
 import { Chat } from "./chat";
 import { NoteService } from "./note";
 import { StorageService } from "./storage";
+import { Subscription } from "./subscription";
 
 export type ServicesContext = {
 	userService: UserService;
@@ -15,6 +16,7 @@ export type ServicesContext = {
 	chatService: Chat;
 	noteService: NoteService;
 	storageService: StorageService;
+	subscriptionService: Subscription;
 };
 
 export type ServicesConfig = {
@@ -30,6 +32,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		chatService: new Chat({ ctx }),
 		noteService: new NoteService({ ctx }),
 		storageService: new StorageService({ ctx }),
+		subscriptionService: new Subscription({ ctx }),
 	};
 };
 

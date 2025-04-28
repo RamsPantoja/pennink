@@ -33,11 +33,23 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
+import SubscriptionPlansModal from "~/components/SubscriptionPlanSelector";
+import { api } from "~/utils/api";
+import { Skeleton } from "~/components/ui/skeleton";
+import FeedbackMessage from "~/components/common/FeedbackMessage";
+import { DateTime } from "luxon";
 
 const Settings = ({
 	session,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
+
+	const {
+		data: subscription,
+		isPending: isSubscriptionPending,
+		isError: isSubscriptionError,
+	} = api.subscription.getSubscription.useQuery();
+
 	return (
 		<div className="flex w-full justify-center p-4">
 			<Head>
@@ -74,38 +86,81 @@ const Settings = ({
 						Manage your account settings and preferences.
 					</p>
 				</div>
-				<div className="flex flex-row items-center gap-2">
-					<Avatar className="h-20 w-20">
-						<AvatarImage src={session.user.image as string} />
-						<AvatarFallback>You</AvatarFallback>
-					</Avatar>
-					<div className="flex flex-col w-full overflow-hidden gap-1">
-						<p className="truncate font-bold text-mochaText">
-							{session.user.name}
-						</p>
-						<p className="truncate text-xs text-mochaText">
-							{session.user.email}
-						</p>
-						<Badge>{session.user.subscription} plan</Badge>
-					</div>
-				</div>
-				<div className="rounded-lg border p-4">
-					<div className="flex justify-between items-center mb-4">
-						<div>
-							<h3 className="font-medium">Current Plan</h3>
-							<p className="text-sm text-muted-foreground">Pro Plan</p>
-						</div>
-						<div className="text-right">
-							<p className="font-medium">$19.99/month</p>
-							<p className="text-sm text-muted-foreground">
-								Renews on May 25, 2025
+				<Card className="flex gap-4 w-full justify-between flex-wrap">
+					<div className="flex flex-row items-center gap-4">
+						<Avatar className="h-20 w-20">
+							<AvatarImage src={session.user.image as string} />
+							<AvatarFallback>You</AvatarFallback>
+						</Avatar>
+						<div className="flex flex-col w-full overflow-hidden gap-1">
+							<p className="truncate font-bold text-mochaText">
+								{session.user.name}
 							</p>
+							<p className="truncate text-xs text-mochaText">
+								{session.user.email}
+							</p>
+							<Badge>{session.user.subscription} plan</Badge>
 						</div>
 					</div>
-					<Button variant="outline" className="w-full sm:w-auto">
-						Change Plan
-					</Button>
-				</div>
+					{session.user.subscription === "FREE" && (
+						<SubscriptionPlansModal
+							currentSubscription={session.user.subscription}
+						/>
+					)}
+
+					{isSubscriptionPending && (
+						<Card className="flex flex-col p-0">
+							<div className="flex justify-between items-center mb-4 gap-4 flex-wrap animate-pulse">
+								<div>
+									<Skeleton className="h-6 w-32 mb-2" />
+									<Skeleton className="h-5 w-24 mb-2" />
+									<Skeleton className="h-5 w-20 rounded-full" />
+								</div>
+								<div className="flex items-end flex-col">
+									<Skeleton className="h-5 w-20 mb-2" />
+									<Skeleton className="h-5 w-32" />
+								</div>
+							</div>
+							<Skeleton className="h-9 mb-2" />
+						</Card>
+					)}
+					{!isSubscriptionPending && isSubscriptionError && (
+						<FeedbackMessage
+							status="ERROR"
+							message="Failed to load subscription details."
+						/>
+					)}
+					{session.user.subscription !== "FREE" &&
+						!isSubscriptionPending &&
+						!isSubscriptionError &&
+						subscription && (
+							<Card className="flex flex-col p-0">
+								<div className="flex justify-between items-center mb-4 gap-4 flex-wrap">
+									<div>
+										<h3 className="font-semibold">Current Plan</h3>
+										<p className="text-sm text-muted-foreground">
+											{session.user.subscription} Plan
+										</p>
+										<Badge variant="outline">{subscription.status}</Badge>
+									</div>
+									<div className="text-right">
+										{session.user.subscription === "PRO" && (
+											<p className="font-medium">$8/month</p>
+										)}
+										<p className="text-sm text-muted-foreground">
+											Renews on{" "}
+											{DateTime.fromSeconds(
+												Number.parseInt(subscription.currentPeriodEnd),
+											).toLocaleString(DateTime.DATE_FULL)}
+										</p>
+									</div>
+								</div>
+								<Button variant="outline" className="w-full sm:w-auto">
+									Cancel subscription
+								</Button>
+							</Card>
+						)}
+				</Card>
 			</div>
 		</div>
 	);
