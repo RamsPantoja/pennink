@@ -21,4 +21,9 @@ export const paymentRouter = createTRPCRouter({
 					ctx.session.user.id,
 				);
 		}),
+	getCustomerPortalLink: protectedProcedure.mutation(async ({ ctx }) => {
+		return await ctx
+			.services({ ctx })
+			.paymentService.generateCustomerPortalLink(ctx.session.user.id);
+	}),
 });

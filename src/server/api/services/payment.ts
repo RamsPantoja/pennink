@@ -155,7 +155,6 @@ class PaymentService {
 
 	public async processEvent(event: Stripe.Event) {
 		const { type, data } = event;
-		console.log(type);
 
 		switch (event.type) {
 			//Basic payments
@@ -327,6 +326,29 @@ class PaymentService {
 		}
 
 		return newCustomer;
+	}
+
+	public async generateCustomerPortalLink(userId: string) {
+		const customer = await this.ctx.db.query.customers.findFirst({
+			where: (customers, { eq }) => {
+				return eq(customers.userId, userId);
+			},
+		});
+
+		if (!customer) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message:
+					"You are not authorized to access this feature or don't have a customer account",
+			});
+		}
+
+		const portalSession = await this.stripe.billingPortal.sessions.create({
+			customer: customer.customerId,
+			return_url: `${env.NEXT_PUBLIC_BASE_URL}/settings`,
+		});
+
+		return portalSession.url;
 	}
 }
 

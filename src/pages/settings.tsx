@@ -1,34 +1,10 @@
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { type Session, getServerSession } from "next-auth";
 import Head from "next/head";
-import Dashboard from "~/layout/Dashboard";
 import { authOptions } from "~/server/auth";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "~/components/ui/card";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Switch } from "~/components/ui/switch";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "~/components/ui/select";
+import { Card } from "~/components/ui/card";
 import { Button } from "~/components/common/Button";
-import {
-	ArrowLeftIcon,
-	ArrowLongLeftIcon,
-	AtSymbolIcon,
-	CreditCardIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLongLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -39,6 +15,7 @@ import { Skeleton } from "~/components/ui/skeleton";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { DateTime } from "luxon";
 import { Fragment } from "react";
+import { toast } from "sonner";
 
 const Settings = ({
 	session,
@@ -51,6 +28,19 @@ const Settings = ({
 		isError: isSubscriptionError,
 	} = api.subscription.getSubscription.useQuery(undefined, {
 		enabled: session.user.subscription !== "FREE",
+	});
+
+	const {
+		mutate: getCustomerPortalLink,
+		isPending: isCustomerPortalLinkPending,
+	} = api.payment.getCustomerPortalLink.useMutation({
+		onSuccess: (data) => {
+			router.push(data);
+		},
+		onError: (error) => {
+			console.error("[CUSTOMER PORTAL LINK] Error:", error.message);
+			toast.error("Failed to open customer portal");
+		},
 	});
 
 	return (
@@ -158,7 +148,14 @@ const Settings = ({
 												</p>
 											</div>
 										</div>
-										<Button variant="outline" className="w-full sm:w-auto">
+										<Button
+											isPending={isCustomerPortalLinkPending}
+											variant="outline"
+											className="w-full sm:w-auto"
+											onClick={() => {
+												getCustomerPortalLink();
+											}}
+										>
 											Manage your subscription
 										</Button>
 									</Card>
