@@ -18,12 +18,6 @@ type AccountServiceContructor = {
 	ctx: TRPCContext;
 };
 
-type StripeFlowObject = {
-	generateOnboardingLink: Stripe.AccountLink;
-	newStripeAccount?: Stripe.Account;
-	stripeAccountDB?: object;
-};
-
 type PaymentLinkConfig = {
 	items: StripeItem[];
 	currency: string;
