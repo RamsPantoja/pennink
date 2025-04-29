@@ -3,7 +3,7 @@ import type { Session } from "next-auth";
 import type { TRPCContext } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { Stripe } from "stripe";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { env } from "~/env";
 import { customers, payments, subscriptions, users } from "~/server/db/schema";
 import type {
@@ -186,9 +186,109 @@ class PaymentService {
 				// The subscription becomes past_due. Notify your customer and send them to the
 				// customer portal to update their payment information.
 				break;
+			case "customer.subscription.deleted":
+				{
+					const subscription = event.data.object;
+					await this.cancelSubscription(subscription);
+				}
+				break;
+			case "customer.subscription.updated":
+				{
+				}
+				break;
 			default:
 				break;
 		}
+	}
+
+	private async updateSubscription(subscriptionData: Stripe.Subscription) {
+		const { id, status, customer, cancel_at_period_end } = subscriptionData;
+
+		if (typeof customer !== "string") {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "[CANCEL SUBSCRIPTION]: Customer ID must be a string",
+			});
+		}
+
+		const subscription = await this.ctx.db.query.subscriptions.findFirst({
+			where: (subscriptions, { eq, and }) => {
+				return and(
+					eq(subscriptions.subscriptionId, id),
+					eq(subscriptions.status, "active"),
+					eq(subscriptions.customerId, customer),
+				);
+			},
+		});
+
+		if (!subscription) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Subscription not found",
+			});
+		}
+
+		await this.ctx.db
+			.update(subscriptions)
+			.set({
+				status,
+				cancelAtPeriodEnd: cancel_at_period_end,
+			})
+			.where(
+				and(
+					eq(subscriptions.subscriptionId, id),
+					eq(subscriptions.status, "active"),
+					eq(subscriptions.customerId, customer),
+				),
+			);
+	}
+
+	private async cancelSubscription(subscriptionData: Stripe.Subscription) {
+		const { id, status, customer } = subscriptionData;
+
+		if (typeof customer !== "string") {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "[CANCEL SUBSCRIPTION]: Customer ID must be a string",
+			});
+		}
+
+		const subscription = await this.ctx.db.query.subscriptions.findFirst({
+			where: (subscriptions, { eq, and }) => {
+				return and(
+					eq(subscriptions.subscriptionId, id),
+					eq(subscriptions.status, "active"),
+					eq(subscriptions.customerId, customer),
+				);
+			},
+		});
+
+		if (!subscription) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Subscription not found",
+			});
+		}
+
+		await this.ctx.db
+			.update(subscriptions)
+			.set({
+				status,
+			})
+			.where(
+				and(
+					eq(subscriptions.subscriptionId, id),
+					eq(subscriptions.status, "active"),
+					eq(subscriptions.customerId, customer),
+				),
+			);
+
+		await this.ctx.db
+			.update(users)
+			.set({
+				subscription: "FREE",
+			})
+			.where(eq(users.id, subscription.userId));
 	}
 
 	private async createSubscription(
