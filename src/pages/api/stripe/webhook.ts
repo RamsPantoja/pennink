@@ -35,14 +35,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			.services({ ctx: trpcContext })
 			.paymentService.processEvent(event);
 
-		return res.status(200).json({
+		res.status(200).json({
 			code: 200,
 			message: "We have received the event and was processed",
 		});
 	} catch (error) {
 		console.error("[STRIPE WEBHOOK]:", error);
 
-		return res.status(500).json({
+		res.status(500).json({
 			code: 500,
 			message:
 				"Something went wrong generating the onboarding stripe account url",

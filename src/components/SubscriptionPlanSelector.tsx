@@ -38,7 +38,7 @@ export default function SubscriptionPlansModal({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button size="lg" className="px-6">
+				<Button size="sm" className="px-6">
 					Upgrade plan
 				</Button>
 			</DialogTrigger>
@@ -163,10 +163,9 @@ function PricingCard({
 	});
 
 	const generatePaymentLink = () => {
-		// Implement payment link generation logic here
 		paymentSubscriptionLink({
 			lookupKeys: [lookupKey],
-			successUrl: `${env.NEXT_PUBLIC_BASE_URL}/subscription/success`,
+			successUrl: `${env.NEXT_PUBLIC_BASE_URL}/api/subscription/success`,
 			cancelUrl: `${env.NEXT_PUBLIC_BASE_URL}${router.asPath}`,
 		});
 	};
