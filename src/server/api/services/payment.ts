@@ -13,6 +13,7 @@ import type {
 import type { Subscription } from "~/lib/enum";
 
 export type StripeProductKey = "PENNINK_PRO" | "PENNINK_PREMIUM";
+type Customer = typeof customers.$inferSelect;
 
 type AccountServiceContructor = {
 	ctx: TRPCContext;
@@ -194,6 +195,8 @@ class PaymentService {
 				break;
 			case "customer.subscription.updated":
 				{
+					const subscription = event.data.object;
+					await this.syncStripeSubToDB(subscription);
 				}
 				break;
 			default:
@@ -201,120 +204,19 @@ class PaymentService {
 		}
 	}
 
-	private async updateSubscription(subscriptionData: Stripe.Subscription) {
-		const { id, status, customer, cancel_at_period_end } = subscriptionData;
-
-		if (typeof customer !== "string") {
-			throw new TRPCError({
-				code: "BAD_REQUEST",
-				message: "[CANCEL SUBSCRIPTION]: Customer ID must be a string",
-			});
-		}
-
-		const subscription = await this.ctx.db.query.subscriptions.findFirst({
-			where: (subscriptions, { eq, and }) => {
-				return and(
-					eq(subscriptions.subscriptionId, id),
-					eq(subscriptions.status, "active"),
-					eq(subscriptions.customerId, customer),
-				);
-			},
-		});
-
-		if (!subscription) {
-			throw new TRPCError({
-				code: "NOT_FOUND",
-				message: "Subscription not found",
-			});
-		}
-
-		await this.ctx.db
-			.update(subscriptions)
-			.set({
-				status,
-				cancelAtPeriodEnd: cancel_at_period_end,
-			})
-			.where(
-				and(
-					eq(subscriptions.subscriptionId, id),
-					eq(subscriptions.status, "active"),
-					eq(subscriptions.customerId, customer),
-				),
-			);
-	}
-
 	private async cancelSubscription(subscriptionData: Stripe.Subscription) {
-		const { id, status, customer } = subscriptionData;
-
-		if (typeof customer !== "string") {
-			throw new TRPCError({
-				code: "BAD_REQUEST",
-				message: "[CANCEL SUBSCRIPTION]: Customer ID must be a string",
-			});
-		}
-
-		const subscription = await this.ctx.db.query.subscriptions.findFirst({
-			where: (subscriptions, { eq, and }) => {
-				return and(
-					eq(subscriptions.subscriptionId, id),
-					eq(subscriptions.status, "active"),
-					eq(subscriptions.customerId, customer),
-				);
-			},
-		});
-
-		if (!subscription) {
-			throw new TRPCError({
-				code: "NOT_FOUND",
-				message: "Subscription not found",
-			});
-		}
-
-		await this.ctx.db
-			.update(subscriptions)
-			.set({
-				status,
-			})
-			.where(
-				and(
-					eq(subscriptions.subscriptionId, id),
-					eq(subscriptions.status, "active"),
-					eq(subscriptions.customerId, customer),
-				),
-			);
+		const sub = await this.syncStripeSubToDB(subscriptionData);
 
 		await this.ctx.db
 			.update(users)
 			.set({
 				subscription: "FREE",
 			})
-			.where(eq(users.id, subscription.userId));
+			.where(eq(users.id, sub.userId));
 	}
 
-	private async createSubscription(
-		subscriptionData: Stripe.Response<Stripe.Subscription>,
-	) {
-		const { customer: customerId, items } = subscriptionData;
-
-		if (typeof customerId !== "string") {
-			throw new TRPCError({
-				code: "BAD_REQUEST",
-				message: "Invalid customer ID: Customer ID must be a string",
-			});
-		}
-
-		const customer = await this.ctx.db.query.customers.findFirst({
-			where: (customers, { eq }) => {
-				return eq(customers.customerId, customerId);
-			},
-		});
-
-		if (!customer) {
-			throw new TRPCError({
-				code: "NOT_FOUND",
-				message: "Customer record not found in Pennink DB",
-			});
-		}
+	private async createSubscription(subscriptionData: Stripe.Subscription) {
+		const { items } = subscriptionData;
 
 		for await (const item of items.data) {
 			const { price } = item;
@@ -339,25 +241,7 @@ class PaymentService {
 				});
 			}
 
-			const [subscription] = await this.ctx.db
-				.insert(subscriptions)
-				.values({
-					userId: customer.userId,
-					customerId: customer.customerId,
-					subscriptionId: subscriptionData.id,
-					status: subscriptionData.status,
-					currentPeriodEnd: subscriptionData.current_period_end.toString(),
-					currentPeriodStart: subscriptionData.current_period_start.toString(),
-					cancelAtPeriodEnd: subscriptionData.cancel_at_period_end,
-				})
-				.returning();
-
-			if (!subscription) {
-				throw new TRPCError({
-					code: "INTERNAL_SERVER_ERROR",
-					message: "Failed to create subscription in Pennink DB",
-				});
-			}
+			const sub = await this.syncStripeSubToDB(subscriptionData);
 
 			const availableSubscriptionsByProduct: Record<
 				StripeProductKey,
@@ -367,11 +251,98 @@ class PaymentService {
 				PENNINK_PREMIUM: "PREMIUM",
 			};
 
-			await this.ctx.db.update(users).set({
-				subscription:
-					availableSubscriptionsByProduct[productKey as StripeProductKey],
+			await this.ctx.db
+				.update(users)
+				.set({
+					subscription:
+						availableSubscriptionsByProduct[productKey as StripeProductKey],
+				})
+				.where(eq(users.id, sub.userId));
+		}
+	}
+
+	private async syncStripeSubToDB(sub: Stripe.Subscription) {
+		const { customer: customerId } = sub;
+
+		if (typeof customerId !== "string") {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "Invalid customer ID: Customer ID must be a string",
 			});
 		}
+
+		const customer = await this.ctx.db.query.customers.findFirst({
+			where: (customers, { eq }) => {
+				return eq(customers.customerId, customerId);
+			},
+		});
+
+		if (!customer) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Customer record not found in Pennink DB",
+			});
+		}
+
+		const subscriptionInDB = await this.ctx.db.query.subscriptions.findFirst({
+			where: (subscriptions, { eq, and }) => {
+				return and(
+					eq(subscriptions.subscriptionId, sub.id),
+					eq(subscriptions.customerId, customer.customerId),
+					eq(subscriptions.userId, customer.userId),
+				);
+			},
+		});
+
+		if (subscriptionInDB) {
+			const [subscription] = await this.ctx.db
+				.update(subscriptions)
+				.set({
+					status: sub.status,
+					currentPeriodEnd: sub.current_period_end.toString(),
+					currentPeriodStart: sub.current_period_start.toString(),
+					cancelAtPeriodEnd: sub.cancel_at_period_end,
+				})
+				.where(
+					and(
+						eq(subscriptions.subscriptionId, sub.id),
+						eq(subscriptions.customerId, customer.customerId),
+						eq(subscriptions.userId, customer.userId),
+					),
+				)
+				.returning();
+
+			if (!subscription) {
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Failed to update subscription in Pennink DB",
+				});
+			}
+
+			return subscription;
+		}
+
+		const [subscription] = await this.ctx.db
+			.insert(subscriptions)
+			.values({
+				userId: customer.userId,
+				customerId: customer.customerId,
+				subscriptionId: sub.id,
+				status: sub.status,
+				currentPeriodEnd: sub.current_period_end.toString(),
+				currentPeriodStart: sub.current_period_start.toString(),
+				cancelAtPeriodEnd: sub.cancel_at_period_end,
+			})
+			.returning();
+
+		if (!subscription) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "Failed to create subscription in Pennink DB",
+			});
+		}
+
+		return subscription;
 	}
 
 	private async verifyCustomer(userId: string) {

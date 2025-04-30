@@ -166,12 +166,21 @@ const Settings = ({
 												{session.user.subscription === "PRO" && (
 													<p className="font-medium">$8/month</p>
 												)}
-												<p className="text-sm text-muted-foreground">
-													Renews on{" "}
-													{DateTime.fromSeconds(
-														Number.parseInt(subscription.currentPeriodEnd),
-													).toLocaleString(DateTime.DATE_FULL)}
-												</p>
+												{subscription.cancelAtPeriodEnd ? (
+													<p className="font-semibold text-xs text-orange-400">
+														Ends on{" "}
+														{DateTime.fromSeconds(
+															Number.parseInt(subscription.currentPeriodEnd),
+														).toLocaleString(DateTime.DATE_FULL)}
+													</p>
+												) : (
+													<p className="text-muted-foreground text-xs">
+														Renews on{" "}
+														{DateTime.fromSeconds(
+															Number.parseInt(subscription.currentPeriodEnd),
+														).toLocaleString(DateTime.DATE_FULL)}
+													</p>
+												)}
 											</div>
 										</div>
 										<Button
