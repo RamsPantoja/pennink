@@ -1,30 +1,15 @@
-type NewBookingRequestEmailProps = {
-  bookingDate: string;
-  bookingTime: string;
-  link: string;
-  message: string;
-  senderName: string;
-  senderAvatar: string;
-  senderHeadline: string;
+type Params = {
+	linkTo: string;
 };
 
-const newBookingRequestEmailTemplate = ({
-  bookingDate,
-  link,
-  bookingTime,
-  message,
-  senderAvatar,
-  senderName,
-  senderHeadline,
-}: NewBookingRequestEmailProps) => {
-  return `
+export const paymentFailedTemplate = ({ linkTo }: Params) => `
   <!doctype html>
   <html lang="en">
       <head>
           <meta charset="UTF-8" />
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>New Booking Request</title>
+          <title>Payment method failed</title>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
               rel="preconnect"
@@ -47,7 +32,7 @@ const newBookingRequestEmailTemplate = ({
           <div
               class="email_template__content"
               style="
-                  border: 2px solid #cba6f7;
+                  border: 2px solid #f9dcf8;
                   border-radius: 10px;
                   max-width: 624px;
                   min-width: 624px;
@@ -65,13 +50,13 @@ const newBookingRequestEmailTemplate = ({
                       display: block;
                       margin: 0;
                       position: relative;
-                      background-color: #1e1e2e;
+                      background-color: #ffffff;
                   "
               >
                   <div class="horizontal__center_img" style="text-align: center">
                       <img
                           class="paddind_img"
-                          src="https://firebasestorage.googleapis.com/v0/b/buuddy-3e4d0.appspot.com/o/assets%2Fbuuddy_logotype_nobg.png?alt=media&token=0f131a15-394d-40de-8e41-99f1a6e54fec"
+                          src="https://storage.pennink.xyz/icon.png"
                           width="28px"
                           height="auto"
                           alt="isotipo r3d"
@@ -79,14 +64,14 @@ const newBookingRequestEmailTemplate = ({
                       />
                       <p
                           style="
-                              color: #cdd6f4;
+                              color: #000000;
                               margin: 0;
                               font-weight: 700;
                               font-size: 24px;
                               display: initial;
                           "
                       >
-                          buuddy
+                        Pennink
                       </p>
                   </div>
               </div>
@@ -95,65 +80,40 @@ const newBookingRequestEmailTemplate = ({
                       border-radius: 0 0 8px 8px;
                       margin: 0 auto;
                       text-align: left;
-                      background-color: #181825;
+                      background-color: #ffffff;
                       padding: 30px;
                   "
               >
-                  <h1 style="color: #bac2de; text-align: center; font-size: 24px">
-                      Booking Request
+                  <h1 style="color: #4c4f69; font-size: 24px">
+                    Payment method failed
                   </h1>
-                  <p style="color: #bac2de; font-size: 14px">
-                      You have received a new booking request for the date:
-                      <b>${bookingDate}</b> at <b>${bookingTime}</b>.
+                  <p style="color: #4c4f69; font-size: 14px">
+                    The payment to renew your subscription was not completed correctly.
                   </p>
-                  <div style="color: #bac2de">
-                      <img
-                          src=${senderAvatar}
-                          alt="Service Image"
-                          width="60px"
-                          height="auto"
-                          style="
-                              border-radius: 10px;
-                              display: inline-block;
-                              position: relative;
-                              top: 10px;
-                          "
-                      />
-                      <div style="display: inline-block; padding-left: 10px">
-                          <p style="margin: 0; font-size: 16px">
-                              <b>${senderName}</b>
-                          </p>
-                          <p style="margin: 0; font-size: 14px">
-                              ${senderHeadline}
-                          </p>
-                      </div>
-                  </div>
-                  <p style="color: #bac2de; font-size: 14px">
-                      <b>Message:</b> ${message}
+                  <p style="color: #4c4f69; font-size: 14px">
+                    We recommend you verify and update your billing details.
                   </p>
                   <a
-                      href="${link}"
+                      href="${linkTo}"
                       style="
                           display: inline-block;
                           color: #000000;
-                          background-color: #cba6f7;
+                          background-color: #f9dcf8;
                           padding: 14px;
                           border-radius: 5px;
                           font-weight: 600;
                           margin: 20px 0 20px 0;
                       "
-                      >View Request</a
+                      >Go to settings</a
                   >
-                  <p style="color: #bac2de; font-size: 14px">
+                  <p style="color: #4c4f69; font-size: 14px">
                       If you have any questions or comments, please do not
                       hesitate to contact us.
                   </p>
-                  <p style="color: #bac2de; font-size: 14px">Thank you!</p>
+                  <a style="color: #4c4f69; font-size: 14px" mailto="hola@pennink.xyz">hola@pennink.xyz</a>
+                  <p style="color: #4c4f69; font-size: 14px">Thank you!</p>
               </div>
           </div>
       </body>
   </html>
-        `;
-};
-
-export default newBookingRequestEmailTemplate;
+`;

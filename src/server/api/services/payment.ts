@@ -11,6 +11,8 @@ import type {
 	updateStripeConnectOnBoardingInput,
 } from "../schemas/payment";
 import type { Subscription } from "~/lib/enum";
+import EmailService from "./email";
+import { paymentFailedTemplate } from "../templates/payment-failed";
 
 export type StripeProductKey = "PENNINK_PRO" | "PENNINK_PREMIUM";
 type Customer = typeof customers.$inferSelect;
@@ -56,10 +58,12 @@ export type UpdateOnboardingInput = z.infer<
 
 class PaymentService {
 	ctx: TRPCContext;
+	emailService: EmailService;
 	stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
 	constructor({ ctx }: AccountServiceContructor) {
 		this.ctx = ctx;
+		this.emailService = new EmailService({ ctx });
 	}
 
 	async createStripeConnectAccount() {
@@ -181,11 +185,8 @@ class PaymentService {
 			//Recurring payments, subscriptions and invoices
 			case "invoice.payment_failed":
 				{
-					console.log(event.data.object);
+					await this.onPaymentFailed(event.data.object);
 				}
-				// The payment failed or the customer does not have a valid payment method.
-				// The subscription becomes past_due. Notify your customer and send them to the
-				// customer portal to update their payment information.
 				break;
 			case "customer.subscription.deleted":
 				{
@@ -202,6 +203,38 @@ class PaymentService {
 			default:
 				break;
 		}
+	}
+
+	private async onPaymentFailed(invoice: Stripe.Invoice) {
+		const { customer: customerId } = invoice;
+
+		if (typeof customerId !== "string") {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "Invalid customer ID: Customer ID must be a string",
+			});
+		}
+
+		const customer = await this.ctx.db.query.customers.findFirst({
+			where: eq(customers.customerId, customerId),
+			with: {
+				user: true,
+			},
+		});
+
+		if (!customer) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "User not found",
+			});
+		}
+
+		await this.emailService.send({
+			to: [customer.user.email],
+			from: "Pennink <no-reply@pennink.xyz>",
+			subject: "Payment Subscription Failed",
+			html: paymentFailedTemplate({ linkTo: `${env.NEXTAUTH_URL}/settings` }),
+		});
 	}
 
 	private async cancelSubscription(subscriptionData: Stripe.Subscription) {
