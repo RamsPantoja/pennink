@@ -14,10 +14,10 @@ export class Subscription {
 
 	public async getUserSubscription(userId: string) {
 		const subscription = await this.ctx.db.query.subscriptions.findFirst({
-			where: (subscriptions, { eq, and }) => {
+			where: (subscriptions, { ne, and, eq }) => {
 				return and(
 					eq(subscriptions.userId, userId),
-					eq(subscriptions.status, "active"),
+					ne(subscriptions.status, "canceled"),
 				);
 			},
 		});

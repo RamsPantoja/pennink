@@ -118,7 +118,7 @@ const Settings = ({
 							<p className="truncate text-xs text-mochaText">
 								{session.user.email}
 							</p>
-							<Badge>{session.user.subscription} plan</Badge>
+							<Badge variant="outline">{session.user.subscription} plan</Badge>
 						</div>
 					</div>
 					{session.user.subscription === "FREE" && (
@@ -160,27 +160,36 @@ const Settings = ({
 												<p className="text-sm text-muted-foreground">
 													{session.user.subscription} Plan
 												</p>
-												<Badge variant="outline">{subscription.status}</Badge>
+												<Badge>{subscription.status}</Badge>
 											</div>
 											<div className="text-right">
 												{session.user.subscription === "PRO" && (
 													<p className="font-medium">$8/month</p>
 												)}
-												{subscription.cancelAtPeriodEnd ? (
-													<p className="font-semibold text-xs text-orange-400">
-														Ends on{" "}
-														{DateTime.fromSeconds(
-															Number.parseInt(subscription.currentPeriodEnd),
-														).toLocaleString(DateTime.DATE_FULL)}
-													</p>
-												) : (
-													<p className="text-muted-foreground text-xs">
-														Renews on{" "}
-														{DateTime.fromSeconds(
-															Number.parseInt(subscription.currentPeriodEnd),
-														).toLocaleString(DateTime.DATE_FULL)}
-													</p>
-												)}
+												{subscription.cancelAtPeriodEnd &&
+													subscription.status === "active" && (
+														<p className="font-semibold text-xs text-orange-400">
+															Ends on{" "}
+															{DateTime.fromSeconds(
+																Number.parseInt(subscription.currentPeriodEnd),
+															).toLocaleString(DateTime.DATE_FULL)}
+														</p>
+													)}
+												{subscription.status === "active" &&
+													!subscription.cancelAtPeriodEnd && (
+														<p className="font-semibold text-muted-foreground text-xs">
+															Renews on{" "}
+															{DateTime.fromSeconds(
+																Number.parseInt(subscription.currentPeriodEnd),
+															).toLocaleString(DateTime.DATE_FULL)}
+														</p>
+													)}
+												{subscription.status === "past_due" &&
+													!subscription.cancelAtPeriodEnd && (
+														<p className="font-semibold text-muted-foreground text-xs">
+															Update payment method
+														</p>
+													)}
 											</div>
 										</div>
 										<Button
