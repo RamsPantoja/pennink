@@ -87,7 +87,12 @@ const Settings = ({
 				<div className="w-full flex justify-between">
 					<Button
 						onClick={() => {
-							router.back();
+							const { callbackUrl } = router.query;
+							if (typeof callbackUrl === "string") {
+								router.push(callbackUrl);
+							} else {
+								router.push("/");
+							}
 						}}
 						size="sm"
 						variant="ghost"

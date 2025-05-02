@@ -104,7 +104,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 						>
 							<DropdownMenuItem
 								onSelect={async () => {
-									await router.push("/settings");
+									await router.push(`/settings?callbackUrl=${router.asPath}`);
 								}}
 							>
 								<Cog6ToothIcon className="mr-2 h-5 min-w-5 text-mochaText" />
