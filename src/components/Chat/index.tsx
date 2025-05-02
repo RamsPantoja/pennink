@@ -35,7 +35,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		messagesIsError,
 		chatContainer,
 		onSentPromptMutationIsPending,
-		isStreamingLLMResponse,
 		quote,
 		onRemoveQuote,
 		onToggleChatModes,
@@ -146,7 +145,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						</ToggleGroup>
 					</div>
 					{(onSentPromptMutationIsPending ||
-						isStreamingLLMResponse ||
 						documentVectorSearchMutationIsPending) && (
 						<Button size="icon" disabled={false}>
 							<StopIcon className="min-w-5 w-5 h-5" />
@@ -154,7 +152,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					)}
 					{!(
 						onSentPromptMutationIsPending ||
-						isStreamingLLMResponse ||
 						documentVectorSearchMutationIsPending
 					) && (
 						<Button
@@ -162,7 +159,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							size="icon"
 							disabled={
 								onSentPromptMutationIsPending ||
-								isStreamingLLMResponse ||
 								createWorkspaceIsPending ||
 								!watch("prompt")
 							}

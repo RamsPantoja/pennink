@@ -35,8 +35,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const chatContainer = useRef<HTMLDivElement | null>(null);
 	const { readerEvent, setReaderEvent, document } = useWorkspaceStore();
-	const [isStreamingLLMResponse, setIsStreamingLLMResponse] =
-		useState<boolean>(false);
 	const [quote, setQuote] = useState<string | null>(null);
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
@@ -410,7 +408,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		messagesIsError,
 		chatContainer,
 		onSentPromptMutationIsPending,
-		isStreamingLLMResponse,
 		quote,
 		onRemoveQuote,
 		onToggleChatModes,

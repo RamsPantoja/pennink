@@ -5,10 +5,9 @@ import {
 	SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import Notifications from "~/components/Notifications";
 import { AppSidebar } from "~/components/Sidebar";

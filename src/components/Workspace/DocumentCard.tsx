@@ -66,7 +66,7 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 				</div>
 				<div className="flex items-center gap-2">
 					<span className="text-xs text-muted-foreground">{date}</span>
-					<DropdownMenu>
+					{/* <DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="ghost" size="icon" className="h-8 w-8">
 								<EllipsisVerticalIcon className="h-4 min-w-4" />
@@ -83,7 +83,7 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 								Delete
 							</DropdownMenuItem>
 						</DropdownMenuContent>
-					</DropdownMenu>
+					</DropdownMenu> */}
 				</div>
 			</div>
 		</Card>
