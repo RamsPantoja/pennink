@@ -66,12 +66,10 @@ export default function SubscriptionPlansModal({
 							price="$0"
 							description="Perfect for individuals just getting started"
 							features={[
-								"Up to 50 workspaces",
+								"Up to 25 workspaces",
 								"Share workspaces",
-								"Free access to all features",
 								"5 upload files / day",
 								"Upload files, each up to 100 pages / 6 MB in size",
-								"Up to 250 MB storage",
 							]}
 							buttonText="Cancel current subscription"
 							subscriptionType="FREE"
@@ -83,7 +81,7 @@ export default function SubscriptionPlansModal({
 					<TabsContent value="PRO" className="space-y-4">
 						<PricingCard
 							title="Pro"
-							price="$8"
+							price="$12"
 							description="Ideal for professionals"
 							features={[
 								"Everything in Free",
@@ -91,7 +89,6 @@ export default function SubscriptionPlansModal({
 								"10-20x more messages than Free",
 								"Unlimited upload files",
 								"Upload files, each up to 1000 pages / 50 MB in size",
-								"Up to 2GB storage",
 							]}
 							buttonText="Upgrade to Pennink Pro"
 							subscriptionType="PRO"

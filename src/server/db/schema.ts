@@ -312,6 +312,7 @@ export const messages = createTable("message", {
 		.notNull()
 		.references(() => chats.id),
 	content: text().notNull(),
+	quote: text(),
 	role: messageRoleEnum().notNull().default("SYSTEM"),
 	userId: uuid()
 		.notNull()
