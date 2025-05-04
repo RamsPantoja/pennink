@@ -84,6 +84,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						updatedAt: new Date(),
 						content: "",
 						role: "AGENT",
+						quote: null,
 					};
 
 					while (true) {
@@ -198,6 +199,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			updatedAt: new Date(),
 			content: data.prompt,
 			role: "USER",
+			quote,
 		};
 
 		if (!isNew && router.pathname !== "/") {
@@ -326,6 +328,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					updatedAt: new Date(),
 					content: prompt,
 					role: "USER",
+					quote: null,
 				};
 
 				createMessage({
@@ -356,6 +359,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					updatedAt: new Date(),
 					content: prompt,
 					role: "USER",
+					quote: null,
 				};
 
 				createMessage({

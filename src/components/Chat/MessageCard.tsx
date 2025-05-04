@@ -3,6 +3,7 @@ import { Card } from "../ui/card";
 import { cn, markdownToHtml } from "~/lib/utils";
 import { Button } from "../common/Button";
 import {
+	ArrowTurnDownRightIcon,
 	HandThumbDownIcon,
 	HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
@@ -32,6 +33,12 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 				},
 			])}
 		>
+			{message.quote && (
+				<Card className="flex items-start gap-2 border mb-2">
+					<ArrowTurnDownRightIcon className="min-w-5 h-5" />
+					<p className="text-sm flex-1 italic">{message.quote}</p>
+				</Card>
+			)}
 			<Card
 				className={cn([
 					"flex flex-col",

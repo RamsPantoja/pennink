@@ -9,6 +9,7 @@ export const messageSchema = z.object({
 	userId: z.string().uuid(),
 	createdAt: z.date(),
 	updatedAt: z.date(),
+	quote: z.string().nullable(),
 });
 
 export const getMessagesByChatIdInputSchema = z.object({
