@@ -15,6 +15,7 @@ import type { OutputData } from "@editorjs/editorjs";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
+	ArrowDownTrayIcon,
 	ChatBubbleOvalLeftIcon,
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";
@@ -23,6 +24,9 @@ import { useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
 import { useState } from "react";
+import edjsParse from "editorjs-html";
+import { jsPDF } from "jspdf";
+import { addMarkdownStyles } from "~/utils/markdownStyles";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -98,6 +102,23 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	const onExplainFromReader = () => {
 		setReaderEvent({ type: "reader-on-explain", data: selection.text });
 		setSelection({ text: "", range: null });
+	};
+
+	const exportFromNotesToPDF = async (data: OutputData) => {
+		const edjsParser = edjsParse();
+		const doc = new jsPDF();
+		const html = edjsParser.parse(data);
+		const styledHtml = addMarkdownStyles(html);
+
+		console.log(styledHtml);
+
+		doc.html(styledHtml, {
+			callback: (doc) => {
+				doc.save("My notes");
+			},
+			margin: 8,
+			autoPaging: "text",
+		});
 	};
 
 	return (
@@ -182,10 +203,25 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 										value="notes"
 										className="w-full h-full overflow-hidden"
 									>
-										<DynamicEditor
-											data={workspaceData.note.content}
-											onSave={getNoteContent}
-										/>
+										<div className="flex flex-col w-full h-full overflow-hidden">
+											<DynamicEditor
+												data={workspaceData.note.content}
+												onSave={getNoteContent}
+											/>
+											<Card>
+												<Button
+													variant="ghost"
+													startIcon={
+														<ArrowDownTrayIcon className="min-w-5 h-5" />
+													}
+													onClick={() => {
+														exportFromNotesToPDF(workspaceData.note.content);
+													}}
+												>
+													Export PDF
+												</Button>
+											</Card>
+										</div>
 									</TabsContent>
 									<TabsContent
 										value="chat"

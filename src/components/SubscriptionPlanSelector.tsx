@@ -66,7 +66,7 @@ export default function SubscriptionPlansModal({
 							price="$0"
 							description="Perfect for individuals just getting started"
 							features={[
-								"Up to 25 workspaces",
+								"Up to 25 workspaces (Include deleted)",
 								"Share workspaces",
 								"5 upload files / day",
 								"Upload files, each up to 100 pages / 6 MB in size",

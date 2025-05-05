@@ -5,8 +5,8 @@ import { z } from "zod";
 import { DateTime, type Duration } from "luxon";
 import markdownit from "markdown-it";
 import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
-import { MessageRole } from "./enum";
-import { ReactNode } from "react";
+import type { MessageRole } from "./enum";
+import type { ReactNode } from "react";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
