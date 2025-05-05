@@ -110,11 +110,9 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		const html = edjsParser.parse(data);
 		const styledHtml = addMarkdownStyles(html);
 
-		console.log(styledHtml);
-
 		doc.html(styledHtml, {
 			callback: (doc) => {
-				doc.save("My notes");
+				doc.save("Notes");
 			},
 			margin: 8,
 			autoPaging: "text",
