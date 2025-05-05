@@ -104,21 +104,6 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		setSelection({ text: "", range: null });
 	};
 
-	const exportFromNotesToPDF = async (data: OutputData) => {
-		const edjsParser = edjsParse();
-		const doc = new jsPDF();
-		const html = edjsParser.parse(data);
-		const styledHtml = addMarkdownStyles(html);
-
-		doc.html(styledHtml, {
-			callback: (doc) => {
-				doc.save("Notes");
-			},
-			margin: 8,
-			autoPaging: "text",
-		});
-	};
-
 	return (
 		<Card
 			className="w-full h-full flex flex-col items-center p-0 rounded-none"
@@ -201,25 +186,10 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 										value="notes"
 										className="w-full h-full overflow-hidden"
 									>
-										<div className="flex flex-col w-full h-full overflow-hidden">
-											<DynamicEditor
-												data={workspaceData.note.content}
-												onSave={getNoteContent}
-											/>
-											<Card>
-												<Button
-													variant="ghost"
-													startIcon={
-														<ArrowDownTrayIcon className="min-w-5 h-5" />
-													}
-													onClick={() => {
-														exportFromNotesToPDF(workspaceData.note.content);
-													}}
-												>
-													Export PDF
-												</Button>
-											</Card>
-										</div>
+										<Notes
+											content={workspaceData.note.content}
+											getNoteContent={getNoteContent}
+										/>
 									</TabsContent>
 									<TabsContent
 										value="chat"
@@ -233,14 +203,56 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							</Card>
 						)}
 						{!document && (
-							<DynamicEditor
-								data={workspaceData.note.content}
-								onSave={getNoteContent}
+							<Notes
+								content={workspaceData.note.content}
+								getNoteContent={getNoteContent}
 							/>
 						)}
 					</ResizablePanel>
 				</ResizablePanelGroup>
 			)}
 		</Card>
+	);
+};
+
+type NotesProps = {
+	content: OutputData;
+	getNoteContent: (data: OutputData) => Promise<void>;
+};
+
+const Notes = ({ content, getNoteContent }: NotesProps) => {
+	const exportFromNotesToPDF = async (data: OutputData) => {
+		const edjsParser = edjsParse();
+		const doc = new jsPDF();
+		const html = edjsParser.parse(data);
+		const styledHtml = addMarkdownStyles(html);
+
+		doc.html(styledHtml, {
+			callback: (doc) => {
+				doc.save("Notes");
+			},
+			margin: 8,
+			autoPaging: "text",
+		});
+	};
+
+	return (
+		<div className="flex flex-col w-full h-full">
+			<div className="flex flex-1 w-full h-full overflow-hidden">
+				<DynamicEditor data={content} onSave={getNoteContent} />
+			</div>
+			<Card>
+				<Button
+					disabled={content.blocks.length === 0}
+					variant="secondary"
+					startIcon={<ArrowDownTrayIcon className="min-w-5 h-5" />}
+					onClick={() => {
+						exportFromNotesToPDF(content);
+					}}
+				>
+					Export PDF
+				</Button>
+			</Card>
+		</div>
 	);
 };
