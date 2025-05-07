@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { env } from "~/env";
 import type { PenninkDocument } from "./useWorkspaceStore";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type DocumentCardProps = {
 	id: string;
@@ -33,10 +34,24 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 	id,
 	storageKey,
 }) => {
-	const getIcon = () => {
-		switch (type) {
-			default:
-				return <DocumentTextIcon className="h-5 min-w-6" />;
+	const handleDownload = async (e: React.MouseEvent) => {
+		e.stopPropagation();
+
+		try {
+			const response = await fetch(
+				`${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${storageKey}`,
+			);
+			const blob = await response.blob();
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = title;
+			document.body.appendChild(a);
+			a.click();
+			window.URL.revokeObjectURL(url);
+			document.body.removeChild(a);
+		} catch (error) {
+			console.error("Error downloading file:", error);
 		}
 	};
 
@@ -56,7 +71,6 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 		>
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-3">
-					{getIcon()}
 					<div>
 						<h3 className="font-medium text-sm line-clamp-1">{title}</h3>
 						<div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -66,6 +80,19 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 				</div>
 				<div className="flex items-center gap-2">
 					<span className="text-xs text-muted-foreground">{date}</span>
+					<Tooltip>
+						<TooltipTrigger>
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8"
+								onClick={handleDownload}
+							>
+								<ArrowDownTrayIcon className="h-4 min-w-4" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>Download</TooltipContent>
+					</Tooltip>
 					{/* <DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="ghost" size="icon" className="h-8 w-8">
