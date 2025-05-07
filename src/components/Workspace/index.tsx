@@ -159,9 +159,10 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							</div>
 						)}
 						{!document && (
-							<div className="w-full h-full flex p-4">
-								<Chat id={workspaceData.chatId} isNew={false} />
-							</div>
+							<Notes
+								content={workspaceData.note.content}
+								getNoteContent={getNoteContent}
+							/>
 						)}
 					</ResizablePanel>
 					<ResizableHandle withHandle />
@@ -169,17 +170,17 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						{document && (
 							<Card className="w-full h-full flex p-0 rounded-none">
 								<Tabs
-									defaultValue="chat"
+									defaultValue="notes"
 									className="w-full flex flex-col h-full"
 								>
 									<TabsList className="grid w-full grid-cols-2">
-										<TabsTrigger value="chat">
-											<ChatBubbleOvalLeftIcon className="min-w-5 h-5 mr-2" />
-											Chat
-										</TabsTrigger>
 										<TabsTrigger value="notes">
 											<DocumentTextIcon className="min-w-5 h-5 mr-2" />
 											Notes
+										</TabsTrigger>
+										<TabsTrigger value="chat">
+											<ChatBubbleOvalLeftIcon className="min-w-5 h-5 mr-2" />
+											Chat
 										</TabsTrigger>
 									</TabsList>
 									<TabsContent
@@ -203,10 +204,9 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							</Card>
 						)}
 						{!document && (
-							<Notes
-								content={workspaceData.note.content}
-								getNoteContent={getNoteContent}
-							/>
+							<div className="w-full h-full flex p-4">
+								<Chat id={workspaceData.chatId} isNew={false} />
+							</div>
 						)}
 					</ResizablePanel>
 				</ResizablePanelGroup>
