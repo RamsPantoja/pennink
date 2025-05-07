@@ -18,6 +18,10 @@ import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { DateTime } from "luxon";
 import type { PenninkDocument } from "./useWorkspaceStore";
+import { Input } from "../ui/input";
+import { useState } from "react";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type DocumentLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
@@ -30,11 +34,22 @@ export const DocumentLoader = ({
 	open,
 	onOpenChange,
 }: DocumentLoaderProps) => {
+	const [documentName, setDocumentName] = useState<string>("");
+	const [searchParam, setSearchParam] = useState<string | undefined>();
+
 	const {
 		data: filesByUser,
 		isLoading: filesByUserLoading,
 		isError: filesByUserError,
-	} = api.workspace.filesByUserId.useQuery();
+	} = api.workspace.filesByUserId.useQuery({ search: searchParam });
+
+	const performSearch = () => {
+		if (documentName) {
+			setSearchParam(documentName);
+		} else {
+			setSearchParam(undefined);
+		}
+	};
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
@@ -47,6 +62,42 @@ export const DocumentLoader = ({
 						<DrawerDescription>
 							Select a document to read from all saved documents
 						</DrawerDescription>
+						<div className="flex items-center gap-2">
+							<Input
+								type="text"
+								placeholder="Search for document"
+								value={documentName}
+								onChange={(e) => setDocumentName(e.target.value)}
+								onKeyDown={(e) => e.key === "Enter" && performSearch()}
+								className="pr-10"
+							/>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										disabled={documentName === ""}
+										variant="ghost"
+										size="icon"
+										onClick={performSearch}
+									>
+										<MagnifyingGlassIcon className="min-w-5 h-5" />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Search</TooltipContent>
+							</Tooltip>
+							{documentName && (
+								<Button
+									className="absolute right-20"
+									variant="ghost"
+									size="icon"
+									onClick={() => {
+										setDocumentName("");
+										setSearchParam(undefined);
+									}}
+								>
+									<XMarkIcon className="min-w-5 h-5" />
+								</Button>
+							)}
+						</div>
 					</DrawerHeader>
 					<div className="grid gap-2 h-full overflow-auto">
 						{filesByUserLoading && <Loading />}

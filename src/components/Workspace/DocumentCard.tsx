@@ -1,18 +1,7 @@
 import type { FC } from "react";
 import { Card } from "../ui/card";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { Button } from "../common/Button";
-import {
-	ArrowDownTrayIcon,
-	DocumentTextIcon,
-	EllipsisVerticalIcon,
-	TrashIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { env } from "~/env";
 import type { PenninkDocument } from "./useWorkspaceStore";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -72,7 +61,9 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-3">
 					<div>
-						<h3 className="font-medium text-sm line-clamp-1">{title}</h3>
+						<h3 className="font-medium text-sm line-clamp-1 text-mochaMauve">
+							{title}
+						</h3>
 						<div className="flex items-center gap-2 text-xs text-muted-foreground">
 							<span>{type.toUpperCase()}</span>
 						</div>

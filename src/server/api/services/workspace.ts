@@ -248,10 +248,16 @@ export class WorkspaceService {
 		}
 	}
 
-	public async getFilesByUserId(userId: string) {
+	public async getFilesByUserId(userId: string, searchTerm?: string) {
 		const files = await this.ctx.db.query.files.findMany({
-			where: (files, { eq }) => {
-				return eq(files.userId, userId);
+			where: (files, { eq, and, ilike }) => {
+				const conditions = [eq(files.userId, userId)];
+				
+				if (searchTerm) {
+					conditions.push(ilike(files.filename, `%${searchTerm}%`));
+				}
+
+				return and(...conditions);
 			},
 		});
 

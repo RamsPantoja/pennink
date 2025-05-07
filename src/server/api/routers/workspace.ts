@@ -6,6 +6,7 @@ import {
 	createFileInputSchema,
 	documentVectorSearchInputSchema,
 	deleteWorkspaceInputSchema,
+	getFilesByUserInputSchema,
 } from "../schemas/workspace";
 
 export const workspaceRouter = createTRPCRouter({
@@ -14,11 +15,13 @@ export const workspaceRouter = createTRPCRouter({
 			.services({ ctx })
 			.workspaceService.getWorkspaces(ctx.session.user.id);
 	}),
-	filesByUserId: protectedProcedure.query(async ({ input, ctx }) => {
-		return await ctx
-			.services({ ctx })
-			.workspaceService.getFilesByUserId(ctx.session.user.id);
-	}),
+	filesByUserId: protectedProcedure
+		.input(getFilesByUserInputSchema)
+		.query(async ({ input, ctx }) => {
+			return await ctx
+				.services({ ctx })
+				.workspaceService.getFilesByUserId(ctx.session.user.id, input.search);
+		}),
 	workspaceById: protectedProcedure
 		.input(workspaceByIdInputSchema)
 		.query(async ({ input, ctx }) => {

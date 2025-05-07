@@ -31,3 +31,7 @@ export const documentVectorSearchInputSchema = z.object({
 export const deleteWorkspaceInputSchema = z.object({
 	id: z.string().uuid(),
 });
+
+export const getFilesByUserInputSchema = z.object({
+	search: z.string().optional(),
+});
