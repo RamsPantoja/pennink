@@ -9,4 +9,10 @@ import {
 	getUserByIdInputSchema,
 } from "../schemas/user";
 
-export const userRouter = createTRPCRouter({});
+export const userRouter = createTRPCRouter({
+	initStatics: protectedProcedure.mutation(async ({ ctx }) => {
+		return await ctx
+			.services({ ctx })
+			.userService.initStatics(ctx.session.user.id);
+	}),
+});

@@ -476,3 +476,30 @@ export const customersRelations = relations(customers, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export const statics = createTable("statics", {
+	id: customId.notNull().primaryKey(),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id)
+		.unique(),
+	workspaces: integer().notNull().default(0),
+	files: integer().notNull().default(0),
+	workspacesResetedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	filesResetedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const staticsRelations = relations(statics, ({ one }) => ({
+	user: one(users, {
+		fields: [statics.userId],
+		references: [users.id],
+	}),
+}));

@@ -252,7 +252,7 @@ export class WorkspaceService {
 		const files = await this.ctx.db.query.files.findMany({
 			where: (files, { eq, and, ilike }) => {
 				const conditions = [eq(files.userId, userId)];
-				
+
 				if (searchTerm) {
 					conditions.push(ilike(files.filename, `%${searchTerm}%`));
 				}

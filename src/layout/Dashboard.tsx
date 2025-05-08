@@ -5,9 +5,8 @@ import {
 	SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import Notifications from "~/components/Notifications";
 import { AppSidebar } from "~/components/Sidebar";
@@ -59,6 +58,16 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 				toast(error.message);
 			},
 		});
+
+	const { mutate: initStaticsMutation } = api.user.initStatics.useMutation({
+		onError: (error) => {
+			toast(error.message);
+		},
+	});
+
+	useEffect(() => {
+		initStaticsMutation();
+	}, []);
 
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
