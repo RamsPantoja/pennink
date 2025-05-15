@@ -255,23 +255,23 @@ export const messageRoleVercelSDK: Record<MessageRole, Role> = {
 	SYSTEM: "system",
 };
 
-export const convertToolsArrayToObject = (tools: any) => {
-	if (tools) {
-		const objectTools = tools.reduce((acc, item) => {
-			if (!item.name) {
-				throw new Error("Invalid tool: missing name property");
-			}
+// export const convertToolsArrayToObject = (tools: any) => {
+// 	if (tools) {
+// 		const objectTools = tools.reduce((acc, item) => {
+// 			if (!item.name) {
+// 				throw new Error("Invalid tool: missing name property");
+// 			}
 
-			acc[item.name] = tool({
-				description: item.description ?? "",
-				parameters: toolParameters[item.name],
-			});
+// 			acc[item.name] = tool({
+// 				description: item.description ?? "",
+// 				parameters: toolParameters[item.name],
+// 			});
 
-			return acc;
-		}, {});
+// 			return acc;
+// 		}, {});
 
-		return objectTools;
-	}
+// 		return objectTools;
+// 	}
 
-	return undefined;
-};
+// 	return undefined;
+// };
