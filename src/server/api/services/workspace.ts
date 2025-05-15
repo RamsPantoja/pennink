@@ -14,6 +14,7 @@ import {
 	messages as messagesSchema,
 	files,
 	filesToWorkspaces,
+	statics,
 } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { and, eq, isNull, sql } from "drizzle-orm";
@@ -45,22 +46,7 @@ export class WorkspaceService {
 	public async create(data: createWorkspaceInput, userId: string) {
 		const { name, messages, chatId } = data;
 
-		try {
-			const user = await this.ctx.db.query.users.findFirst({
-				where: (users, { eq }) => {
-					return eq(users.id, userId);
-				},
-			});
-
-			if (!user) {
-			}
-		} catch (error) {
-			console.error(error);
-			throw new TRPCError({
-				code: "INTERNAL_SERVER_ERROR",
-				message: "Failed verify the workspace",
-			});
-		}
+		const ruleRes = await this.workspaceCreationRule(userId);
 
 		const result = await this.ctx.db.transaction(async (tx) => {
 			const insertMessages = async () => {
@@ -118,6 +104,14 @@ export class WorkspaceService {
 				throw new Error("Failed to create workspace");
 			}
 
+			await this.ctx.db
+				.update(statics)
+				.set({
+					workspaces: ruleRes.workspaces + 1,
+				})
+				.where(eq(statics.id, ruleRes.id))
+				.returning();
+
 			return workspace;
 		});
 
@@ -135,6 +129,53 @@ export class WorkspaceService {
 		});
 
 		return workspaces;
+	}
+
+	private async workspaceCreationRule(userId: string) {
+		const limitWorkspaces = 25;
+		const limitedWorkspacesMessage = `You have reached the maximum number of workspaces (${limitWorkspaces}). Upgrade to Pennink Pro to get unlimited workspaces.`;
+		const userStatics = await this.ctx.db.query.statics.findFirst({
+			where: (statics, { eq }) => {
+				return eq(statics.userId, userId);
+			},
+			with: {
+				user: true,
+			},
+		});
+
+		if (!userStatics) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "User statics not found",
+			});
+		}
+
+		switch (userStatics.user.subscription) {
+			case "PRO":
+				{
+				}
+				break;
+			case "FREE":
+				{
+					if (userStatics.workspaces >= limitWorkspaces) {
+						throw new TRPCError({
+							code: "PRECONDITION_FAILED",
+							message: limitedWorkspacesMessage,
+						});
+					}
+				}
+				break;
+			default:
+				if (userStatics.workspaces >= limitWorkspaces) {
+					throw new TRPCError({
+						code: "PRECONDITION_FAILED",
+						message: limitedWorkspacesMessage,
+					});
+				}
+				break;
+		}
+
+		return userStatics;
 	}
 
 	public async getWorkspaceById(id: string) {

@@ -63,8 +63,9 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 				setWorkspaceId(data.id);
 			},
 			onError: (error) => {
-				console.error(error.message);
-				toast.error("An error occurred on creating the workspace");
+				if (error.data?.code === "PRECONDITION_FAILED") {
+					toast(error.message);
+				}
 			},
 		});
 
@@ -111,13 +112,17 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 	const onSelectSavedDocument = async (doc: PenninkDocument) => {
 		setDocument(doc);
 
-		const data = await createWorkspace({
-			name: "...",
-			messages: [],
-			chatId,
-		});
+		try {
+			const data = await createWorkspace({
+				name: "...",
+				messages: [],
+				chatId,
+			});
 
-		await router.push(`/workspace/${data.id}`);
+			await router.push(`/workspace/${data.id}`);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
