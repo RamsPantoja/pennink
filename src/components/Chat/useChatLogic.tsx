@@ -235,6 +235,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				fileId: document.id,
 			});
 
+			console.log(documentContext);
+
 			if (documentContext.length > 0) {
 				messages.push({
 					content: `Context information: ${documentContext.map((context) => context.embedding_document?.content).join(", ")}`,

@@ -45,6 +45,23 @@ export class WorkspaceService {
 	public async create(data: createWorkspaceInput, userId: string) {
 		const { name, messages, chatId } = data;
 
+		try {
+			const user = await this.ctx.db.query.users.findFirst({
+				where: (users, { eq }) => {
+					return eq(users.id, userId);
+				},
+			});
+
+			if (!user) {
+			}
+		} catch (error) {
+			console.error(error);
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "Failed verify the workspace",
+			});
+		}
+
 		const result = await this.ctx.db.transaction(async (tx) => {
 			const insertMessages = async () => {
 				if (messages.length > 0) {
@@ -175,7 +192,7 @@ export class WorkspaceService {
 	public async createFile(input: CreateFileInput, userId: string) {
 		const model = mistral.textEmbeddingModel("mistral-embed");
 		const textSplitter = new RecursiveCharacterTextSplitter({
-			chunkSize: 1600,
+			chunkSize: 1000,
 			chunkOverlap: 200,
 		});
 

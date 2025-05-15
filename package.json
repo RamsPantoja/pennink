@@ -18,7 +18,7 @@
 		"start": "next start"
 	},
 	"dependencies": {
-		"@ai-sdk/google": "^1.2.2",
+		"@ai-sdk/google": "^1.2.18",
 		"@ai-sdk/mistral": "^1.1.13",
 		"@auth/drizzle-adapter": "^1.1.0",
 		"@aws-sdk/client-s3": "^3.775.0",
@@ -34,6 +34,7 @@
 		"@hookform/resolvers": "^3.3.4",
 		"@langchain/community": "^0.3.39",
 		"@libsql/client": "^0.14.0",
+		"@modelcontextprotocol/sdk": "^1.11.1",
 		"@neondatabase/serverless": "^1.0.0",
 		"@nextui-org/slider": "^2.2.6",
 		"@nextui-org/snippet": "^2.0.31",
@@ -73,6 +74,7 @@
 		"editorjs-html": "^4.0.5",
 		"framer-motion": "^11.0.8",
 		"geist": "^1.3.0",
+		"json-schema-to-zod": "^2.6.1",
 		"jsonwebtoken": "^9.0.2",
 		"jspdf": "^3.0.1",
 		"lucide-react": "^0.323.0",
@@ -85,6 +87,7 @@
 		"next-auth": "^4.24.7",
 		"next-themes": "^0.3.0",
 		"nprogress": "^0.2.0",
+		"ollama-ai-provider": "^1.2.0",
 		"pdf-parse": "^1.1.1",
 		"pg": "^8.12.0",
 		"postgres": "^3.4.4",

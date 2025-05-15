@@ -7,6 +7,8 @@ import markdownit from "markdown-it";
 import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
 import type { MessageRole } from "./enum";
 import type { ReactNode } from "react";
+import { tool } from "ai";
+import { jsonSchemaToZod } from "json-schema-to-zod";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -232,8 +234,44 @@ export const markdownToHtml = (markdown: string) => {
 
 type Role = "assistant" | "user" | "system";
 
+const toolParameters = {
+	"create-made-in-project": z.object({
+		projectName: z.string(),
+		category: z.string(),
+		productType: z.string().optional(),
+		startDate: z.string(),
+		limitDate: z.string().optional(),
+		currency: z.string(),
+		baseBudget: z.number(),
+		limitBudget: z.number().optional(),
+		startAmount: z.number().int(),
+		maxAmount: z.number().int().optional(),
+	}),
+};
+
 export const messageRoleVercelSDK: Record<MessageRole, Role> = {
 	AGENT: "assistant",
 	USER: "user",
 	SYSTEM: "system",
+};
+
+export const convertToolsArrayToObject = (tools: any) => {
+	if (tools) {
+		const objectTools = tools.reduce((acc, item) => {
+			if (!item.name) {
+				throw new Error("Invalid tool: missing name property");
+			}
+
+			acc[item.name] = tool({
+				description: item.description ?? "",
+				parameters: toolParameters[item.name],
+			});
+
+			return acc;
+		}, {});
+
+		return objectTools;
+	}
+
+	return undefined;
 };
