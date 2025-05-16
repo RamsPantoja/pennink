@@ -24,6 +24,7 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embedMany, embed } from "ai";
 import { embeddingDocuments } from "~/server/db/turso-schema";
+import { DateTime } from "luxon";
 
 type WorkspaceServiceContructor = {
 	ctx: TRPCContext;
@@ -104,13 +105,12 @@ export class WorkspaceService {
 				throw new Error("Failed to create workspace");
 			}
 
-			await this.ctx.db
+			await tx
 				.update(statics)
 				.set({
 					workspaces: ruleRes.workspaces + 1,
 				})
-				.where(eq(statics.id, ruleRes.id))
-				.returning();
+				.where(eq(statics.id, ruleRes.id));
 
 			return workspace;
 		});
@@ -150,6 +150,15 @@ export class WorkspaceService {
 			});
 		}
 
+		const ruleForFreeSub = () => {
+			if (userStatics.workspaces >= limitWorkspaces) {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message: limitedWorkspacesMessage,
+				});
+			}
+		};
+
 		switch (userStatics.user.subscription) {
 			case "PRO":
 				{
@@ -157,21 +166,11 @@ export class WorkspaceService {
 				break;
 			case "FREE":
 				{
-					if (userStatics.workspaces >= limitWorkspaces) {
-						throw new TRPCError({
-							code: "PRECONDITION_FAILED",
-							message: limitedWorkspacesMessage,
-						});
-					}
+					ruleForFreeSub();
 				}
 				break;
 			default:
-				if (userStatics.workspaces >= limitWorkspaces) {
-					throw new TRPCError({
-						code: "PRECONDITION_FAILED",
-						message: limitedWorkspacesMessage,
-					});
-				}
+				ruleForFreeSub();
 				break;
 		}
 
@@ -230,6 +229,69 @@ export class WorkspaceService {
 		return updatedWorkspace;
 	}
 
+	private async createFileRule(userId: string) {
+		const limitFiles = 5;
+		const limitedUploadFilesMessageFreeSub = `You have reached the maximum number of uploads/day (${limitFiles}). Upgrade to Pennink Pro to get unlimited uploads.`;
+		const userStatics = await this.ctx.db.query.statics.findFirst({
+			where: (statics, { eq }) => {
+				return eq(statics.userId, userId);
+			},
+			with: {
+				user: true,
+			},
+		});
+
+		if (!userStatics) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "User statics not found",
+			});
+		}
+
+		const ruleForFreeSub = async () => {
+			const referenceDate = DateTime.fromJSDate(userStatics.filesResetedAt);
+			const currentDate = DateTime.now();
+			const diff = currentDate.diff(referenceDate, "days");
+
+			if (diff.days < 1 && userStatics.files >= limitFiles) {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message: limitedUploadFilesMessageFreeSub,
+				});
+			}
+
+			//Reset files metric to 0 to allow user upload files again
+			if (diff.days >= 1) {
+				await this.ctx.db
+					.update(statics)
+					.set({
+						files: 0,
+						filesResetedAt: new Date(),
+					})
+					.where(eq(statics.id, userStatics.id));
+			}
+		};
+
+		switch (userStatics.user.subscription) {
+			case "PRO":
+				{
+				}
+				break;
+			case "FREE":
+				{
+					await ruleForFreeSub();
+				}
+				break;
+			default:
+				{
+					await ruleForFreeSub();
+				}
+				break;
+		}
+
+		return userStatics;
+	}
+
 	public async createFile(input: CreateFileInput, userId: string) {
 		const model = mistral.textEmbeddingModel("mistral-embed");
 		const textSplitter = new RecursiveCharacterTextSplitter({
@@ -237,10 +299,11 @@ export class WorkspaceService {
 			chunkOverlap: 200,
 		});
 
-		try {
+		const result = await this.ctx.db.transaction(async (tx) => {
 			const { filename, type, key, workspaceId } = input;
+			const ruleRes = await this.createFileRule(userId);
 
-			const [file] = await this.ctx.db
+			const [file] = await tx
 				.insert(files)
 				.values({
 					filename,
@@ -258,7 +321,7 @@ export class WorkspaceService {
 				});
 			}
 
-			await this.ctx.db
+			await tx
 				.insert(filesToWorkspaces)
 				.values({
 					fileId: file.id,
@@ -296,14 +359,17 @@ export class WorkspaceService {
 				}),
 			);
 
+			await tx
+				.update(statics)
+				.set({
+					files: ruleRes.files + 1,
+				})
+				.where(eq(statics.id, ruleRes.id));
+
 			return file;
-		} catch (error) {
-			console.log(error);
-			throw new TRPCError({
-				code: "NOT_FOUND",
-				message: "Failed to update workspace",
-			});
-		}
+		});
+
+		return result;
 	}
 
 	public async getFilesByUserId(userId: string, searchTerm?: string) {

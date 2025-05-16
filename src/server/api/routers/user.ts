@@ -15,4 +15,9 @@ export const userRouter = createTRPCRouter({
 			.services({ ctx })
 			.userService.initStatics(ctx.session.user.id);
 	}),
+	statics: protectedProcedure.query(async ({ ctx }) => {
+		return await ctx
+			.services({ ctx })
+			.userService.getStatics(ctx.session.user.id);
+	}),
 });

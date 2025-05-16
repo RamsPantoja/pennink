@@ -48,4 +48,21 @@ export class UserService {
 			});
 		}
 	}
+
+	public async getStatics(userId: string) {
+		const currentStatics = await this.ctx.db.query.statics.findFirst({
+			where: (statics, { eq }) => {
+				return eq(statics.userId, userId);
+			},
+		});
+
+		if (!currentStatics) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Statics not found",
+			});
+		}
+
+		return currentStatics;
+	}
 }

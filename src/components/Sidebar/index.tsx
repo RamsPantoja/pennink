@@ -1,6 +1,7 @@
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
@@ -36,6 +37,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../common/Button";
 import { WorkspaceCard } from "./WorkspaceCard";
 import SubscriptionPlansModal from "../SubscriptionPlanSelector";
+import { UsageService } from "../UsageService";
 
 type AppSidebarProps = {
 	session: Session | null;
@@ -188,6 +190,9 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
+			<SidebarFooter>
+				<UsageService />
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

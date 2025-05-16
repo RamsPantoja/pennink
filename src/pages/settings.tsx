@@ -28,6 +28,7 @@ import { Fragment } from "react";
 import { toast } from "sonner";
 import { Separator } from "~/components/ui/separator";
 import Link from "next/link";
+import { UsageService } from "~/components/UsageService";
 
 const supportOptions = [
 	{
@@ -111,12 +112,12 @@ const Settings = ({
 					</Button>
 				</div>
 				<Card className="flex gap-4 w-full justify-between flex-wrap">
-					<div className="flex flex-row items-center gap-4">
+					<div className="flex flex-row items-center gap-4 flex-wrap">
 						<Avatar className="h-20 w-20">
 							<AvatarImage src={session.user.image as string} />
 							<AvatarFallback>You</AvatarFallback>
 						</Avatar>
-						<div className="flex flex-col w-full overflow-hidden gap-1">
+						<div className="flex flex-col overflow-hidden gap-1">
 							<p className="truncate font-bold text-mochaText">
 								{session.user.name}
 							</p>
@@ -125,6 +126,7 @@ const Settings = ({
 							</p>
 							<Badge variant="outline">{session.user.subscription} plan</Badge>
 						</div>
+						<UsageService />
 					</div>
 					{session.user.subscription === "FREE" && (
 						<SubscriptionPlansModal
