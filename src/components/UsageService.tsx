@@ -35,7 +35,7 @@ export const UsageService = () => {
 							<p className="text-xs ">Workspaces</p>
 							<p className="text-xs">{staticsData.workspaces}/25</p>
 						</div>
-						<Progress value={60} max={25} />
+						<Progress value={(staticsData.workspaces / 25) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
 						<span className="text-xs text-right">
@@ -43,9 +43,9 @@ export const UsageService = () => {
 						</span>
 						<div className="flex gap-4 items-center justify-between">
 							<p className="text-xs ">Upload files</p>
-							<p className="text-xs">{staticsData.files}/25</p>
+							<p className="text-xs">{staticsData.files}/5</p>
 						</div>
-						<Progress value={staticsData.files} max={5} />
+						<Progress value={(staticsData.files / 5) * 100} />
 					</div>
 				</Fragment>
 			)}
