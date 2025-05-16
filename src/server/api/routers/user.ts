@@ -20,4 +20,9 @@ export const userRouter = createTRPCRouter({
 			.services({ ctx })
 			.userService.getStatics(ctx.session.user.id);
 	}),
+	resetStatics: protectedProcedure.mutation(async ({ ctx }) => {
+		return await ctx
+			.services({ ctx })
+			.userService.resetStatics(ctx.session.user.id);
+	}),
 });

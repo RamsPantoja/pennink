@@ -2,14 +2,41 @@ import { api } from "~/utils/api";
 import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Skeleton } from "./ui/skeleton";
-import { Fragment } from "react";
+import { Fragment, useEffect, useMemo } from "react";
+import { DateTime } from "luxon";
+import { toast } from "sonner";
 
 export const UsageService = () => {
+	const utils = api.useUtils();
 	const {
 		data: staticsData,
 		isLoading: staticsIsLoading,
 		isError: staticsIsError,
 	} = api.user.statics.useQuery();
+
+	const { mutate: resetStaticsMutation } = api.user.resetStatics.useMutation({
+		onSuccess: async () => {
+			await utils.user.statics.invalidate();
+		},
+		onError: (e) => {
+			toast.error(e.message);
+		},
+	});
+
+	useEffect(() => {
+		resetStaticsMutation();
+	}, [resetStaticsMutation]);
+
+	const resetUploadFilesTime = useMemo(() => {
+		if (staticsData) {
+			const specificDate = DateTime.fromJSDate(staticsData.filesResetedAt);
+			const nextDay = specificDate.plus({ days: 1 });
+
+			return nextDay.toLocaleString(DateTime.DATETIME_SHORT);
+		}
+
+		return "No date";
+	}, [staticsData]);
 
 	return (
 		<Card className="border w-full max-w-80 flex flex-col gap-8">
@@ -39,7 +66,7 @@ export const UsageService = () => {
 					</div>
 					<div className="flex flex-col gap-2">
 						<span className="text-xs text-right">
-							Resets tomorrow at 6:00 PM
+							Resets at {resetUploadFilesTime}
 						</span>
 						<div className="flex gap-4 items-center justify-between">
 							<p className="text-xs ">Upload files</p>
