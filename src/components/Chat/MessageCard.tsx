@@ -36,7 +36,9 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 			{message.quote && (
 				<Card className="flex items-start gap-2 border mb-2">
 					<ArrowTurnDownRightIcon className="min-w-5 h-5" />
-					<p className="text-sm flex-1 italic">{message.quote}</p>
+					<p className="text-sm flex-1 italic text-mochaMauve">
+						{message.quote}
+					</p>
 				</Card>
 			)}
 			<Card
@@ -44,25 +46,20 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 					"flex flex-col",
 					{
 						"w-fit": message.role === "AGENT",
-						"bg-mochaTeal text-mochaMauve items-end w-fit max-w-screen-sm border border-mochaMauve":
+						"bg-mochaMantle text-mochaMauve items-end w-fit max-w-screen-sm font-medium":
 							message.role === "USER",
 					},
 				])}
 			>
 				<div
 					ref={messageContainerRef}
-					className="markdown-styles prismjs-theme flex flex-col"
+					className={cn([
+						"flex flex-col",
+						{
+							"markdown-styles prismjs-theme": message.role === "AGENT",
+						},
+					])}
 				/>
-				{message.role === "AGENT" && (
-					<div className="flex items-center gap-2">
-						<Button variant="ghost" size="icon">
-							<HandThumbUpIcon className="min-w-5 h-5" />
-						</Button>
-						<Button variant="ghost" size="icon">
-							<HandThumbDownIcon className="min-w-5 h-5" />
-						</Button>
-					</div>
-				)}
 			</Card>
 		</div>
 	);

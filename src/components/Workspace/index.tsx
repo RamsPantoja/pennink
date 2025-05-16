@@ -132,21 +132,21 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									setSelection={setSelection}
 									tools={[
 										<Button
-											className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+											variant="ghost"
 											key="summarize"
 											onClick={onSummarizeFromReader}
 										>
 											Summarize
 										</Button>,
 										<Button
-											className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+											variant="ghost"
 											key="chat"
 											onClick={onChatFromReader}
 										>
 											Chat
 										</Button>,
 										<Button
-											className="bg-mochaTeal text-mochaMauve hover:text-mochaBase hover:bg-mochaMauve"
+											variant="ghost"
 											key="explain"
 											onClick={onExplainFromReader}
 										>

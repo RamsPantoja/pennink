@@ -159,7 +159,7 @@ export function SelectionToolbar({
 					}}
 				>
 					{/* Main toolbar */}
-					<div className="bg-mochaTeal border border-mochaMauve rounded-lg flex items-center p-1.5 gap-1 w-fit h-full">
+					<div className="bg-mochaBase border border-mochaMauve rounded-lg flex items-center p-1.5 gap-1 w-fit h-full">
 						{tools.map((tool) => {
 							return tool;
 						})}
