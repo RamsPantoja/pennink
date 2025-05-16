@@ -9,6 +9,8 @@ import type { MessageRole } from "./enum";
 import type { ReactNode } from "react";
 import { tool } from "ai";
 import { jsonSchemaToZod } from "json-schema-to-zod";
+import type { Session } from "next-auth";
+import { toast } from "sonner";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -275,3 +277,64 @@ export const messageRoleVercelSDK: Record<MessageRole, Role> = {
 
 // 	return undefined;
 // };
+
+type ValidateFileSizeParams = {
+	file: File;
+	maxSizeMB: number;
+};
+
+export const validateFileSize = ({
+	file,
+	maxSizeMB,
+}: ValidateFileSizeParams) => {
+	// Convert MB to bytes (1 MB = 1,048,576 bytes)
+	const maxSizeInBytes = maxSizeMB * 1024 * 1024;
+
+	// Check if file exists and size is within limit
+	if (file && file.size > maxSizeInBytes) {
+		return {
+			isValid: false,
+			message: `File size exceeds ${maxSizeMB}MB limit`,
+		};
+	}
+
+	return {
+		isValid: true,
+		message: "File size is valid",
+	};
+};
+
+type FileSizeRuleParams = {
+	session: Session;
+	file: File;
+};
+
+export const fileSizeRule = ({ session, file }: FileSizeRuleParams) => {
+	switch (session.user.subscription) {
+		case "PRO": {
+			const res = validateFileSize({ file, maxSizeMB: 50 });
+			if (!res.isValid) {
+				toast("You can not upload files up to 5OMB of size");
+			}
+			return res;
+		}
+		case "FREE": {
+			const res = validateFileSize({ file, maxSizeMB: 6 });
+			if (!res.isValid) {
+				toast(
+					"You need to upgrade to Pennink Pro to upload files up to 6MB of size",
+				);
+			}
+			return res;
+		}
+		default: {
+			const res = validateFileSize({ file, maxSizeMB: 6 });
+			if (!res.isValid) {
+				toast(
+					"You need to upgrade to Pennink Pro to upload files up to 6MB of size",
+				);
+			}
+			return res;
+		}
+	}
+};

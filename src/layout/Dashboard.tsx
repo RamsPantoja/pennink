@@ -28,6 +28,7 @@ import {
 } from "~/components/ui/tooltip";
 import { env } from "~/env";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
+import { fileSizeRule } from "~/lib/utils";
 import { api } from "~/utils/api";
 
 type DashboardProps = {
@@ -69,38 +70,62 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 		initStaticsMutation();
 	}, []);
 
+	const {
+		mutateAsync: triggerUploadFilesRuleMutation,
+		isPending: triggerUploadFilesRuleIsPending,
+	} = api.workspace.triggerUploadFilesRule.useMutation({
+		onError: (error) => {
+			toast(error.message);
+		},
+	});
+
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
 
 		if (!selectedFile) return;
 
-		if (selectedFile.type !== "application/pdf") {
-			toast("Invalid file type");
-			return;
-		}
-
-		if (typeof workspaceId !== "string") {
-			toast("Invalid workspace ID");
-			return;
-		}
-
-		toast("Your file is processing, wait a moment, please...");
-
-		const res = await onUploadFile({
+		const ruleRes = fileSizeRule({
 			file: selectedFile,
-			path: `workspace/documents/${session.user.id}`,
+			session,
 		});
 
-		if (!res) {
+		if (!ruleRes.isValid) {
 			return;
 		}
 
-		createFile({
-			type: selectedFile.type,
-			filename: selectedFile.name,
-			key: res.key,
-			workspaceId,
-		});
+		try {
+			await triggerUploadFilesRuleMutation();
+
+			if (selectedFile.type !== "application/pdf") {
+				toast("Invalid file type");
+				return;
+			}
+
+			if (typeof workspaceId !== "string") {
+				toast("Invalid workspace ID");
+				return;
+			}
+
+			toast("Your file is processing, wait a moment, please...");
+
+			const res = await onUploadFile({
+				file: selectedFile,
+				path: `workspace/documents/${session.user.id}`,
+			});
+
+			if (!res) {
+				return;
+			}
+
+			createFile({
+				type: selectedFile.type,
+				filename: selectedFile.name,
+				key: res.key,
+				workspaceId,
+			});
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	const onNewWorkspace = async () => {
@@ -141,7 +166,11 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 											<Button
 												variant="default"
 												size="icon"
-												isPending={uploadingFile || createFileIsPending}
+												isPending={
+													uploadingFile ||
+													createFileIsPending ||
+													triggerUploadFilesRuleIsPending
+												}
 											>
 												<DocumentPlusIcon className="min-w-5 w-5 h-5" />
 											</Button>

@@ -64,4 +64,9 @@ export const workspaceRouter = createTRPCRouter({
 				.services({ ctx })
 				.workspaceService.delete(input.id, ctx.session.user.id);
 		}),
+	triggerUploadFilesRule: protectedProcedure.mutation(async ({ ctx }) => {
+		return await ctx
+			.services({ ctx })
+			.workspaceService.uploadFilesRule(ctx.session.user.id);
+	}),
 });

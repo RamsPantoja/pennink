@@ -442,4 +442,8 @@ export class WorkspaceService {
 			});
 		}
 	}
+
+	public uploadFilesRule(userId: string) {
+		return this.createFileRule(userId);
+	}
 }
