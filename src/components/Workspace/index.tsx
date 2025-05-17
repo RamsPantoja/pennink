@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { Card } from "../ui/card";
 import { api } from "~/utils/api";
 import { Chat } from "../Chat";
-import { SkeletonWorkspace } from "./Skeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
 import {
 	ResizableHandle,
@@ -168,7 +167,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
 						{document && (
-							<Card className="w-full h-full flex p-0 rounded-none">
+							<Card className="w-full h-full flex p-4 rounded-none">
 								<Tabs
 									defaultValue="notes"
 									className="w-full flex flex-col h-full"
@@ -196,7 +195,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 										value="chat"
 										className="w-full h-full overflow-hidden"
 									>
-										<div className="w-full h-full flex p-4">
+										<div className="w-full h-full flex">
 											<Chat id={workspaceData.chatId} isNew={false} />
 										</div>
 									</TabsContent>
