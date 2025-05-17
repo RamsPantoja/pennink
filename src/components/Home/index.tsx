@@ -146,6 +146,20 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 		}
 	};
 
+	const onStartWriting = async () => {
+		try {
+			const data = await createWorkspace({
+				name: "...",
+				messages: [],
+				chatId,
+			});
+
+			await router.push(`/workspace/${data.id}`);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const pedeningRequest =
 		uploadingFile ||
 		createFileIsPending ||
@@ -218,7 +232,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 						)}
 					</Card>
 					<Card
-						onClick={pedeningRequest ? undefined : () => {}}
+						onClick={pedeningRequest ? undefined : onStartWriting}
 						className="border cursor-pointer bg-mochaCrust flex items-center justify-between gap-4 hover:shadow-sm"
 					>
 						<div className="flex flex-col">
