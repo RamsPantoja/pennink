@@ -1,6 +1,6 @@
 import {
 	ArrowUpTrayIcon,
-	LinkIcon,
+	LanguageIcon,
 	MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { Card } from "../ui/card";
@@ -20,6 +20,7 @@ import { DocumentLoader } from "../Workspace/DocumentLoader";
 import { useRouter } from "next/router";
 import { Loading } from "../common/Loading";
 import { env } from "~/env";
+import { fileSizeRule } from "~/lib/utils";
 
 type HomeComponentProps = {
 	session: Session;
@@ -69,10 +70,28 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 			},
 		});
 
+	const {
+		mutateAsync: triggerUploadFilesRuleMutation,
+		isPending: triggerUploadFilesRuleIsPending,
+	} = api.workspace.triggerUploadFilesRule.useMutation({
+		onError: (error) => {
+			toast(error.message);
+		},
+	});
+
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
 
 		if (!selectedFile) return;
+
+		const ruleRes = fileSizeRule({
+			file: selectedFile,
+			session,
+		});
+
+		if (!ruleRes.isValid) {
+			return;
+		}
 
 		if (selectedFile.type !== "application/pdf") {
 			toast("Invalid file type");
@@ -82,6 +101,8 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 		toast("Your file is processing, wait a moment, please...");
 
 		try {
+			await triggerUploadFilesRuleMutation();
+
 			const res = await onUploadFile({
 				file: selectedFile,
 				path: `workspace/documents/${session.user.id}`,
@@ -125,6 +146,12 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 		}
 	};
 
+	const pedeningRequest =
+		uploadingFile ||
+		createFileIsPending ||
+		createWorkspaceIsPending ||
+		triggerUploadFilesRuleIsPending;
+
 	return (
 		<div className="flex w-full pl-4 pr-4 pt-0 pb-4 h-full justify-center items-center">
 			<Input
@@ -148,12 +175,10 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 					What can I help with?
 				</p>
 				<Chat id={chatId} isNew={true} />
-				<div className="grid grid-cols-3 gap-4">
+				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
 					<Card
 						onClick={
-							uploadingFile || createFileIsPending || createWorkspaceIsPending
-								? undefined
-								: () => fileInputRef.current?.click()
+							pedeningRequest ? undefined : () => fileInputRef.current?.click()
 						}
 						className="border cursor-pointer bg-mochaCrust flex items-center justify-between gap-4 hover:shadow-sm"
 					>
@@ -163,9 +188,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 								Upload a PDF to start asking anything about the content
 							</p>
 						</div>
-						{uploadingFile ||
-						createFileIsPending ||
-						createWorkspaceIsPending ? (
+						{pedeningRequest ? (
 							<Loading />
 						) : (
 							<ArrowUpTrayIcon className="min-w-5 h-5" />
@@ -173,7 +196,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 					</Card>
 					<Card
 						onClick={
-							uploadingFile || createFileIsPending || createWorkspaceIsPending
+							pedeningRequest
 								? undefined
 								: () => {
 										setOpenDocumentLoader(true);
@@ -188,24 +211,29 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 								content
 							</p>
 						</div>
-						{uploadingFile ||
-						createFileIsPending ||
-						createWorkspaceIsPending ? (
+						{pedeningRequest ? (
 							<Loading />
 						) : (
 							<MagnifyingGlassIcon className="min-w-5 h-5" />
 						)}
 					</Card>
-					{/* <Card className="border cursor-pointer bg-mochaCrust flex items-center justify-between gap-4 hover:shadow-sm">
+					<Card
+						onClick={pedeningRequest ? undefined : () => {}}
+						className="border cursor-pointer bg-mochaCrust flex items-center justify-between gap-4 hover:shadow-sm"
+					>
 						<div className="flex flex-col">
-							<p className="text-mochaText">Paste</p>
+							<p className="text-mochaText">Write</p>
 							<p className="text-xs text-mochaSubText">
-								Paste a link to a website or a YouTube video to start asking
-								anything about it
+								Start writing articles, notes or whatever you want with smart
+								assistance
 							</p>
 						</div>
-						<LinkIcon className="min-w-5 h-5" />
-					</Card> */}
+						{pedeningRequest ? (
+							<Loading />
+						) : (
+							<LanguageIcon className="min-w-5 h-5" />
+						)}
+					</Card>
 				</div>
 			</Card>
 		</div>

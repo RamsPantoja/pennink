@@ -99,7 +99,7 @@ export const DocumentLoader = ({
 							)}
 						</div>
 					</DrawerHeader>
-					<div className="grid gap-2 h-full overflow-auto">
+					<div className="grid gap-2 h-fit overflow-auto">
 						{filesByUserLoading && <Loading />}
 						{!filesByUserLoading && filesByUserError && (
 							<FeedbackMessage
