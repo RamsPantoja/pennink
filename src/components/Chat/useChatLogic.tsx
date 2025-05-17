@@ -38,6 +38,21 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [quote, setQuote] = useState<string | null>(null);
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
+	const [isStreaming, setIsStreaming] = useState(false);
+	const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
+	const abortControllerRef = useRef<AbortController | null>(null);
+
+	const stopStreaming = async () => {
+		if (readerRef.current) {
+			await readerRef.current.cancel();
+			readerRef.current = null;
+			setIsStreaming(false);
+		}
+		if (abortControllerRef.current) {
+			abortControllerRef.current.abort();
+			abortControllerRef.current = null;
+		}
+	};
 
 	const {
 		mutateAsync: documentVectorSearchMutation,
@@ -54,6 +69,9 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		isPending: onSentPromptMutationIsPending,
 	} = useMutation({
 		mutationFn: (data: AgentChatRequestData) => {
+			// Create new AbortController for this request
+			abortControllerRef.current = new AbortController();
+
 			return fetch("/api/ai/chat", {
 				method: "POST",
 				headers: {
@@ -63,6 +81,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					prompt: data.prompt,
 					context: data.context,
 				}),
+				signal: abortControllerRef.current.signal,
 			});
 		},
 		onSuccess: async (data) => {
@@ -75,6 +94,9 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 				if (stream) {
 					const reader = stream.getReader();
+					readerRef.current = reader;
+					setIsStreaming(true);
+
 					const textDecoder = new TextDecoder();
 					const newAgentMessage: Message = {
 						id: typeid().toUUID(),
@@ -100,7 +122,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 						if (done) {
 							reader.releaseLock();
+							readerRef.current = null;
+							setIsStreaming(false);
 							setCurrentAssistantMessage(null);
+
 							setMessages((prev) => {
 								return [...prev, newAgentMessage];
 							});
@@ -132,6 +157,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			} catch (error) {
 				console.error("Mutation failed:", error);
 				toast.error("An error occurred while sending your message.");
+				setIsStreaming(false);
 			}
 		},
 		onError: (error) => {
@@ -420,5 +446,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		chatModes,
 		documentVectorSearchMutationIsPending,
 		document,
+		isStreaming,
+		stopStreaming,
 	};
 };
