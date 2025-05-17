@@ -190,9 +190,11 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter>
-				<UsageService />
-			</SidebarFooter>
+			{session?.user.subscription === "FREE" && (
+				<SidebarFooter>
+					<UsageService />
+				</SidebarFooter>
+			)}
 		</Sidebar>
 	);
 }

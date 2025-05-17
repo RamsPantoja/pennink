@@ -126,7 +126,7 @@ const Settings = ({
 							</p>
 							<Badge variant="outline">{session.user.subscription} plan</Badge>
 						</div>
-						<UsageService />
+						{session.user.subscription === "FREE" && <UsageService />}
 					</div>
 					{session.user.subscription === "FREE" && (
 						<SubscriptionPlansModal
