@@ -503,3 +503,28 @@ export const staticsRelations = relations(statics, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export const feedbacks = createTable("feedback", {
+	id: customId,
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
+	content: text().notNull(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const feedbackRelations = relations(feedbacks, ({ one }) => ({
+	user: one(users, {
+		fields: [feedbacks.userId],
+		references: [users.id],
+	}),
+}));

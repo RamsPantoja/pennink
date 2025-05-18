@@ -8,6 +8,7 @@ import type { Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
+import { Feedback } from "~/components/Feedback";
 import Notifications from "~/components/Notifications";
 import { AppSidebar } from "~/components/Sidebar";
 import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
@@ -219,6 +220,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 								<TooltipContent>New workspace</TooltipContent>
 							</Tooltip>
 						)}
+						<Feedback session={session} />
 					</div>
 
 					{/* <div className="flex items-center gap-4">
