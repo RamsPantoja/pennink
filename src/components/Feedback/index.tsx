@@ -1,6 +1,9 @@
 "use client";
 
-import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import {
+	ChatBubbleLeftEllipsisIcon,
+	MegaphoneIcon,
+} from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { Textarea } from "../ui/textarea";
 import useFeedbackLogic from "./useFeedbackLogic";
@@ -34,7 +37,7 @@ export const Feedback = ({ session }: FeedbackProps) => {
 				<Button
 					size="sm"
 					variant="outline"
-					startIcon={<ChatBubbleLeftEllipsisIcon className="w-5 h-5" />}
+					startIcon={<MegaphoneIcon className="w-5 h-5" />}
 				>
 					Feedback
 				</Button>
