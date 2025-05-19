@@ -1,9 +1,4 @@
-"use client";
-
-import {
-	ChatBubbleLeftEllipsisIcon,
-	MegaphoneIcon,
-} from "@heroicons/react/24/outline";
+import { MegaphoneIcon } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { Textarea } from "../ui/textarea";
 import useFeedbackLogic from "./useFeedbackLogic";
