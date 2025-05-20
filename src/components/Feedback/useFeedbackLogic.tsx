@@ -8,9 +8,9 @@ import { api } from "~/utils/api";
 const feedbackValidationSchema = z.object({
 	content: z
 		.string({
-			required_error: "Campo requerido",
+			required_error: "Required field",
 		})
-		.min(1, "Campo requerido"),
+		.min(1, "Required field"),
 });
 
 export type FeedbackValidationSchema = z.infer<typeof feedbackValidationSchema>;
@@ -29,7 +29,7 @@ const useFeedbackLogic = () => {
 			onSuccess: async () => {
 				useFormFeedback.reset();
 				setOpenCommentsBox(false);
-				toast.success("Comentarios enviados correctamente!");
+				toast.success("Feedback sent successfully!");
 			},
 			onError: (error) => {
 				toast.error(error.message);

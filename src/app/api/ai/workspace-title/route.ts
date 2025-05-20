@@ -1,9 +1,9 @@
-import { google } from "@ai-sdk/google";
 import { type LanguageModel, streamText } from "ai";
+import { bedrock } from "@ai-sdk/amazon-bedrock";
 
 export async function POST(req: Request) {
 	try {
-		const model = google("gemini-2.0-flash-lite");
+		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `Generate a title for the user's input that is concise.
 		Consider the context of the input and the user's needs, if exist context.
 		Use clear and descriptive language.
