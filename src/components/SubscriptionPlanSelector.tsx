@@ -93,7 +93,7 @@ export default function SubscriptionPlansModal({
 							buttonText="Upgrade to Pennink Pro"
 							subscriptionType="PRO"
 							currentSubscription={currentSubscription}
-							lookupKey="pennink_pro"
+							lookupKey="pennink_pro_12"
 						/>
 					</TabsContent>
 

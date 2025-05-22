@@ -171,7 +171,7 @@ const Settings = ({
 											</div>
 											<div className="text-right">
 												{session.user.subscription === "PRO" && (
-													<p className="font-medium">$8/month</p>
+													<p className="font-medium">$12/month</p>
 												)}
 												{subscription.cancelAtPeriodEnd &&
 													subscription.status === "active" && (
