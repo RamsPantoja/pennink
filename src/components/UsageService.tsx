@@ -24,8 +24,10 @@ export const UsageService = () => {
 	});
 
 	useEffect(() => {
-		resetStaticsMutation();
-	}, [resetStaticsMutation]);
+		if (staticsData?.id) {
+			resetStaticsMutation();
+		}
+	}, [resetStaticsMutation, staticsData?.id]);
 
 	const resetUploadFilesTime = useMemo(() => {
 		if (staticsData) {
