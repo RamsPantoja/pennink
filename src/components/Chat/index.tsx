@@ -43,6 +43,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		documentVectorSearchMutationIsPending,
 		isStreaming,
 		stopStreaming,
+		handleKeyDown,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
@@ -113,6 +114,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							className="border-none ring-0 text-mochaMauve"
 							onChange={field.onChange}
 							value={field.value}
+							onKeyDown={handleKeyDown}
 						/>
 					)}
 				/>

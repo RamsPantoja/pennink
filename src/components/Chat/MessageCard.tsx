@@ -29,7 +29,7 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 	return (
 		<div
 			className={cn([
-				"flex flex-col relative",
+				"flex flex-col",
 				{
 					"items-start": message.role === "AGENT",
 					"items-end": message.role === "USER",
@@ -44,24 +44,24 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 					</p>
 				</Card>
 			)}
-			{message.role === "USER" && data && (
-				<div className="absolute bottom-[-8px]">
-					<Avatar className="h-5 w-5 border">
-						<AvatarImage src={data.user.image as string} />
-						<AvatarFallback>You</AvatarFallback>
-					</Avatar>
-				</div>
-			)}
 			<Card
 				className={cn([
 					"flex flex-col",
 					{
 						"w-fit bg-transparent": message.role === "AGENT",
-						"bg-mochaMantle text-mochaMauve items-end w-fit max-w-screen-sm font-medium":
+						"bg-mochaMantle text-mochaMauve items-end w-fit max-w-screen-sm font-medium relative":
 							message.role === "USER",
 					},
 				])}
 			>
+				{message.role === "USER" && data && (
+					<div className="absolute top-[-4px] right-0">
+						<Avatar className="h-5 w-5 border">
+							<AvatarImage src={data.user.image as string} />
+							<AvatarFallback>You</AvatarFallback>
+						</Avatar>
+					</div>
+				)}
 				<div
 					ref={messageContainerRef}
 					className={cn([

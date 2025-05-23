@@ -184,7 +184,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 				open={openDocumentLoader}
 				onOpenChange={setOpenDocumentLoader}
 			/>
-			<Card className="max-w-screen-lg gap-4 flex flex-col w-full justify-center h-full">
+			<Card className="max-w-screen-lg gap-4 flex flex-col w-full justify-center h-full bg-transparent">
 				<p className="text-center text-3xl font-bold text-mochaText">
 					What can I help with?
 				</p>

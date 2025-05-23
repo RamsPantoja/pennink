@@ -2,7 +2,7 @@ import { api } from "~/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import type { Message } from "~/server/api/services/chat";
 import { typeid } from "typeid-js";
 import { useRouter } from "next/router";
@@ -318,10 +318,20 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	useEffect(() => {
 		const lastMessage = messages[messages.length - 1];
 
-		if (chatContainer.current && lastMessage?.role === "USER") {
-			chatContainer.current.scrollTo({
-				top: chatContainer.current.scrollHeight,
-			});
+		if (chatContainer.current) {
+			if (lastMessage?.role === "USER") {
+				chatContainer.current.scrollTo({
+					top: chatContainer.current.scrollHeight,
+					behavior: "smooth",
+				});
+			}
+
+			if (lastMessage?.role === "AGENT") {
+				chatContainer.current.scrollTo({
+					top: chatContainer.current.scrollTop + 80,
+					behavior: "smooth",
+				});
+			}
 		}
 	}, [chatContainer, messages.length]);
 
@@ -429,6 +439,16 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		setChatModes(modes);
 	};
 
+	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (event.shiftKey && event.key === "Enter") {
+			return;
+		}
+
+		if (event.key === "Enter") {
+			useChatForm.handleSubmit(onSentPrompt)();
+		}
+	};
+
 	return {
 		onSentPrompt,
 		useChatForm,
@@ -448,5 +468,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		document,
 		isStreaming,
 		stopStreaming,
+		handleKeyDown,
 	};
 };
