@@ -128,7 +128,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 	return (
 		<Card
 			id="editorjs"
-			className="w-full h-full flex flex-col pl-20 overflow-auto markdown-styles prismjs-theme"
+			className="w-full h-full flex flex-col pl-20 bg-transparent overflow-auto markdown-styles prismjs-theme"
 		/>
 	);
 };

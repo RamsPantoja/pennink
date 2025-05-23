@@ -27,7 +27,7 @@
 }
 @layer base {
 	:root {
-		--sidebar-background: #ffffff;
+		--sidebar-background: #f6f6f6;
 		--sidebar-foreground: #4c4f69;
 		--sidebar-primary: #4c4f69;
 		--sidebar-primary-foreground: #4c4f69;

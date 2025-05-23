@@ -274,7 +274,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 	};
 
 	return (
-		<div className="flex w-full h-full flex-col bg-mochaBase">
+		<div className="flex w-full h-full flex-col bg-transparent">
 			<div className="flex gap-4 p-4 justify-around">
 				{/* <div className="flex flex-col gap-2">
 					<div className="flex items-center gap-2 relative">
@@ -380,7 +380,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					</Tooltip>
 				</div>
 			</div>
-			<Card className="flex flex-1 overflow-hidden pt-0 pb-0 rounded-none">
+			<Card className="flex flex-1 overflow-hidden pt-0 pb-0 rounded-none bg-transparent">
 				<Document
 					file={src}
 					onLoadSuccess={onDocumentLoadSuccess}

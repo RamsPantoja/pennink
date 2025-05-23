@@ -118,11 +118,11 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 			{!workspaceIsLoading && !workspaceIsError && workspaceData && (
 				<ResizablePanelGroup
 					direction="horizontal"
-					className="min-h-[200px] w-full rounded-xl md:min-w-[450px] flex h-full"
+					className="min-h-[200px] w-full md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
 						{document && (
-							<div className="flex w-full h-full flex-col">
+							<div className="flex w-full h-full flex-col bg-mochaCrust">
 								<p className="text-center text-xs pt-4 text-mochaMauve font-bold">
 									Content
 								</p>
@@ -167,7 +167,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
 						{document && (
-							<Card className="w-full h-full flex p-4 rounded-none">
+							<Card className="w-full h-full flex p-2 rounded-none">
 								<Tabs
 									defaultValue="notes"
 									className="w-full flex flex-col h-full"
@@ -203,7 +203,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							</Card>
 						)}
 						{!document && (
-							<div className="w-full h-full flex p-4">
+							<div className="w-full h-full flex p-4 bg-mochaCrust">
 								<Chat id={workspaceData.chatId} isNew={false} />
 							</div>
 						)}
@@ -240,7 +240,7 @@ const Notes = ({ content, getNoteContent }: NotesProps) => {
 			<div className="flex flex-1 w-full h-full overflow-hidden">
 				<DynamicEditor data={content} onSave={getNoteContent} />
 			</div>
-			<Card>
+			<div className="flex p-2">
 				<Button
 					disabled={content.blocks.length === 0}
 					variant="secondary"
@@ -251,7 +251,7 @@ const Notes = ({ content, getNoteContent }: NotesProps) => {
 				>
 					Export PDF
 				</Button>
-			</Card>
+			</div>
 		</div>
 	);
 };

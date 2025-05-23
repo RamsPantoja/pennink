@@ -50,7 +50,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	return (
 		<Card
 			className={cn([
-				"flex flex-col gap-4 overflow-hidden relative w-full p-0 rounded-none",
+				"flex flex-col gap-4 overflow-hidden relative w-full p-0 rounded-none bg-transparent",
 				{
 					"flex-1": messages.length > 0,
 				},

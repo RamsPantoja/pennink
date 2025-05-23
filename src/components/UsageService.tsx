@@ -42,7 +42,7 @@ export const UsageService = () => {
 
 	return (
 		<Card className="border w-full max-w-80 flex flex-col gap-8">
-			<p className="text-sm">Service usage</p>
+			<p className="text-sm">Usage</p>
 
 			{staticsIsLoading && (
 				<div className="flex flex-col gap-4">
