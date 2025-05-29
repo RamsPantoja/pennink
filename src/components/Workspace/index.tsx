@@ -26,6 +26,7 @@ import { useState } from "react";
 import edjsParse from "editorjs-html";
 import { jsPDF } from "jspdf";
 import { addMarkdownStyles } from "~/utils/markdownStyles";
+import { cn } from "~/lib/utils";
 const DynamicEditor = dynamic(() => import("../Editor"), {
 	ssr: false,
 	loading: () => <Loading />,
@@ -40,6 +41,8 @@ type WorkspaceProps = {
 	session: Session;
 };
 
+type TabValue = "notes" | "chat";
+
 export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { workspaceId } = router.query;
@@ -52,6 +55,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		text: "",
 		range: null,
 	});
+	const [tab, setTab] = useState<TabValue>("notes");
 
 	const {
 		data: workspaceData,
@@ -89,16 +93,19 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	};
 
 	const onSummarizeFromReader = () => {
+		setTab("chat");
 		setReaderEvent({ type: "reader-on-summarize", data: selection.text });
 		setSelection({ text: "", range: null });
 	};
 
 	const onChatFromReader = () => {
+		setTab("chat");
 		setReaderEvent({ type: "reader-on-chat", data: selection.text });
 		setSelection({ text: "", range: null });
 	};
 
 	const onExplainFromReader = () => {
+		setTab("chat");
 		setReaderEvent({ type: "reader-on-explain", data: selection.text });
 		setSelection({ text: "", range: null });
 	};
@@ -169,7 +176,10 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						{document && (
 							<Card className="w-full h-full flex p-2 rounded-none">
 								<Tabs
-									defaultValue="notes"
+									value={tab}
+									onValueChange={(value) => {
+										setTab(value as TabValue);
+									}}
 									className="w-full flex flex-col h-full"
 								>
 									<TabsList className="grid w-full grid-cols-2">
@@ -184,7 +194,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									</TabsList>
 									<TabsContent
 										value="notes"
-										className="w-full h-full overflow-hidden"
+										className="w-full h-full overflow-hidden "
 									>
 										<Notes
 											content={workspaceData.note.content}
@@ -193,7 +203,13 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									</TabsContent>
 									<TabsContent
 										value="chat"
-										className="w-full h-full overflow-hidden"
+										className={cn([
+											"w-full h-full overflow-hidden hidden",
+											{
+												block: tab === "chat",
+											},
+										])}
+										forceMount={true}
 									>
 										<div className="w-full h-full flex">
 											<Chat id={workspaceData.chatId} isNew={false} />
