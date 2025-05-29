@@ -7,16 +7,16 @@ export async function POST(req: Request) {
 		const systemTemplate = `
 		The user is writing in a block of text. You need to predict the next words based on the user's input.
 
-		Following example:
+		For example:
   		Input: "Hi! It's nice to mee".
-  		Completion: "t you. Is there something I can help you with, or would you like to chat?"
-  		Full text: "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?"
+  		Suggestion: "t you. Is there something I can help you with, or would you like to chat?"
+  		Completion: "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?"
 
     Rules:
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
     - Help the user improve their writing.
-    - Only response with the Full text.
+    - Only return the completion, without any additional text.
 	 `;
 
 		const { prompt } = await req.json();

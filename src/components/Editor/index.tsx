@@ -6,7 +6,7 @@ import Header from "@editorjs/header";
 import EditorjsList from "@editorjs/list";
 // import Quote from "@editorjs/quote";
 // import Table from "@editorjs/table";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Card } from "../ui/card";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
@@ -105,7 +105,13 @@ const Editor = ({ onSave, data }: EditorProps) => {
 					};
 
 					if (!suggestionFlag && !Array.isArray(event)) {
-						if (event.type === "block-changed") {
+						const data = await event.detail.target.save();
+
+						if (
+							event.type === "block-changed" &&
+							data &&
+							data.data.text !== "/"
+						) {
 							const svg = document.createElementNS(
 								"http://www.w3.org/2000/svg",
 								"svg",
@@ -167,8 +173,6 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							tooltipNode.append(suggestionContainer);
 							tooltipNode.append(commandContainer);
 
-							const data = await event.detail.target.save();
-
 							const handleStream = async (res: Response) => {
 								const stream = res.body;
 
@@ -201,64 +205,56 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								}
 							};
 
-							if (data) {
-								document.addEventListener("click", handleOnHideTooltip);
+							document.addEventListener("click", handleOnHideTooltip);
 
-								switch (data.tool) {
-									case "paragraph":
-										{
-											const res = await onSentPromptMutation(data.data.text);
+							switch (data.tool) {
+								case "paragraph":
+									{
+										const res = await onSentPromptMutation(data.data.text);
 
-											const streamRes = await handleStream(res);
+										const streamRes = await handleStream(res);
 
-											if (streamRes) {
-												suggestion.textContent = streamRes;
+										if (streamRes) {
+											suggestion.textContent = streamRes;
 
-												api.tooltip.show(
-													event.detail.target.holder,
-													tooltipNode,
-												);
+											api.tooltip.show(event.detail.target.holder, tooltipNode);
 
-												document.addEventListener("keydown", (e) => {
-													acceptSuggestion({
-														event: e,
-														tool: data.tool,
-														blockId: event.detail.target.id,
-														suggestion: streamRes,
-													});
+											document.addEventListener("keydown", (e) => {
+												acceptSuggestion({
+													event: e,
+													tool: data.tool,
+													blockId: event.detail.target.id,
+													suggestion: streamRes,
 												});
-											}
+											});
 										}
-										break;
-									case "header":
-										{
-											const res = await onSentPromptMutation(data.data.text);
+									}
+									break;
+								case "header":
+									{
+										const res = await onSentPromptMutation(data.data.text);
 
-											const streamRes = await handleStream(res);
+										const streamRes = await handleStream(res);
 
-											if (streamRes) {
-												suggestion.textContent = streamRes;
+										if (streamRes) {
+											suggestion.textContent = streamRes;
 
-												api.tooltip.show(
-													event.detail.target.holder,
-													tooltipNode,
-												);
+											api.tooltip.show(event.detail.target.holder, tooltipNode);
 
-												document.addEventListener("keydown", (e) => {
-													acceptSuggestion({
-														event: e,
-														tool: data.tool,
-														blockId: event.detail.target.id,
-														suggestion: streamRes,
-													});
+											document.addEventListener("keydown", (e) => {
+												acceptSuggestion({
+													event: e,
+													tool: data.tool,
+													blockId: event.detail.target.id,
+													suggestion: streamRes,
 												});
-											}
+											});
 										}
-										break;
-									default:
-										console.log("Unknown tool");
-										break;
-								}
+									}
+									break;
+								default:
+									console.log("Unknown tool");
+									break;
 							}
 						}
 					}
