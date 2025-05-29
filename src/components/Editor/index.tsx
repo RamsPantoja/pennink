@@ -6,11 +6,20 @@ import Header from "@editorjs/header";
 import EditorjsList from "@editorjs/list";
 // import Quote from "@editorjs/quote";
 // import Table from "@editorjs/table";
-import { useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import {
+	useFloating,
+	autoUpdate,
+	offset,
+	autoPlacement,
+	FloatingPortal,
+	FloatingOverlay,
+} from "@floating-ui/react";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 
 export type EditorProps = {
 	onSave: (data: OutputData) => void;
@@ -31,6 +40,13 @@ type AcceptSuggestionProps = {
 
 const Editor = ({ onSave, data }: EditorProps) => {
 	const { editorJS, setEditorJS } = useWorkspaceStore();
+	const [displaySuggestion, setDisplaySuggestion] = useState<boolean>(false);
+	const { refs, floatingStyles } = useFloating({
+		whileElementsMounted: autoUpdate,
+		middleware: [autoPlacement(), offset(10)],
+		open: displaySuggestion,
+	});
+	const [suggestion, setSuggestion] = useState<string>("");
 
 	const { mutateAsync: onSentPromptMutation } = useMutation({
 		mutationFn: (prompt: string) => {
@@ -72,10 +88,16 @@ const Editor = ({ onSave, data }: EditorProps) => {
 					const controllerOnKeyDown = new AbortController();
 					const controllerOnClick = new AbortController();
 
-					const handleOnHideTooltip = () => {
-						controllerOnKeyDown.abort();
-						api.tooltip.hide();
-						controllerOnClick.abort();
+					const handleOnHideTooltip = (event: MouseEvent) => {
+						if (
+							refs.floating.current &&
+							!refs.floating.current.contains(event.target as Node)
+						) {
+							controllerOnKeyDown.abort();
+							setDisplaySuggestion(false);
+							setSuggestion("");
+							controllerOnClick.abort();
+						}
 					};
 
 					const acceptSuggestion = async ({
@@ -85,7 +107,8 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						suggestion,
 					}: AcceptSuggestionProps) => {
 						if (event.ctrlKey && event.shiftKey && event.key === "Enter") {
-							api.tooltip.hide();
+							setDisplaySuggestion(false);
+							setSuggestion("");
 							suggestionFlag = true;
 
 							switch (tool) {
@@ -121,66 +144,6 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							data.data?.text?.trim() !== "/" &&
 							data.data?.text?.trim() !== ""
 						) {
-							const svg = document.createElementNS(
-								"http://www.w3.org/2000/svg",
-								"svg",
-							);
-							const path = document.createElementNS(
-								"http://www.w3.org/2000/svg",
-								"path",
-							);
-
-							// Set SVG attributes
-							svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-							svg.setAttribute("fill", "none");
-							svg.setAttribute("viewBox", "0 0 24 24");
-							svg.setAttribute("stroke-width", "1.5");
-							svg.setAttribute("stroke", "currentColor");
-							svg.setAttribute("class", "size-6");
-
-							// Set path attributes
-							path.setAttribute("stroke-linecap", "round");
-							path.setAttribute("stroke-linejoin", "round");
-							path.setAttribute(
-								"d",
-								"M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z",
-							);
-
-							svg.appendChild(path);
-							svg.classList.add("min-w-5");
-
-							const tooltipNode = document.createElement("div");
-							tooltipNode.classList.add("p-2", "flex", "flex-col", "gap-4");
-							const suggestionContainer = document.createElement("div");
-							suggestionContainer.classList.add(
-								"flex",
-								"gap-2",
-								"max-w-screen-sm",
-							);
-							const suggestion = document.createElement("p");
-							suggestion.classList.add("text-mochaBase", "text-left");
-							suggestionContainer.append(svg);
-							suggestionContainer.append(suggestion);
-							const commandContainer = document.createElement("div");
-							commandContainer.classList.add("flex", "items-center", "gap-4");
-							const command = document.createElement("span");
-							command.classList.add(
-								"p-2",
-								"rounded-md",
-								"border",
-								"border-mochaTeal",
-								"w-fit",
-								"text-mochaTeal",
-							);
-							command.textContent = "Ctrl + Shift + Enter";
-							const action = document.createElement("span");
-							action.classList.add("text-mochaTeal");
-							action.textContent = "Accept";
-							commandContainer.append(command);
-							commandContainer.append(action);
-							tooltipNode.append(suggestionContainer);
-							tooltipNode.append(commandContainer);
-
 							const handleStream = async (res: Response) => {
 								const stream = res.body;
 
@@ -213,7 +176,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								}
 							};
 
-							document.addEventListener("click", handleOnHideTooltip, {
+							document.addEventListener("mousedown", handleOnHideTooltip, {
 								signal: controllerOnClick.signal,
 							});
 
@@ -227,9 +190,9 @@ const Editor = ({ onSave, data }: EditorProps) => {
 										const streamRes = await handleStream(res);
 
 										if (streamRes) {
-											suggestion.textContent = streamRes;
-
-											api.tooltip.show(event.detail.target.holder, tooltipNode);
+											setSuggestion(streamRes);
+											refs.setReference(event.detail.target.holder);
+											setDisplaySuggestion(true);
 
 											document.addEventListener(
 												"keydown",
@@ -255,9 +218,9 @@ const Editor = ({ onSave, data }: EditorProps) => {
 										const streamRes = await handleStream(res);
 
 										if (streamRes) {
-											suggestion.textContent = streamRes;
-
-											api.tooltip.show(event.detail.target.holder, tooltipNode);
+											setSuggestion(streamRes);
+											refs.setReference(event.detail.target.holder);
+											setDisplaySuggestion(true);
 
 											document.addEventListener(
 												"keydown",
@@ -301,10 +264,47 @@ const Editor = ({ onSave, data }: EditorProps) => {
 	}, [editorJS]);
 
 	return (
-		<Card
-			id="editorjs"
-			className="w-full h-full flex flex-col pl-20 bg-transparent overflow-auto markdown-styles prismjs-theme"
-		/>
+		<Fragment>
+			{/* <FloatingOverlay /> */}
+			{displaySuggestion && (
+				<FloatingPortal>
+					<div
+						className="flex shadow-md overflow-hidden border border-mochaMauve bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
+						ref={refs.setFloating}
+						style={floatingStyles}
+					>
+						<div className="flex gap-2 flex-1 overflow-hidden bg-mochaTeal p-2 border-b border-mochaMauve">
+							<SparklesIcon className="min-w-5 h-5 text-mochaMauve" />
+							<p className="text-sm font-semibold text-mochaMauve">
+								AI suggestion
+							</p>
+						</div>
+						<p className="text-xs text-mochaMauve overflow-auto p-2">
+							{suggestion}
+						</p>
+						<div className="flex items-center gap-2 pl-2 pb-2 pr-2 text-xs">
+							<p className="text-xs p-1 border border-mochaMauve rounded-md">
+								Ctrl
+							</p>
+							+
+							<p className="text-xs p-1 border border-mochaMauve rounded-md">
+								Shift
+							</p>
+							+
+							<p className="text-xs p-1 border border-mochaMauve rounded-md">
+								Enter
+							</p>
+							Accept
+						</div>
+					</div>
+				</FloatingPortal>
+			)}
+
+			<Card
+				id="editorjs"
+				className="w-full h-full flex flex-col pl-20 bg-transparent overflow-auto markdown-styles prismjs-theme"
+			/>
+		</Fragment>
 	);
 };
 

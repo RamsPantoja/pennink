@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     Rules:
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
-    - Help the user improve their writing.
+    - Help the user improve their writing and fix any errors.
     - Only return the full completion, without any additional text, markdown or HTML.
 	 `;
 
