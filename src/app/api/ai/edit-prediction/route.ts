@@ -18,8 +18,7 @@ export async function POST(req: Request) {
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
     - Help the user improve their writing.
-    - Only return the full completion, without any additional text.
-    - Only plain text, no markdown or HTML.
+    - Only return the full completion, without any additional text, markdown or HTML.
 	 `;
 
 		const { prompt } = await req.json();
