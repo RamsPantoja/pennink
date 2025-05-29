@@ -110,8 +110,8 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						if (
 							event.type === "block-changed" &&
 							data &&
-							data.data.text !== "/" &&
-							data.data.text !== ""
+							data.data.text.trim() !== "/" &&
+							data.data.text.trim() !== ""
 						) {
 							const svg = document.createElementNS(
 								"http://www.w3.org/2000/svg",
