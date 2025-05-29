@@ -10,13 +10,13 @@ export async function POST(req: Request) {
 		For example:
   		Input: "Hi! It's nice to mee".
   		Suggestion: "t you. Is there something I can help you with, or would you like to chat?"
-  		Completion: "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?"
+  		Full completion: "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?"
 
     Rules:
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
     - Help the user improve their writing.
-    - Only return the completion, without any additional text.
+    - Only return the full completion, without any additional text.
 	 `;
 
 		const { prompt } = await req.json();

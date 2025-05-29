@@ -145,12 +145,11 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							const suggestionContainer = document.createElement("div");
 							suggestionContainer.classList.add(
 								"flex",
-								"items-center",
 								"gap-2",
 								"max-w-screen-sm",
 							);
 							const suggestion = document.createElement("p");
-							suggestion.classList.add("text-mochaBase");
+							suggestion.classList.add("text-mochaBase", "text-left");
 							suggestionContainer.append(svg);
 							suggestionContainer.append(suggestion);
 							const commandContainer = document.createElement("div");
