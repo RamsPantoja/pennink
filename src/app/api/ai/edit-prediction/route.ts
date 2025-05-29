@@ -1,4 +1,4 @@
-import { generateText, type LanguageModel } from "ai";
+import { generateText } from "ai";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
 
 export async function POST(req: Request) {
@@ -7,8 +7,10 @@ export async function POST(req: Request) {
 		const systemTemplate = `
 		The user is writing in a block of text. You need to predict the next words based on the user's input.
 
+		Type of blocks: header, paragraph, list, quote, code
+
 		For example:
-  		Input: "Hi! It's nice to mee".
+  		Input: "paragraph: Hi! It's nice to mee".
   		Suggestion: "t you. Is there something I can help you with, or would you like to chat?"
   		Full completion: "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?"
 

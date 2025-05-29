@@ -153,7 +153,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							suggestionContainer.append(svg);
 							suggestionContainer.append(suggestion);
 							const commandContainer = document.createElement("div");
-							commandContainer.classList.add("flex", "items-center", "gap-2");
+							commandContainer.classList.add("flex", "items-center", "gap-4");
 							const command = document.createElement("span");
 							command.classList.add(
 								"p-2",
@@ -209,7 +209,9 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							switch (data.tool) {
 								case "paragraph":
 									{
-										const res = await onSentPromptMutation(data.data.text);
+										const res = await onSentPromptMutation(
+											`${data.tool}: ${data.data.text}`,
+										);
 
 										const streamRes = await handleStream(res);
 
@@ -231,7 +233,9 @@ const Editor = ({ onSave, data }: EditorProps) => {
 									break;
 								case "header":
 									{
-										const res = await onSentPromptMutation(data.data.text);
+										const res = await onSentPromptMutation(
+											`${data.tool}: ${data.data.text}`,
+										);
 
 										const streamRes = await handleStream(res);
 
