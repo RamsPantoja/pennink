@@ -4,9 +4,20 @@ import { bedrock } from "@ai-sdk/amazon-bedrock";
 export async function POST(req: Request) {
 	try {
 		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
-		const systemTemplate = `You are a friendly and professional writing agent to help users improve their spelling, writing, speed, and messaging.
-		The user is writing in a block of text. You need to predict the next words based on the context.
-		Try to be concise and follow the user's tone. Only response with the prediction no more no less.`;
+		const systemTemplate = `
+		The user is writing in a block of text. You need to predict the next words based on the user's input.
+
+		Following example:
+  		Input: "Hi! It's nice to mee".
+  		Completion: "t you. Is there something I can help you with, or would you like to chat?"
+  		Full text: "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?"
+
+    Rules:
+    - Avoid acting like a chat, assistant, agent, or impersonating a human.
+    - Follow the user's tone and language.
+    - Help the user improve their writing.
+    - Only response with the Full text.
+	 `;
 
 		const { prompt } = await req.json();
 

@@ -1,4 +1,4 @@
-import { type CoreMessage, generateText, streamText } from "ai";
+import { type CoreMessage, streamText } from "ai";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
 
 export type Context = {
