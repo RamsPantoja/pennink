@@ -139,7 +139,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 												type="button"
 											>
 												<DocumentTextIcon className="min-w-4 w-4 h-4 mr-2" />
-												Ask mode
+												Ask content
 											</ToggleGroupItem>
 										</span>
 									</TooltipTrigger>
