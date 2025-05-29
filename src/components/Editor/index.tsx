@@ -69,8 +69,13 @@ const Editor = ({ onSave, data }: EditorProps) => {
 				data: data ?? undefined,
 
 				onChange: async (api, event) => {
+					const controllerOnKeyDown = new AbortController();
+					const controllerOnClick = new AbortController();
+
 					const handleOnHideTooltip = () => {
+						controllerOnKeyDown.abort();
 						api.tooltip.hide();
+						controllerOnClick.abort();
 					};
 
 					const acceptSuggestion = async ({
@@ -82,6 +87,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						if (event.ctrlKey && event.shiftKey && event.key === "Enter") {
 							api.tooltip.hide();
 							suggestionFlag = true;
+
 							switch (tool) {
 								case "header":
 									{
@@ -101,6 +107,8 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								default:
 									break;
 							}
+
+							controllerOnKeyDown.abort();
 						}
 					};
 
@@ -205,7 +213,9 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								}
 							};
 
-							document.addEventListener("click", handleOnHideTooltip);
+							document.addEventListener("click", handleOnHideTooltip, {
+								signal: controllerOnClick.signal,
+							});
 
 							switch (data.tool) {
 								case "paragraph":
@@ -221,14 +231,18 @@ const Editor = ({ onSave, data }: EditorProps) => {
 
 											api.tooltip.show(event.detail.target.holder, tooltipNode);
 
-											document.addEventListener("keydown", (e) => {
-												acceptSuggestion({
-													event: e,
-													tool: data.tool,
-													blockId: event.detail.target.id,
-													suggestion: streamRes,
-												});
-											});
+											document.addEventListener(
+												"keydown",
+												async (e) => {
+													await acceptSuggestion({
+														event: e,
+														tool: data.tool,
+														blockId: event.detail.target.id,
+														suggestion: streamRes,
+													});
+												},
+												{ signal: controllerOnKeyDown.signal },
+											);
 										}
 									}
 									break;
@@ -245,14 +259,18 @@ const Editor = ({ onSave, data }: EditorProps) => {
 
 											api.tooltip.show(event.detail.target.holder, tooltipNode);
 
-											document.addEventListener("keydown", (e) => {
-												acceptSuggestion({
-													event: e,
-													tool: data.tool,
-													blockId: event.detail.target.id,
-													suggestion: streamRes,
-												});
-											});
+											document.addEventListener(
+												"keydown",
+												async (e) => {
+													await acceptSuggestion({
+														event: e,
+														tool: data.tool,
+														blockId: event.detail.target.id,
+														suggestion: streamRes,
+													});
+												},
+												{ signal: controllerOnKeyDown.signal },
+											);
 										}
 									}
 									break;
