@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     - Follow the user's tone and language.
     - Help the user improve their writing.
     - Only return the full completion, without any additional text.
-    - Remove any unnecessary punctuation or formatting and weird tokens that don't make sense.
+    - Only plain text, no markdown or HTML.
 	 `;
 
 		const { prompt } = await req.json();
