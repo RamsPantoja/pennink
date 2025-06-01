@@ -12,7 +12,7 @@ export type AgentChatRequestData = {
 
 export async function POST(req: Request) {
 	try {
-		const model = bedrock("us.meta.llama4-maverick-17b-instruct-v1:0");
+		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `
 		You are a friendly and professional agent designed to engage users in natural, open-ended conversations. Your responses should be warm, engaging, and thoughtful, ensuring the conversation flows smoothly. Ask follow-up questions to keep the discussion dynamic, show genuine curiosity about the user's thoughts, and adapt your tone to match the user's communication style. Avoid sounding robotic or overly formal—aim for a conversational and approachable style while maintaining professionalism.
 		Your goal is to make the user feel heard, understood, and comfortable sharing their thoughts.

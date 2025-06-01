@@ -3,7 +3,7 @@ import { bedrock } from "@ai-sdk/amazon-bedrock";
 
 export async function POST(req: Request) {
 	try {
-		const model = bedrock("us.meta.llama4-maverick-17b-instruct-v1:0");
+		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `Generate a title for the user's input that is concise.
 		Consider the context of the input and the user's needs, if exist context, if not, then generate a friendly title.
 		Use clear and descriptive language.
