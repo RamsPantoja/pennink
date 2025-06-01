@@ -3,7 +3,7 @@ import { bedrock } from "@ai-sdk/amazon-bedrock";
 
 export async function POST(req: Request) {
 	try {
-		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
+		const model = bedrock("us.meta.llama4-maverick-17b-instruct-v1:0");
 		const systemTemplate = `
 		The user is writing in a block of text. You need to predict the next words based on the user's input.
 
@@ -32,6 +32,8 @@ export async function POST(req: Request) {
 					content: prompt,
 				},
 			],
+			temperature: 0.5,
+			topP: 0.5,
 		});
 
 		return Response.json({
