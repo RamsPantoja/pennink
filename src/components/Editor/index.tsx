@@ -120,7 +120,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								case "header":
 									{
 										await api.blocks.update(blockId, {
-											text: currentText.concat(suggestion),
+											text: currentText + suggestion,
 										});
 									}
 
@@ -128,7 +128,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								case "paragraph":
 									{
 										await api.blocks.update(blockId, {
-											text: currentText.concat(suggestion),
+											text: currentText + suggestion,
 										});
 									}
 									break;

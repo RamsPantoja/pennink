@@ -16,8 +16,9 @@ export async function POST(req: Request) {
     Rules:
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
-    - Help the user improve their writing and fix any errors.
-    - Only return the Suggestion, without any additional text, markdown or HTML.
+    - Don't repeat the user's input.
+    - Add initial spaces in your suggestion if is necessary.
+    - Only response with the suggestion, without any additional text, markdown or HTML.
 	 `;
 
 		const { prompt } = await req.json();
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
 					content: prompt,
 				},
 			],
-			temperature: 0.5,
+			temperature: 0.3,
 			topP: 0.5,
 		});
 
