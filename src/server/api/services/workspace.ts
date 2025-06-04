@@ -19,12 +19,12 @@ import {
 import { TRPCError } from "@trpc/server";
 import { and, eq, isNull, sql } from "drizzle-orm";
 import { env } from "~/env";
-import { mistral } from "@ai-sdk/mistral";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embedMany, embed } from "ai";
 import { embeddingDocuments } from "~/server/db/turso-schema";
 import { DateTime } from "luxon";
+import { bedrock } from "@ai-sdk/amazon-bedrock";
 
 type WorkspaceServiceContructor = {
 	ctx: TRPCContext;
@@ -293,7 +293,7 @@ export class WorkspaceService {
 	}
 
 	public async createFile(input: CreateFileInput, userId: string) {
-		const model = mistral.textEmbeddingModel("mistral-embed");
+		const model = bedrock.embedding("amazon.titan-embed-text-v2:0");
 		const textSplitter = new RecursiveCharacterTextSplitter({
 			chunkSize: 1000,
 			chunkOverlap: 200,
@@ -390,7 +390,7 @@ export class WorkspaceService {
 
 	public async documentVectorSearch(input: DocumentVectorSearchInput) {
 		try {
-			const model = mistral.textEmbeddingModel("mistral-embed");
+			const model = bedrock.embedding("amazon.titan-embed-text-v2:0");
 
 			const embedding = await embed({
 				model,

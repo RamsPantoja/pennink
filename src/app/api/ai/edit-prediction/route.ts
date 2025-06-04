@@ -12,7 +12,6 @@ export async function POST(req: Request) {
 		For example:
   		Input: "paragraph: Hi! It's nice to mee".
   		Suggestion: "t you. Is there something I can help you with, or would you like to chat?"
-  		Full completion: "Hi! It's nice to meet you. Is there something I can help you with, or would you like to chat?"
 
     Rules:
     - Avoid acting like a chat, assistant, agent, or impersonating a human.

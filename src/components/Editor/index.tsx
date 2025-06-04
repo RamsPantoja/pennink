@@ -17,7 +17,6 @@ import {
 	offset,
 	autoPlacement,
 	FloatingPortal,
-	FloatingOverlay,
 } from "@floating-ui/react";
 import { SparklesIcon } from "@heroicons/react/24/outline";
 
