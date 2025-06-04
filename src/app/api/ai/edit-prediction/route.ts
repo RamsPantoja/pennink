@@ -17,7 +17,6 @@ export async function POST(req: Request) {
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
     - Don't repeat the user's input.
-    - Add initial spaces in your suggestion if is necessary.
     - Only response with the suggestion, without any additional text, markdown or HTML.
 	 `;
 
