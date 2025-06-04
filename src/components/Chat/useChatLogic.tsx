@@ -2,7 +2,7 @@ import { api } from "~/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import type { Message } from "~/server/api/services/chat";
 import { typeid } from "typeid-js";
 import { useRouter } from "next/router";

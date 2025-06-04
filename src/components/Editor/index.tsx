@@ -18,7 +18,11 @@ import {
 	autoPlacement,
 	FloatingPortal,
 } from "@floating-ui/react";
-import { SparklesIcon } from "@heroicons/react/24/outline";
+import {
+	SparklesIcon,
+	ArrowTurnDownLeftIcon,
+	ArrowUpCircleIcon,
+} from "@heroicons/react/24/outline";
 
 export type EditorProps = {
 	onSave: (data: OutputData) => void;
@@ -35,6 +39,7 @@ type AcceptSuggestionProps = {
 	blockId: string;
 	tool: string;
 	suggestion: string;
+	currentText: string;
 };
 
 const Editor = ({ onSave, data }: EditorProps) => {
@@ -104,6 +109,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						blockId,
 						event,
 						suggestion,
+						currentText,
 					}: AcceptSuggestionProps) => {
 						if (event.ctrlKey && event.shiftKey && event.key === "Enter") {
 							setDisplaySuggestion(false);
@@ -114,7 +120,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								case "header":
 									{
 										await api.blocks.update(blockId, {
-											text: suggestion,
+											text: currentText.concat(suggestion),
 										});
 									}
 
@@ -122,7 +128,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								case "paragraph":
 									{
 										await api.blocks.update(blockId, {
-											text: suggestion,
+											text: currentText.concat(suggestion),
 										});
 									}
 									break;
@@ -201,6 +207,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 														tool: data.tool,
 														blockId: event.detail.target.id,
 														suggestion: streamRes,
+														currentText: data.data.text,
 													});
 												},
 												{ signal: controllerOnKeyDown.signal },
@@ -229,6 +236,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 														tool: data.tool,
 														blockId: event.detail.target.id,
 														suggestion: streamRes,
+														currentText: data.data.text,
 													});
 												},
 												{ signal: controllerOnKeyDown.signal },
@@ -268,30 +276,30 @@ const Editor = ({ onSave, data }: EditorProps) => {
 			{displaySuggestion && (
 				<FloatingPortal>
 					<div
-						className="flex shadow-md overflow-hidden border border-mochaMauve bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
+						className="flex p-4 shadow-md overflow-hidden border border-mochaMauve bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
 						ref={refs.setFloating}
 						style={floatingStyles}
 					>
-						<div className="flex gap-2 flex-1 overflow-hidden bg-mochaTeal p-2 border-b border-mochaMauve">
-							<SparklesIcon className="min-w-5 h-5 text-mochaMauve" />
-							<p className="text-sm font-semibold text-mochaMauve">
-								AI suggestion
-							</p>
+						<div className="flex gap-2 flex-1 items-center">
+							<div className="p-1 bg-mochaTeal rounded-md">
+								<SparklesIcon className="min-w-5 h-5 text-mochaMauve" />
+							</div>
+							<p className="text-sm text-mochaMauve">AI suggestion</p>
 						</div>
-						<p className="text-xs text-mochaMauve overflow-auto p-2">
+						<p className="text-xs text-mochaMauve overflow-auto font-semibold">
 							{suggestion}
 						</p>
-						<div className="flex items-center gap-2 pl-2 pb-2 pr-2 text-xs">
+						<div className="flex items-center gap-2 text-xs">
 							<p className="text-xs p-1 border border-mochaMauve rounded-md">
 								Ctrl
 							</p>
 							+
-							<p className="text-xs p-1 border border-mochaMauve rounded-md">
-								Shift
+							<p className="text-xs p-1 border border-mochaMauve rounded-md flex gap-1 items-center">
+								<ArrowUpCircleIcon className="w-4 h-4" /> Shift
 							</p>
 							+
-							<p className="text-xs p-1 border border-mochaMauve rounded-md">
-								Enter
+							<p className="text-xs p-1 border border-mochaMauve rounded-md flex gap-1 items-center">
+								<ArrowTurnDownLeftIcon className="w-4 h-4" /> Enter
 							</p>
 							Accept
 						</div>
