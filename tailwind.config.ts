@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { nextui } from "@nextui-org/theme";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {

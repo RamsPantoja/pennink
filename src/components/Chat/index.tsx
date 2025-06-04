@@ -68,7 +68,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					id="chat-container"
 				>
 					{messages.length === 0 && !isNew && (
-						<Card className="flex flex-col gap-2 items-center justify-center flex-1">
+						<Card className="flex flex-col gap-2 items-center justify-center flex-1 bg-transparent">
 							<ChatBubbleOvalLeftIcon className="min-w-16 h-16" />
 							<p className="font-bold">Chat with AI</p>
 							<p className="text-sm">

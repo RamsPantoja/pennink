@@ -88,7 +88,7 @@ export default function SubscriptionPlansModal({
 								"Unlimited workspaces",
 								"10-20x more messages than Free",
 								"Unlimited upload files",
-								"Upload files, each up to 1000 pages / 50 MB in size",
+								"Upload files, each up to 50 MB in size",
 							]}
 							buttonText="Upgrade to Pennink Pro"
 							subscriptionType="PRO"
