@@ -69,7 +69,9 @@ export default function SubscriptionPlansModal({
 								"Up to 25 workspaces (Includes deleted)",
 								"Share workspaces",
 								"5 upload files / day",
-								"Upload files, each up to 100 pages / 6 MB in size",
+								"Upload files, each up to 50 pages / 6 MB in size",
+								"AI writing suggestions",
+								"Ask questions to your PDFs",
 							]}
 							buttonText="Cancel current subscription"
 							subscriptionType="FREE"

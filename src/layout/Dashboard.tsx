@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Feedback } from "~/components/Feedback";
-import Notifications from "~/components/Notifications";
 import { AppSidebar } from "~/components/Sidebar";
 import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
 import { useWorkspaceStore } from "~/components/Workspace/useWorkspaceStore";
