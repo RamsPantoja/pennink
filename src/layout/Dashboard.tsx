@@ -30,6 +30,7 @@ import { env } from "~/env";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { fileSizeRule } from "~/lib/utils";
 import { api } from "~/utils/api";
+import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 
 type DashboardProps = {
 	session: Session;
@@ -43,6 +44,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { setDocument } = useWorkspaceStore();
+	const [isReadingPDF, setIsReadingPDF] = useState<boolean>(false);
 
 	const { mutate: createFile, isPending: createFileIsPending } =
 		api.workspace.createFile.useMutation({
@@ -93,13 +95,28 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			return;
 		}
 
+		if (selectedFile.type !== "application/pdf") {
+			toast("Invalid file type");
+			return;
+		}
+
+		setIsReadingPDF(true);
+		const loader = new WebPDFLoader(selectedFile);
+		const docs = await loader.load();
+		setIsReadingPDF(false);
+
+		if (docs.length === 0) {
+			toast("No pages found in the PDF");
+			return;
+		}
+
+		if (docs.length > 50) {
+			toast(`Too many pages in the PDF: ${docs.length} pages (max 50)`);
+			return;
+		}
+
 		try {
 			await triggerUploadFilesRuleMutation();
-
-			if (selectedFile.type !== "application/pdf") {
-				toast("Invalid file type");
-				return;
-			}
 
 			if (typeof workspaceId !== "string") {
 				toast("Invalid workspace ID");
@@ -169,7 +186,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 												isPending={
 													uploadingFile ||
 													createFileIsPending ||
-													triggerUploadFilesRuleIsPending
+													triggerUploadFilesRuleIsPending ||
+													isReadingPDF
 												}
 											>
 												<DocumentPlusIcon className="min-w-5 w-5 h-5" />

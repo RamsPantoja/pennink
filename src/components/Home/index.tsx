@@ -21,15 +21,10 @@ import { useRouter } from "next/router";
 import { Loading } from "../common/Loading";
 import { env } from "~/env";
 import { fileSizeRule } from "~/lib/utils";
+import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 
 type HomeComponentProps = {
 	session: Session;
-};
-
-type UploadedFile = {
-	type: string;
-	filename: string;
-	key: string;
 };
 
 export const HomeComponent = ({ session }: HomeComponentProps) => {
@@ -40,6 +35,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 	const { setDocument } = useWorkspaceStore();
 	const [openDocumentLoader, setOpenDocumentLoader] = useState<boolean>(false);
 	const [workspaceId, setWorkspaceId] = useState<string | null>(null);
+	const [isReadingPDF, setIsReadingPDF] = useState<boolean>(false);
 
 	const { mutate: createFile, isPending: createFileIsPending } =
 		api.workspace.createFile.useMutation({
@@ -98,10 +94,25 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 			return;
 		}
 
-		toast("Your file is processing, wait a moment, please...");
+		setIsReadingPDF(true);
+		const loader = new WebPDFLoader(selectedFile);
+		const docs = await loader.load();
+		setIsReadingPDF(false);
+
+		if (docs.length === 0) {
+			toast("No pages found in the PDF");
+			return;
+		}
+
+		if (docs.length > 50) {
+			toast(`Too many pages in the PDF: ${docs.length} pages (max 50)`);
+			return;
+		}
 
 		try {
 			await triggerUploadFilesRuleMutation();
+
+			toast("Your file is processing, wait a moment, please...");
 
 			const res = await onUploadFile({
 				file: selectedFile,
@@ -164,7 +175,8 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 		uploadingFile ||
 		createFileIsPending ||
 		createWorkspaceIsPending ||
-		triggerUploadFilesRuleIsPending;
+		triggerUploadFilesRuleIsPending ||
+		isReadingPDF;
 
 	return (
 		<div className="flex w-full pl-4 pr-4 pt-0 pb-4 h-full justify-center items-center">

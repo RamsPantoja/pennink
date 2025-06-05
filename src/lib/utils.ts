@@ -7,8 +7,6 @@ import markdownit from "markdown-it";
 import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
 import type { MessageRole } from "./enum";
 import type { ReactNode } from "react";
-import { tool } from "ai";
-import { jsonSchemaToZod } from "json-schema-to-zod";
 import type { Session } from "next-auth";
 import { toast } from "sonner";
 
