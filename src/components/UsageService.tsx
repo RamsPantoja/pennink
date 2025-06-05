@@ -40,6 +40,17 @@ export const UsageService = () => {
 		return "No date";
 	}, [staticsData]);
 
+	const resetChatMessagesTime = useMemo(() => {
+		if (staticsData) {
+			const specificDate = DateTime.fromJSDate(staticsData.messagesResetedAt);
+			const nextDay = specificDate.plus({ days: 1 });
+
+			return nextDay.toLocaleString(DateTime.DATETIME_SHORT);
+		}
+
+		return "No date";
+	}, [staticsData]);
+
 	return (
 		<Card className="border w-full max-w-80 flex flex-col gap-4">
 			<p className="text-sm">Usage</p>
@@ -66,6 +77,9 @@ export const UsageService = () => {
 						<Progress value={(staticsData.workspaces / 25) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
+						<span className="text-xs text-right">
+							Resets at {resetChatMessagesTime}
+						</span>
 						<div className="flex gap-4 items-center justify-between">
 							<p className="text-xs ">Messages</p>
 							<p className="text-xs">{staticsData.messages}/20</p>
