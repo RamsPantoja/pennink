@@ -66,7 +66,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	});
 
 	const {
-		mutateAsync: onSentPromptMutation,
+		mutate: onSentPromptMutation,
 		isPending: onSentPromptMutationIsPending,
 	} = useMutation({
 		mutationFn: (data: AgentChatRequestData) => {
@@ -289,7 +289,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				});
 			}
 
-			await onSentPromptMutation({
+			onSentPromptMutation({
 				prompt: data.prompt,
 				context: {
 					messages: [
@@ -308,7 +308,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 		if (quote) {
 			setQuote(null);
-			await onSentPromptMutation({
+			onSentPromptMutation({
 				prompt: data.prompt,
 				context: {
 					messages: [
@@ -323,7 +323,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			return;
 		}
 
-		await onSentPromptMutation({
+		onSentPromptMutation({
 			prompt: data.prompt,
 			context: {
 				messages: messages.map((message) => ({
@@ -374,7 +374,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				return;
 			}
 
-			const readerOnSummarize = async () => {
+			const readerOnSummarize = () => {
 				const prompt = `Summarize: ${readerEvent.data}`;
 
 				const message: Message = {
@@ -397,7 +397,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					return [...prev, message];
 				});
 
-				await onSentPromptMutation({
+				onSentPromptMutation({
 					prompt: prompt,
 					context: {
 						messages: [],
@@ -405,7 +405,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				});
 			};
 
-			const readerOnExplain = async () => {
+			const readerOnExplain = () => {
 				const prompt = `Explain: ${readerEvent.data}`;
 
 				const message: Message = {
@@ -428,7 +428,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					return [...prev, message];
 				});
 
-				await onSentPromptMutation({
+				onSentPromptMutation({
 					prompt: prompt,
 					context: {
 						messages: [],
