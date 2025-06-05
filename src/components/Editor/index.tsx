@@ -116,10 +116,6 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						currentText,
 					}: AcceptSuggestionProps) => {
 						if (event.ctrlKey && event.shiftKey && event.key === "Enter") {
-							setDisplaySuggestion(false);
-							setSuggestion("");
-							suggestionFlag = true;
-
 							switch (tool) {
 								case "header":
 									{
@@ -141,6 +137,10 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							}
 
 							controllerOnKeyDown.abort();
+							setDisplaySuggestion(false);
+							setSuggestion("");
+							controllerOnClick.abort();
+							suggestionFlag = true;
 						}
 					};
 
@@ -298,8 +298,8 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								Ctrl
 							</p>
 							+
-							<p className="text-xs p-1 border border-mochaMauve rounded-md flex gap-1 items-center">
-								<ArrowUpCircleIcon className="w-4 h-4" /> Shift
+							<p className="text-xs p-1 border border-mochaMauve rounded-md">
+								Shift
 							</p>
 							+
 							<p className="text-xs p-1 border border-mochaMauve rounded-md flex gap-1 items-center">
