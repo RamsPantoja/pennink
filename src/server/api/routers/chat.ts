@@ -17,4 +17,9 @@ export const chatRouter = createTRPCRouter({
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.services({ ctx }).chatService.createMessage(input);
 		}),
+	triggerChatMessagesRule: protectedProcedure.mutation(async ({ ctx }) => {
+		return await ctx
+			.services({ ctx })
+			.chatService.chatMessagesRule(ctx.session.user.id);
+	}),
 });

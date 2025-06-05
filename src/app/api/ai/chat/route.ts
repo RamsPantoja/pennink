@@ -1,5 +1,7 @@
 import { type CoreMessage, streamText } from "ai";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/server/auth";
 
 export type Context = {
 	messages: CoreMessage[];
@@ -12,6 +14,12 @@ export type AgentChatRequestData = {
 
 export async function POST(req: Request) {
 	try {
+		const session = await getServerSession(authOptions);
+
+		if (!session) {
+			throw new Error("Must be logged in to access");
+		}
+
 		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `
 		You are a friendly and professional agent designed to engage users in natural, open-ended conversations. Your responses should be warm, engaging, and thoughtful, ensuring the conversation flows smoothly. Ask follow-up questions to keep the discussion dynamic, show genuine curiosity about the user's thoughts, and adapt your tone to match the user's communication style. Avoid sounding robotic or overly formal—aim for a conversational and approachable style while maintaining professionalism.
@@ -45,9 +53,6 @@ export async function POST(req: Request) {
 		return result.toTextStreamResponse();
 	} catch (error) {
 		console.log(error);
-		return Response.json({
-			code: 500,
-			message: "Something went wrong generating the response",
-		});
+		return Response.error();
 	}
 }

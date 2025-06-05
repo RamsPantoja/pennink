@@ -72,6 +72,7 @@ export default function SubscriptionPlansModal({
 								"Upload files, each up to 50 pages / 6 MB in size",
 								"AI writing suggestions",
 								"Ask questions to your PDFs",
+								"20 chat messages / day",
 							]}
 							buttonText="Cancel current subscription"
 							subscriptionType="FREE"

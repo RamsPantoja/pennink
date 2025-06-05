@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createTRPCContext } from "~/server/api/trpc";
 import type { TRPCRequestInfo } from "@trpc/server/unstable-core-do-not-import";
-import { env } from "~/env";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 

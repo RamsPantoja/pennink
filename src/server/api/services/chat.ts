@@ -1,8 +1,10 @@
 import type { z } from "zod";
 import type { TRPCContext } from "../trpc";
-import { messages } from "~/server/db/schema";
+import { messages, statics } from "~/server/db/schema";
 import type { createMessageInputSchema } from "../schemas/chat";
 import { TRPCError } from "@trpc/server";
+import { DateTime } from "luxon";
+import { eq } from "drizzle-orm";
 
 export type Message = typeof messages.$inferSelect;
 
@@ -30,8 +32,73 @@ export class Chat {
 		return messages;
 	}
 
+	private async createMessageRule(userId: string) {
+		const limitMessages = 20;
+		const limitedChatMessagesMessageFreeSub = `You have reached the maximum number of chat messages/day (${limitMessages}). Upgrade to Pennink Pro to get more!.`;
+		const userStatics = await this.ctx.db.query.statics.findFirst({
+			where: (statics, { eq }) => {
+				return eq(statics.userId, userId);
+			},
+			with: {
+				user: true,
+			},
+		});
+
+		if (!userStatics) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "User statics not found",
+			});
+		}
+
+		const ruleForFreeSub = async () => {
+			const referenceDate = DateTime.fromJSDate(userStatics.messagesResetedAt);
+			const currentDate = DateTime.now();
+			const diff = currentDate.diff(referenceDate, "days");
+
+			if (diff.days < 1 && userStatics.messages >= limitMessages) {
+				throw new TRPCError({
+					code: "PRECONDITION_FAILED",
+					message: limitedChatMessagesMessageFreeSub,
+				});
+			}
+
+			//Reset messages metric to 0 to allow user send messages again
+			if (diff.days >= 1) {
+				await this.ctx.db
+					.update(statics)
+					.set({
+						messages: 0,
+						messagesResetedAt: new Date(),
+					})
+					.where(eq(statics.id, userStatics.id));
+			}
+		};
+
+		switch (userStatics.user.subscription) {
+			case "PRO":
+				{
+				}
+				break;
+			case "FREE":
+				{
+					await ruleForFreeSub();
+				}
+				break;
+			default:
+				{
+					await ruleForFreeSub();
+				}
+				break;
+		}
+
+		return userStatics;
+	}
+
 	public async createMessage(input: CreateMessageInput) {
 		const { message } = input;
+
+		const ruleRes = await this.createMessageRule(input.message.userId);
 
 		const [newMessage] = await this.ctx.db
 			.insert(messages)
@@ -45,6 +112,19 @@ export class Chat {
 			});
 		}
 
+		if (message.role === "AGENT") {
+			await this.ctx.db
+				.update(statics)
+				.set({
+					messages: ruleRes.messages + 1,
+				})
+				.where(eq(statics.id, ruleRes.id));
+		}
+
 		return message;
+	}
+
+	public chatMessagesRule(userId: string) {
+		return this.createMessageRule(userId);
 	}
 }

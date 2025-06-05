@@ -41,9 +41,8 @@ export const UsageService = () => {
 	}, [staticsData]);
 
 	return (
-		<Card className="border w-full max-w-80 flex flex-col gap-8">
+		<Card className="border w-full max-w-80 flex flex-col gap-4">
 			<p className="text-sm">Usage</p>
-
 			{staticsIsLoading && (
 				<div className="flex flex-col gap-4">
 					<Skeleton className="w-full h-5" />
@@ -65,6 +64,13 @@ export const UsageService = () => {
 							<p className="text-xs">{staticsData.workspaces}/25</p>
 						</div>
 						<Progress value={(staticsData.workspaces / 25) * 100} />
+					</div>
+					<div className="flex flex-col gap-2">
+						<div className="flex gap-4 items-center justify-between">
+							<p className="text-xs ">Messages</p>
+							<p className="text-xs">{staticsData.messages}/20</p>
+						</div>
+						<Progress value={(staticsData.messages / 20) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
 						<span className="text-xs text-right">

@@ -1,8 +1,16 @@
 import { generateText } from "ai";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/server/auth";
 
 export async function POST(req: Request) {
 	try {
+		const session = await getServerSession(authOptions);
+
+		if (!session) {
+			throw new Error("Must be logged in to access");
+		}
+
 		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `
 		The user is writing in a block of text. You need to predict the next words based on the user's input.
@@ -40,10 +48,7 @@ export async function POST(req: Request) {
 			prediction: result.text,
 		});
 	} catch (error) {
-		console.error("[WORKSPACE TITLE GENERATION ERROR]: ", error);
-		return Response.json({
-			code: 500,
-			message: "Something went wrong generating the response",
-		});
+		console.error("[EDIT PREDICTION ERROR]: ", error);
+		return Response.error();
 	}
 }

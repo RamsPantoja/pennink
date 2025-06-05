@@ -29,6 +29,7 @@ type HomeComponentProps = {
 
 export const HomeComponent = ({ session }: HomeComponentProps) => {
 	const router = useRouter();
+	const utils = api.useUtils();
 	const chatId = typeid().toUUID();
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -48,6 +49,8 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 					src: `${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${data.key}`,
 				});
 				toast("You can now ask to your document!");
+				await utils.user.statics.invalidate();
+				await utils.workspace.filesByUserId.invalidate();
 			},
 			onError: (error) => {
 				toast(error.message);

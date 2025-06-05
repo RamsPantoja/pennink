@@ -29,6 +29,7 @@ export type ChatModes = "ask-mode" | "web-search-mode" | "reasoning-mode";
 
 export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const router = useRouter();
+	const utils = api.useUtils();
 	const { data: session } = useSession();
 	const [currentAssistantMessage, setCurrentAssistantMessage] =
 		useState<Message | null>(null);
@@ -204,8 +205,22 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		});
 
 	const { mutate: createMessage } = api.chat.createMessage.useMutation({
+		onSuccess: async (data) => {
+			if (data.role === "AGENT") {
+				await utils.user.statics.invalidate();
+			}
+		},
 		onError: (error) => {
 			console.error(error.message);
+		},
+	});
+
+	const {
+		mutateAsync: triggerChatMessagesRuleMutate,
+		isPending: triggerChatMessagesRuleIsPending,
+	} = api.chat.triggerChatMessagesRule.useMutation({
+		onError: (error) => {
+			toast(error.message);
 		},
 	});
 
@@ -227,6 +242,17 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			role: "USER",
 			quote,
 		};
+		setLastUserMessage(message);
+		setMessages((prev) => {
+			return [...prev, message];
+		});
+
+		try {
+			await triggerChatMessagesRuleMutate();
+		} catch (error) {
+			console.error(error);
+			return;
+		}
 
 		if (!isNew && router.pathname !== "/") {
 			createMessage({
@@ -234,11 +260,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				message,
 			});
 		}
-
-		setLastUserMessage(message);
-		setMessages((prev) => {
-			return [...prev, message];
-		});
 
 		if (chatModes.includes("ask-mode")) {
 			const messages: CoreMessage[] = [];
@@ -260,8 +281,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				query: data.prompt,
 				fileId: document.id,
 			});
-
-			console.log(documentContext);
 
 			if (documentContext.length > 0) {
 				messages.push({
@@ -469,5 +488,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		isStreaming,
 		stopStreaming,
 		handleKeyDown,
+		triggerChatMessagesRuleIsPending,
 	};
 };

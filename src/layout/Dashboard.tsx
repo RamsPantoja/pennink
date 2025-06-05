@@ -39,6 +39,7 @@ type DashboardProps = {
 
 const Dashboard = ({ children, session }: DashboardProps) => {
 	const router = useRouter();
+	const utils = api.useUtils();
 	const [openDocumentLoader, setOpenDocumentLoader] = useState<boolean>(false);
 	const { workspaceId } = router.query;
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
@@ -56,6 +57,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 					type: data.type,
 					src: `${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${data.key}`,
 				});
+
+				await utils.user.statics.invalidate();
+				await utils.workspace.filesByUserId.invalidate();
 			},
 			onError: (error) => {
 				toast(error.message);

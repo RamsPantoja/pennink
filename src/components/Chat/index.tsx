@@ -44,6 +44,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		isStreaming,
 		stopStreaming,
 		handleKeyDown,
+		triggerChatMessagesRuleIsPending,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
@@ -150,7 +151,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					</div>
 					{(onSentPromptMutationIsPending ||
 						documentVectorSearchMutationIsPending ||
-						isStreaming) && (
+						isStreaming ||
+						triggerChatMessagesRuleIsPending) && (
 						<Button onClick={stopStreaming} size="icon" disabled={false}>
 							<StopIcon className="min-w-5 w-5 h-5" />
 						</Button>
@@ -158,7 +160,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					{!(
 						onSentPromptMutationIsPending ||
 						documentVectorSearchMutationIsPending ||
-						isStreaming
+						isStreaming ||
+						triggerChatMessagesRuleIsPending
 					) && (
 						<Button
 							onClick={handleSubmit(onSentPrompt)}
@@ -167,6 +170,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								onSentPromptMutationIsPending ||
 								createWorkspaceIsPending ||
 								isStreaming ||
+								triggerChatMessagesRuleIsPending ||
 								!watch("prompt")
 							}
 						>

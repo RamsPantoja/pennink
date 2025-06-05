@@ -485,12 +485,18 @@ export const statics = createTable("statics", {
 		.unique(),
 	workspaces: integer().notNull().default(0),
 	files: integer().notNull().default(0),
+	messages: integer().notNull().default(0),
 	workspacesResetedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
 		.defaultNow(),
 	filesResetedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	messagesResetedAt: timestamp({
 		mode: "date",
 	})
 		.notNull()
