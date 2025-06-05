@@ -51,6 +51,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 		open: displaySuggestion,
 	});
 	const [suggestion, setSuggestion] = useState<string>("");
+	const controllerOnSendPrompt = new AbortController();
 
 	const { mutateAsync: onSentPromptMutation } = useMutation({
 		mutationFn: (prompt: string) => {
@@ -62,6 +63,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 				body: JSON.stringify({
 					prompt,
 				}),
+				signal: controllerOnSendPrompt.signal,
 			});
 		},
 		onError: (error) => {
@@ -89,6 +91,8 @@ const Editor = ({ onSave, data }: EditorProps) => {
 				data: data ?? undefined,
 
 				onChange: async (api, event) => {
+					controllerOnSendPrompt.abort();
+					setDisplaySuggestion(false);
 					const controllerOnKeyDown = new AbortController();
 					const controllerOnClick = new AbortController();
 
