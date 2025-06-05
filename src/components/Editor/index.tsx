@@ -288,9 +288,11 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							<div className="p-1 bg-mochaTeal rounded-md">
 								<SparklesIcon className="min-w-5 h-5 text-mochaMauve" />
 							</div>
-							<p className="text-sm text-mochaMauve">AI suggestion</p>
+							<p className="text-sm text-mochaMauve font-semibold">
+								AI suggestion
+							</p>
 						</div>
-						<p className="text-xs text-mochaMauve overflow-auto font-semibold">
+						<p className="text-sm text-mochaMauve overflow-auto">
 							{suggestion}
 						</p>
 						<div className="flex items-center gap-2 text-xs">
