@@ -6,7 +6,7 @@ export default {
 	content: ["./src/**/*.tsx"],
 	theme: {
 		fontFamily: {
-			sans: [...fontFamily.sans],
+			sans: ["GeistMono", ...fontFamily.mono],
 		},
 		extend: {
 			colors: {

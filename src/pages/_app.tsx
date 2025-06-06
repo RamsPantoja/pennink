@@ -1,4 +1,5 @@
-import { Nunito } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
+
 import type { Session } from "next-auth";
 import type { AppType } from "next/app";
 
@@ -41,7 +42,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
 	return (
 		<SessionProvider session={pageProps.session}>
-			<main>
+			<main className={GeistMono.className}>
 				<TooltipProvider delayDuration={300}>
 					<Toaster richColors />
 					<Component {...pageProps} />

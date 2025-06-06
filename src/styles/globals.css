@@ -25,6 +25,7 @@
 ::-webkit-scrollbar-corner {
 	background: transparent;
 }
+
 @layer base {
 	:root {
 		--sidebar-background: #ffffff;
