@@ -80,7 +80,7 @@ const Settings = ({
 	return (
 		<div className="flex w-full justify-center p-4">
 			<Head>
-				<title>Settings</title>
+				<title>Pennink - Settings</title>
 				<meta name="description" content="Find a partner to do anything!" />
 				<link rel="icon" href="/icon.ico" />
 			</Head>

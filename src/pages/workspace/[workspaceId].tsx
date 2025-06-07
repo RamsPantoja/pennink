@@ -12,7 +12,7 @@ const WorkspacePage = ({
 		<Dashboard session={session}>
 			<>
 				<Head>
-					<title>AI & Learning - AI tutor for learning and teaching!</title>
+					<title>Pennink - Workspace</title>
 					<meta name="description" content="Find a partner to do anything!" />
 					<link rel="icon" href="/icon.ico" />
 				</Head>

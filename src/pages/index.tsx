@@ -12,7 +12,7 @@ export default function Home({
 		<Dashboard session={session}>
 			<>
 				<Head>
-					<title>AI & Learning - AI tutor for learning and teaching!</title>
+					<title>Pennink - The writing editor for what's next</title>
 					<meta name="description" content="Find a partner to do anything!" />
 					<link rel="icon" href="/icon.ico" />
 				</Head>
