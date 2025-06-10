@@ -67,7 +67,6 @@ export default function SubscriptionPlansModal({
 							description="Perfect for individuals just getting started"
 							features={[
 								"Up to 25 workspaces (Includes deleted)",
-								"Share workspaces",
 								"5 upload files / day",
 								"Upload files, each up to 50 pages / 6 MB in size",
 								"AI writing suggestions",
@@ -173,7 +172,7 @@ function PricingCard({
 	return (
 		<Card className="flex flex-col border-2">
 			<CardHeader>
-				<CardTitle className="text-xl">{title}</CardTitle>
+				<CardTitle className="text-xl uppercase">{title}</CardTitle>
 				<div className="flex items-baseline mt-2">
 					<span className="text-3xl font-bold">{price}</span>
 					<span className="ml-1 text-sm text-muted-foreground">{period}</span>
@@ -184,7 +183,7 @@ function PricingCard({
 				<ul className="space-y-2">
 					{features.map((feature, index) => (
 						<li key={index} className="flex items-center">
-							<Check className="h-4 w-4 mr-2 text-green-500" />
+							<Check className="h-4 min-w-4 mr-2 text-mochaText" />
 							<span className="text-sm">{feature}</span>
 						</li>
 					))}
