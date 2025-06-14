@@ -49,7 +49,7 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 					"flex flex-col",
 					{
 						"w-fit bg-transparent": message.role === "AGENT",
-						"bg-mochaMantle text-mochaMauve items-end w-fit max-w-screen-sm font-medium relative":
+						"bg-mochaMantle text-mochaMauve items-end w-fit max-w-screen-sm relative":
 							message.role === "USER",
 					},
 				])}
