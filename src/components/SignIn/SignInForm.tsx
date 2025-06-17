@@ -21,32 +21,32 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 	};
 
 	return (
-		<Card className="max-w-72 bg-mochaBase p-0">
+		<Card className="max-w-72 bg-transparent p-0">
 			<CardHeader>
 				<CardTitle>
 					<div className="flex flex-col items-center justify-center gap-4 text-mochaText">
 						<Logo />
 						<p className="text-base text-mochaText text-center">
-							AI that speeds up learning and writing
+							The writing editor for what's next
 						</p>
 					</div>
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<p className="text-xs text-mochaText">
-					By creating an account, you agree to the{" "}
+					By Creating an account or Sign in, you agree to the{" "}
 					<a
 						className="text-blackLight underline"
 						target="_blank"
-						href="https://mitanda.xyz/tos"
+						href="https://www.pennink.xyz/terms"
 					>
-						Terms and Conditions
+						Terms
 					</a>{" "}
 					and our{" "}
 					<a
 						className="text-blackLight underline"
 						target="_blank"
-						href="https://mitanda.xyz/privacy_policy"
+						href="https://www.pennink.xyz/privacy-policy"
 					>
 						Privacy Policy
 					</a>
