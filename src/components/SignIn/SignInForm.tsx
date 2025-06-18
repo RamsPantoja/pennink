@@ -92,7 +92,7 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 						</svg>
 					}
 				>
-					Sign in
+					Sign in with Google
 				</Button>
 			</CardFooter>
 		</Card>
