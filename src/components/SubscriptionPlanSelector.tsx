@@ -172,7 +172,9 @@ function PricingCard({
 	return (
 		<Card className="flex flex-col border-2">
 			<CardHeader>
-				<CardTitle className="text-xl uppercase">{title}</CardTitle>
+				<CardTitle className="text-xs uppercase tracking-wider">
+					{title}
+				</CardTitle>
 				<div className="flex items-baseline mt-2">
 					<span className="text-3xl font-bold">{price}</span>
 					<span className="ml-1 text-sm text-muted-foreground">{period}</span>
