@@ -52,7 +52,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	return (
 		<Card
 			className={cn([
-				"flex flex-col gap-4 overflow-hidden relative w-full p-0 rounded-none bg-transparent",
+				"flex flex-col gap-4 overflow-hidden relative w-full p-2 rounded-none bg-transparent",
 				{
 					"flex-1": messages.length > 0,
 				},
@@ -87,7 +87,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
-			<Card className="w-full bg-mochaBase flex flex-col border border-mochaText p-2 focus:border-mochaMauve">
+			<Card className="w-full bg-mochaBase flex flex-col p-4 focus:border-mochaMauve shadow-md border">
 				{quote && (
 					<Card className="flex items-start gap-2 bg-mochaMantle border">
 						<ArrowTurnDownRightIcon className="min-w-5 h-5 text-mochaText" />

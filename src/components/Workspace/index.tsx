@@ -129,7 +129,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 				>
 					<ResizablePanel defaultSize={50}>
 						{document && (
-							<div className="flex w-full h-full flex-col bg-mochaCrust">
+							<div className="flex w-full h-full flex-col">
 								<p className="text-center text-xs pt-4 text-mochaMauve font-bold">
 									Content
 								</p>
@@ -219,7 +219,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							</Card>
 						)}
 						{!document && (
-							<div className="w-full h-full flex p-4 bg-mochaCrust">
+							<div className="w-full h-full flex p-4">
 								<Chat id={workspaceData.chatId} isNew={false} />
 							</div>
 						)}

@@ -13,7 +13,7 @@ const toggleVariants = cva(
 			variant: {
 				default: "bg-mochaBase text-mochaSubText",
 				outline:
-					"border border-slate-200 bg-transparent data-[state=on]:border-mochaMauve data-[state=on]:bg-mochaTeal hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+					"border border-slate-200 bg-transparent data-[state=on]:bg-mochaTeal hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:hover:text-slate-50",
 			},
 			size: {
 				default: "h-10 px-3",

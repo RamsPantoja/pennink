@@ -41,13 +41,13 @@ const supportOptions = [
 		title: "Privacy Policy",
 		description: "Read our privacy policy",
 		icon: ShieldExclamationIcon,
-		link: "/privacy-policy",
+		link: "https://www.pennink.xyz/privacy-policy",
 	},
 	{
 		title: "Terms of Service",
 		description: "Read our terms of service",
 		icon: DocumentTextIcon,
-		link: "/tos",
+		link: "https://www.pennink.xyz/terms",
 	},
 ];
 

@@ -231,12 +231,7 @@ export const WorkspaceCard = ({
 					}}
 					asChild
 					isActive={id === selectedWorkspaceId}
-					className={cn([
-						"pr-0 cursor-pointer",
-						{
-							"border border-mochaMauve": id === selectedWorkspaceId,
-						},
-					])}
+					className={cn(["pr-0 cursor-pointer"])}
 				>
 					<div className="flex items-center w-full">
 						<span
