@@ -280,7 +280,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 			{displaySuggestion && (
 				<FloatingPortal>
 					<div
-						className="flex p-4 shadow-md overflow-hidden border border-mochaMauve bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
+						className="flex p-4 shadow-md overflow-hidden border bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
 						ref={refs.setFloating}
 						style={floatingStyles}
 					>
@@ -296,15 +296,15 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							{suggestion}
 						</p>
 						<div className="flex items-center gap-2 text-xs">
-							<p className="text-xs p-1 border border-mochaMauve rounded-md">
+							<p className="text-xs p-1 border rounded-md text-mochaSubText">
 								Ctrl
 							</p>
 							+
-							<p className="text-xs p-1 border border-mochaMauve rounded-md">
+							<p className="text-xs p-1 border rounded-md text-mochaSubText">
 								Shift
 							</p>
 							+
-							<p className="text-xs p-1 border border-mochaMauve rounded-md flex gap-1 items-center">
+							<p className="text-xs p-1 border rounded-md flex gap-1 items-center text-mochaSubText">
 								<ArrowTurnDownLeftIcon className="w-4 h-4" /> Enter
 							</p>
 							Accept
