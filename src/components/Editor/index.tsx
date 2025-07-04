@@ -115,6 +115,14 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						suggestion,
 						currentText,
 					}: AcceptSuggestionProps) => {
+						const reset = () => {
+							suggestionFlag = true;
+							setDisplaySuggestion(false);
+							setSuggestion("");
+							controllerOnKeyDown.abort();
+							controllerOnClick.abort();
+						};
+
 						if (event.ctrlKey && event.shiftKey && event.key === "Enter") {
 							switch (tool) {
 								case "header":
@@ -122,6 +130,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 										await api.blocks.update(blockId, {
 											text: currentText + suggestion,
 										});
+										api.caret.setToBlock(blockId, "end");
 									}
 
 									break;
@@ -130,17 +139,18 @@ const Editor = ({ onSave, data }: EditorProps) => {
 										await api.blocks.update(blockId, {
 											text: currentText + suggestion,
 										});
+										api.caret.setToBlock(blockId, "end");
 									}
 									break;
 								default:
 									break;
 							}
 
-							controllerOnKeyDown.abort();
-							setDisplaySuggestion(false);
-							setSuggestion("");
-							controllerOnClick.abort();
-							suggestionFlag = true;
+							reset();
+						}
+
+						if (event.key === "Enter" || event.key === "Tab") {
+							reset();
 						}
 					};
 
