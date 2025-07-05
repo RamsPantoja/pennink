@@ -174,7 +174,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 				onOpenChange={setOpenDocumentLoader}
 			/>
 			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
-				<div className="flex p-2 gap-4 items-center justify-between w-full border-b border-mochaMauve">
+				<div className="flex p-2 gap-4 items-center justify-between w-full border-b">
 					<SidebarTrigger className="min-w-8 h-8">
 						<span>Toggle</span>
 					</SidebarTrigger>
@@ -265,7 +265,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						)}
 					</div> */}
 				</div>
-				<div className="flex w-full h-full gap-2 rounded-md overflow-hidden">
+				<div className="flex w-full h-full gap-2 overflow-hidden">
 					{children}
 				</div>
 			</main>

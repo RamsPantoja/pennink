@@ -13,16 +13,16 @@ export async function POST(req: Request) {
 
 		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `
-		The user is writing in a block of text. You need to predict the next words based on the user's input.
+		The user is writing in a block of text. You need to predict the next tokens based on the user's input. Include any type of character, including punctuation, whitespace, and special characters.
 
 		Type of blocks: header, paragraph, list, quote, code
 
 		For example:
-  		Input: "paragraph: Hi! It's nice to meet".
-  		Prediction: " you. Is there something I can help you with, or would you like to chat?"
+  		Input: "paragraph: Hi! It's nice to meet ".
+  		Prediction: "you. Is there something I can help you with, or would you like to chat?"
 
     Rules:
-    - Avoid acting like a chat, assistant, agent, or impersonating a human.
+    - Avoid acting like a bot, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
     - Don't repeat the user's input.
     - Only response with the prediction.

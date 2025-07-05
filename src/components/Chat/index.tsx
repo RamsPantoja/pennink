@@ -87,7 +87,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
-			<Card className="w-full bg-mochaBase flex flex-col p-4 focus:border-mochaMauve shadow-md border">
+			<Card className="w-full bg-mochaBase border flex flex-col p-4 shadow-md">
 				{quote && (
 					<Card className="flex items-start gap-2 bg-mochaMantle border">
 						<ArrowTurnDownRightIcon className="min-w-5 h-5 text-mochaText" />
@@ -153,7 +153,12 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						documentVectorSearchMutationIsPending ||
 						isStreaming ||
 						triggerChatMessagesRuleIsPending) && (
-						<Button onClick={stopStreaming} size="icon" disabled={false}>
+						<Button
+							variant="teal"
+							onClick={stopStreaming}
+							size="icon"
+							disabled={false}
+						>
 							<StopIcon className="min-w-5 w-5 h-5" />
 						</Button>
 					)}
@@ -166,12 +171,13 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						<Button
 							onClick={handleSubmit(onSentPrompt)}
 							size="icon"
+							variant="teal"
 							disabled={
 								onSentPromptMutationIsPending ||
 								createWorkspaceIsPending ||
 								isStreaming ||
 								triggerChatMessagesRuleIsPending ||
-								!watch("prompt")
+								!watch("prompt").trim()
 							}
 						>
 							<ArrowUpIcon className="min-w-5 w-5 h-5" />

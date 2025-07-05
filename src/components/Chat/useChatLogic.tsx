@@ -464,6 +464,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 
 		if (event.key === "Enter") {
+			event.preventDefault();
 			useChatForm.handleSubmit(onSentPrompt)();
 		}
 	};

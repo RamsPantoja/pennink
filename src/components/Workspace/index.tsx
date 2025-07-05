@@ -219,7 +219,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							</Card>
 						)}
 						{!document && (
-							<div className="w-full h-full flex p-4">
+							<div className="w-full h-full flex bg-mochaCrust">
 								<Chat id={workspaceData.chatId} isNew={false} />
 							</div>
 						)}
