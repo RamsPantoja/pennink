@@ -156,7 +156,12 @@ const Editor = ({ onSave, data }: EditorProps) => {
 					};
 
 					const handleOnHideTooltip = (event: MouseEvent) => {
-						reset();
+						if (
+							refs.floating.current &&
+							!refs.floating.current.contains(event.target as Node)
+						) {
+							reset();
+						}
 					};
 
 					const acceptSuggestion = async ({
