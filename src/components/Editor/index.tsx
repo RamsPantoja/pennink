@@ -42,6 +42,51 @@ type AcceptSuggestionProps = {
 	currentText: string;
 };
 
+type AcceptSuggestionListItemProps = {
+	event: KeyboardEvent;
+	blockId: string;
+	suggestion: string;
+	itemContent: ItemChanged;
+	data: any[];
+};
+
+type ContentItem = {
+	content: string;
+	meta: Record<string, any>;
+	items: any[];
+};
+
+type ItemChanged = {
+	changedIndex: number;
+	oldContent: string;
+	newContent: string;
+};
+
+const findChangedItem = (
+	oldItems: ContentItem[],
+	updatedItems: ContentItem[],
+): ItemChanged | null => {
+	let foundChange: ItemChanged | null = null;
+
+	const maxLength = Math.max(oldItems.length, updatedItems.length);
+
+	for (let i = 0; i < maxLength; i++) {
+		if (oldItems[i]?.content !== updatedItems[i]?.content) {
+			if (foundChange !== null) {
+				return null;
+			}
+
+			foundChange = {
+				changedIndex: i,
+				oldContent: oldItems[i]?.content || "",
+				newContent: updatedItems[i]?.content || "",
+			};
+		}
+	}
+
+	return foundChange;
+};
+
 const Editor = ({ onSave, data }: EditorProps) => {
 	const { editorJS, setEditorJS } = useWorkspaceStore();
 	const [displaySuggestion, setDisplaySuggestion] = useState<boolean>(false);
@@ -76,6 +121,8 @@ const Editor = ({ onSave, data }: EditorProps) => {
 	useEffect(() => {
 		if (!editorJS) {
 			let suggestionFlag = false;
+			let dataRef = data;
+			let changedIndexItem: number | null = null;
 
 			const editor = new EditorJS({
 				holder: "editorjs",
@@ -86,6 +133,9 @@ const Editor = ({ onSave, data }: EditorProps) => {
 					},
 					list: {
 						class: EditorjsList as unknown as BlockToolConstructable,
+						config: {
+							maxLevel: 1,
+						},
 					},
 				},
 				data: data ?? undefined,
@@ -96,16 +146,17 @@ const Editor = ({ onSave, data }: EditorProps) => {
 					const controllerOnKeyDown = new AbortController();
 					const controllerOnClick = new AbortController();
 
+					const reset = () => {
+						suggestionFlag = false;
+						setDisplaySuggestion(false);
+						setSuggestion("");
+						controllerOnKeyDown.abort();
+						controllerOnClick.abort();
+						changedIndexItem = null;
+					};
+
 					const handleOnHideTooltip = (event: MouseEvent) => {
-						if (
-							refs.floating.current &&
-							!refs.floating.current.contains(event.target as Node)
-						) {
-							controllerOnKeyDown.abort();
-							setDisplaySuggestion(false);
-							setSuggestion("");
-							controllerOnClick.abort();
-						}
+						reset();
 					};
 
 					const acceptSuggestion = async ({
@@ -115,15 +166,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						suggestion,
 						currentText,
 					}: AcceptSuggestionProps) => {
-						const reset = () => {
-							suggestionFlag = true;
-							setDisplaySuggestion(false);
-							setSuggestion("");
-							controllerOnKeyDown.abort();
-							controllerOnClick.abort();
-						};
-
-						if (event.ctrlKey && event.shiftKey && event.key === "Enter") {
+						if (event.altKey && event.key === "a") {
 							switch (tool) {
 								case "header":
 									{
@@ -149,7 +192,42 @@ const Editor = ({ onSave, data }: EditorProps) => {
 							reset();
 						}
 
-						if (event.key === "Enter" || event.key === "Tab") {
+						if (
+							!event.altKey &&
+							(event.key === "Enter" || event.key === "Tab")
+						) {
+							reset();
+						}
+					};
+
+					const acceptSuggestionListItem = async ({
+						blockId,
+						event,
+						suggestion,
+						itemContent,
+						data,
+					}: AcceptSuggestionListItemProps) => {
+						if (event.altKey && event.key === "a") {
+							await api.blocks.update(blockId, {
+								items: data.map((item, index) => {
+									if (index === itemContent.changedIndex) {
+										return {
+											...item,
+											content: itemContent.newContent + suggestion,
+										};
+									}
+
+									return item;
+								}),
+							});
+							api.caret.setToBlock(blockId, "end");
+							reset();
+						}
+
+						if (
+							!event.altKey &&
+							(event.key === "Enter" || event.key === "Tab")
+						) {
 							reset();
 						}
 					};
@@ -219,7 +297,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 													await acceptSuggestion({
 														event: e,
 														tool: data.tool,
-														blockId: event.detail.target.id,
+														blockId: data.id,
 														suggestion: streamRes,
 														currentText: data.data.text,
 													});
@@ -248,13 +326,53 @@ const Editor = ({ onSave, data }: EditorProps) => {
 													await acceptSuggestion({
 														event: e,
 														tool: data.tool,
-														blockId: event.detail.target.id,
+														blockId: data.id,
 														suggestion: streamRes,
 														currentText: data.data.text,
 													});
 												},
 												{ signal: controllerOnKeyDown.signal },
 											);
+										}
+									}
+									break;
+								case "list":
+									{
+										const blockRef = dataRef?.blocks.find(
+											(block) => block.id === data.id,
+										);
+
+										const itemChanged = findChangedItem(
+											blockRef?.data.items,
+											data.data.items,
+										);
+
+										if (itemChanged && itemChanged.newContent !== "") {
+											const res = await onSentPromptMutation(
+												`paragraph: ${itemChanged.newContent}`,
+											);
+
+											const streamRes = await handleStream(res);
+
+											if (streamRes) {
+												setSuggestion(streamRes);
+												refs.setReference(event.detail.target.holder);
+												setDisplaySuggestion(true);
+
+												document.addEventListener(
+													"keydown",
+													async (e) => {
+														await acceptSuggestionListItem({
+															event: e,
+															blockId: data.id,
+															suggestion: streamRes,
+															itemContent: itemChanged,
+															data: blockRef?.data.items,
+														});
+													},
+													{ signal: controllerOnKeyDown.signal },
+												);
+											}
 										}
 									}
 									break;
@@ -268,6 +386,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 					suggestionFlag = false;
 
 					api.saver.save().then((outputData) => {
+						dataRef = outputData;
 						onSave(outputData);
 					});
 				},
@@ -307,15 +426,11 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						</p>
 						<div className="flex items-center gap-2 text-xs">
 							<p className="text-xs p-1 border rounded-md text-mochaSubText">
-								Ctrl
+								Alt
 							</p>
 							+
 							<p className="text-xs p-1 border rounded-md text-mochaSubText">
-								Shift
-							</p>
-							+
-							<p className="text-xs p-1 border rounded-md flex gap-1 items-center text-mochaSubText">
-								<ArrowTurnDownLeftIcon className="w-4 h-4" /> Enter
+								A
 							</p>
 							Accept
 						</div>

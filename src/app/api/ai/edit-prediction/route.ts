@@ -19,13 +19,13 @@ export async function POST(req: Request) {
 
 		For example:
   		Input: "paragraph: Hi! It's nice to meet".
-  		Suggestion: " you. Is there something I can help you with, or would you like to chat?"
+  		Prediction: " you. Is there something I can help you with, or would you like to chat?"
 
     Rules:
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
     - Don't repeat the user's input.
-    - Only response with the suggestion, without any additional text, markdown or HTML.
+    - Only response with the prediction, without any additional text, markdown or HTML.
 	 `;
 
 		const { prompt } = await req.json();
