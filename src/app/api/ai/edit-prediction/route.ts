@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     - Avoid acting like a chat, assistant, agent, or impersonating a human.
     - Follow the user's tone and language.
     - Don't repeat the user's input.
-    - Only response with the prediction, without any additional text, markdown or HTML.
+    - Only response with the prediction.
 	 `;
 
 		const { prompt } = await req.json();

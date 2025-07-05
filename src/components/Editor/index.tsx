@@ -421,17 +421,10 @@ const Editor = ({ onSave, data }: EditorProps) => {
 								AI suggestion
 							</p>
 						</div>
-						<p className="text-sm text-mochaMauve overflow-auto">
-							{suggestion}
-						</p>
+						<p className="text-sm text-mochaText overflow-auto">{suggestion}</p>
 						<div className="flex items-center gap-2 text-xs">
-							<p className="text-xs p-1 border rounded-md text-mochaSubText">
-								Alt
-							</p>
-							+
-							<p className="text-xs p-1 border rounded-md text-mochaSubText">
-								A
-							</p>
+							<p className="text-xs p-1 border rounded-md">Alt</p>+
+							<p className="text-xs p-1 border rounded-md">A</p>
 							Accept
 						</div>
 					</div>
