@@ -12,12 +12,15 @@ export async function POST(req: Request) {
 		}
 
 		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
-		const systemTemplate = `Generate a title for the user's input that is concise.
+		const systemTemplate = `
+		Generate a title for the user's input that is concise.
 		Consider the context of the input and the user's needs, if exist context, if not, then generate a friendly title.
-		Use clear and descriptive language.
-		Avoid overly technical terms.
-		Keep the title within a reasonable length.
-		Only response with the title.`;
+
+		Rules:
+		1. Use clear and descriptive language.
+		2. Avoid overly technical terms.
+		3. Keep the title within a reasonable length.
+		4. Only response with the title.`;
 
 		const { context } = await req.json();
 
