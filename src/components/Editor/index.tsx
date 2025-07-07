@@ -171,7 +171,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						suggestion,
 						currentText,
 					}: AcceptSuggestionProps) => {
-						if (event.altKey && event.key === "a") {
+						if (event.altKey && (event.key === "a" || event.key === "A")) {
 							switch (tool) {
 								case "header":
 									{
@@ -212,7 +212,7 @@ const Editor = ({ onSave, data }: EditorProps) => {
 						itemContent,
 						data,
 					}: AcceptSuggestionListItemProps) => {
-						if (event.altKey && event.key === "a") {
+						if (event.altKey && (event.key === "a" || event.key === "A")) {
 							await api.blocks.update(blockId, {
 								items: data.map((item, index) => {
 									if (index === itemContent.changedIndex) {
