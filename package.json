@@ -21,6 +21,7 @@
 		"@ai-sdk/amazon-bedrock": "^2.2.9",
 		"@auth/drizzle-adapter": "^1.1.0",
 		"@aws-sdk/client-s3": "^3.775.0",
+		"@aws-sdk/credential-providers": "^3.844.0",
 		"@aws-sdk/s3-request-presigner": "^3.777.0",
 		"@blocknote/core": "^0.33.0",
 		"@blocknote/mantine": "^0.33.0",

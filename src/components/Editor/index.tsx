@@ -96,17 +96,17 @@ const getCredentials = async () => {
 	const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/ai-credentials`, {
 		method: "GET",
 	});
-	return await res.json();
+	const resJson = await res.json();
+
+	return resJson.credentials;
 };
 
-const credentialsRes = await getCredentials();
-
-const bedrockInstance = createAmazonBedrock({
-	...credentialsRes.credentials,
-});
-
 export const Editor = ({ onSave, data }: EditorProps) => {
-	const model = bedrockInstance("amazon.nova-pro-v1:0");
+	const bedrock = createAmazonBedrock({
+		region: "us-east-1",
+		credentialProvider: getCredentials,
+	});
+	const model = bedrock("amazon.nova-pro-v1:0");
 	const [displaySuggestion, setDisplaySuggestion] = useState<boolean>(false);
 	const { refs, floatingStyles } = useFloating({
 		whileElementsMounted: autoUpdate,
@@ -118,7 +118,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	const [suggestionTimer, setSuggestionTimer] = useState<NodeJS.Timeout | null>(
 		null,
 	);
-
 	const [saveTimer, setSaveTimer] = useState<NodeJS.Timeout | null>(null);
 
 	const editor = useCreateBlockNote({
