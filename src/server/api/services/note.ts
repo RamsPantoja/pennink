@@ -4,7 +4,6 @@ import { notes } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import type { updateNoteInputSchema } from "../schemas/note";
-import type { OutputBlockData } from "@editorjs/editorjs";
 
 type NoteServiceContructor = {
 	ctx: TRPCContext;
@@ -23,10 +22,7 @@ export class NoteService {
 		const [note] = await this.ctx.db
 			.update(notes)
 			.set({
-				content: {
-					...input.content,
-					blocks: input.content.blocks as OutputBlockData[],
-				},
+				content: input.content,
 			})
 			.where(eq(notes.id, input.noteId))
 			.returning();

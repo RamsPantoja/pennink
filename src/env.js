@@ -36,6 +36,9 @@ export const env = createEnv({
 		MISTRAL_API_KEY: z.string(),
 		BUCKET_PUBLIC_DOMAIN: z.string(),
 		STRIPE_ENDPOINT_SECRET: z.string(),
+		AWS_ACCESS_KEY_ID: z.string(),
+		AWS_SECRET_ACCESS_KEY: z.string(),
+		AWS_REGION: z.string(),
 	},
 
 	/**
@@ -74,6 +77,9 @@ export const env = createEnv({
 		NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN:
 			process.env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN,
 		STRIPE_ENDPOINT_SECRET: process.env.STRIPE_ENDPOINT_SECRET,
+		AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+		AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+		AWS_REGION: process.env.AWS_REGION,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

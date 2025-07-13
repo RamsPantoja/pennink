@@ -1,4 +1,4 @@
-import type { OutputData } from "@editorjs/editorjs";
+import type { Block } from "@blocknote/core";
 import { relations, sql } from "drizzle-orm";
 import {
 	boolean,
@@ -374,7 +374,7 @@ const defaultJsonContent = {
 
 export const notes = createTable("note", {
 	id: customId.notNull().primaryKey(),
-	content: json().default(defaultJsonContent).$type<OutputData>().notNull(),
+	content: json().$type<Block[]>(),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),

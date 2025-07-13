@@ -1,16 +1,5 @@
-import EditorJS, {
-	type OutputData,
-	type BlockToolConstructable,
-} from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import EditorjsList from "@editorjs/list";
-// import Quote from "@editorjs/quote";
-// import Table from "@editorjs/table";
-import { Fragment, useEffect, useState } from "react";
-import { Card } from "../ui/card";
-import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
+import { type KeyboardEvent, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
 import {
 	useFloating,
 	autoUpdate,
@@ -18,15 +7,78 @@ import {
 	autoPlacement,
 	FloatingPortal,
 } from "@floating-ui/react";
+import { SparklesIcon } from "@heroicons/react/24/outline";
+import { BlockNoteView, lightDefaultTheme } from "@blocknote/mantine";
+import "@blocknote/mantine/style.css";
 import {
-	SparklesIcon,
-	ArrowTurnDownLeftIcon,
-	ArrowUpCircleIcon,
-} from "@heroicons/react/24/outline";
+	FormattingToolbar,
+	FormattingToolbarController,
+	getDefaultReactSlashMenuItems,
+	getFormattingToolbarItems,
+	SuggestionMenuController,
+	useCreateBlockNote,
+} from "@blocknote/react";
+import { en } from "@blocknote/core/locales";
+import { en as aiEn } from "@blocknote/xl-ai/locales";
+import {
+	AIMenuController,
+	AIToolbarButton,
+	createAIExtension,
+	getAISlashMenuItems,
+} from "@blocknote/xl-ai";
+import "@blocknote/xl-ai/style.css"; // add the AI stylesheet
+import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
+import {
+	type BlockNoteEditor,
+	filterSuggestionItems,
+	type Block,
+} from "@blocknote/core";
+import { env } from "~/env";
+
+const allowedBlockTypesWithAIPrediction: Block["type"][] = [
+	"paragraph",
+	"heading",
+	"numberedListItem",
+	"bulletListItem",
+];
+
+const concatTextContentFromBlock = (block: Block) => {
+	const { type, content } = block;
+
+	const recursivelyConcatTextContent = (content: Block["content"]): string => {
+		if (!Array.isArray(content)) {
+			return "";
+		}
+
+		return content.reduce((accumulator, item) => {
+			if (item.type === "text") {
+				return accumulator + item.text;
+			}
+
+			if (item.content && item.content.length >= 1) {
+				return accumulator + recursivelyConcatTextContent(item.content);
+			}
+
+			return accumulator;
+		}, "");
+	};
+
+	if (allowedBlockTypesWithAIPrediction.includes(type)) {
+		// Base case: if data is not an array, return empty string
+		if (!Array.isArray(content)) {
+			return "";
+		}
+
+		// Reduce the array to a single string
+		return recursivelyConcatTextContent(content);
+	}
+
+	return null;
+};
 
 export type EditorProps = {
-	onSave: (data: OutputData) => void;
-	data: OutputData | null | undefined;
+	onSave: (data: Block[]) => void;
+	data: Block[] | null;
 };
 
 type PredictionRes = {
@@ -35,60 +87,26 @@ type PredictionRes = {
 };
 
 type AcceptSuggestionProps = {
-	event: KeyboardEvent;
-	blockId: string;
-	tool: string;
+	event: globalThis.KeyboardEvent;
+	block: Block;
 	suggestion: string;
-	currentText: string;
 };
 
-type AcceptSuggestionListItemProps = {
-	event: KeyboardEvent;
-	blockId: string;
-	suggestion: string;
-	itemContent: ItemChanged;
-	data: any[];
+const getCredentials = async () => {
+	const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/ai-credentials`, {
+		method: "GET",
+	});
+	return await res.json();
 };
 
-type ContentItem = {
-	content: string;
-	meta: Record<string, any>;
-	items: any[];
-};
+const credentialsRes = await getCredentials();
 
-type ItemChanged = {
-	changedIndex: number;
-	oldContent: string;
-	newContent: string;
-};
+const bedrockInstance = createAmazonBedrock({
+	...credentialsRes.credentials,
+});
 
-const findChangedItem = (
-	oldItems: ContentItem[],
-	updatedItems: ContentItem[],
-): ItemChanged | null => {
-	let foundChange: ItemChanged | null = null;
-
-	const maxLength = Math.max(oldItems.length, updatedItems.length);
-
-	for (let i = 0; i < maxLength; i++) {
-		if (oldItems[i]?.content !== updatedItems[i]?.content) {
-			if (foundChange !== null) {
-				return null;
-			}
-
-			foundChange = {
-				changedIndex: i,
-				oldContent: oldItems[i]?.content || "",
-				newContent: updatedItems[i]?.content || "",
-			};
-		}
-	}
-
-	return foundChange;
-};
-
-const Editor = ({ onSave, data }: EditorProps) => {
-	const { editorJS, setEditorJS } = useWorkspaceStore();
+export const Editor = ({ onSave, data }: EditorProps) => {
+	const model = bedrockInstance("amazon.nova-pro-v1:0");
 	const [displaySuggestion, setDisplaySuggestion] = useState<boolean>(false);
 	const { refs, floatingStyles } = useFloating({
 		whileElementsMounted: autoUpdate,
@@ -97,6 +115,26 @@ const Editor = ({ onSave, data }: EditorProps) => {
 	});
 	const [suggestion, setSuggestion] = useState<string>("");
 	const controllerOnSendPrompt = new AbortController();
+	const [suggestionTimer, setSuggestionTimer] = useState<NodeJS.Timeout | null>(
+		null,
+	);
+
+	const [saveTimer, setSaveTimer] = useState<NodeJS.Timeout | null>(null);
+
+	const editor = useCreateBlockNote({
+		defaultStyles: false,
+		dictionary: {
+			...en,
+			ai: aiEn, // add default translations for the AI extension
+		},
+		// Register the AI extension
+		extensions: [
+			createAIExtension({
+				model,
+			}),
+		],
+		initialContent: data ? data : undefined,
+	});
 
 	const { mutateAsync: onSentPromptMutation } = useMutation({
 		mutationFn: (prompt: string) => {
@@ -112,304 +150,47 @@ const Editor = ({ onSave, data }: EditorProps) => {
 			});
 		},
 		onError: (error) => {
-			// Handle error
 			console.error("Mutation failed:", error);
-			toast.error("An error occurred while sending your message.");
 		},
 	});
 
+	const [isTyping, setIsTyping] = useState(false);
+	const [debouncedValue, setDebouncedValue] = useState("");
+
 	useEffect(() => {
-		if (!editorJS) {
-			let suggestionFlag = false;
-			let dataRef = data;
-			let changedIndexItem: number | null = null;
+		const timer = setTimeout(() => {
+			setIsTyping(false);
+		}, 500);
 
-			const editor = new EditorJS({
-				holder: "editorjs",
-				placeholder: "Start typing (use `/` for commands)",
-				tools: {
-					header: {
-						class: Header as unknown as BlockToolConstructable,
-					},
-					list: {
-						class: EditorjsList as unknown as BlockToolConstructable,
-						config: {
-							maxLevel: 1,
-						},
-					},
-				},
-				data: data ?? undefined,
+		return () => clearTimeout(timer);
+	}, [debouncedValue]);
 
-				onChange: async (api, event) => {
-					controllerOnSendPrompt.abort();
-					setDisplaySuggestion(false);
-					const controllerOnKeyDown = new AbortController();
-					const controllerOnClick = new AbortController();
-
-					const reset = () => {
-						suggestionFlag = false;
-						setDisplaySuggestion(false);
-						setSuggestion("");
-						controllerOnKeyDown.abort();
-						controllerOnClick.abort();
-						changedIndexItem = null;
-					};
-
-					const handleOnHideTooltip = (event: MouseEvent) => {
-						if (
-							refs.floating.current &&
-							!refs.floating.current.contains(event.target as Node)
-						) {
-							reset();
-						}
-					};
-
-					const acceptSuggestion = async ({
-						tool,
-						blockId,
-						event,
-						suggestion,
-						currentText,
-					}: AcceptSuggestionProps) => {
-						if (event.altKey && (event.key === "a" || event.key === "A")) {
-							switch (tool) {
-								case "header":
-									{
-										await api.blocks.update(blockId, {
-											text: currentText + suggestion,
-										});
-										api.caret.setToBlock(blockId, "end");
-									}
-
-									break;
-								case "paragraph":
-									{
-										await api.blocks.update(blockId, {
-											text: currentText + suggestion,
-										});
-										api.caret.setToBlock(blockId, "end");
-									}
-									break;
-								default:
-									break;
-							}
-
-							reset();
-						}
-
-						if (
-							!event.altKey &&
-							(event.key === "Enter" || event.key === "Tab")
-						) {
-							reset();
-						}
-					};
-
-					const acceptSuggestionListItem = async ({
-						blockId,
-						event,
-						suggestion,
-						itemContent,
-						data,
-					}: AcceptSuggestionListItemProps) => {
-						if (event.altKey && (event.key === "a" || event.key === "A")) {
-							await api.blocks.update(blockId, {
-								items: data.map((item, index) => {
-									if (index === itemContent.changedIndex) {
-										return {
-											...item,
-											content: itemContent.newContent + suggestion,
-										};
-									}
-
-									return item;
-								}),
-							});
-							api.caret.setToBlock(blockId, "end");
-							reset();
-						}
-
-						if (
-							!event.altKey &&
-							(event.key === "Enter" || event.key === "Tab")
-						) {
-							reset();
-						}
-					};
-
-					if (!suggestionFlag && !Array.isArray(event)) {
-						const data = await event.detail.target.save();
-
-						if (
-							event.type === "block-changed" &&
-							data &&
-							data.data?.text?.trim() !== "/" &&
-							data.data?.text?.trim() !== ""
-						) {
-							const handleStream = async (res: Response) => {
-								const stream = res.body;
-
-								if (!stream) return "";
-
-								try {
-									const reader = stream.getReader();
-									const textDecoder = new TextDecoder();
-									const buffer: Uint8Array<ArrayBufferLike>[] = [];
-
-									while (true) {
-										const { done, value } = await reader.read();
-
-										if (value) {
-											buffer.push(value);
-										}
-
-										if (done) {
-											reader.releaseLock();
-											break;
-										}
-									}
-
-									const decodedRes = textDecoder.decode(...buffer);
-									const parsedRes = JSON.parse(decodedRes) as PredictionRes;
-
-									return parsedRes.prediction;
-								} catch (error) {
-									console.error(error);
-								}
-							};
-
-							document.addEventListener("mousedown", handleOnHideTooltip, {
-								signal: controllerOnClick.signal,
-							});
-
-							switch (data.tool) {
-								case "paragraph":
-									{
-										const res = await onSentPromptMutation(
-											`${data.tool}: ${data.data.text}`,
-										);
-
-										const streamRes = await handleStream(res);
-
-										if (streamRes) {
-											setSuggestion(streamRes);
-											refs.setReference(event.detail.target.holder);
-											setDisplaySuggestion(true);
-
-											document.addEventListener(
-												"keydown",
-												async (e) => {
-													await acceptSuggestion({
-														event: e,
-														tool: data.tool,
-														blockId: data.id,
-														suggestion: streamRes,
-														currentText: data.data.text,
-													});
-												},
-												{ signal: controllerOnKeyDown.signal },
-											);
-										}
-									}
-									break;
-								case "header":
-									{
-										const res = await onSentPromptMutation(
-											`${data.tool}: ${data.data.text}`,
-										);
-
-										const streamRes = await handleStream(res);
-
-										if (streamRes) {
-											setSuggestion(streamRes);
-											refs.setReference(event.detail.target.holder);
-											setDisplaySuggestion(true);
-
-											document.addEventListener(
-												"keydown",
-												async (e) => {
-													await acceptSuggestion({
-														event: e,
-														tool: data.tool,
-														blockId: data.id,
-														suggestion: streamRes,
-														currentText: data.data.text,
-													});
-												},
-												{ signal: controllerOnKeyDown.signal },
-											);
-										}
-									}
-									break;
-								case "list":
-									{
-										const blockRef = dataRef?.blocks.find(
-											(block) => block.id === data.id,
-										);
-
-										const itemChanged = findChangedItem(
-											blockRef?.data.items,
-											data.data.items,
-										);
-
-										if (itemChanged && itemChanged.newContent !== "") {
-											const res = await onSentPromptMutation(
-												`paragraph: ${itemChanged.newContent}`,
-											);
-
-											const streamRes = await handleStream(res);
-
-											if (streamRes) {
-												setSuggestion(streamRes);
-												refs.setReference(event.detail.target.holder);
-												setDisplaySuggestion(true);
-
-												document.addEventListener(
-													"keydown",
-													async (e) => {
-														await acceptSuggestionListItem({
-															event: e,
-															blockId: data.id,
-															suggestion: streamRes,
-															itemContent: itemChanged,
-															data: blockRef?.data.items,
-														});
-													},
-													{ signal: controllerOnKeyDown.signal },
-												);
-											}
-										}
-									}
-									break;
-								default:
-									console.log("Unknown tool");
-									break;
-							}
-						}
-					}
-
-					suggestionFlag = false;
-
-					api.saver.save().then((outputData) => {
-						dataRef = outputData;
-						onSave(outputData);
-					});
-				},
-			});
-
-			setEditorJS(editor);
+	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+		if (event.key === "Enter") {
+			return;
 		}
 
-		return () => {
-			if (typeof editorJS?.destroy === "function") {
-				editorJS.destroy();
-				setEditorJS(null);
-			}
-		};
-	}, [editorJS]);
+		if (event.altKey) {
+			return;
+		}
+
+		if (event.altKey && (event.key === "a" || event.key === "A")) {
+			return;
+		}
+
+		setDebouncedValue(event.key);
+		setIsTyping(true);
+
+		if (suggestionTimer) {
+			clearTimeout(suggestionTimer);
+		}
+	};
 
 	return (
-		<Fragment>
+		<div
+			className="w-full h-full overflow-auto p-4 relative"
+			onKeyDown={(e) => handleKeyDown(e)}
+		>
 			{/* <FloatingOverlay /> */}
 			{displaySuggestion && (
 				<FloatingPortal>
@@ -435,13 +216,213 @@ const Editor = ({ onSave, data }: EditorProps) => {
 					</div>
 				</FloatingPortal>
 			)}
+			<BlockNoteView
+				onChange={async (editor, context) => {
+					if (saveTimer) {
+						clearTimeout(saveTimer);
+					}
 
-			<Card
-				id="editorjs"
-				className="w-full h-full flex flex-col pl-20 bg-transparent overflow-auto markdown-styles prismjs-theme"
-			/>
-		</Fragment>
+					controllerOnSendPrompt.abort("A change has been made");
+					const blockEvents = context.getChanges();
+
+					if (blockEvents.length === 1) {
+						const blockEvent = blockEvents[0];
+
+						if (blockEvent && blockEvent.type === "update") {
+							const block = blockEvent.block;
+
+							if (
+								allowedBlockTypesWithAIPrediction.includes(block.type) &&
+								isTyping
+							) {
+								setDisplaySuggestion(false);
+								const controllerOnKeyDown = new AbortController();
+								const controllerOnClick = new AbortController();
+								const content = concatTextContentFromBlock(block);
+
+								const handleOnHideTooltip = (event: MouseEvent) => {
+									if (
+										refs.floating.current &&
+										!refs.floating.current.contains(event.target as Node)
+									) {
+										reset();
+									}
+								};
+
+								const reset = () => {
+									setDisplaySuggestion(false);
+									setSuggestion("");
+									controllerOnKeyDown.abort();
+									controllerOnClick.abort();
+								};
+
+								const acceptSuggestion = async ({
+									block,
+									event,
+									suggestion,
+								}: AcceptSuggestionProps) => {
+									if (
+										event.altKey &&
+										(event.key === "a" || event.key === "A")
+									) {
+										if (Array.isArray(block.content)) {
+											editor.updateBlock(block.id, {
+												content: [...block.content, suggestion],
+											});
+										}
+
+										reset();
+									}
+
+									if (
+										!event.altKey &&
+										(event.key === "Enter" || event.key === "Tab")
+									) {
+										reset();
+									}
+								};
+
+								if (
+									content &&
+									content.trim() !== "" &&
+									content.trim() !== "/"
+								) {
+									const handleStream = async (res: Response) => {
+										const stream = res.body;
+
+										if (!stream) return "";
+
+										try {
+											const reader = stream.getReader();
+											const textDecoder = new TextDecoder();
+											const buffer: Uint8Array<ArrayBufferLike>[] = [];
+
+											while (true) {
+												const { done, value } = await reader.read();
+
+												if (value) {
+													buffer.push(value);
+												}
+
+												if (done) {
+													reader.releaseLock();
+													break;
+												}
+											}
+
+											const decodedRes = textDecoder.decode(...buffer);
+											const parsedRes = JSON.parse(decodedRes) as PredictionRes;
+
+											return parsedRes.prediction;
+										} catch (error) {
+											console.error(error);
+										}
+									};
+
+									document.addEventListener("mousedown", handleOnHideTooltip, {
+										signal: controllerOnClick.signal,
+									});
+
+									setSuggestionTimer(
+										setTimeout(async () => {
+											const res = await onSentPromptMutation(
+												`${block.type}: ${content}`,
+											);
+
+											const streamRes = await handleStream(res);
+
+											if (streamRes) {
+												setSuggestion(streamRes);
+
+												const elementBlock = document.querySelector(
+													`[data-id="${block.id}"]`,
+												);
+
+												refs.setReference(elementBlock);
+												setDisplaySuggestion(true);
+
+												document.addEventListener(
+													"keydown",
+													async (e) => {
+														await acceptSuggestion({
+															event: e,
+															block,
+															suggestion: streamRes,
+														});
+													},
+													{ signal: controllerOnKeyDown.signal },
+												);
+											}
+										}, 500),
+									);
+								}
+							}
+						}
+					}
+
+					setSaveTimer(
+						setTimeout(() => {
+							onSave(editor.document);
+						}, 1000),
+					);
+				}}
+				theme={{ fontFamily: "GeistMono", colors: lightDefaultTheme.colors }}
+				editor={editor}
+				// We're disabling some default UI elements
+				formattingToolbar={false}
+				slashMenu={false}
+			>
+				{/* Add the AI Command menu to the editor */}
+				<AIMenuController />
+
+				{/* We disabled the default formatting toolbar with `formattingToolbar=false`
+        and replace it for one with an "AI button" (defined below).
+        (See "Formatting Toolbar" in docs)
+        */}
+				<FormattingToolbarWithAI />
+
+				{/* We disabled the default SlashMenu with `slashMenu=false`
+        and replace it for one with an AI option (defined below).
+        (See "Suggestion Menus" in docs)
+        */}
+				<SuggestionMenuWithAI editor={editor} />
+			</BlockNoteView>
+		</div>
 	);
 };
 
-export default Editor;
+// Formatting toolbar with the `AIToolbarButton` added
+function FormattingToolbarWithAI() {
+	return (
+		<FormattingToolbarController
+			formattingToolbar={() => (
+				<FormattingToolbar>
+					{/* Add the AI button */}
+					<AIToolbarButton />
+					{...getFormattingToolbarItems()}
+				</FormattingToolbar>
+			)}
+		/>
+	);
+}
+
+// Slash menu with the AI option added
+function SuggestionMenuWithAI(props: {
+	editor: BlockNoteEditor<any, any, any>;
+}) {
+	return (
+		<SuggestionMenuController
+			triggerCharacter="/"
+			getItems={async (query) =>
+				filterSuggestionItems(
+					[
+						...getAISlashMenuItems(props.editor),
+						...getDefaultReactSlashMenuItems(props.editor),
+						// add the default AI slash menu items, or define your own
+					],
+					query,
+				)
+			}
+		/>
+	);
+}

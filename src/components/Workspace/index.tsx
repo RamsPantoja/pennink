@@ -23,14 +23,9 @@ import { useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
 import { useState } from "react";
-import edjsParse from "editorjs-html";
-import { jsPDF } from "jspdf";
-import { addMarkdownStyles } from "~/utils/markdownStyles";
 import { cn } from "~/lib/utils";
-const DynamicEditor = dynamic(() => import("../Editor"), {
-	ssr: false,
-	loading: () => <Loading />,
-});
+import { Editor } from "../Editor";
+import type { Block } from "@blocknote/core";
 
 const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
@@ -74,9 +69,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		},
 	});
 
-	const getNoteContent = async (data: OutputData) => {
-		const { version, time, blocks } = data;
-
+	const getNoteContent = async (data: Block[]) => {
 		if (!workspaceData?.noteId) {
 			toast("Invalid note ID");
 			return;
@@ -84,11 +77,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 
 		updateWorkspace({
 			noteId: workspaceData.noteId,
-			content: {
-				version,
-				time,
-				blocks,
-			},
+			content: data,
 		});
 	};
 
@@ -231,32 +220,17 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 };
 
 type NotesProps = {
-	content: OutputData;
-	getNoteContent: (data: OutputData) => Promise<void>;
+	content: Block[] | null;
+	getNoteContent: (data: Block[]) => Promise<void>;
 };
 
 const Notes = ({ content, getNoteContent }: NotesProps) => {
-	const exportFromNotesToPDF = async (data: OutputData) => {
-		const edjsParser = edjsParse();
-		const doc = new jsPDF();
-		const html = edjsParser.parse(data);
-		const styledHtml = addMarkdownStyles(html);
-
-		doc.html(styledHtml, {
-			callback: (doc) => {
-				doc.save("Notes");
-			},
-			margin: 8,
-			autoPaging: "text",
-		});
-	};
-
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div className="flex flex-1 w-full h-full overflow-hidden">
-				<DynamicEditor data={content} onSave={getNoteContent} />
+				<Editor data={content} onSave={getNoteContent} />
 			</div>
-			<div className="flex p-2">
+			{/* <div className="flex p-2">
 				<Button
 					disabled={content.blocks.length === 0}
 					variant="secondary"
@@ -267,7 +241,7 @@ const Notes = ({ content, getNoteContent }: NotesProps) => {
 				>
 					Export PDF
 				</Button>
-			</div>
+			</div> */}
 		</div>
 	);
 };
