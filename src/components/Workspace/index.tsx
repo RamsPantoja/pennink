@@ -10,7 +10,6 @@ import {
 } from "../ui/resizable";
 import dynamic from "next/dynamic";
 import { Loading } from "../common/Loading";
-import type { OutputData } from "@editorjs/editorjs";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
