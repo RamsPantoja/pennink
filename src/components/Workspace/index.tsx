@@ -106,7 +106,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 			{workspaceIsError && (
 				<FeedbackMessage
 					status="ERROR"
-					message="Algo salió mal, inténtalo de nuevo más tarde."
+					message="Something went wrong, try again later."
 				/>
 			)}
 			{!workspaceIsLoading && !workspaceIsError && workspaceData && (
