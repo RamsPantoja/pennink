@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import type EditorJS from "@editorjs/editorjs";
 import type { ChatValidationSchema } from "../Chat/useChatLogic";
 import type { Message } from "~/server/api/services/chat";
 
