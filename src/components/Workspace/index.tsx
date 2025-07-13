@@ -13,7 +13,6 @@ import { Loading } from "../common/Loading";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
-	ArrowDownTrayIcon,
 	ChatBubbleOvalLeftIcon,
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";

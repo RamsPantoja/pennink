@@ -21,8 +21,6 @@ type ReaderEvent = {
 };
 
 type WorkspaceStore = {
-	editorJS: EditorJS | null;
-	setEditorJS: (editorJS: EditorJS | null) => void;
 	document: PenninkDocument | null;
 	setDocument: (document: PenninkDocument | null) => void;
 	readerEvent: ReaderEvent | null;
@@ -30,8 +28,6 @@ type WorkspaceStore = {
 };
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
-	editorJS: null,
-	setEditorJS: (editorJS) => set(() => ({ editorJS })),
 	document: null,
 	setDocument: (document) => set(() => ({ document })),
 	readerEvent: null,
