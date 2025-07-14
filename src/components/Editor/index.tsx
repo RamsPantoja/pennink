@@ -154,7 +154,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	});
 
 	const [isTyping, setIsTyping] = useState(false);
-	const [debouncedValue, setDebouncedValue] = useState("");
+	const [debouncedValue, setDebouncedValue] = useState<string | null>(null);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -177,7 +177,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 			return;
 		}
 
-		setDebouncedValue(event.key);
 		setIsTyping(true);
 
 		if (suggestionTimer) {
@@ -280,6 +279,8 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 										reset();
 									}
 								};
+
+								setDebouncedValue(content);
 
 								if (
 									content &&
