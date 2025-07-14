@@ -20,7 +20,7 @@ import type { Session } from "next-auth";
 import { useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
 import { Editor } from "../Editor";
 import type { Block } from "@blocknote/core";
@@ -40,8 +40,8 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { workspaceId } = router.query;
 	const utils = api.useUtils();
-	const { document, setReaderEvent } = useWorkspaceStore();
-	const [selection, setSelection] = useState<{
+	const { document, setReaderEvent, setWorkspaceTitle } = useWorkspaceStore();
+	const [selectionContent, setSelectionContent] = useState<{
 		text: string;
 		range: Range | null;
 	}>({
@@ -57,6 +57,11 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	} = api.workspace.workspaceById.useQuery({
 		id: workspaceId as string,
 	});
+
+	useEffect(() => {
+		if (!workspaceData) return;
+		setWorkspaceTitle(workspaceData.name);
+	}, [workspaceData, setWorkspaceTitle]);
 
 	const { mutate: updateWorkspace } = api.note.updateNote.useMutation({
 		onSuccess: async () => {
@@ -81,20 +86,23 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 
 	const onSummarizeFromReader = () => {
 		setTab("chat");
-		setReaderEvent({ type: "reader-on-summarize", data: selection.text });
-		setSelection({ text: "", range: null });
+		setReaderEvent({
+			type: "reader-on-summarize",
+			data: selectionContent.text,
+		});
+		setSelectionContent({ text: "", range: null });
 	};
 
 	const onChatFromReader = () => {
 		setTab("chat");
-		setReaderEvent({ type: "reader-on-chat", data: selection.text });
-		setSelection({ text: "", range: null });
+		setReaderEvent({ type: "reader-on-chat", data: selectionContent.text });
+		setSelectionContent({ text: "", range: null });
 	};
 
 	const onExplainFromReader = () => {
 		setTab("chat");
-		setReaderEvent({ type: "reader-on-explain", data: selection.text });
-		setSelection({ text: "", range: null });
+		setReaderEvent({ type: "reader-on-explain", data: selectionContent.text });
+		setSelectionContent({ text: "", range: null });
 	};
 
 	return (
@@ -121,8 +129,8 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									Content
 								</p>
 								<SelectionToolbar
-									selection={selection}
-									setSelection={setSelection}
+									selection={selectionContent}
+									setSelection={setSelectionContent}
 									tools={[
 										<Button
 											variant="ghost"
@@ -152,9 +160,9 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							</div>
 						)}
 						{!document && (
-							<Notes
-								content={workspaceData.note.content}
-								getNoteContent={getNoteContent}
+							<Editor
+								data={workspaceData.note.content}
+								onSave={getNoteContent}
 							/>
 						)}
 					</ResizablePanel>
@@ -181,11 +189,11 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									</TabsList>
 									<TabsContent
 										value="notes"
-										className="w-full h-full overflow-hidden "
+										className="w-full h-full overflow-hidden"
 									>
-										<Notes
-											content={workspaceData.note.content}
-											getNoteContent={getNoteContent}
+										<Editor
+											data={workspaceData.note.content}
+											onSave={getNoteContent}
 										/>
 									</TabsContent>
 									<TabsContent
@@ -214,32 +222,5 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 				</ResizablePanelGroup>
 			)}
 		</Card>
-	);
-};
-
-type NotesProps = {
-	content: Block[] | null;
-	getNoteContent: (data: Block[]) => Promise<void>;
-};
-
-const Notes = ({ content, getNoteContent }: NotesProps) => {
-	return (
-		<div className="flex flex-col w-full h-full">
-			<div className="flex flex-1 w-full h-full overflow-hidden">
-				<Editor data={content} onSave={getNoteContent} />
-			</div>
-			{/* <div className="flex p-2">
-				<Button
-					disabled={content.blocks.length === 0}
-					variant="secondary"
-					startIcon={<ArrowDownTrayIcon className="min-w-5 h-5" />}
-					onClick={() => {
-						exportFromNotesToPDF(content);
-					}}
-				>
-					Export PDF
-				</Button>
-			</div> */}
-		</div>
 	);
 };

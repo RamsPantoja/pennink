@@ -7,7 +7,11 @@ import {
 	autoPlacement,
 	FloatingPortal,
 } from "@floating-ui/react";
-import { SparklesIcon } from "@heroicons/react/24/outline";
+import {
+	ArrowDownTrayIcon,
+	EllipsisVerticalIcon,
+	SparklesIcon,
+} from "@heroicons/react/24/outline";
 import { BlockNoteView, lightDefaultTheme } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import {
@@ -34,6 +38,20 @@ import {
 	type Block,
 } from "@blocknote/core";
 import { env } from "~/env";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Button } from "../common/Button";
+import {
+	PDFExporter,
+	pdfDefaultSchemaMappings,
+} from "@blocknote/xl-pdf-exporter";
+import * as ReactPDF from "@react-pdf/renderer";
+import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -119,6 +137,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		null,
 	);
 	const [saveTimer, setSaveTimer] = useState<NodeJS.Timeout | null>(null);
+	const { workspaceTitle } = useWorkspaceStore();
 
 	const editor = useCreateBlockNote({
 		defaultStyles: false,
@@ -184,209 +203,299 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		}
 	};
 
+	const onExportPDF = async () => {
+		// Create the exporter
+		const exporter = new PDFExporter(editor.schema, pdfDefaultSchemaMappings);
+
+		// Convert the blocks to a react-pdf document
+		const pdfDocument = await exporter.toReactPDFDocument(editor.document);
+
+		// Use react-pdf to write to file:
+		// Create blob and download
+		const blob = await ReactPDF.pdf(pdfDocument).toBlob();
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = `${workspaceTitle}-notes.pdf`;
+		link.click();
+		URL.revokeObjectURL(url);
+	};
+
+	const onExportToMarkdown = async () => {
+		const markdown = await editor.blocksToMarkdownLossy(editor.document);
+
+		// Create blob and download
+		const blob = new Blob([markdown], { type: "text/markdown" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = `${workspaceTitle}-notes.md`;
+		link.click();
+		URL.revokeObjectURL(url);
+	};
+
 	return (
-		<div
-			className="w-full h-full overflow-auto p-4 relative"
-			onKeyDown={(e) => handleKeyDown(e)}
-		>
-			{/* <FloatingOverlay /> */}
-			{displaySuggestion && (
-				<FloatingPortal>
-					<div
-						className="flex p-4 shadow-md overflow-hidden border bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
-						ref={refs.setFloating}
-						style={floatingStyles}
+		<div className="flex flex-col w-full h-full">
+			<div className="flex p-2 justify-end">
+				<DropdownMenu>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost" size="icon">
+									<EllipsisVerticalIcon className="h-5 min-w-5" />
+								</Button>
+							</DropdownMenuTrigger>
+						</TooltipTrigger>
+						<TooltipContent>More tools</TooltipContent>
+					</Tooltip>
+					<DropdownMenuContent
+						side="right"
+						onCloseAutoFocus={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+						}}
 					>
-						<div className="flex gap-2 flex-1 items-center">
-							<div className="p-1 bg-mochaTeal rounded-md">
-								<SparklesIcon className="min-w-5 h-5 text-mochaMauve" />
+						<DropdownMenuItem
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								onExportPDF();
+							}}
+							className="flex gap-2"
+						>
+							<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
+							Export to PDF
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								onExportToMarkdown();
+							}}
+							className="flex gap-2"
+						>
+							<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
+							Export to MD
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</div>
+			<div className="flex flex-1 w-full h-full overflow-hidden">
+				<div
+					className="w-full h-full overflow-auto relative"
+					onKeyDown={(e) => handleKeyDown(e)}
+				>
+					{/* <FloatingOverlay /> */}
+					{displaySuggestion && (
+						<FloatingPortal>
+							<div
+								className="flex p-4 shadow-md overflow-hidden border bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
+								ref={refs.setFloating}
+								style={floatingStyles}
+							>
+								<div className="flex gap-2 flex-1 items-center">
+									<div className="p-1 bg-mochaTeal rounded-md">
+										<SparklesIcon className="min-w-5 h-5 text-mochaMauve" />
+									</div>
+									<p className="text-sm text-mochaMauve font-semibold">
+										AI suggestion
+									</p>
+								</div>
+								<p className="text-sm text-mochaText overflow-auto">
+									{suggestion}
+								</p>
+								<div className="flex items-center gap-2 text-xs">
+									<p className="text-xs p-1 border rounded-md">Alt</p>+
+									<p className="text-xs p-1 border rounded-md">A</p>
+									Accept
+								</div>
 							</div>
-							<p className="text-sm text-mochaMauve font-semibold">
-								AI suggestion
-							</p>
-						</div>
-						<p className="text-sm text-mochaText overflow-auto">{suggestion}</p>
-						<div className="flex items-center gap-2 text-xs">
-							<p className="text-xs p-1 border rounded-md">Alt</p>+
-							<p className="text-xs p-1 border rounded-md">A</p>
-							Accept
-						</div>
-					</div>
-				</FloatingPortal>
-			)}
-			<BlockNoteView
-				onChange={async (editor, context) => {
-					if (saveTimer) {
-						clearTimeout(saveTimer);
-					}
+						</FloatingPortal>
+					)}
+					<BlockNoteView
+						onChange={async (editor, context) => {
+							if (saveTimer) {
+								clearTimeout(saveTimer);
+							}
 
-					controllerOnSendPrompt.abort("A change has been made");
-					const blockEvents = context.getChanges();
+							controllerOnSendPrompt.abort("A change has been made");
+							const blockEvents = context.getChanges();
 
-					if (blockEvents.length === 1) {
-						const blockEvent = blockEvents[0];
+							if (blockEvents.length === 1) {
+								const blockEvent = blockEvents[0];
 
-						if (blockEvent && blockEvent.type === "update") {
-							const block = blockEvent.block;
-
-							if (
-								allowedBlockTypesWithAIPrediction.includes(block.type) &&
-								isTyping
-							) {
-								setDisplaySuggestion(false);
-								const controllerOnKeyDown = new AbortController();
-								const controllerOnClick = new AbortController();
-								const content = concatTextContentFromBlock(block);
-
-								const handleOnHideTooltip = (event: MouseEvent) => {
-									if (
-										refs.floating.current &&
-										!refs.floating.current.contains(event.target as Node)
-									) {
-										reset();
-									}
-								};
-
-								const reset = () => {
-									setDisplaySuggestion(false);
-									setSuggestion("");
-									controllerOnKeyDown.abort();
-									controllerOnClick.abort();
-								};
-
-								const acceptSuggestion = async ({
-									block,
-									event,
-									suggestion,
-								}: AcceptSuggestionProps) => {
-									if (
-										event.altKey &&
-										(event.key === "a" || event.key === "A")
-									) {
-										if (Array.isArray(block.content)) {
-											editor.updateBlock(block.id, {
-												content: [...block.content, suggestion],
-											});
-										}
-
-										reset();
-									}
+								if (blockEvent && blockEvent.type === "update") {
+									const block = blockEvent.block;
 
 									if (
-										!event.altKey &&
-										(event.key === "Enter" || event.key === "Tab")
+										allowedBlockTypesWithAIPrediction.includes(block.type) &&
+										isTyping
 									) {
-										reset();
-									}
-								};
+										setDisplaySuggestion(false);
+										const controllerOnKeyDown = new AbortController();
+										const controllerOnClick = new AbortController();
+										const content = concatTextContentFromBlock(block);
 
-								setDebouncedValue(content);
+										const handleOnHideTooltip = (event: MouseEvent) => {
+											if (
+												refs.floating.current &&
+												!refs.floating.current.contains(event.target as Node)
+											) {
+												reset();
+											}
+										};
 
-								if (
-									content &&
-									content.trim() !== "" &&
-									content.trim() !== "/"
-								) {
-									const handleStream = async (res: Response) => {
-										const stream = res.body;
+										const reset = () => {
+											setDisplaySuggestion(false);
+											setSuggestion("");
+											controllerOnKeyDown.abort();
+											controllerOnClick.abort();
+										};
 
-										if (!stream) return "";
-
-										try {
-											const reader = stream.getReader();
-											const textDecoder = new TextDecoder();
-											const buffer: Uint8Array<ArrayBufferLike>[] = [];
-
-											while (true) {
-												const { done, value } = await reader.read();
-
-												if (value) {
-													buffer.push(value);
+										const acceptSuggestion = async ({
+											block,
+											event,
+											suggestion,
+										}: AcceptSuggestionProps) => {
+											if (
+												event.altKey &&
+												(event.key === "a" || event.key === "A")
+											) {
+												if (Array.isArray(block.content)) {
+													editor.updateBlock(block.id, {
+														content: [...block.content, suggestion],
+													});
 												}
 
-												if (done) {
-													reader.releaseLock();
-													break;
-												}
+												reset();
 											}
 
-											const decodedRes = textDecoder.decode(...buffer);
-											const parsedRes = JSON.parse(decodedRes) as PredictionRes;
+											if (
+												!event.altKey &&
+												(event.key === "Enter" || event.key === "Tab")
+											) {
+												reset();
+											}
+										};
 
-											return parsedRes.prediction;
-										} catch (error) {
-											console.error(error);
-										}
-									};
+										setDebouncedValue(content);
 
-									document.addEventListener("mousedown", handleOnHideTooltip, {
-										signal: controllerOnClick.signal,
-									});
+										if (
+											content &&
+											content.trim() !== "" &&
+											content.trim() !== "/"
+										) {
+											const handleStream = async (res: Response) => {
+												const stream = res.body;
 
-									setSuggestionTimer(
-										setTimeout(async () => {
-											const res = await onSentPromptMutation(
-												`${block.type}: ${content}`,
+												if (!stream) return "";
+
+												try {
+													const reader = stream.getReader();
+													const textDecoder = new TextDecoder();
+													const buffer: Uint8Array<ArrayBufferLike>[] = [];
+
+													while (true) {
+														const { done, value } = await reader.read();
+
+														if (value) {
+															buffer.push(value);
+														}
+
+														if (done) {
+															reader.releaseLock();
+															break;
+														}
+													}
+
+													const decodedRes = textDecoder.decode(...buffer);
+													const parsedRes = JSON.parse(
+														decodedRes,
+													) as PredictionRes;
+
+													return parsedRes.prediction;
+												} catch (error) {
+													console.error(error);
+												}
+											};
+
+											document.addEventListener(
+												"mousedown",
+												handleOnHideTooltip,
+												{
+													signal: controllerOnClick.signal,
+												},
 											);
 
-											const streamRes = await handleStream(res);
+											setSuggestionTimer(
+												setTimeout(async () => {
+													const res = await onSentPromptMutation(
+														`${block.type}: ${content}`,
+													);
 
-											if (streamRes) {
-												setSuggestion(streamRes);
+													const streamRes = await handleStream(res);
 
-												const elementBlock = document.querySelector(
-													`[data-id="${block.id}"]`,
-												);
+													if (streamRes) {
+														setSuggestion(streamRes);
 
-												refs.setReference(elementBlock);
-												setDisplaySuggestion(true);
+														const elementBlock = document.querySelector(
+															`[data-id="${block.id}"]`,
+														);
 
-												document.addEventListener(
-													"keydown",
-													async (e) => {
-														await acceptSuggestion({
-															event: e,
-															block,
-															suggestion: streamRes,
-														});
-													},
-													{ signal: controllerOnKeyDown.signal },
-												);
-											}
-										}, 500),
-									);
+														refs.setReference(elementBlock);
+														setDisplaySuggestion(true);
+
+														document.addEventListener(
+															"keydown",
+															async (e) => {
+																await acceptSuggestion({
+																	event: e,
+																	block,
+																	suggestion: streamRes,
+																});
+															},
+															{ signal: controllerOnKeyDown.signal },
+														);
+													}
+												}, 500),
+											);
+										}
+									}
 								}
 							}
-						}
-					}
 
-					setSaveTimer(
-						setTimeout(() => {
-							onSave(editor.document);
-						}, 1000),
-					);
-				}}
-				theme={{ fontFamily: "GeistMono", colors: lightDefaultTheme.colors }}
-				editor={editor}
-				// We're disabling some default UI elements
-				formattingToolbar={false}
-				slashMenu={false}
-			>
-				{/* Add the AI Command menu to the editor */}
-				<AIMenuController />
+							setSaveTimer(
+								setTimeout(() => {
+									onSave(editor.document);
+								}, 1000),
+							);
+						}}
+						theme={{
+							fontFamily: "GeistMono",
+							colors: lightDefaultTheme.colors,
+						}}
+						editor={editor}
+						// We're disabling some default UI elements
+						formattingToolbar={false}
+						slashMenu={false}
+					>
+						{/* Add the AI Command menu to the editor */}
+						<AIMenuController />
 
-				{/* We disabled the default formatting toolbar with `formattingToolbar=false`
+						{/* We disabled the default formatting toolbar with `formattingToolbar=false`
         and replace it for one with an "AI button" (defined below).
         (See "Formatting Toolbar" in docs)
         */}
-				<FormattingToolbarWithAI />
+						<FormattingToolbarWithAI />
 
-				{/* We disabled the default SlashMenu with `slashMenu=false`
+						{/* We disabled the default SlashMenu with `slashMenu=false`
         and replace it for one with an AI option (defined below).
         (See "Suggestion Menus" in docs)
         */}
-				<SuggestionMenuWithAI editor={editor} />
-			</BlockNoteView>
+						<SuggestionMenuWithAI editor={editor} />
+					</BlockNoteView>
+				</div>
+			</div>
 		</div>
 	);
 };

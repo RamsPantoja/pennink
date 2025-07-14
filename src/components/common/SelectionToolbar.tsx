@@ -68,10 +68,10 @@ export function SelectionToolbar({
 		};
 
 		// Only listen for mouseup events, not selectionchange
-		document.addEventListener("mouseup", handleMouseUp);
+		contentRef.current?.addEventListener("mouseup", handleMouseUp);
 
 		return () => {
-			document.removeEventListener("mouseup", handleMouseUp);
+			contentRef.current?.removeEventListener("mouseup", handleMouseUp);
 		};
 	}, []);
 
