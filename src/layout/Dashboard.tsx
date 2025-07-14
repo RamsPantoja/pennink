@@ -1,5 +1,5 @@
 import {
-	ArrowUpTrayIcon,
+	ArrowDownTrayIcon,
 	DocumentPlusIcon,
 	MagnifyingGlassIcon,
 	SquaresPlusIcon,
@@ -211,8 +211,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 										onClick={() => fileInputRef.current?.click()}
 										className="flex gap-2"
 									>
-										<ArrowUpTrayIcon className="min-w-5 w-5 h-5" />
-										Upload
+										<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
+										Import PDF
 									</DropdownMenuItem>
 									<DropdownMenuItem
 										onClick={() => {
@@ -221,7 +221,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 										className="flex gap-2"
 									>
 										<MagnifyingGlassIcon className="min-w-5 w-5 h-5" />
-										Search
+										Search sources
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>

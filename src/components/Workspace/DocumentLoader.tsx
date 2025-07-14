@@ -57,7 +57,7 @@ export const DocumentLoader = ({
 				<div className="h-full w-full grow p-4 flex flex-col">
 					<DrawerHeader>
 						<DrawerTitle className="text-sm font-semibold">
-							Your documents
+							Your sources
 						</DrawerTitle>
 						<DrawerDescription>
 							Select a document to read from all saved documents

@@ -7,11 +7,7 @@ import {
 	autoPlacement,
 	FloatingPortal,
 } from "@floating-ui/react";
-import {
-	ArrowDownTrayIcon,
-	EllipsisVerticalIcon,
-	SparklesIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { BlockNoteView, lightDefaultTheme } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import {
@@ -52,6 +48,11 @@ import {
 } from "@blocknote/xl-pdf-exporter";
 import * as ReactPDF from "@react-pdf/renderer";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
+import {
+	DOCXExporter,
+	docxDefaultSchemaMappings,
+} from "@blocknote/xl-docx-exporter";
+import { Packer } from "docx";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -234,6 +235,29 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		URL.revokeObjectURL(url);
 	};
 
+	const onExportToDocx = async () => {
+		// Create the exporter
+		const exporter = new DOCXExporter(editor.schema, docxDefaultSchemaMappings);
+
+		// Convert the blocks to a docxjs document
+		const docxDocument = await exporter.toDocxJsDocument(editor.document);
+
+		// Use docx to write to file:
+		const buffer = await Packer.toBuffer(docxDocument);
+
+		//  Use docx to write to file:
+		// Create blob and download
+		const blob = new Blob([buffer], {
+			type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+		});
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = `${workspaceTitle}-notes.docx`;
+		link.click();
+		URL.revokeObjectURL(url);
+	};
+
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div className="flex p-2 justify-end">
@@ -242,11 +266,11 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 						<TooltipTrigger asChild>
 							<DropdownMenuTrigger asChild>
 								<Button variant="ghost" size="icon">
-									<EllipsisVerticalIcon className="h-5 min-w-5" />
+									<ArrowUpTrayIcon className="h-5 min-w-5" />
 								</Button>
 							</DropdownMenuTrigger>
 						</TooltipTrigger>
-						<TooltipContent>More tools</TooltipContent>
+						<TooltipContent>Export options</TooltipContent>
 					</Tooltip>
 					<DropdownMenuContent
 						side="right"
@@ -263,7 +287,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 							}}
 							className="flex gap-2"
 						>
-							<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
 							Export to PDF
 						</DropdownMenuItem>
 						<DropdownMenuItem
@@ -274,8 +297,17 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 							}}
 							className="flex gap-2"
 						>
-							<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
 							Export to MD
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								onExportToDocx();
+							}}
+							className="flex gap-2"
+						>
+							Export to DOCX
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
