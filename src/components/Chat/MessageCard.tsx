@@ -37,9 +37,9 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 			])}
 		>
 			{message.quote && (
-				<Card className="flex items-start gap-2 border mb-2">
+				<Card className="flex items-start gap-2 border border-mochaMauve mb-2">
 					<ArrowTurnDownRightIcon className="min-w-5 h-5" />
-					<p className="text-sm flex-1 italic text-mochaMauve">
+					<p className="text-sm flex-1 italic text-mochaText">
 						{message.quote}
 					</p>
 				</Card>
@@ -49,7 +49,7 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 					"flex flex-col",
 					{
 						"w-fit bg-transparent": message.role === "AGENT",
-						"bg-mochaMantle text-mochaMauve items-end w-fit max-w-screen-sm relative":
+						"bg-mochaMauve text-mochaText items-end w-fit max-w-screen-sm relative":
 							message.role === "USER",
 					},
 				])}

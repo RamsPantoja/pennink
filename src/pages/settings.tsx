@@ -78,7 +78,7 @@ const Settings = ({
 	});
 
 	return (
-		<div className="flex w-full justify-center p-4">
+		<div className="flex w-full justify-center p-4 bg-mochaBase h-screen">
 			<Head>
 				<title>Pennink - Settings</title>
 				<meta name="description" content="Find a partner to do anything!" />
@@ -124,7 +124,9 @@ const Settings = ({
 							<p className="truncate text-xs text-mochaText">
 								{session.user.email}
 							</p>
-							<Badge variant="outline">{session.user.subscription} plan</Badge>
+							<Badge variant="secondary">
+								{session.user.subscription} plan
+							</Badge>
 						</div>
 						{session.user.subscription === "FREE" && <UsageService />}
 					</div>
@@ -225,15 +227,15 @@ const Settings = ({
 								target="_blank"
 								className="group"
 							>
-								<Card className="shadow-none hover:bg-gray-50 transition-colors border">
+								<Card className="shadow-none transition-colors border">
 									<CardHeader className="pb-2">
 										<div className="flex items-center gap-3 mb-2">
-											<option.icon className="h-5 w-5 text-gray-400 group-hover:text-gray-900 transition-colors" />
-											<CardTitle className="text-base font-medium">
+											<option.icon className="h-5 w-5 text-mochaText" />
+											<CardTitle className="text-base font-medium text-mochaText">
 												{option.title}
 											</CardTitle>
 										</div>
-										<CardDescription className="text-sm">
+										<CardDescription className="text-sm text-mochaSubText">
 											{option.description}
 										</CardDescription>
 									</CardHeader>

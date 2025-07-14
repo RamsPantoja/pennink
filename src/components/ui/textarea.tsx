@@ -12,7 +12,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 		return (
 			<textarea
 				className={cn(
-					"placeholder:text-mochaSubText border-mochaSubText bg-mochaMantle text-mochaMauve flex min-h-[80px] w-full rounded-md border border-transparent px-3 py-2 text-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+					"placeholder:text-mochaSubText border-mochaSubText bg-mochaMantle text-mochaText flex min-h-[80px] w-full rounded-md border border-transparent px-3 py-2 text-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
 					{
 						"border-red-500": status === "ERROR",
 						"border-green-500": status === "SUCCESS",

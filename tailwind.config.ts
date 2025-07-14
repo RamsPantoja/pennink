@@ -10,15 +10,15 @@ export default {
 		},
 		extend: {
 			colors: {
-				mochaBase: "#ffffff",
-				mochaMantle: "#f6f6f6",
-				mochaText: "#4c4f69",
-				mochaSubText: "#5c5f77",
-				mochaSubtext1: "#6c6f85",
+				mochaBase: "#1f1f1f",
+				mochaMantle: "#2a2a2a",
+				mochaText: "#d1cfc0",
+				mochaSubText: "#adab9f",
+				mochaSubtext1: "#adab9f",
 				mochaLavender: "#7287fd",
-				mochaMauve: "#000000",
-				mochaCrust: "#fafafa",
-				mochaTeal: "#f9dcf8",
+				mochaMauve: "#353535",
+				mochaCrust: "#161616",
+				mochaTeal: "#f76f53",
 				sidebar: {
 					DEFAULT: "var(--sidebar-background)",
 					foreground: "var(--sidebar-foreground)",

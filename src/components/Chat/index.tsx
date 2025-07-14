@@ -87,7 +87,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
-			<Card className="w-full bg-mochaBase border flex flex-col p-4 shadow-md">
+			<Card className="w-full bg-mochaBase border border-mochaMauve flex flex-col p-4 shadow-sm shadow-mochaMauve">
 				{quote && (
 					<Card className="flex items-start gap-2 bg-mochaMantle border">
 						<ArrowTurnDownRightIcon className="min-w-5 h-5 text-mochaText" />
@@ -112,7 +112,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					render={({ field }) => (
 						<AutoResizeTextarea
 							placeholder="Ask anything"
-							className="border-none ring-0 text-mochaMauve"
+							className="border-none ring-0 text-mochaText bg-mochaBase"
 							onChange={field.onChange}
 							value={field.value}
 							onKeyDown={handleKeyDown}

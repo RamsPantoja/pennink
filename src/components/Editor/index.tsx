@@ -8,7 +8,7 @@ import {
 	FloatingPortal,
 } from "@floating-ui/react";
 import { ArrowUpTrayIcon, SparklesIcon } from "@heroicons/react/24/outline";
-import { BlockNoteView, lightDefaultTheme } from "@blocknote/mantine";
+import { BlockNoteView, darkDefaultTheme } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import {
 	FormattingToolbar,
@@ -321,22 +321,22 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 					{displaySuggestion && (
 						<FloatingPortal>
 							<div
-								className="flex p-4 shadow-md overflow-hidden border bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
+								className="flex p-4 shadow-md overflow-hidden border border-mochaCrust bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
 								ref={refs.setFloating}
 								style={floatingStyles}
 							>
 								<div className="flex gap-2 flex-1 items-center">
-									<div className="p-1 bg-mochaTeal rounded-md">
-										<SparklesIcon className="min-w-5 h-5 text-mochaMauve" />
+									<div className="p-1 rounded-md">
+										<SparklesIcon className="min-w-5 h-5 text-mochaTeal" />
 									</div>
-									<p className="text-sm text-mochaMauve font-semibold">
+									<p className="text-sm text-mochaText font-semibold">
 										AI suggestion
 									</p>
 								</div>
 								<p className="text-sm text-mochaText overflow-auto">
 									{suggestion}
 								</p>
-								<div className="flex items-center gap-2 text-xs">
+								<div className="flex items-center gap-2 text-xs text-mochaSubText">
 									<p className="text-xs p-1 border rounded-md">Alt</p>+
 									<p className="text-xs p-1 border rounded-md">A</p>
 									Accept
@@ -504,7 +504,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 						}}
 						theme={{
 							fontFamily: "GeistMono",
-							colors: lightDefaultTheme.colors,
+							colors: darkDefaultTheme.colors,
 						}}
 						editor={editor}
 						// We're disabling some default UI elements

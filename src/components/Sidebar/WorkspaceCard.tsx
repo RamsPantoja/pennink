@@ -247,10 +247,8 @@ export const WorkspaceCard = ({
 							{workspaceName}
 						</span>
 						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant="ghost" size="icon">
-									<EllipsisVerticalIcon className="h-5 min-w-5" />
-								</Button>
+							<DropdownMenuTrigger className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md">
+								<EllipsisVerticalIcon className="h-5 min-w-5" />
 							</DropdownMenuTrigger>
 							<DropdownMenuContent
 								side="right"
