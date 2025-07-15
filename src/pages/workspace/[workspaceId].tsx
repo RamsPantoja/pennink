@@ -14,7 +14,7 @@ const WorkspacePage = ({
 				<Head>
 					<title>Pennink - Workspace</title>
 					<meta name="description" content="Find a partner to do anything!" />
-					<link rel="icon" href="/icon.ico" />
+					<link rel="icon" href="/icon.png" />
 				</Head>
 				<Workspace session={session} />
 			</>

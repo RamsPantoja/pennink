@@ -21,7 +21,7 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 	};
 
 	return (
-		<Card className="max-w-72 bg-transparent p-0">
+		<Card className="max-w-72 bg-transparent p-0 z-10">
 			<CardHeader>
 				<CardTitle>
 					<div className="flex flex-col items-center justify-center gap-4 text-mochaText">
@@ -33,7 +33,7 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<p className="text-xs text-mochaText">
+				<p className="text-xs text-mochaText text-center">
 					By Creating an account or Sign in, you agree to the{" "}
 					<a
 						className="text-blackLight underline"
@@ -55,7 +55,6 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 			</CardContent>
 			<CardFooter className="flex flex-col justify-center gap-2">
 				<Button
-					className=" w-full bg-mochaMantle text-mochaText"
 					onClick={onSignInWithGoogle}
 					variant="outline"
 					startIcon={

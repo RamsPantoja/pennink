@@ -14,7 +14,7 @@ export default function Home({
 				<Head>
 					<title>Pennink - The writing editor for what's next</title>
 					<meta name="description" content="Find a partner to do anything!" />
-					<link rel="icon" href="/icon.ico" />
+					<link rel="icon" href="/icon.png" />
 				</Head>
 				<HomeComponent session={session} />
 			</>
