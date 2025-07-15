@@ -125,7 +125,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					<ResizablePanel defaultSize={50}>
 						{document && (
 							<div className="flex w-full h-full flex-col">
-								<p className="text-center text-xs pt-4 text-mochaMauve font-bold">
+								<p className="text-center text-xs pt-4 text-mochaText font-bold">
 									Content
 								</p>
 								<SelectionToolbar

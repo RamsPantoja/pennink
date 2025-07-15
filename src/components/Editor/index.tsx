@@ -505,7 +505,13 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 						}}
 						theme={{
 							fontFamily: "GeistMono",
-							colors: darkDefaultTheme.colors,
+							colors: {
+								...darkDefaultTheme.colors,
+								editor: {
+									text: "#d1cfc0",
+									background: "#1f1f1f",
+								},
+							},
 						}}
 						editor={editor}
 						// We're disabling some default UI elements
