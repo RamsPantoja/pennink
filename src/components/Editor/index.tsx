@@ -174,7 +174,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	});
 
 	const [isTyping, setIsTyping] = useState(false);
-	const [debouncedValue, setDebouncedValue] = useState<string | null>(null);
+	const [debouncedValue, setDebouncedValue] = useState<number | null>(null);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -198,6 +198,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		}
 
 		setIsTyping(true);
+		setDebouncedValue(event.timeStamp);
 
 		if (suggestionTimer) {
 			clearTimeout(suggestionTimer);
@@ -257,6 +258,8 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		link.click();
 		URL.revokeObjectURL(url);
 	};
+
+	console.log(isTyping);
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -409,8 +412,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 												reset();
 											}
 										};
-
-										setDebouncedValue(content);
 
 										if (
 											content &&
