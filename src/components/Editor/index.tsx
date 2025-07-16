@@ -259,8 +259,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		URL.revokeObjectURL(url);
 	};
 
-	console.log(isTyping);
-
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div className="flex p-2 justify-end">
