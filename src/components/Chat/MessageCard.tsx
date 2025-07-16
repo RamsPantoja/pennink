@@ -27,15 +27,7 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 	}, [message.content]);
 
 	return (
-		<div
-			className={cn([
-				"flex flex-col",
-				{
-					"items-start": message.role === "AGENT",
-					"items-end": message.role === "USER",
-				},
-			])}
-		>
+		<div className={cn(["flex flex-col"])}>
 			{message.quote && (
 				<Card className="flex items-start gap-2 border border-mochaMauve mb-2">
 					<ArrowTurnDownRightIcon className="min-w-5 h-5" />
@@ -49,13 +41,12 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 					"flex flex-col",
 					{
 						"w-fit bg-transparent": message.role === "AGENT",
-						"bg-mochaMauve text-mochaText items-end w-fit max-w-screen-sm relative":
-							message.role === "USER",
+						"bg-mochaMauve text-mochaText relative": message.role === "USER",
 					},
 				])}
 			>
 				{message.role === "USER" && data && (
-					<div className="absolute top-[-4px] right-0">
+					<div className="absolute top-[-4px] right-0 z-10">
 						<Avatar className="h-5 w-5 border">
 							<AvatarImage src={data.user.image as string} />
 							<AvatarFallback>You</AvatarFallback>
@@ -65,10 +56,7 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 				<div
 					ref={messageContainerRef}
 					className={cn([
-						"flex flex-col",
-						{
-							"markdown-styles prismjs-theme": message.role === "AGENT",
-						},
+						"flex flex-col markdown-styles prismjs-theme overflow-auto",
 					])}
 				/>
 			</Card>
