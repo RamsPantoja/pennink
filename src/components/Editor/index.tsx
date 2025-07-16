@@ -125,7 +125,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		region: "us-east-1",
 		credentialProvider: getCredentials,
 	});
-	const model = bedrock("amazon.nova-pro-v1:0");
+	const model = bedrock("us.amazon.nova-premier-v1:0");
 	const [displaySuggestion, setDisplaySuggestion] = useState<boolean>(false);
 	const { refs, floatingStyles } = useFloating({
 		whileElementsMounted: autoUpdate,
