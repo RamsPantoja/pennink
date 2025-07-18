@@ -139,6 +139,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	);
 	const [saveTimer, setSaveTimer] = useState<NodeJS.Timeout | null>(null);
 	const { workspaceTitle } = useWorkspaceStore();
+	const [isExporting, setIsExporting] = useState<boolean>(false);
 
 	const editor = useCreateBlockNote({
 		defaultStyles: false,
@@ -210,6 +211,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	};
 
 	const onExportPDF = async () => {
+		setIsExporting(true);
 		// Create the exporter
 		const exporter = new PDFExporter(editor.schema, pdfDefaultSchemaMappings);
 
@@ -225,9 +227,11 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		link.download = `${workspaceTitle}-notes.pdf`;
 		link.click();
 		URL.revokeObjectURL(url);
+		setIsExporting(false);
 	};
 
 	const onExportToMarkdown = async () => {
+		setIsExporting(true);
 		const markdown = await editor.blocksToMarkdownLossy(editor.document);
 
 		// Create blob and download
@@ -238,9 +242,11 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		link.download = `${workspaceTitle}-notes.md`;
 		link.click();
 		URL.revokeObjectURL(url);
+		setIsExporting(false);
 	};
 
 	const onExportToDocx = async () => {
+		setIsExporting(true);
 		// Create the exporter
 		const exporter = new DOCXExporter(editor.schema, docxDefaultSchemaMappings);
 
@@ -261,6 +267,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		link.download = `${workspaceTitle}-notes.docx`;
 		link.click();
 		URL.revokeObjectURL(url);
+		setIsExporting(false);
 	};
 
 	return (
@@ -270,7 +277,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<DropdownMenuTrigger asChild>
-								<Button variant="ghost" size="icon">
+								<Button variant="ghost" size="icon" isPending={isExporting}>
 									<ArrowUpTrayIcon className="h-5 min-w-5" />
 								</Button>
 							</DropdownMenuTrigger>
@@ -290,6 +297,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 								e.stopPropagation();
 								onExportPDF();
 							}}
+							disabled={isExporting}
 							className="flex gap-2"
 						>
 							Export to PDF
@@ -300,6 +308,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 								e.stopPropagation();
 								onExportToMarkdown();
 							}}
+							disabled={isExporting}
 							className="flex gap-2"
 						>
 							Export to MD
@@ -310,6 +319,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 								e.stopPropagation();
 								onExportToDocx();
 							}}
+							disabled={isExporting}
 							className="flex gap-2"
 						>
 							Export to DOCX
