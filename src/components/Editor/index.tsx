@@ -145,6 +145,10 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		dictionary: {
 			...en,
 			ai: aiEn, // add default translations for the AI extension
+			placeholders: {
+				...en.placeholders,
+				default: "Write, type '/ai' for AI, '/' for commands...",
+			},
 		},
 		// Register the AI extension
 		extensions: [
@@ -414,7 +418,9 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 										if (
 											content &&
 											content.trim() !== "" &&
-											content.trim() !== "/"
+											content.trim() !== "/" &&
+											content.trim() !== "/a" &&
+											content.trim() !== "/ai"
 										) {
 											const handleStream = async (res: Response) => {
 												const stream = res.body;

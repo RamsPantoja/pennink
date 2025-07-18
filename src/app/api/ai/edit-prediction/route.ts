@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 			throw new Error("Must be logged in to access");
 		}
 
-		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
+		const model = bedrock("us.meta.llama4-maverick-17b-instruct-v1:0");
 		const systemTemplate = `
 		The user is writing in a block of text. You need to predict the next tokens based on the user's input. Include any type of character, including punctuation, whitespace, and special characters.
 
