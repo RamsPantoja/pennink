@@ -143,7 +143,7 @@ export default function InsertContentLinkDialog({
 				</TooltipTrigger>
 				<TooltipContent>Import content from link</TooltipContent>
 			</Tooltip>
-			<DialogContent className="max-w-screen-md">
+			<DialogContent className="max-w-screen-md w-full flex flex-col">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-bold">
 						Import content from link
@@ -153,7 +153,7 @@ export default function InsertContentLinkDialog({
 						it here. You can also process the content with AI.
 					</DialogDescription>
 				</DialogHeader>
-				<div className="flex flex-col gap-4 h-full">
+				<div className="flex flex-col gap-4 h-full w-full">
 					<div className="flex gap-2 items-center">
 						<SparklesIcon className="min-w-4 h-4 text-mochaText" />
 						<Controller
@@ -169,7 +169,7 @@ export default function InsertContentLinkDialog({
 							)}
 						/>
 					</div>
-					<div className="flex gap-2">
+					<div className="flex gap-2 w-full">
 						<div className="flex flex-col gap-1">
 							<Input
 								{...register("link")}
@@ -196,12 +196,10 @@ export default function InsertContentLinkDialog({
 						</Tooltip>
 					</div>
 					{linkContent && (
-						<Card className="flex flex-col flex-1 max-h-96 overflow-auto p-4 border border-mochaMantle">
+						<Card className="flex flex-col flex-1 max-h-96 w-full p-4 border border-mochaMantle overflow-auto">
 							<div
 								ref={messageContainerRef}
-								className={cn([
-									"flex flex-col markdown-styles prismjs-theme overflow-auto",
-								])}
+								className={cn(["flex flex-col markdown-styles prismjs-theme"])}
 							/>
 						</Card>
 					)}
