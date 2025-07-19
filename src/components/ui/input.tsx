@@ -3,29 +3,29 @@ import * as React from "react";
 import { cn } from "~/lib/utils";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
-  status?: "SUCCESS" | "ERROR" | "WARNING";
+	extends React.InputHTMLAttributes<HTMLInputElement> {
+	status?: "SUCCESS" | "ERROR" | "WARNING";
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, status, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn([
-          "placeholder:text-mochaSubText bg-mochaMantle text-mochaText flex h-10 w-full rounded-md border border-transparent px-3 py-2 text-sm font-semibold file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
-          {
-            "border-red-500": status === "ERROR",
-            "border-green-500": status === "SUCCESS",
-            "border-yellow-500": status === "WARNING",
-          },
-          className,
-        ])}
-        ref={ref}
-        {...props}
-      />
-    );
-  },
+	({ className, type, status, ...props }, ref) => {
+		return (
+			<input
+				type={type}
+				className={cn([
+					"placeholder:text-mochaSubText bg-mochaMantle text-mochaText flex h-10 w-full rounded-md border border-transparent px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+					{
+						"border-red-500": status === "ERROR",
+						"border-green-500": status === "SUCCESS",
+						"border-yellow-500": status === "WARNING",
+					},
+					className,
+				])}
+				ref={ref}
+				{...props}
+			/>
+		);
+	},
 );
 Input.displayName = "Input";
 

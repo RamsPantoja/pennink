@@ -67,7 +67,7 @@ export const AutoResizeTextarea = ({
 			onChange={handleChange}
 			rows={minRows}
 			className={cn(
-				"resize-none overflow-hidden min-h-[40px] w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none",
+				"resize-none overflow-hidden min-h-[40px] w-full rounded-md px-3 placeholder:text-mochaSubText py-2 text-sm focus:outline-none",
 				className,
 			)}
 			{...props}

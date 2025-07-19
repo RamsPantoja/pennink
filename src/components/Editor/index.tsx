@@ -7,7 +7,11 @@ import {
 	autoPlacement,
 	FloatingPortal,
 } from "@floating-ui/react";
-import { ArrowUpTrayIcon, SparklesIcon } from "@heroicons/react/24/outline";
+import {
+	ArrowUpTrayIcon,
+	LinkIcon,
+	SparklesIcon,
+} from "@heroicons/react/24/outline";
 import { BlockNoteView, darkDefaultTheme } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import {
@@ -53,6 +57,8 @@ import {
 	docxDefaultSchemaMappings,
 } from "@blocknote/xl-docx-exporter";
 import { Packer } from "docx";
+import InsertContentLinkDialog from "./InsertContentLinkDialog";
+import { text } from "drizzle-orm/mysql-core";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -270,14 +276,24 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		setIsExporting(false);
 	};
 
+	const onInsertContentFromLink = (content: string) => {
+		editor.pasteMarkdown(content);
+	};
+
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div className="flex p-2 justify-end">
+				<InsertContentLinkDialog onInsert={onInsertContentFromLink} />
 				<DropdownMenu>
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<DropdownMenuTrigger asChild>
-								<Button variant="ghost" size="icon" isPending={isExporting}>
+								<Button
+									variant="ghost"
+									size="icon"
+									isPending={isExporting}
+									disabled={editor.document.length === 0}
+								>
 									<ArrowUpTrayIcon className="h-5 min-w-5" />
 								</Button>
 							</DropdownMenuTrigger>
