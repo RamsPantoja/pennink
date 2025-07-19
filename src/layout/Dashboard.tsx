@@ -66,11 +66,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			},
 		});
 
-	const { mutate: initStaticsMutation } = api.user.initStatics.useMutation({
-		onError: (error) => {
-			toast(error.message);
-		},
-	});
+	const { mutate: initStaticsMutation } = api.user.initStatics.useMutation();
 
 	useEffect(() => {
 		initStaticsMutation();

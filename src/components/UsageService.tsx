@@ -51,6 +51,17 @@ export const UsageService = () => {
 		return "No date";
 	}, [staticsData]);
 
+	const resetWorkspacesTime = useMemo(() => {
+		if (staticsData) {
+			const specificDate = DateTime.fromJSDate(staticsData.workspacesResetedAt);
+			const nextDay = specificDate.plus({ days: 1 });
+
+			return nextDay.toLocaleString(DateTime.DATETIME_SHORT);
+		}
+
+		return "No date";
+	}, [staticsData]);
+
 	return (
 		<Card className="border w-full max-w-80 flex flex-col gap-4">
 			<p className="text-sm">Usage</p>
@@ -70,11 +81,14 @@ export const UsageService = () => {
 			{!staticsIsLoading && !staticsIsError && staticsData && (
 				<Fragment>
 					<div className="flex flex-col gap-2">
+						<span className="text-xs text-right">
+							Resets at {resetWorkspacesTime}
+						</span>
 						<div className="flex gap-4 items-center justify-between">
 							<p className="text-xs ">Workspaces</p>
-							<p className="text-xs">{staticsData.workspaces}/25</p>
+							<p className="text-xs">{staticsData.workspaces}/2</p>
 						</div>
-						<Progress value={(staticsData.workspaces / 25) * 100} />
+						<Progress value={(staticsData.workspaces / 2) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
 						<span className="text-xs text-right">

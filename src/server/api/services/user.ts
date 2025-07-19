@@ -46,7 +46,7 @@ export class UserService {
 			console.log(error);
 			throw new TRPCError({
 				code: "NOT_FOUND",
-				message: "Failed to search documents",
+				message: "Failed to initialize user statics",
 			});
 		}
 	}

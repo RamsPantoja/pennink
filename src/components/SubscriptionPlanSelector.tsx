@@ -59,14 +59,13 @@ export default function SubscriptionPlansModal({
 						<TabsTrigger value="PRO">Pro</TabsTrigger>
 						{/* <TabsTrigger value="PREMIUM">Premium</TabsTrigger> */}
 					</TabsList>
-
 					<TabsContent value="FREE" className="space-y-4">
 						<PricingCard
 							title="Free"
 							price="$0"
 							description="Perfect for individuals just getting started"
 							features={[
-								"Up to 25 workspaces (Includes deleted)",
+								"2 workspaces / day",
 								"5 upload files / day",
 								"Upload files, each up to 50 pages / 6 MB in size",
 								"AI writing suggestions",

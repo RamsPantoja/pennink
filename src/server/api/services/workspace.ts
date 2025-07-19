@@ -132,7 +132,7 @@ export class WorkspaceService {
 	}
 
 	private async workspaceCreationRule(userId: string) {
-		const limitWorkspaces = 25;
+		const limitWorkspaces = 2;
 		const limitedWorkspacesMessage = `You have reached the maximum number of workspaces (${limitWorkspaces}). Upgrade to Pennink Pro to get unlimited workspaces.`;
 		const userStatics = await this.ctx.db.query.statics.findFirst({
 			where: (statics, { eq }) => {
@@ -150,12 +150,29 @@ export class WorkspaceService {
 			});
 		}
 
-		const ruleForFreeSub = () => {
-			if (userStatics.workspaces >= limitWorkspaces) {
+		const ruleForFreeSub = async () => {
+			const referenceDate = DateTime.fromJSDate(
+				userStatics.workspacesResetedAt,
+			);
+			const currentDate = DateTime.now();
+			const diff = currentDate.diff(referenceDate, "days");
+
+			if (diff.days < 1 && userStatics.workspaces >= limitWorkspaces) {
 				throw new TRPCError({
 					code: "PRECONDITION_FAILED",
 					message: limitedWorkspacesMessage,
 				});
+			}
+
+			//Reset workspaces metric to 0 to allow user create new workspaces
+			if (diff.days >= 1) {
+				await this.ctx.db
+					.update(statics)
+					.set({
+						workspaces: 0,
+						workspacesResetedAt: new Date(),
+					})
+					.where(eq(statics.id, userStatics.id));
 			}
 		};
 
@@ -166,11 +183,11 @@ export class WorkspaceService {
 				break;
 			case "FREE":
 				{
-					ruleForFreeSub();
+					await ruleForFreeSub();
 				}
 				break;
 			default:
-				ruleForFreeSub();
+				await ruleForFreeSub();
 				break;
 		}
 
