@@ -123,8 +123,8 @@ export class WorkspaceService {
 			where: (workspaces, { eq, and }) => {
 				return and(eq(workspaces.userId, userId), isNull(workspaces.deletedAt));
 			},
-			orderBy: (workspaces, { asc }) => {
-				return asc(workspaces.updatedAt);
+			orderBy: (workspaces, { desc }) => {
+				return desc(workspaces.updatedAt);
 			},
 		});
 
