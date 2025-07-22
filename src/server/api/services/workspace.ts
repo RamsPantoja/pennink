@@ -164,34 +164,40 @@ export class WorkspaceService {
 				});
 			}
 
-			//Reset workspaces metric to 0 to allow user create new workspaces
 			if (diff.days >= 1) {
-				await this.ctx.db
+				//Reset workspaces metric to 0 to allow user create new workspaces
+				const [resetedStatics] = await this.ctx.db
 					.update(statics)
 					.set({
 						workspaces: 0,
 						workspacesResetedAt: new Date(),
 					})
-					.where(eq(statics.id, userStatics.id));
+					.where(eq(statics.id, userStatics.id))
+					.returning();
+
+				if (!resetedStatics) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to reset workspaces",
+					});
+				}
+
+				return resetedStatics;
 			}
+
+			return userStatics;
 		};
 
 		switch (userStatics.user.subscription) {
-			case "PRO":
-				{
-				}
-				break;
-			case "FREE":
-				{
-					await ruleForFreeSub();
-				}
-				break;
+			case "PRO": {
+				return userStatics;
+			}
+			case "FREE": {
+				return await ruleForFreeSub();
+			}
 			default:
-				await ruleForFreeSub();
-				break;
+				return await ruleForFreeSub();
 		}
-
-		return userStatics;
 	}
 
 	public async getWorkspaceById(id: string) {
