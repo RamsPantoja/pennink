@@ -201,7 +201,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 			/>
 			<Card className="max-w-screen-lg gap-4 flex flex-col w-full justify-center h-full bg-transparent">
 				<p className="text-center text-3xl font-bold text-mochaText">
-					What can I help with?
+					Start your writing journey!
 				</p>
 				<Chat id={chatId} isNew={true} />
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
