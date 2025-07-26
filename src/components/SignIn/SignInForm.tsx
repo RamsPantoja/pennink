@@ -27,7 +27,7 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 					<div className="flex flex-col items-center justify-center gap-4 text-mochaText">
 						<Logo />
 						<p className="text-base text-mochaText text-center">
-							The writing editor for what's next
+							Your AI writing assistant for what's next
 						</p>
 					</div>
 				</CardTitle>

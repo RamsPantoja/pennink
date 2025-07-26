@@ -132,7 +132,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 				)}
 			</SidebarHeader>
 			<SidebarContent>
-				<SidebarGroup>
+				<SidebarGroup className="overflow-hidden">
 					<SidebarGroupLabel asChild>
 						<div className="flex items-center gap-4 justify-between mb-2">
 							<span>Workspaces</span>
@@ -148,7 +148,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 							)}
 						</div>
 					</SidebarGroupLabel>
-					<SidebarGroupContent>
+					<SidebarGroupContent className="overflow-auto">
 						<SidebarMenu>
 							{workspacesIsLoading &&
 								skeletons.map((skeleton, index) => {
