@@ -161,6 +161,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		extensions: [
 			createAIExtension({
 				model,
+				agentCursor: { name: "AI", color: "#f76f53" },
 			}),
 		],
 		initialContent: data ? data : undefined,
