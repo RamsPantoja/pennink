@@ -1,5 +1,6 @@
 import {
 	ArrowDownTrayIcon,
+	CircleStackIcon,
 	DocumentPlusIcon,
 	MagnifyingGlassIcon,
 	SquaresPlusIcon,
@@ -31,6 +32,8 @@ import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { fileSizeRule } from "~/lib/utils";
 import { api } from "~/utils/api";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
+import Image from "next/image";
+import PomodoroTimer from "~/components/Pomodoro";
 
 type DashboardProps = {
 	session: Session;
@@ -175,13 +178,14 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						<span>Toggle</span>
 					</SidebarTrigger>
 					<div className="flex items-center gap-2">
+						{router.asPath !== "/" && <PomodoroTimer />}
 						{router.asPath !== "/" && (
 							<DropdownMenu>
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<DropdownMenuTrigger asChild>
 											<Button
-												variant="default"
+												variant="ghost"
 												size="icon"
 												isPending={
 													uploadingFile ||
@@ -190,11 +194,11 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 													isReadingPDF
 												}
 											>
-												<DocumentPlusIcon className="min-w-5 w-5 h-5" />
+												<CircleStackIcon className="min-w-5 w-5 h-5" />
 											</Button>
 										</DropdownMenuTrigger>
 									</TooltipTrigger>
-									<TooltipContent>Load a document</TooltipContent>
+									<TooltipContent>Search from your sources</TooltipContent>
 								</Tooltip>
 								<DropdownMenuContent
 									side="right"
@@ -226,11 +230,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						{router.asPath !== "/" && (
 							<Tooltip>
 								<TooltipTrigger asChild>
-									<Button
-										onClick={onNewWorkspace}
-										variant="default"
-										size="icon"
-									>
+									<Button onClick={onNewWorkspace} variant="ghost" size="icon">
 										<SquaresPlusIcon className="min-w-5 w-5 h-5" />
 									</Button>
 								</TooltipTrigger>
