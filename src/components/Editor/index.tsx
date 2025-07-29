@@ -58,7 +58,6 @@ import {
 } from "@blocknote/xl-docx-exporter";
 import { Packer } from "docx";
 import InsertContentLinkDialog from "./InsertContentLinkDialog";
-import { text } from "drizzle-orm/mysql-core";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
