@@ -203,21 +203,71 @@ export default function PomodoroTimer() {
 
 	return (
 		<Popover open={openTimer} onOpenChange={setOpenTimer}>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<PopoverTrigger asChild>
-						<Button variant="ghost" size="icon">
-							<Image
-								src={"/icons/pomodoro-technique.png"}
-								width={24}
-								height={24}
-								alt="Pomodoro icon"
-							/>
-						</Button>
-					</PopoverTrigger>
-				</TooltipTrigger>
-				<TooltipContent>Pomodoro timer</TooltipContent>
-			</Tooltip>
+			<div className="flex items-center border border-mochaMantle rounded-md">
+				<div className="flex items-center">
+					{status === "idle" && (
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button size="icon" variant="ghost" onClick={handleStart}>
+									<Play className="h-4 w-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>Start session</TooltipContent>
+						</Tooltip>
+					)}
+
+					{status === "running" && (
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button onClick={handlePause} variant="ghost" size="icon">
+									<Pause className="h-4 w-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>Pause session</TooltipContent>
+						</Tooltip>
+					)}
+
+					{status === "paused" && (
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button onClick={handleStart} size="icon" variant="ghost">
+									<Play className="h-4 w-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>Resume session</TooltipContent>
+						</Tooltip>
+					)}
+
+					{status !== "idle" && (
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button onClick={handleStop} variant="ghost" size="icon">
+									<Square className="h-4 w-4" />
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>Stop session</TooltipContent>
+						</Tooltip>
+					)}
+				</div>
+				<p className="text-xs text-mochaText px-2 tracking-wider font-semibold">
+					{formatTime(timeLeft)}
+				</p>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<PopoverTrigger asChild>
+							<Button variant="ghost" size="icon">
+								<Image
+									src={"/icons/pomodoro-technique.png"}
+									width={24}
+									height={24}
+									alt="Pomodoro icon"
+								/>
+							</Button>
+						</PopoverTrigger>
+					</TooltipTrigger>
+					<TooltipContent>Pomodoro details</TooltipContent>
+				</Tooltip>
+			</div>
 			<PopoverContent className="max-h-[--radix-popover-content-available-height] overflow-auto">
 				<div className="flex flex-col gap-4">
 					{/* Main Timer */}

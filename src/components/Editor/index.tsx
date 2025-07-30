@@ -352,7 +352,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 					{displaySuggestion && (
 						<FloatingPortal>
 							<div
-								className="flex p-4 shadow-md overflow-hidden border border-mochaCrust bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
+								className="flex p-4 shadow-lg overflow-hidden border border-mochaCrust bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
 								ref={refs.setFloating}
 								style={floatingStyles}
 							>
