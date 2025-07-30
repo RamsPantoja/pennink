@@ -209,7 +209,7 @@ export default function PomodoroTimer() {
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Button size="icon" variant="ghost" onClick={handleStart}>
-									<Play className="h-5 w-5" />
+									<Play className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>Start session</TooltipContent>
@@ -220,7 +220,7 @@ export default function PomodoroTimer() {
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Button onClick={handlePause} variant="ghost" size="icon">
-									<Pause className="h-5 w-5" />
+									<Pause className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>Pause session</TooltipContent>
@@ -232,7 +232,7 @@ export default function PomodoroTimer() {
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button onClick={handleStart} size="icon" variant="ghost">
-										<Play className="h-5 w-5" />
+										<Play className="h-4 w-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>Resume session</TooltipContent>
@@ -240,7 +240,7 @@ export default function PomodoroTimer() {
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button onClick={handleStop} variant="ghost" size="icon">
-										<Square className="h-5 w-5" />
+										<Square className="h-4 w-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>Stop session</TooltipContent>
@@ -252,7 +252,7 @@ export default function PomodoroTimer() {
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Button onClick={handleReset} variant="ghost" size="icon">
-									<RotateCcw className="h-5 w-5" />
+									<RotateCcw className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>Reset session</TooltipContent>
