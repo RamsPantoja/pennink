@@ -7,11 +7,7 @@ import {
 	autoPlacement,
 	FloatingPortal,
 } from "@floating-ui/react";
-import {
-	ArrowUpTrayIcon,
-	LinkIcon,
-	SparklesIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { BlockNoteView, darkDefaultTheme } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import {
@@ -561,7 +557,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
         and replace it for one with an AI option (defined below).
         (See "Suggestion Menus" in docs)
         */}
-						<SuggestionMenuWithAI editor={editor} />
+						<CustomSuggestionMenu editor={editor} />
 					</BlockNoteView>
 				</div>
 			</div>
@@ -585,7 +581,7 @@ function FormattingToolbarWithAI() {
 }
 
 // Slash menu with the AI option added
-function SuggestionMenuWithAI(props: {
+function CustomSuggestionMenu(props: {
 	editor: BlockNoteEditor<any, any, any>;
 }) {
 	return (

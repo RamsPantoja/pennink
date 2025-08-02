@@ -25,6 +25,7 @@ import { Separator } from "../ui/separator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { toast } from "sonner";
 
 type TimerMode = "focus" | "rest";
 type TimerStatus = "idle" | "running" | "paused";
@@ -166,6 +167,7 @@ export default function PomodoroTimer() {
 	const handleSaveSettings = () => {
 		setSettings(tempSettings);
 		setIsSettingsOpen(false);
+		toast("Settings saved");
 
 		// Reset timer with new settings if idle
 		if (status === "idle") {
@@ -307,41 +309,51 @@ export default function PomodoroTimer() {
 										<DialogTitle>Timer settings</DialogTitle>
 									</DialogHeader>
 									<div className="space-y-4">
-										<div>
+										<div className="flex flex-col gap-2">
 											<Label htmlFor="focus-time" className="text-mochaText">
-												Focus time (minutes)
+												Focus time
 											</Label>
-											<Input
-												id="focus-time"
-												type="number"
-												min="1"
-												max="60"
-												value={tempSettings.focusTime}
-												onChange={(e) =>
-													setTempSettings((prev) => ({
-														...prev,
-														focusTime: Number.parseInt(e.target.value) || 25,
-													}))
-												}
-											/>
+											<div className="flex items-center gap-4">
+												<Input
+													id="focus-time"
+													type="number"
+													min="1"
+													max="60"
+													value={tempSettings.focusTime}
+													onChange={(e) =>
+														setTempSettings((prev) => ({
+															...prev,
+															focusTime: Number.parseInt(e.target.value) || 25,
+														}))
+													}
+												/>
+												<span className="text-xs text-mochaSubText">
+													minutes
+												</span>
+											</div>
 										</div>
-										<div>
+										<div className="flex flex-col gap-2">
 											<Label htmlFor="rest-time" className="text-mochaText">
-												Rest time (minutes)
+												Rest time
 											</Label>
-											<Input
-												id="rest-time"
-												type="number"
-												min="1"
-												max="30"
-												value={tempSettings.restTime}
-												onChange={(e) =>
-													setTempSettings((prev) => ({
-														...prev,
-														restTime: Number.parseInt(e.target.value) || 5,
-													}))
-												}
-											/>
+											<div className="flex items-center gap-4">
+												<Input
+													id="rest-time"
+													type="number"
+													min="1"
+													max="30"
+													value={tempSettings.restTime}
+													onChange={(e) =>
+														setTempSettings((prev) => ({
+															...prev,
+															restTime: Number.parseInt(e.target.value) || 5,
+														}))
+													}
+												/>
+												<span className="text-xs text-mochaSubText">
+													minutes
+												</span>
+											</div>
 										</div>
 										<div className="flex gap-2">
 											<Button
@@ -420,9 +432,9 @@ export default function PomodoroTimer() {
 							</div>
 
 							<div className="flex justify-center gap-4 text-sm text-muted-foreground">
-								<span>Focus: {settings.focusTime}min</span>
+								<span>Focus: {settings.focusTime} min</span>
 								<span>•</span>
-								<span>Rest: {settings.restTime}min</span>
+								<span>Rest: {settings.restTime} min</span>
 							</div>
 						</div>
 					</div>
@@ -457,11 +469,17 @@ export default function PomodoroTimer() {
 									No sessions completed yet. Start your first Pomodoro!
 								</p>
 							) : (
-								<div className="space-y-2 max-h-60 overflow-y-auto">
+								<div className="space-y-2 max-h-60">
 									{sessions.slice(0, 10).map((session, index) => (
 										<div key={session.id}>
-											<div className="flex items-center justify-between py-2">
-												<div className="flex items-center gap-2">
+											<div className="flex justify-between py-2 flex-col gap-2">
+												<span className="text-xs text-muted-foreground">
+													{session.completedAt.toLocaleTimeString([], {
+														hour: "2-digit",
+														minute: "2-digit",
+													})}
+												</span>
+												<div className="flex items-center gap-2 justify-between">
 													<Badge
 														variant={
 															session.type === "focus" ? "outline" : "secondary"
@@ -483,12 +501,6 @@ export default function PomodoroTimer() {
 														{session.duration} minutes
 													</span>
 												</div>
-												<span className="text-xs text-muted-foreground">
-													{session.completedAt.toLocaleTimeString([], {
-														hour: "2-digit",
-														minute: "2-digit",
-													})}
-												</span>
 											</div>
 											{index < sessions.slice(0, 10).length - 1 && (
 												<Separator />
