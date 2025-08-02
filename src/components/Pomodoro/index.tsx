@@ -476,7 +476,7 @@ export default function PomodoroTimer() {
 									No sessions completed yet. Start your first Pomodoro!
 								</p>
 							) : (
-								<div className="space-y-2 max-h-60">
+								<div className="space-y-2 max-h-60 overflow-y-auto">
 									{sessions.slice(0, 10).map((session, index) => (
 										<div key={session.id}>
 											<div className="flex justify-between py-2 flex-col gap-2">
