@@ -134,9 +134,16 @@ export default function PomodoroTimer() {
 				`${mode === "focus" ? "Focus" : "Rest"} session completed!`,
 				{
 					body: `Time for a ${nextMode === "focus" ? "focus" : "rest"} session.`,
-					icon: "/favicon.ico",
+					icon: "/icon.png",
+					badge: "/icon.png",
 				},
 			);
+
+			const audio = new Audio("/long-pop-notification.wav");
+			audio.volume = 1;
+			audio.play().catch((error) => {
+				console.warn("Could not play notification sound:", error);
+			});
 		}
 	};
 
