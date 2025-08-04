@@ -222,7 +222,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					/>
 					<div className="flex w-full gap-4 justify-between items-center">
 						<div className="flex items-center gap-4">
-							<ToggleGroup
+							{/*<ToggleGroup
 								type="multiple"
 								onValueChange={(value: ChatModes[]) => {
 									onToggleChatModes(value);
@@ -248,7 +248,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 										<TooltipContent>Ask from content</TooltipContent>
 									</Tooltip>
 								)}
-							</ToggleGroup>
+							</ToggleGroup>*/}
 						</div>
 						{(onSentPromptMutationIsPending ||
 							documentVectorSearchMutationIsPending ||
