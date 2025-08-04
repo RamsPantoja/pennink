@@ -54,6 +54,7 @@ import {
 } from "@blocknote/xl-docx-exporter";
 import { Packer } from "docx";
 import InsertContentLinkDialog from "./InsertContentLinkDialog";
+import type { EditPredictionData } from "~/app/api/ai/edit-prediction/route";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -163,14 +164,15 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	});
 
 	const { mutateAsync: onSentPromptMutation } = useMutation({
-		mutationFn: (prompt: string) => {
+		mutationFn: (data: EditPredictionData) => {
 			return fetch("/api/ai/edit-prediction", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					prompt,
+					prompt: data.prompt,
+					context: data.context,
 				}),
 				signal: controllerOnSendPrompt.signal,
 			});
@@ -488,9 +490,14 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 
 											setSuggestionTimer(
 												setTimeout(async () => {
-													const res = await onSentPromptMutation(
-														`${block.type}: ${content}`,
+													const markdown = await editor.blocksToMarkdownLossy(
+														editor.document,
 													);
+
+													const res = await onSentPromptMutation({
+														prompt: `${block.type}: ${content}`,
+														context: markdown,
+													});
 
 													const streamRes = await handleStream(res);
 
