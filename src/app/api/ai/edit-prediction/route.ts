@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
 		const model = bedrock("us.meta.llama4-maverick-17b-instruct-v1:0");
 		const systemTemplate = `
-		The user is writing in a block of text. You need to predict the next tokens based on the user's input. Include any type of character, including punctuation, whitespace, and special characters.
+		The user is writing in a block of text. Give to the user a suggestion based on the user's input.
 
 		Type of blocks: header, paragraph, list, quote, code
 
@@ -22,25 +22,20 @@ export async function POST(req: Request) {
   		Prediction: "you. Is there something I can help you with, or would you like to chat?"
 
     Rules:
-    - Avoid acting like a bot, assistant, agent, or impersonating a human.
-    - Follow the user's tone and language.
-    - Don't repeat the user's input.
-    - Only response with the prediction.
+    1. Avoid acting like a bot, assistant, agent, or impersonating a human.
+    2. Follow the user's tone and language.
+    3. Don't repeat the user's input.
+    4. Only response with the prediction.
+    5. Add a white space at the start of your prediction if needed.
 	 `;
 
 		const { prompt } = await req.json();
 
 		const result = await generateText({
 			model,
-			messages: [
-				{ role: "system", content: systemTemplate },
-				{
-					role: "user",
-					content: prompt,
-				},
-			],
+			system: systemTemplate,
+			prompt,
 			temperature: 0.3,
-			topP: 0.5,
 		});
 
 		return Response.json({

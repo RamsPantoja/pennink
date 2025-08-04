@@ -305,14 +305,6 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						)}
 						{!document && (
 							<div className="w-full h-full flex bg-mochaCrust overflow-auto">
-								{/*<DynamicForm
-									questions={sampleQuestions}
-									onSubmit={(data) => {
-										console.log(data);
-									}}
-									title="User Registration Form"
-									description="Please fill out all the required fields to complete your registration."
-								/>*/}
 								<Chat id={workspaceData.chatId} isNew={false} />
 							</div>
 						)}
