@@ -246,8 +246,14 @@ export const WorkspaceCard = ({
 						>
 							{workspaceName}
 						</span>
-						<DropdownMenu>
-							<DropdownMenuTrigger className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md">
+						<DropdownMenu modal={false}>
+							<DropdownMenuTrigger
+								onClick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+								}}
+								className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md"
+							>
 								<EllipsisVerticalIcon className="h-5 min-w-5" />
 							</DropdownMenuTrigger>
 							<DropdownMenuContent
