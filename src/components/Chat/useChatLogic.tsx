@@ -13,6 +13,11 @@ import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
 import type { AgentChatRequestData } from "~/app/api/ai/chat/route";
 import type { CoreMessage } from "ai";
+import {
+	Bars3BottomLeftIcon,
+	DocumentTextIcon,
+} from "@heroicons/react/24/outline";
+import type { JSX } from "react/jsx-runtime";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -24,6 +29,24 @@ type UseChatLogicProps = {
 	chatId: string;
 	isNew: boolean;
 };
+
+type ThreadContext = {
+	id: string;
+	label: string;
+	type: "thread";
+};
+
+type DocumentContext = {
+	label: string;
+	type: "document";
+};
+
+type EditorContext = {
+	label: string;
+	type: "editor";
+};
+
+type ContextEntity = ThreadContext | DocumentContext | EditorContext;
 
 export type ChatModes = "ask-mode" | "web-search-mode" | "reasoning-mode";
 
@@ -42,6 +65,12 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [isStreaming, setIsStreaming] = useState(false);
 	const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
 	const abortControllerRef = useRef<AbortController | null>(null);
+	const [contextItems, setContextItems] = useState<ContextEntity[]>([
+		{
+			label: "Editor",
+			type: "editor",
+		},
+	]);
 
 	const stopStreaming = async () => {
 		if (readerRef.current) {
@@ -261,7 +290,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			});
 		}
 
-		if (chatModes.includes("ask-mode")) {
+		if (contextItems.find((item) => item.type === "document")) {
+			console.log("A");
 			const messages: CoreMessage[] = [];
 
 			if (quote) {
@@ -490,5 +520,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		stopStreaming,
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,
+		contextItems,
+		setContextItems,
 	};
 };

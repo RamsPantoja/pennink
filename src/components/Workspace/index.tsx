@@ -259,7 +259,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
 						{document && (
-							<Card className="w-full h-full flex p-2 rounded-none">
+							<Card className="w-full h-full flex p-0 rounded-none">
 								<Tabs
 									value={tab}
 									onValueChange={(value) => {
@@ -267,7 +267,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									}}
 									className="w-full flex flex-col h-full"
 								>
-									<TabsList className="grid w-full grid-cols-2">
+									<TabsList className="grid w-full grid-cols-2 rounded-none">
 										<TabsTrigger value="notes">
 											<DocumentTextIcon className="min-w-5 h-5 mr-2" />
 											Notes
