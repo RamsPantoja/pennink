@@ -579,7 +579,11 @@ function FormattingToolbarWithAI() {
 			formattingToolbar={() => (
 				<FormattingToolbar>
 					{/* Add the AI button */}
-					<AIToolbarButton />
+					<div className="flex items-center pl-2 gap-2 border rounded-sm border-mochaTeal">
+						<p className="text-xs">AI</p>
+						<AIToolbarButton />
+					</div>
+
 					{...getFormattingToolbarItems()}
 				</FormattingToolbar>
 			)}
