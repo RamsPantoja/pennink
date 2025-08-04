@@ -99,9 +99,9 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>
-			<Separator />
+			{!isNew && <Separator />}
 			<div className="flex flex-col gap-2 p-3">
-				<div className="flex gap-1">
+				{!isNew && (
 					<div className="flex items-center gap-2">
 						<DropdownMenu>
 							<DropdownMenuTrigger
@@ -191,7 +191,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								</div>
 							))}
 					</div>
-				</div>
+				)}
+
 				<Card className="w-full bg-mochaBase border border-mochaMauve flex flex-col p-3 shadow-sm shadow-mochaMauve">
 					{quote && (
 						<Card className="flex items-start gap-2 bg-mochaMantle border">
