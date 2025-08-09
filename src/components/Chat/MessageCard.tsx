@@ -10,6 +10,7 @@ import {
 import { useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { DateTime } from "luxon";
 
 type MessageCardProps = {
 	message: Message;
@@ -59,6 +60,11 @@ export const MessageCard = ({ message }: MessageCardProps) => {
 						"flex flex-col markdown-styles prismjs-theme overflow-auto",
 					])}
 				/>
+				<span className="text-xs text-mochaSubtext1">
+					{DateTime.fromJSDate(message.createdAt).toLocaleString(
+						DateTime.DATETIME_MED,
+					)}
+				</span>
 			</Card>
 		</div>
 	);
