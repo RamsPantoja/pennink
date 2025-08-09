@@ -130,13 +130,17 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							>
 								<DropdownMenuItem
 									onClick={(e) => {
-										setContextItems((prevItems) => [
-											...prevItems,
-											{
-												label: "Document",
-												type: "document",
-											},
-										]);
+										if (
+											!contextItems.find((item) => item.type === "document")
+										) {
+											setContextItems((prevItems) => [
+												...prevItems,
+												{
+													label: "Document",
+													type: "document",
+												},
+											]);
+										}
 									}}
 									disabled={!document}
 									className="flex gap-2"
@@ -146,13 +150,15 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								</DropdownMenuItem>
 								<DropdownMenuItem
 									onClick={(e) => {
-										setContextItems((prevItems) => [
-											...prevItems,
-											{
-												label: "Editor",
-												type: "editor",
-											},
-										]);
+										if (!contextItems.find((item) => item.type === "editor")) {
+											setContextItems((prevItems) => [
+												...prevItems,
+												{
+													label: "Editor",
+													type: "editor",
+												},
+											]);
+										}
 									}}
 									className="flex gap-2"
 								>
