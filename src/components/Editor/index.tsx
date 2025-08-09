@@ -140,7 +140,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		null,
 	);
 	const [saveTimer, setSaveTimer] = useState<NodeJS.Timeout | null>(null);
-	const { workspaceTitle } = useWorkspaceStore();
+	const { workspaceTitle, setEditor } = useWorkspaceStore();
 	const [isExporting, setIsExporting] = useState<boolean>(false);
 
 	const editor = useCreateBlockNote({
@@ -162,6 +162,10 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 		],
 		initialContent: data ? data : undefined,
 	});
+
+	useEffect(() => {
+		setEditor(editor);
+	}, [editor, setEditor]);
 
 	const { mutateAsync: onSentPromptMutation } = useMutation({
 		mutationFn: (data: EditPredictionData) => {

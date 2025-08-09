@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { ChatValidationSchema } from "../Chat/useChatLogic";
 import type { Message } from "~/server/api/services/chat";
+import { BlockNoteEditor } from "@blocknote/core";
 
 export type PenninkDocument = {
 	id: string;
@@ -26,6 +27,8 @@ type WorkspaceStore = {
 	readerEvent: ReaderEvent | null;
 	setReaderEvent: (event: ReaderEvent | null) => void;
 	setWorkspaceTitle: (title: string) => void;
+	editor: BlockNoteEditor | null;
+	setEditor: (editor: BlockNoteEditor | null) => void;
 };
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
@@ -35,4 +38,6 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	readerEvent: null,
 	setReaderEvent: (event) => set(() => ({ readerEvent: event })),
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
+	editor: null,
+	setEditor: (editor) => set(() => ({ editor })),
 }));

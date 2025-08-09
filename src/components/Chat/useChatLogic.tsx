@@ -58,7 +58,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		useState<Message | null>(null);
 	const [messages, setMessages] = useState<Message[]>([]);
 	const chatContainer = useRef<HTMLDivElement | null>(null);
-	const { readerEvent, setReaderEvent, document } = useWorkspaceStore();
+	const { readerEvent, setReaderEvent, document, editor } = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
@@ -254,6 +254,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	});
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
+		const messagesContext: CoreMessage[] = []; //Array of CoreMessage context
 		useChatForm.setValue("prompt", "");
 
 		if (!session) {
@@ -291,17 +292,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 
 		if (contextItems.find((item) => item.type === "document")) {
-			console.log("A");
-			const messages: CoreMessage[] = [];
-
-			if (quote) {
-				setQuote(null);
-				messages.push({
-					content: `Quote context information: "${quote}"`,
-					role: "system",
-				});
-			}
-
 			if (!document) {
 				toast("Select a document before asking");
 				return;
@@ -313,53 +303,49 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			});
 
 			if (documentContext.length > 0) {
-				messages.push({
-					content: `Context information: ${documentContext.map((context) => context.embedding_document?.content).join(", ")}`,
+				messagesContext.push({
+					content: `Document context information: ${documentContext.map((context) => context.embedding_document?.content).join(", ")}`,
 					role: "system",
 				});
 			}
+		}
 
-			onSentPromptMutation({
-				prompt: data.prompt,
-				context: {
-					messages: [
-						...messages,
-						{
-							content:
-								"Only use the Quote context information and the Context information to enhance your response. Do not use any other information.",
-							role: "system",
-						},
-					],
-				},
+		if (contextItems.find((item) => item.type === "editor")) {
+			if (!editor) {
+				toast.error("Editor instance not found");
+				return;
+			}
+
+			const markdown = await editor.blocksToMarkdownLossy(editor.document);
+
+			messagesContext.push({
+				content: `Editor context information: ${markdown}`,
+				role: "system",
 			});
-
-			return;
 		}
 
 		if (quote) {
 			setQuote(null);
-			onSentPromptMutation({
-				prompt: data.prompt,
-				context: {
-					messages: [
-						{
-							content: `Use the following context quote to enhance your response: "${quote}"`,
-							role: "system",
-						},
-					],
-				},
+			messagesContext.push({
+				content: `Use the following context quote to enhance your response: "${quote}"`,
+				role: "system",
 			});
 
 			return;
 		}
 
+		const fullContextMessages = [
+			...messagesContext,
+			...messages.map((message) => ({
+				content: message.content,
+				role: messageRoleVercelSDK[message.role],
+			})),
+		];
+
 		onSentPromptMutation({
 			prompt: data.prompt,
 			context: {
-				messages: messages.map((message) => ({
-					content: message.content,
-					role: messageRoleVercelSDK[message.role],
-				})),
+				messages: fullContextMessages,
 			},
 		});
 	};
