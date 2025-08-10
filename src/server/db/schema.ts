@@ -39,6 +39,19 @@ export const messageRoleEnum = pgEnum("message_type", [
 	"AGENT",
 ]);
 
+export const formFieldTypeEnum = pgEnum("form_field_type", [
+	"text",
+	"textarea",
+	"checkbox",
+	"radio",
+	"select",
+	"switch",
+	"slider",
+	"email",
+	"number",
+	"date",
+]);
+
 export const users = createTable("user", {
 	id: customId.notNull().primaryKey(),
 	name: text().notNull(),
@@ -534,3 +547,59 @@ export const feedbackRelations = relations(feedbacks, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export const forms = createTable("form", {
+	id: customId,
+	title: text().notNull(),
+	description: text(),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
+});
+
+export const formRelations = relations(forms, ({ one }) => ({
+	user: one(users, {
+		fields: [forms.userId],
+		references: [users.id],
+	}),
+}));
+
+const questions = createTable("question", {
+	id: customId,
+	type: formFieldTypeEnum().notNull(),
+	description: text(),
+	label: text().notNull(),
+	placeholder: text(),
+	required: boolean().notNull().default(false),
+	min: integer(),
+	max: integer(),
+	step: integer(),
+});
+
+const questionOptions = createTable("question_option", {
+	id: customId,
+	questionId: uuid()
+		.notNull()
+		.references(() => questions.id),
+	label: text().notNull(),
+	value: text().notNull(),
+});
+
+export const questionOptionRelations = relations(
+	questionOptions,
+	({ one }) => ({
+		question: one(questions, {
+			fields: [questionOptions.questionId],
+			references: [questions.id],
+		}),
+	}),
+);
+
+export const exams = createTable("exam", {
+	id: customId,
+	title: text().notNull(),
+	instructions: text(),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
+});
