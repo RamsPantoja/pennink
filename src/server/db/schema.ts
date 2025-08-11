@@ -11,6 +11,7 @@ import {
 	timestamp,
 	uuid,
 	json,
+	jsonb,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { typeid } from "typeid-js";
@@ -557,14 +558,43 @@ export const forms = createTable("form", {
 		.references(() => users.id),
 });
 
-export const formRelations = relations(forms, ({ one }) => ({
+export const formsRelations = relations(forms, ({ one, many }) => ({
 	user: one(users, {
 		fields: [forms.userId],
 		references: [users.id],
 	}),
+	questionsToForms: many(questionsToForms),
+	shareLinksToForms: many(shareLinksToForms),
 }));
 
-const questions = createTable("question", {
+export const questionsToForms = createTable(
+	"questions_to_forms",
+	{
+		questionId: uuid()
+			.notNull()
+			.references(() => questions.id),
+		formId: uuid()
+			.notNull()
+			.references(() => forms.id),
+	},
+	(t) => [primaryKey({ columns: [t.questionId, t.formId] })],
+);
+
+export const questionsToFormsRelations = relations(
+	questionsToForms,
+	({ one }) => ({
+		question: one(questions, {
+			fields: [questionsToForms.questionId],
+			references: [questions.id],
+		}),
+		form: one(forms, {
+			fields: [questionsToForms.formId],
+			references: [forms.id],
+		}),
+	}),
+);
+
+export const questions = createTable("question", {
 	id: customId,
 	type: formFieldTypeEnum().notNull(),
 	description: text(),
@@ -576,7 +606,12 @@ const questions = createTable("question", {
 	step: integer(),
 });
 
-const questionOptions = createTable("question_option", {
+export const questionRelations = relations(questions, ({ many }) => ({
+	questionsToForms: many(questionsToForms),
+	questionsToExams: many(questionsToExams),
+}));
+
+export const questionOptions = createTable("question_option", {
 	id: customId,
 	questionId: uuid()
 		.notNull()
@@ -595,6 +630,34 @@ export const questionOptionRelations = relations(
 	}),
 );
 
+export const formResponses = createTable("form_response", {
+	id: customId,
+	email: text().notNull(),
+	userId: uuid().references(() => users.id),
+	formId: uuid()
+		.references(() => forms.id)
+		.notNull(),
+	answers: jsonb().notNull(),
+	shareLinkId: uuid()
+		.references(() => shareLinks.id)
+		.notNull(),
+});
+
+export const formResponseRelations = relations(formResponses, ({ one }) => ({
+	user: one(users, {
+		fields: [formResponses.userId],
+		references: [users.id],
+	}),
+	form: one(forms, {
+		fields: [formResponses.formId],
+		references: [forms.id],
+	}),
+	shareLink: one(shareLinks, {
+		fields: [formResponses.shareLinkId],
+		references: [shareLinks.id],
+	}),
+}));
+
 export const exams = createTable("exam", {
 	id: customId,
 	title: text().notNull(),
@@ -602,4 +665,128 @@ export const exams = createTable("exam", {
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
+	answers: jsonb().notNull(),
 });
+
+export const examRelations = relations(exams, ({ one, many }) => ({
+	user: one(users, {
+		fields: [exams.userId],
+		references: [users.id],
+	}),
+	questionsToExams: many(questionsToExams),
+	shareLinksToExams: many(shareLinksToExams),
+}));
+
+export const examResponses = createTable("exam_response", {
+	id: customId,
+	email: text().notNull(),
+	userId: uuid().references(() => users.id),
+	examId: uuid()
+		.references(() => exams.id)
+		.notNull(),
+	answers: jsonb().notNull(),
+	shareLinkId: uuid()
+		.references(() => shareLinks.id)
+		.notNull(),
+});
+
+export const examResponsesRelations = relations(examResponses, ({ one }) => ({
+	user: one(users, {
+		fields: [examResponses.userId],
+		references: [users.id],
+	}),
+	exam: one(exams, {
+		fields: [examResponses.examId],
+		references: [exams.id],
+	}),
+	shareLink: one(shareLinks, {
+		fields: [examResponses.shareLinkId],
+		references: [shareLinks.id],
+	}),
+}));
+
+export const questionsToExams = createTable(
+	"questions_to_exams",
+	{
+		questionId: uuid()
+			.notNull()
+			.references(() => questions.id),
+		examId: uuid()
+			.notNull()
+			.references(() => exams.id),
+	},
+	(t) => [primaryKey({ columns: [t.questionId, t.examId] })],
+);
+
+export const questionsToExamsRelations = relations(
+	questionsToExams,
+	({ one }) => ({
+		question: one(questions, {
+			fields: [questionsToExams.questionId],
+			references: [questions.id],
+		}),
+		exam: one(exams, {
+			fields: [questionsToExams.examId],
+			references: [exams.id],
+		}),
+	}),
+);
+
+export const shareLinks = createTable("share_link", {
+	id: customId,
+	key: text().notNull(),
+});
+
+export const shareLinksToForms = createTable(
+	"share_links_to_forms",
+	{
+		shareLinkId: uuid()
+			.notNull()
+			.references(() => shareLinks.id),
+		formId: uuid()
+			.notNull()
+			.references(() => forms.id),
+	},
+	(t) => [primaryKey({ columns: [t.shareLinkId, t.formId] })],
+);
+
+export const shareLinksToFormsRelations = relations(
+	shareLinksToForms,
+	({ one }) => ({
+		shareLink: one(shareLinks, {
+			fields: [shareLinksToForms.shareLinkId],
+			references: [shareLinks.id],
+		}),
+		form: one(forms, {
+			fields: [shareLinksToForms.formId],
+			references: [forms.id],
+		}),
+	}),
+);
+
+export const shareLinksToExams = createTable(
+	"share_links_to_exams",
+	{
+		shareLinkId: uuid()
+			.notNull()
+			.references(() => shareLinks.id),
+		examId: uuid()
+			.notNull()
+			.references(() => exams.id),
+	},
+	(t) => [primaryKey({ columns: [t.shareLinkId, t.examId] })],
+);
+
+export const shareLinksToExamsRelations = relations(
+	shareLinksToExams,
+	({ one }) => ({
+		shareLink: one(shareLinks, {
+			fields: [shareLinksToExams.shareLinkId],
+			references: [shareLinks.id],
+		}),
+		exam: one(exams, {
+			fields: [shareLinksToExams.examId],
+			references: [exams.id],
+		}),
+	}),
+);

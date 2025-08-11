@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Fragment, useState } from "react";
+import {
+	Controller,
+	FieldErrors,
+	type Control,
+	type FieldValues,
+} from "react-hook-form";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -54,23 +59,19 @@ export interface Question {
 
 interface DynamicFormProps {
 	questions: Question[];
-	onSubmit: (data: any) => void;
-	title?: string;
+	title: string;
 	description?: string;
+	control: Control<FieldValues, any, FieldValues>;
+	errors: FieldErrors<FieldValues>;
 }
 
 export function DynamicForm({
 	questions,
-	onSubmit,
-	title = "Dynamic Form",
+	title,
 	description,
+	control,
+	errors,
 }: DynamicFormProps) {
-	const {
-		control,
-		handleSubmit,
-		formState: { errors },
-	} = useForm();
-
 	const renderField = (question: Question) => {
 		const fieldId = question.id;
 		const isRequired = question.required;
@@ -87,7 +88,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
@@ -124,7 +125,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
@@ -154,7 +155,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
@@ -189,7 +190,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
@@ -232,7 +233,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-3">
 								<Label>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
@@ -275,12 +276,12 @@ export function DynamicForm({
 						control={control}
 						defaultValue={[]}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-3">
 								<Label>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
-								<div className="space-y-2">
+								<div className="flex flex-col gap-2">
 									{question.options?.map((option) => (
 										<div
 											key={option.value}
@@ -330,7 +331,7 @@ export function DynamicForm({
 						control={control}
 						defaultValue={false}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-2">
 								<div className="flex items-center space-x-2">
 									<Switch
 										id={fieldId}
@@ -359,7 +360,7 @@ export function DynamicForm({
 						control={control}
 						defaultValue={[question.min || 0]}
 						render={({ field }) => (
-							<div className="space-y-2">
+							<div className="flex flex-col gap-4">
 								<Label htmlFor={fieldId}>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
@@ -392,26 +393,21 @@ export function DynamicForm({
 				);
 
 			default:
-				return null;
+				break;
 		}
 	};
 
 	return (
-		<Card className="w-full overflow-auto h-full">
-			<CardHeader>
-				<CardTitle>{title}</CardTitle>
-				{description && <CardDescription>{description}</CardDescription>}
-			</CardHeader>
-			<CardContent>
-				<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-					{questions.map((question) => (
-						<div key={question.id}>{renderField(question)}</div>
-					))}
-					<Button type="submit" className="w-full">
-						Submit Form
-					</Button>
-				</form>
-			</CardContent>
-		</Card>
+		<div className="flex flex-col gap-4 overflow-auto p-4">
+			<div className="flex flex-col gap-3">
+				<p className="text-mochaText font-semibold text-xl">{title}</p>
+				{description && <p>{description}</p>}
+			</div>
+			<div className="flex flex-col gap-8">
+				{questions.map((question) => (
+					<Fragment key={question.id}>{renderField(question)}</Fragment>
+				))}
+			</div>
+		</div>
 	);
 }

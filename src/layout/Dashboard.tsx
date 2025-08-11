@@ -2,6 +2,7 @@ import {
 	ArrowDownTrayIcon,
 	CircleStackIcon,
 	DocumentPlusIcon,
+	ListBulletIcon,
 	MagnifyingGlassIcon,
 	SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
@@ -47,7 +48,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	const { workspaceId } = router.query;
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const { setDocument } = useWorkspaceStore();
+	const { setDocument, setDisplayFormEditor } = useWorkspaceStore();
 	const [isReadingPDF, setIsReadingPDF] = useState<boolean>(false);
 
 	const { mutate: createFile, isPending: createFileIsPending } =
@@ -179,6 +180,22 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 					</SidebarTrigger>
 					<div className="flex items-center gap-2">
 						{router.asPath !== "/" && <PomodoroTimer />}
+						{router.asPath !== "/" && (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={() => {
+											setDisplayFormEditor(true);
+										}}
+									>
+										<ListBulletIcon className="min-w-5 w-5 h-5" />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Create a dynamic form</TooltipContent>
+							</Tooltip>
+						)}
 						{router.asPath !== "/" && (
 							<DropdownMenu>
 								<Tooltip>

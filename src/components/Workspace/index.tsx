@@ -25,6 +25,7 @@ import { cn } from "~/lib/utils";
 import { Editor } from "../Editor";
 import type { Block } from "@blocknote/core";
 import { DynamicForm, type Question } from "../DynamicForm";
+import { FormEditor } from "../FormEditor";
 
 const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
@@ -37,100 +38,12 @@ type WorkspaceProps = {
 
 type TabValue = "notes" | "chat";
 
-// Sample questions data
-const sampleQuestions: Question[] = [
-	{
-		id: "name",
-		type: "text",
-		label: "Full Name",
-		placeholder: "Enter your full name",
-		required: true,
-	},
-	{
-		id: "email",
-		type: "email",
-		label: "Email Address",
-		placeholder: "Enter your email",
-		required: true,
-	},
-	{
-		id: "age",
-		type: "number",
-		label: "Age",
-		placeholder: "Enter your age",
-		min: 18,
-		max: 100,
-	},
-	{
-		id: "bio",
-		type: "textarea",
-		label: "Bio",
-		placeholder: "Tell us about yourself",
-		description: "Brief description about yourself",
-	},
-	{
-		id: "country",
-		type: "select",
-		label: "Country",
-		required: true,
-		options: [
-			{ value: "us", label: "United States" },
-			{ value: "uk", label: "United Kingdom" },
-			{ value: "ca", label: "Canada" },
-			{ value: "au", label: "Australia" },
-			{ value: "de", label: "Germany" },
-		],
-	},
-	{
-		id: "experience",
-		type: "radio",
-		label: "Experience Level",
-		required: true,
-		options: [
-			{ value: "beginner", label: "Beginner (0-1 years)" },
-			{ value: "intermediate", label: "Intermediate (2-5 years)" },
-			{ value: "advanced", label: "Advanced (5+ years)" },
-		],
-	},
-	{
-		id: "skills",
-		type: "checkbox",
-		label: "Skills",
-		options: [
-			{ value: "javascript", label: "JavaScript" },
-			{ value: "typescript", label: "TypeScript" },
-			{ value: "react", label: "React" },
-			{ value: "nodejs", label: "Node.js" },
-			{ value: "python", label: "Python" },
-		],
-	},
-	{
-		id: "notifications",
-		type: "switch",
-		label: "Email Notifications",
-		description: "Receive updates via email",
-	},
-	{
-		id: "satisfaction",
-		type: "slider",
-		label: "Satisfaction Level",
-		min: 0,
-		max: 10,
-		step: 1,
-		description: "Rate your satisfaction from 0 to 10",
-	},
-	{
-		id: "birthdate",
-		type: "date",
-		label: "Birth Date",
-	},
-];
-
 export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { workspaceId } = router.query;
 	const utils = api.useUtils();
-	const { document, setReaderEvent, setWorkspaceTitle } = useWorkspaceStore();
+	const { document, setReaderEvent, setWorkspaceTitle, displayFormEditor } =
+		useWorkspaceStore();
 	const [selectionContent, setSelectionContent] = useState<{
 		text: string;
 		range: Range | null;
@@ -213,7 +126,8 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					className="min-h-[200px] w-full md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel defaultSize={50}>
-						{document && (
+						{displayFormEditor && !document && <FormEditor />}
+						{document && !displayFormEditor && (
 							<div className="flex w-full h-full flex-col">
 								<SelectionToolbar
 									selection={selectionContent}
@@ -246,7 +160,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								</SelectionToolbar>
 							</div>
 						)}
-						{!document && (
+						{!document && !displayFormEditor && (
 							<Editor
 								data={workspaceData.note.content}
 								onSave={getNoteContent}
@@ -255,7 +169,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel defaultSize={50}>
-						{document && (
+						{(document || displayFormEditor) && (
 							<Card className="w-full h-full flex p-0 rounded-none">
 								<Tabs
 									value={tab}
@@ -300,7 +214,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								</Tabs>
 							</Card>
 						)}
-						{!document && (
+						{!document && !displayFormEditor && (
 							<div className="w-full h-full flex bg-mochaCrust overflow-auto">
 								<Chat id={workspaceData.chatId} isNew={false} />
 							</div>
