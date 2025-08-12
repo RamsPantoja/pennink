@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 			topP: 0.5,
 		});
 
-		return result.toTextStreamResponse();
+		return result.toDataStreamResponse();
 	} catch (error) {
 		console.log(error);
 		return Response.error();

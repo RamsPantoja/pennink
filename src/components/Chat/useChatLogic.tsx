@@ -13,11 +13,7 @@ import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
 import type { AgentChatRequestData } from "~/app/api/ai/chat/route";
 import type { CoreMessage } from "ai";
-import {
-	Bars3BottomLeftIcon,
-	DocumentTextIcon,
-} from "@heroicons/react/24/outline";
-import type { JSX } from "react/jsx-runtime";
+import { callChatApi } from "@ai-sdk/ui-utils";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -63,7 +59,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
 	const [isStreaming, setIsStreaming] = useState(false);
-	const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
 	const abortControllerRef = useRef<AbortController | null>(null);
 	const [contextItems, setContextItems] = useState<ContextEntity[]>([
 		{
@@ -72,15 +67,21 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	]);
 
-	const stopStreaming = async () => {
-		if (readerRef.current) {
-			await readerRef.current.cancel();
-			readerRef.current = null;
-			setIsStreaming(false);
-		}
-		if (abortControllerRef.current) {
+	const stopStreaming = () => {
+		if (abortControllerRef.current && !isNew && router.pathname !== "/") {
 			abortControllerRef.current.abort();
 			abortControllerRef.current = null;
+			setIsStreaming(false);
+			if (currentAssistantMessage) {
+				setMessages((prev) => {
+					return [...prev, currentAssistantMessage];
+				});
+				createMessage({
+					chatId,
+					message: currentAssistantMessage,
+				});
+				setCurrentAssistantMessage(null);
+			}
 		}
 	};
 
@@ -98,97 +99,94 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		mutate: onSentPromptMutation,
 		isPending: onSentPromptMutationIsPending,
 	} = useMutation({
-		mutationFn: (data: AgentChatRequestData) => {
-			// Create new AbortController for this request
-			abortControllerRef.current = new AbortController();
+		mutationFn: async (data: AgentChatRequestData) => {
+			const chatAbortController = new AbortController();
+			if (!session) {
+				throw new Error("User is not authenticated");
+			}
 
-			return fetch("/api/ai/chat", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
+			const newAgentMessage: Message = {
+				id: typeid().toUUID(),
+				chatId,
+				userId: session.user.id,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				content: "",
+				role: "AGENT",
+				quote: null,
+			};
+
+			await callChatApi({
+				api: "/api/ai/chat",
+				body: {
 					prompt: data.prompt,
 					context: data.context,
-				}),
-				signal: abortControllerRef.current.signal,
-			});
-		},
-		onSuccess: async (data) => {
-			try {
-				const stream = data.body;
-
-				if (!session) {
-					throw new Error("User is not authenticated");
-				}
-
-				if (stream) {
-					const reader = stream.getReader();
-					readerRef.current = reader;
+				},
+				abortController: () => {
+					abortControllerRef.current = chatAbortController;
+					return chatAbortController;
+				},
+				streamProtocol: "data",
+				credentials: undefined,
+				headers: undefined,
+				restoreMessagesOnFailure: () => {},
+				onResponse: async (res) => {
 					setIsStreaming(true);
+				},
+				onUpdate: (options) => {
+					setCurrentAssistantMessage({
+						...newAgentMessage,
+						content: options.message.content,
+					});
+				},
+				onFinish: (result) => {
+					setIsStreaming(false);
+					setCurrentAssistantMessage(null);
 
-					const textDecoder = new TextDecoder();
-					const newAgentMessage: Message = {
-						id: typeid().toUUID(),
-						chatId,
-						userId: session.user.id,
-						createdAt: new Date(),
-						updatedAt: new Date(),
-						content: "",
-						role: "AGENT",
-						quote: null,
-					};
+					setMessages((prev) => {
+						return [...prev, { ...newAgentMessage, content: result.content }];
+					});
 
-					while (true) {
-						const { done, value } = await reader.read();
-
-						if (value) {
-							newAgentMessage.content = newAgentMessage.content.concat(
-								textDecoder.decode(value),
-							);
-
-							setCurrentAssistantMessage({ ...newAgentMessage });
-						}
-
-						if (done) {
-							reader.releaseLock();
-							readerRef.current = null;
-							setIsStreaming(false);
-							setCurrentAssistantMessage(null);
-
-							setMessages((prev) => {
-								return [...prev, newAgentMessage];
-							});
-
-							if (!isNew && router.pathname !== "/") {
-								createMessage({
-									chatId,
-									message: newAgentMessage,
-								});
-							}
-
-							if (router.pathname === "/" && isNew && lastUserMessage) {
-								localStorage.setItem(
-									"buuddy.new-workspace-messages",
-									JSON.stringify([lastUserMessage, newAgentMessage]),
-								);
-
-								createWorkspace({
-									name: "...",
-									messages: [lastUserMessage, newAgentMessage],
-									chatId,
-								});
-							}
-
-							break;
-						}
+					if (!isNew && router.pathname !== "/") {
+						createMessage({
+							chatId,
+							message: { ...newAgentMessage, content: result.content },
+						});
 					}
-				}
-			} catch (error) {
-				console.error("Mutation failed:", error);
-				toast.error("An error occurred while sending your message.");
-				setIsStreaming(false);
-			}
+
+					if (router.pathname === "/" && isNew && lastUserMessage) {
+						localStorage.setItem(
+							"buuddy.new-workspace-messages",
+							JSON.stringify([
+								lastUserMessage,
+								{ ...newAgentMessage, content: result.content },
+							]),
+						);
+
+						createWorkspace({
+							name: "...",
+							messages: [
+								lastUserMessage,
+								{ ...newAgentMessage, content: result.content },
+							],
+							chatId,
+						});
+					}
+				},
+				onToolCall: (tool) => {
+					console.log(tool);
+				},
+				generateId: () => {
+					return (
+						Math.random().toString(36).substring(2, 15) +
+						Math.random().toString(36).substring(2, 15)
+					);
+				},
+				fetch: undefined,
+				lastMessage: undefined,
+			}).catch((e) => {
+				console.error(e);
+			});
 		},
 		onError: (error) => {
 			// Handle error
