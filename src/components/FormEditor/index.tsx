@@ -51,7 +51,7 @@ export const FormEditor = () => {
 							onClick={() => {
 								submit({
 									prompt:
-										"I want an basic form with all available types of field about machine learning concepts",
+										"I want a exam with all available types of field about machine learning concepts",
 									context: "cats",
 								});
 							}}

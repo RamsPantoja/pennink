@@ -3,6 +3,7 @@ import {
 	Bars3BottomLeftIcon,
 	ChatBubbleOvalLeftIcon,
 	DocumentTextIcon,
+	ListBulletIcon,
 	PencilSquareIcon,
 	PlusIcon,
 	StopIcon,
@@ -229,33 +230,31 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					/>
 					<div className="flex w-full gap-4 justify-between items-center">
 						<div className="flex items-center gap-4">
-							{/*<ToggleGroup
+							<ToggleGroup
 								type="multiple"
 								onValueChange={(value: ChatModes[]) => {
 									onToggleChatModes(value);
 								}}
 								value={chatModes}
 							>
-								{document && (
-									<Tooltip>
-										<TooltipTrigger asChild>
-											<span>
-												<ToggleGroupItem
-													value="ask-mode"
-													variant="outline"
-													aria-label="Toggle ask mode"
-													className="rounded-full"
-													type="button"
-												>
-													<DocumentTextIcon className="min-w-4 w-4 h-4 mr-2" />
-													Ask content
-												</ToggleGroupItem>
-											</span>
-										</TooltipTrigger>
-										<TooltipContent>Ask from content</TooltipContent>
-									</Tooltip>
-								)}
-							</ToggleGroup>*/}
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<span>
+											<ToggleGroupItem
+												value="form-generation-mode"
+												variant="outline"
+												aria-label="Toggle form generation mode"
+												className="rounded-full"
+												type="button"
+											>
+												<ListBulletIcon className="min-w-4 w-4 h-4 mr-2" />
+												Form
+											</ToggleGroupItem>
+										</span>
+									</TooltipTrigger>
+									<TooltipContent>Form generation tool</TooltipContent>
+								</Tooltip>
+							</ToggleGroup>
 						</div>
 						{(onSentPromptMutationIsPending ||
 							documentVectorSearchMutationIsPending ||

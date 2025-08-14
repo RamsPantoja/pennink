@@ -41,4 +41,5 @@ export const aiFormSchema = z.object({
 	title: z.string().describe("Title of the form"),
 	description: z.string().describe("Description or instructions of the form"),
 	questions: z.array(questionSchema).describe("Questions of the form"),
+	type: z.enum(["BASIC", "EXAM"]).describe("Type of form"),
 });
