@@ -32,6 +32,8 @@ export const FormEditor = () => {
 		toast.success("Form submitted successfully!");
 	};
 
+	console.log(object);
+
 	return (
 		<div className="flex h-full flex-col overflow-hidden p-0">
 			<div className="p-4 flex gap-2 justify-end">
@@ -48,7 +50,8 @@ export const FormEditor = () => {
 						<Button
 							onClick={() => {
 								submit({
-									prompt: "I want my form about cats of 10 questions",
+									prompt:
+										"I want an basic form with all available types of field about machine learning concepts",
 									context: "cats",
 								});
 							}}
@@ -64,6 +67,7 @@ export const FormEditor = () => {
 			{object && (
 				<DynamicForm
 					title={object.title}
+					description={object.description}
 					questions={object.questions || []}
 					control={control}
 					errors={errors}

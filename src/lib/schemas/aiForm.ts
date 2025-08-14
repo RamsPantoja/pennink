@@ -34,10 +34,11 @@ export const questionSchema = z.object({
 	max: z.number().optional().describe("Maximum value for the field"),
 	step: z.number().optional().describe("Step value for the field"),
 	description: z.string().optional().describe("Description of the field"),
+	answer: z.any().optional().describe("Correct answer for the field"),
 });
 
 export const aiFormSchema = z.object({
-	title: z.string(),
-	description: z.string(),
-	questions: z.array(questionSchema),
+	title: z.string().describe("Title of the form"),
+	description: z.string().describe("Description or instructions of the form"),
+	questions: z.array(questionSchema).describe("Questions of the form"),
 });

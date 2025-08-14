@@ -596,6 +596,7 @@ export const questionsToFormsRelations = relations(
 
 export const questions = createTable("question", {
 	id: customId,
+	key: text().notNull(),
 	type: formFieldTypeEnum().notNull(),
 	description: text(),
 	label: text().notNull(),

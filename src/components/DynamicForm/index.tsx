@@ -1,7 +1,7 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import {
 	Controller,
-	FieldErrors,
+	type FieldErrors,
 	type Control,
 	type FieldValues,
 } from "react-hook-form";
@@ -19,14 +19,6 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
 import { Slider } from "../ui/slider";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "../ui/card";
-import { Button } from "../common/Button";
 
 // Define the question types
 export interface QuestionOption {
@@ -78,7 +70,6 @@ export function DynamicForm({
 
 		switch (question.type) {
 			case "text":
-			case "email":
 			case "number":
 				return (
 					<Controller
@@ -100,6 +91,49 @@ export function DynamicForm({
 									placeholder={question.placeholder}
 									min={question.min}
 									max={question.max}
+									className="focus:ring-mochaSubText"
+								/>
+								{question.description && (
+									<p className="text-sm text-muted-foreground">
+										{question.description}
+									</p>
+								)}
+								{errors[fieldId] && (
+									<p className="text-sm text-red-500">
+										{errors[fieldId]?.message as string}
+									</p>
+								)}
+							</div>
+						)}
+					/>
+				);
+
+			case "email":
+				return (
+					<Controller
+						name={fieldId}
+						control={control}
+						rules={{
+							required: isRequired ? `${question.label} is required` : false,
+							validate: (value) => {
+								const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+								return emailRegex.test(value) || "Invalid email address";
+							},
+						}}
+						render={({ field }) => (
+							<div className="flex flex-col gap-2">
+								<Label htmlFor={fieldId}>
+									{question.label}
+									{isRequired && <span className="text-red-500 ml-1">*</span>}
+								</Label>
+								<Input
+									{...field}
+									id={fieldId}
+									type="email"
+									placeholder={question.placeholder}
+									min={question.min}
+									max={question.max}
+									className="focus:ring-mochaSubText"
 								/>
 								{question.description && (
 									<p className="text-sm text-muted-foreground">
@@ -130,7 +164,12 @@ export function DynamicForm({
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
-								<Input {...field} id={fieldId} type="date" />
+								<Input
+									{...field}
+									id={fieldId}
+									type="date"
+									className="focus:ring-mochaSubText w-fit"
+								/>
 								{question.description && (
 									<p className="text-sm text-muted-foreground">
 										{question.description}
@@ -165,6 +204,7 @@ export function DynamicForm({
 									id={fieldId}
 									placeholder={question.placeholder}
 									rows={4}
+									className="focus:ring-mochaSubText"
 								/>
 								{question.description && (
 									<p className="text-sm text-muted-foreground">
@@ -196,7 +236,7 @@ export function DynamicForm({
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
 								<Select onValueChange={field.onChange} value={field.value}>
-									<SelectTrigger>
+									<SelectTrigger className="focus:ring-mochaSubText">
 										<SelectValue
 											placeholder={`Select ${question.label.toLowerCase()}`}
 										/>
@@ -399,7 +439,7 @@ export function DynamicForm({
 
 	return (
 		<div className="flex flex-col gap-4 overflow-auto p-4">
-			<div className="flex flex-col gap-3">
+			<div className="flex flex-col gap-3 mb-4">
 				<p className="text-mochaText font-semibold text-xl">{title}</p>
 				{description && <p>{description}</p>}
 			</div>
