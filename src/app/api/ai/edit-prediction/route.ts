@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
 		const { prompt, context } = await req.json();
 
-		const model = bedrock("us.meta.llama4-maverick-17b-instruct-v1:0");
+		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `
 		The user is writing in a block of text. Give to the user a suggestion based on the user's input.
 

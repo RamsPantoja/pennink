@@ -124,7 +124,7 @@ const getCredentials = async () => {
 
 export const Editor = ({ onSave, data }: EditorProps) => {
 	const bedrock = createAmazonBedrock({
-		region: "us-east-1",
+		region: "us-west-2",
 		credentialProvider: getCredentials,
 	});
 	const model = bedrock("us.amazon.nova-pro-v1:0");

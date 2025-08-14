@@ -44,7 +44,10 @@ type EditorContext = {
 
 type ContextEntity = ThreadContext | DocumentContext | EditorContext;
 
-export type ChatModes = "ask-mode" | "web-search-mode" | "reasoning-mode";
+export type ChatModes =
+	| "form-generation-mode"
+	| "web-search-mode"
+	| "reasoning-mode";
 
 export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const router = useRouter();

@@ -32,8 +32,6 @@ export const FormEditor = () => {
 		toast.success("Form submitted successfully!");
 	};
 
-	console.log(object);
-
 	return (
 		<div className="flex h-full flex-col overflow-hidden p-0">
 			<div className="p-4 flex gap-2 justify-end">
