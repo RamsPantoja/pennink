@@ -249,12 +249,6 @@ const toolParameters = {
 	}),
 };
 
-export const messageRoleVercelSDK: Record<MessageRole, Role> = {
-	AGENT: "assistant",
-	USER: "user",
-	SYSTEM: "system",
-};
-
 // export const convertToolsArrayToObject = (tools: any) => {
 // 	if (tools) {
 // 		const objectTools = tools.reduce((acc, item) => {

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { cn, messageRoleVercelSDK } from "~/lib/utils";
+import { cn } from "~/lib/utils";
 import type { Message } from "~/server/api/services/chat";
 import {
 	EllipsisVerticalIcon,
@@ -126,7 +126,7 @@ export const WorkspaceCard = ({
 					context: {
 						messages: messages.map((message) => ({
 							content: message.content,
-							role: messageRoleVercelSDK[message.role],
+							role: message.role,
 						})),
 					},
 				}),

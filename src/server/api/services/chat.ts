@@ -112,7 +112,7 @@ export class Chat {
 			});
 		}
 
-		if (message.role === "AGENT") {
+		if (message.role === "assistant") {
 			await this.ctx.db
 				.update(statics)
 				.set({

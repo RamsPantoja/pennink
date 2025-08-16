@@ -1,4 +1,4 @@
-import { type CoreMessage, streamText, tool, ToolSet } from "ai";
+import { type CoreMessage, streamText, tool, type ToolSet } from "ai";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
 			tools,
 		});
 
-		return result.toDataStreamResponse();
+		return result.toDataStreamResponse({ sendReasoning: true });
 	} catch (error) {
 		console.log(error);
 		return Response.error();

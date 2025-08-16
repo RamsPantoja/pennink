@@ -7,7 +7,6 @@ import type { Message } from "~/server/api/services/chat";
 import { typeid } from "typeid-js";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { messageRoleVercelSDK } from "~/lib/utils";
 import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
@@ -115,8 +114,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				createdAt: new Date(),
 				updatedAt: new Date(),
 				content: "",
-				role: "AGENT",
+				role: "assistant",
 				quote: null,
+				parts: [],
+				metadata: null,
 			};
 
 			await callChatApi({
@@ -140,6 +141,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					setCurrentAssistantMessage({
 						...newAgentMessage,
 						content: options.message.content,
+						parts: options.message.parts || [],
 					});
 				},
 				onFinish: (result) => {
@@ -153,7 +155,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					if (!isNew && router.pathname !== "/") {
 						createMessage({
 							chatId,
-							message: { ...newAgentMessage, content: result.content },
+							message: {
+								...newAgentMessage,
+								content: result.content,
+								parts: result.parts || [],
+							},
 						});
 					}
 
@@ -162,7 +168,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 							"buuddy.new-workspace-messages",
 							JSON.stringify([
 								lastUserMessage,
-								{ ...newAgentMessage, content: result.content },
+								{
+									...newAgentMessage,
+									content: result.content,
+									parts: result.parts || [],
+								},
 							]),
 						);
 
@@ -170,7 +180,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 							name: "...",
 							messages: [
 								lastUserMessage,
-								{ ...newAgentMessage, content: result.content },
+								{
+									...newAgentMessage,
+									content: result.content,
+									parts: result.parts || [],
+								},
 							],
 							chatId,
 						});
@@ -236,7 +250,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 	const { mutate: createMessage } = api.chat.createMessage.useMutation({
 		onSuccess: async (data) => {
-			if (data.role === "AGENT") {
+			if (data.role === "assistant") {
 				await utils.user.statics.invalidate();
 			}
 		},
@@ -270,8 +284,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			content: data.prompt,
-			role: "USER",
+			role: "user",
 			quote,
+			parts: [],
+			metadata: null,
 		};
 		setLastUserMessage(message);
 		setMessages((prev) => {
@@ -339,7 +355,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			...messagesContext,
 			...messages.map((message) => ({
 				content: message.content,
-				role: messageRoleVercelSDK[message.role],
+				role: message.role,
 			})),
 		];
 
@@ -355,14 +371,14 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		const lastMessage = messages[messages.length - 1];
 
 		if (chatContainer.current) {
-			if (lastMessage?.role === "USER") {
+			if (lastMessage?.role === "user") {
 				chatContainer.current.scrollTo({
 					top: chatContainer.current.scrollHeight,
 					behavior: "smooth",
 				});
 			}
 
-			if (lastMessage?.role === "AGENT") {
+			if (lastMessage?.role === "assistant") {
 				chatContainer.current.scrollTo({
 					top: chatContainer.current.scrollTop + 80,
 					behavior: "smooth",
@@ -401,8 +417,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					createdAt: new Date(),
 					updatedAt: new Date(),
 					content: prompt,
-					role: "USER",
+					role: "user",
 					quote: null,
+					parts: [],
+					metadata: null,
 				};
 
 				createMessage({
@@ -432,8 +450,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					createdAt: new Date(),
 					updatedAt: new Date(),
 					content: prompt,
-					role: "USER",
+					role: "user",
 					quote: null,
+					metadata: null,
+					parts: [],
 				};
 
 				createMessage({

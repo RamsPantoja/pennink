@@ -1,3 +1,11 @@
+import {
+	FileUIPart,
+	ReasoningUIPart,
+	SourceUIPart,
+	StepStartUIPart,
+	TextUIPart,
+	ToolInvocationUIPart,
+} from "@ai-sdk/ui-utils";
 import type { Block } from "@blocknote/core";
 import { relations, sql } from "drizzle-orm";
 import {
@@ -15,6 +23,7 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { typeid } from "typeid-js";
+import type { UIMessage } from "ai";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -35,9 +44,9 @@ export const subscriptionEnum = pgEnum("subscription_type", [
 ]);
 
 export const messageRoleEnum = pgEnum("message_type", [
-	"SYSTEM",
-	"USER",
-	"AGENT",
+	"system",
+	"user",
+	"assistant",
 ]);
 
 export const formFieldTypeEnum = pgEnum("form_field_type", [
@@ -326,8 +335,10 @@ export const messages = createTable("message", {
 		.notNull()
 		.references(() => chats.id),
 	content: text().notNull(),
+	metadata: json(),
+	parts: json().$type<UIMessage["parts"]>().notNull().default([]),
 	quote: text(),
-	role: messageRoleEnum().notNull().default("SYSTEM"),
+	role: messageRoleEnum().notNull(),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),

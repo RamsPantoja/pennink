@@ -10,6 +10,8 @@ export const messageSchema = z.object({
 	createdAt: z.date(),
 	updatedAt: z.date(),
 	quote: z.string().nullable(),
+	metadata: z.any().nullable(),
+	parts: z.array(z.any()),
 });
 
 export const getMessagesByChatIdInputSchema = z.object({
