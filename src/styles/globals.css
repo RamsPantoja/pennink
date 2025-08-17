@@ -255,7 +255,6 @@
 			border-collapse: collapse;
 			width: 100%;
 			margin-bottom: 1rem;
-			border: 2px solid #0f0f0f;
 			border-radius: 12px;
 			overflow: hidden;
 			font-size: 12px;
@@ -263,11 +262,11 @@
 		table th {
 			background-color: #353535;
 			padding: 0.5rem;
-			border: 1px solid #161616;
+			/*border: 1px solid #161616;*/
 		}
 		table td {
 			padding: 0.5rem;
-			border: 1px solid #353535;
+			/*border: 1px solid #353535;*/
 		}
 		table caption {
 			font-size: 1rem;

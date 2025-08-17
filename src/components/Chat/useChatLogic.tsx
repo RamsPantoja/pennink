@@ -146,11 +146,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				},
 				onFinish: (result) => {
 					setIsStreaming(false);
-					setCurrentAssistantMessage(null);
-
-					setMessages((prev) => {
-						return [...prev, { ...newAgentMessage, content: result.content }];
-					});
 
 					if (!isNew && router.pathname !== "/") {
 						createMessage({
@@ -289,10 +284,20 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			parts: [],
 			metadata: null,
 		};
+
 		setLastUserMessage(message);
-		setMessages((prev) => {
-			return [...prev, message];
-		});
+
+		if (currentAssistantMessage) {
+			setMessages((prev) => {
+				return [...prev, currentAssistantMessage, message];
+			});
+
+			setCurrentAssistantMessage(null);
+		} else {
+			setMessages((prev) => {
+				return [...prev, message];
+			});
+		}
 
 		try {
 			await triggerChatMessagesRuleMutate();
@@ -358,6 +363,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				role: message.role,
 			})),
 		];
+
+		if (currentAssistantMessage) {
+			fullContextMessages.push({
+				content: currentAssistantMessage.content,
+				role: currentAssistantMessage.role,
+			});
+		}
 
 		onSentPromptMutation({
 			prompt: data.prompt,

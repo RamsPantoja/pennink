@@ -134,11 +134,11 @@ export const ReasoningTrigger = memo(
 				{children ?? (
 					<>
 						<BrainIcon className="size-4" />
-						{isStreaming && duration === 0 && <p>Thinking...</p>}
+						{isStreaming && <p>Thinking...</p>}
 						{!isStreaming && duration !== 0 && (
 							<p>Thought for {duration} seconds</p>
 						)}
-						{(!isStreaming || duration === 0) && (
+						{!isStreaming && duration === 0 && (
 							<p>Thought for a couple of seconds</p>
 						)}
 						<ChevronDownIcon
