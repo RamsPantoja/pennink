@@ -3,6 +3,7 @@ import { bedrock } from "@ai-sdk/amazon-bedrock";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { aiFormSchema } from "~/lib/schemas/aiForm";
+import { recipeSchema } from "~/lib/schemas/recipe";
 
 export type Context = {
 	messages: CoreMessage[];
@@ -34,9 +35,16 @@ export async function POST(req: Request) {
 					};
 				},
 			}),
+			createRecipe: tool({
+				description: "Tool for creating recipes",
+				parameters: recipeSchema,
+				execute: async ({ recipe }) => {
+					return recipe;
+				},
+			}),
 		};
 
-		const model = bedrock("openai.gpt-oss-20b-1:0"); //openai.gpt-oss-20b-1:0, openai.gpt-oss-120b-1:0
+		const model = bedrock("openai.gpt-oss-120b-1:0"); //openai.gpt-oss-20b-1:0, openai.gpt-oss-120b-1:0
 		const systemTemplate = `
 		You are a friendly and professional agent designed to engage users in natural, open-ended conversations. Your responses should be warm, engaging, and thoughtful, ensuring the conversation flows smoothly. Ask follow-up questions to keep the discussion dynamic, show genuine curiosity about the user's thoughts, and adapt your tone to match the user's communication style. Avoid sounding robotic or overly formal—aim for a conversational and approachable style while maintaining professionalism.
 		Your goal is to make the user feel heard, understood, and comfortable sharing their thoughts.
@@ -77,9 +85,14 @@ export async function POST(req: Request) {
 			temperature: 0.5,
 			maxSteps: 5,
 			tools,
+			toolCallStreaming: true,
 		});
 
-		return result.toDataStreamResponse({ sendReasoning: true });
+		return result.toDataStreamResponse({
+			sendReasoning: true,
+			sendSources: true,
+			sendUsage: true,
+		});
 	} catch (error) {
 		console.log(error);
 		return Response.error();

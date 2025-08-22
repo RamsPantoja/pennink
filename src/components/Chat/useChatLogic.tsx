@@ -147,6 +147,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				onFinish: (result) => {
 					setIsStreaming(false);
 
+					console.log(result);
+
 					if (!isNew && router.pathname !== "/") {
 						createMessage({
 							chatId,

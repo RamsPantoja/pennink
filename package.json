@@ -72,6 +72,7 @@
 		"@trpc/react-query": "next",
 		"@trpc/server": "next",
 		"ai": "^4.1.46",
+		"ai-v5": "npm:ai@5.0.21",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.0",
 		"date-fns": "^3.6.0",
