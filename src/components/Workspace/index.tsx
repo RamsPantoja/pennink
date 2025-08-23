@@ -13,6 +13,9 @@ import { Loading } from "../common/Loading";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
+	ArrowLeftIcon,
+	ArrowRightCircleIcon,
+	ArrowRightIcon,
 	ChatBubbleOvalLeftIcon,
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";
@@ -20,12 +23,14 @@ import type { Session } from "next-auth";
 import { useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 import { Editor } from "../Editor";
 import type { Block } from "@blocknote/core";
-import { DynamicForm, type Question } from "../DynamicForm";
+import { DynamicForm } from "../DynamicForm";
 import { FormEditor } from "../FormEditor";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { ImperativePanelHandle } from "react-resizable-panels";
 
 const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
@@ -41,9 +46,15 @@ type TabValue = "notes" | "chat";
 export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { workspaceId } = router.query;
+	const chatPanelRef = useRef<ImperativePanelHandle>(null);
 	const utils = api.useUtils();
-	const { document, setReaderEvent, setWorkspaceTitle, displayFormEditor } =
-		useWorkspaceStore();
+	const {
+		document,
+		setReaderEvent,
+		setWorkspaceTitle,
+		displayFormEditor,
+		formData,
+	} = useWorkspaceStore();
 	const [selectionContent, setSelectionContent] = useState<{
 		text: string;
 		range: Range | null;
@@ -51,7 +62,8 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		text: "",
 		range: null,
 	});
-	const [tab, setTab] = useState<TabValue>("notes");
+	const [tab, setTab] = useState<TabValue>("chat");
+	const [chatPanelCollapsed, setChatPanelCollapsed] = useState(false);
 
 	const {
 		data: workspaceData,
@@ -125,8 +137,25 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					direction="horizontal"
 					className="min-h-[200px] w-full md:min-w-[450px] flex h-full"
 				>
-					<ResizablePanel defaultSize={50}>
-						{displayFormEditor && !document && <FormEditor />}
+					<ResizablePanel defaultSize={50} className="relative">
+						{chatPanelCollapsed && (
+							<div className="flex items-center absolute right-2 bottom-0 top-0 my-auto w-fit h-fit">
+								<Button
+									variant="ghost"
+									className="rounded-full border border-mochaMauve z-10"
+									size="icon"
+									onClick={() => {
+										const chatPanel = chatPanelRef.current;
+										if (chatPanel) {
+											chatPanel.expand();
+										}
+									}}
+								>
+									<ArrowLeftIcon className="text-mochaText min-w-4 h-4" />
+								</Button>
+							</div>
+						)}
+						{displayFormEditor && formData && !document && <FormEditor />}
 						{document && !displayFormEditor && (
 							<div className="flex w-full h-full flex-col">
 								<SelectionToolbar
@@ -168,57 +197,41 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						)}
 					</ResizablePanel>
 					<ResizableHandle withHandle />
-					<ResizablePanel defaultSize={50}>
-						{(document || displayFormEditor) && (
-							<Card className="w-full h-full flex p-0 rounded-none">
-								<Tabs
-									value={tab}
-									onValueChange={(value) => {
-										setTab(value as TabValue);
-									}}
-									className="w-full flex flex-col h-full"
-								>
-									<TabsList className="grid w-full grid-cols-2 rounded-none">
-										<TabsTrigger value="notes">
-											<DocumentTextIcon className="min-w-5 h-5 mr-2" />
-											Notes
-										</TabsTrigger>
-										<TabsTrigger value="chat">
-											<ChatBubbleOvalLeftIcon className="min-w-5 h-5 mr-2" />
-											Chat
-										</TabsTrigger>
-									</TabsList>
-									<TabsContent
-										value="notes"
-										className="w-full h-full overflow-hidden"
-									>
-										<Editor
-											data={workspaceData.note.content}
-											onSave={getNoteContent}
-										/>
-									</TabsContent>
-									<TabsContent
-										value="chat"
-										className={cn([
-											"w-full h-full overflow-hidden hidden",
-											{
-												block: tab === "chat",
-											},
-										])}
-										forceMount={true}
-									>
-										<div className="w-full h-full flex">
-											<Chat id={workspaceData.chatId} isNew={false} />
-										</div>
-									</TabsContent>
-								</Tabs>
-							</Card>
-						)}
-						{!document && !displayFormEditor && (
-							<div className="w-full h-full flex bg-mochaCrust overflow-auto">
-								<Chat id={workspaceData.chatId} isNew={false} />
+					<ResizablePanel
+						defaultSize={25}
+						collapsible={true}
+						collapsedSize={0}
+						minSize={35}
+						ref={chatPanelRef}
+						onCollapse={() => {
+							setChatPanelCollapsed(true);
+						}}
+						onExpand={() => {
+							setChatPanelCollapsed(false);
+						}}
+					>
+						<div className="w-full h-full flex bg-mochaCrust overflow-auto flex-col">
+							<div className="w-full flex p-2">
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											variant="ghost"
+											size="icon"
+											onClick={() => {
+												const chatPanel = chatPanelRef.current;
+												if (chatPanel) {
+													chatPanel.collapse();
+												}
+											}}
+										>
+											<ArrowRightIcon className="text-mochaText min-w-5 h-5" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Collapse chat</TooltipContent>
+								</Tooltip>
 							</div>
-						)}
+							<Chat id={workspaceData.chatId} isNew={false} />
+						</div>
 					</ResizablePanel>
 				</ResizablePanelGroup>
 			)}

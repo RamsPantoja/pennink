@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { BlockNoteEditor } from "@blocknote/core";
+import type { AiForm } from "~/lib/schemas/aiForm";
 
 export type PenninkDocument = {
 	id: string;
@@ -29,11 +30,14 @@ type WorkspaceStore = {
 	setEditor: (editor: BlockNoteEditor | null) => void;
 	displayFormEditor: boolean;
 	setDisplayFormEditor: (displayFormEditor: boolean) => void;
+	formData: AiForm | null;
+	setFormData: (formData: AiForm | null) => void;
 };
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	workspaceTitle: "",
 	document: null,
+	formData: null,
 	setDocument: (document) => set(() => ({ document })),
 	readerEvent: null,
 	setReaderEvent: (event) => set(() => ({ readerEvent: event })),
@@ -43,4 +47,5 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	displayFormEditor: false,
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() => ({ displayFormEditor })),
+	setFormData: (formData) => set(() => ({ formData })),
 }));

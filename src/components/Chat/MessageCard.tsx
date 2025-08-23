@@ -64,7 +64,7 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
 											isStreaming={isStreaming}
 										>
 											<ReasoningTrigger />
-											<ReasoningContent content={part.reasoning} />
+											<ReasoningContent content={part.text} />
 										</Reasoning>
 									);
 							}

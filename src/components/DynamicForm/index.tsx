@@ -19,52 +19,17 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
 import { Slider } from "../ui/slider";
-
-// Define the question types
-export interface QuestionOption {
-	value: string;
-	label: string;
-}
-
-export interface Question {
-	id: string;
-	type:
-		| "text"
-		| "textarea"
-		| "checkbox"
-		| "radio"
-		| "select"
-		| "switch"
-		| "slider"
-		| "email"
-		| "number"
-		| "date";
-	label: string;
-	placeholder?: string;
-	required?: boolean;
-	options?: QuestionOption[];
-	min?: number;
-	max?: number;
-	step?: number;
-	description?: string;
-}
+import type { AiForm } from "~/lib/schemas/aiForm";
 
 interface DynamicFormProps {
-	questions: Question[];
-	title: string;
-	description?: string;
+	data: AiForm;
 	control: Control<FieldValues, any, FieldValues>;
 	errors: FieldErrors<FieldValues>;
 }
 
-export function DynamicForm({
-	questions,
-	title,
-	description,
-	control,
-	errors,
-}: DynamicFormProps) {
-	const renderField = (question: Question) => {
+export function DynamicForm({ data, control, errors }: DynamicFormProps) {
+	const { questions, title, description, type } = data;
+	const renderField = (question: AiForm["questions"][number]) => {
 		const fieldId = question.id;
 		const isRequired = question.required;
 
@@ -237,9 +202,7 @@ export function DynamicForm({
 								</Label>
 								<Select onValueChange={field.onChange} value={field.value}>
 									<SelectTrigger className="focus:ring-mochaSubText">
-										<SelectValue
-											placeholder={`Select ${question.label.toLowerCase()}`}
-										/>
+										<SelectValue placeholder={"Select option"} />
 									</SelectTrigger>
 									<SelectContent>
 										{question.options?.map((option) => (

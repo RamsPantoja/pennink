@@ -11,8 +11,9 @@ import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
 import type { AgentChatRequestData } from "~/app/api/ai/chat/route";
-import type { CoreMessage } from "ai";
-import { callChatApi } from "@ai-sdk/ui-utils";
+import { DefaultChatTransport, type ModelMessage } from "ai-v5";
+import { useChat } from "@ai-sdk/react";
+import { AiForm } from "~/lib/schemas/aiForm";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -56,12 +57,17 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		useState<Message | null>(null);
 	const [messages, setMessages] = useState<Message[]>([]);
 	const chatContainer = useRef<HTMLDivElement | null>(null);
-	const { readerEvent, setReaderEvent, document, editor } = useWorkspaceStore();
+	const {
+		readerEvent,
+		setReaderEvent,
+		document,
+		editor,
+		setDisplayFormEditor,
+		setFormData,
+	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
 	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
-	const [isStreaming, setIsStreaming] = useState(false);
-	const abortControllerRef = useRef<AbortController | null>(null);
 	const [contextItems, setContextItems] = useState<ContextEntity[]>([
 		{
 			label: "Editor",
@@ -69,15 +75,94 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	]);
 
-	const stopStreaming = () => {
-		if (abortControllerRef.current && !isNew && router.pathname !== "/") {
-			abortControllerRef.current.abort();
-			abortControllerRef.current = null;
-			setIsStreaming(false);
-			if (currentAssistantMessage) {
-				setMessages((prev) => {
-					return [...prev, currentAssistantMessage];
+	const {
+		messages: tempMessages,
+		sendMessage,
+		setMessages: cleanUseChatMessages,
+		status,
+		stop,
+	} = useChat({
+		transport: new DefaultChatTransport({
+			api: "/api/ai/chat",
+		}),
+		onToolCall: (data) => {
+			if (data.toolCall.toolName === "generateForm") {
+				setDisplayFormEditor(true);
+				setFormData(data.toolCall.input as AiForm);
+			}
+		},
+		onFinish: (data) => {
+			if (!session) {
+				toast("Please sign in to save your message");
+				return;
+			}
+
+			const newMessage: Message = {
+				id: typeid().toUUID(),
+				chatId,
+				userId: session.user.id,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				content: "",
+				role: "assistant",
+				quote,
+				parts: [],
+				metadata: null,
+			};
+
+			const textParts = data.message.parts.filter(
+				(part) => part.type === "text",
+			);
+
+			if (!isNew && router.pathname !== "/") {
+				createMessage({
+					chatId,
+					message: {
+						...newMessage,
+						content: textParts.map((part) => part.text).join(""),
+						parts: data.message.parts,
+					},
 				});
+			}
+
+			if (router.pathname === "/" && isNew && lastUserMessage) {
+				localStorage.setItem(
+					"buuddy.new-workspace-messages",
+					JSON.stringify([
+						lastUserMessage,
+						{
+							...newMessage,
+							content: textParts.map((part) => part.text).join(""),
+							parts: data.message.parts,
+						},
+					]),
+				);
+
+				createWorkspace({
+					name: "...",
+					messages: [
+						lastUserMessage,
+						{
+							...newMessage,
+							content: textParts.map((part) => part.text).join(""),
+							parts: data.message.parts,
+						},
+					],
+					chatId,
+				});
+			}
+			cleanUseChatMessages([]);
+		},
+		onError: (error) => {
+			console.error("An error occurred:", error);
+		},
+	});
+
+	const stopStreaming = async () => {
+		if (!isNew && router.pathname !== "/" && status === "streaming") {
+			await stop();
+
+			if (currentAssistantMessage) {
 				createMessage({
 					chatId,
 					message: currentAssistantMessage,
@@ -98,118 +183,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	});
 
 	const {
-		mutate: onSentPromptMutation,
-		isPending: onSentPromptMutationIsPending,
-	} = useMutation({
-		mutationFn: async (data: AgentChatRequestData) => {
-			const chatAbortController = new AbortController();
-			if (!session) {
-				throw new Error("User is not authenticated");
-			}
-
-			const newAgentMessage: Message = {
-				id: typeid().toUUID(),
-				chatId,
-				userId: session.user.id,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-				content: "",
-				role: "assistant",
-				quote: null,
-				parts: [],
-				metadata: null,
-			};
-
-			await callChatApi({
-				api: "/api/ai/chat",
-				body: {
-					prompt: data.prompt,
-					context: data.context,
-				},
-				abortController: () => {
-					abortControllerRef.current = chatAbortController;
-					return chatAbortController;
-				},
-				streamProtocol: "data",
-				credentials: undefined,
-				headers: undefined,
-				restoreMessagesOnFailure: () => {},
-				onResponse: async (res) => {
-					setIsStreaming(true);
-				},
-				onUpdate: (options) => {
-					setCurrentAssistantMessage({
-						...newAgentMessage,
-						content: options.message.content,
-						parts: options.message.parts || [],
-					});
-				},
-				onFinish: (result) => {
-					setIsStreaming(false);
-
-					console.log(result);
-
-					if (!isNew && router.pathname !== "/") {
-						createMessage({
-							chatId,
-							message: {
-								...newAgentMessage,
-								content: result.content,
-								parts: result.parts || [],
-							},
-						});
-					}
-
-					if (router.pathname === "/" && isNew && lastUserMessage) {
-						localStorage.setItem(
-							"buuddy.new-workspace-messages",
-							JSON.stringify([
-								lastUserMessage,
-								{
-									...newAgentMessage,
-									content: result.content,
-									parts: result.parts || [],
-								},
-							]),
-						);
-
-						createWorkspace({
-							name: "...",
-							messages: [
-								lastUserMessage,
-								{
-									...newAgentMessage,
-									content: result.content,
-									parts: result.parts || [],
-								},
-							],
-							chatId,
-						});
-					}
-				},
-				onToolCall: (tool) => {
-					console.log(tool);
-				},
-				generateId: () => {
-					return (
-						Math.random().toString(36).substring(2, 15) +
-						Math.random().toString(36).substring(2, 15)
-					);
-				},
-				fetch: undefined,
-				lastMessage: undefined,
-			}).catch((e) => {
-				console.error(e);
-			});
-		},
-		onError: (error) => {
-			// Handle error
-			console.error("Mutation failed:", error);
-			toast.error("An error occurred while sending your message.");
-		},
-	});
-
-	const {
 		data: messagesData,
 		isLoading: messagesIsLoading,
 		isError: messagesIsError,
@@ -221,6 +194,42 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			enabled: !isNew,
 		},
 	);
+
+	useEffect(() => {
+		if (tempMessages.length > 0) {
+			const tempMessage = tempMessages[0];
+
+			if (!session) {
+				toast("Please sign in to send messages.");
+				return;
+			}
+
+			if (tempMessage?.role === "assistant") {
+				setCurrentAssistantMessage((prev) => {
+					if (prev) {
+						return {
+							...prev,
+							parts: tempMessage.parts,
+							metadata: tempMessage.metadata,
+						};
+					}
+
+					return {
+						id: typeid().toUUID(),
+						chatId,
+						userId: session.user.id,
+						createdAt: new Date(),
+						updatedAt: new Date(),
+						content: "",
+						role: "assistant",
+						quote: null,
+						parts: [],
+						metadata: null,
+					};
+				});
+			}
+		}
+	}, [tempMessages, session]);
 
 	useEffect(() => {
 		if (messagesData) {
@@ -266,7 +275,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	});
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
-		const messagesContext: CoreMessage[] = []; //Array of CoreMessage context
+		const messagesContext: ModelMessage[] = []; //Array of ModelMessage context
 		useChatForm.setValue("prompt", "");
 
 		if (!session) {
@@ -373,10 +382,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			});
 		}
 
-		onSentPromptMutation({
-			prompt: data.prompt,
-			context: {
-				messages: fullContextMessages,
+		await sendMessage(undefined, {
+			body: {
+				context: {
+					messages: fullContextMessages,
+				},
+				chatModes,
+				prompt: data.prompt,
 			},
 		});
 	};
@@ -421,7 +433,21 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				return;
 			}
 
-			const readerOnSummarize = () => {
+			const fullContextMessages = [
+				...messages.map((message) => ({
+					content: message.content,
+					role: message.role,
+				})),
+			];
+
+			if (currentAssistantMessage) {
+				fullContextMessages.push({
+					content: currentAssistantMessage.content,
+					role: currentAssistantMessage.role,
+				});
+			}
+
+			const readerOnSummarize = async () => {
 				const prompt = `Summarize: ${readerEvent.data}`;
 
 				const message: Message = {
@@ -446,15 +472,18 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					return [...prev, message];
 				});
 
-				onSentPromptMutation({
-					prompt: prompt,
-					context: {
-						messages: [],
+				await sendMessage(undefined, {
+					body: {
+						context: {
+							messages: fullContextMessages,
+						},
+						chatModes,
+						prompt,
 					},
 				});
 			};
 
-			const readerOnExplain = () => {
+			const readerOnExplain = async () => {
 				const prompt = `Explain: ${readerEvent.data}`;
 
 				const message: Message = {
@@ -479,10 +508,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					return [...prev, message];
 				});
 
-				onSentPromptMutation({
-					prompt: prompt,
-					context: {
-						messages: [],
+				await sendMessage(undefined, {
+					body: {
+						context: {
+							messages: fullContextMessages,
+						},
+						chatModes,
+						prompt,
 					},
 				});
 			};
@@ -530,18 +562,17 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		messagesIsLoading,
 		messagesIsError,
 		chatContainer,
-		onSentPromptMutationIsPending,
 		quote,
 		onRemoveQuote,
 		onToggleChatModes,
 		chatModes,
 		documentVectorSearchMutationIsPending,
 		document,
-		isStreaming,
 		stopStreaming,
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,
 		contextItems,
 		setContextItems,
+		status,
 	};
 };

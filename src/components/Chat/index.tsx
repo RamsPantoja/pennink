@@ -45,22 +45,23 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		messagesIsLoading,
 		messagesIsError,
 		chatContainer,
-		onSentPromptMutationIsPending,
 		quote,
 		onRemoveQuote,
 		onToggleChatModes,
 		chatModes,
 		document,
 		documentVectorSearchMutationIsPending,
-		isStreaming,
 		stopStreaming,
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,
 		contextItems,
 		setContextItems,
+		status,
 	} = useChatLogic({ chatId: id, isNew });
 
 	const { handleSubmit, watch, control } = useChatForm;
+
+	console.log(currentAssistantMessage);
 
 	return (
 		<Card
@@ -96,7 +97,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						))}
 					{currentAssistantMessage && (
 						<MessageCard
-							isStreaming={isStreaming}
+							isStreaming={status === "streaming"}
 							message={currentAssistantMessage}
 						/>
 					)}
@@ -259,9 +260,9 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								</Tooltip>
 							</ToggleGroup>
 						</div>
-						{(onSentPromptMutationIsPending ||
+						{(status === "submitted" ||
 							documentVectorSearchMutationIsPending ||
-							isStreaming ||
+							status === "streaming" ||
 							triggerChatMessagesRuleIsPending) && (
 							<Button
 								variant="teal"
@@ -273,9 +274,9 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							</Button>
 						)}
 						{!(
-							onSentPromptMutationIsPending ||
+							status === "submitted" ||
 							documentVectorSearchMutationIsPending ||
-							isStreaming ||
+							status === "streaming" ||
 							triggerChatMessagesRuleIsPending
 						) && (
 							<Button
@@ -283,9 +284,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								size="icon"
 								variant="teal"
 								disabled={
-									onSentPromptMutationIsPending ||
 									createWorkspaceIsPending ||
-									isStreaming ||
 									triggerChatMessagesRuleIsPending ||
 									!watch("prompt").trim()
 								}

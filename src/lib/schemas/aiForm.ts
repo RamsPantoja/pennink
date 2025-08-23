@@ -43,3 +43,5 @@ export const aiFormSchema = z.object({
 	questions: z.array(questionSchema).describe("Questions of the form"),
 	type: z.enum(["BASIC", "EXAM"]).describe("Type of form"),
 });
+
+export type AiForm = z.infer<typeof aiFormSchema>;

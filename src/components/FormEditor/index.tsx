@@ -7,14 +7,11 @@ import {
 	ShareIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "../common/Button";
-import { DynamicForm, type Question } from "../DynamicForm";
-import { Card } from "../ui/card";
+import { DynamicForm } from "../DynamicForm";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { experimental_useObject as useObject } from "@ai-sdk/react";
-import z from "zod";
-import { aiFormSchema } from "~/lib/schemas/aiForm";
+import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 
 export const FormEditor = () => {
 	const {
@@ -23,10 +20,7 @@ export const FormEditor = () => {
 		formState: { errors },
 	} = useForm();
 
-	const { object, submit, isLoading, stop } = useObject({
-		api: "/api/ai/form",
-		schema: aiFormSchema,
-	});
+	const { formData } = useWorkspaceStore();
 
 	const onTestForm = () => {
 		toast.success("Form submitted successfully!");
@@ -43,35 +37,10 @@ export const FormEditor = () => {
 					</TooltipTrigger>
 					<TooltipContent>Edit form</TooltipContent>
 				</Tooltip>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button
-							onClick={() => {
-								submit({
-									prompt:
-										"I want a exam with all available types of field about machine learning concepts",
-									context: "cats",
-								});
-							}}
-							size="icon"
-							variant="outline"
-						>
-							<ArrowPathRoundedSquareIcon className="min-w-5 h-5" />
-						</Button>
-					</TooltipTrigger>
-					<TooltipContent>Regenerate form</TooltipContent>
-				</Tooltip>
 			</div>
-			{object && (
-				<DynamicForm
-					title={object.title}
-					description={object.description}
-					questions={object.questions || []}
-					control={control}
-					errors={errors}
-				/>
+			{formData && (
+				<DynamicForm data={formData} control={control} errors={errors} />
 			)}
-
 			<div className="flex gap-4 p-3 justify-end">
 				<Button
 					variant="outline"
