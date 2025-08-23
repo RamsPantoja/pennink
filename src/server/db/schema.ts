@@ -616,6 +616,7 @@ export const questions = createTable("question", {
 	min: integer(),
 	max: integer(),
 	step: integer(),
+	answer: jsonb(),
 });
 
 export const questionRelations = relations(questions, ({ many }) => ({

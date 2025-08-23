@@ -23,7 +23,7 @@ import type { Session } from "next-auth";
 import { useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 import { Editor } from "../Editor";
 import type { Block } from "@blocknote/core";
@@ -137,26 +137,16 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					direction="horizontal"
 					className="min-h-[200px] w-full md:min-w-[450px] flex h-full"
 				>
-					<ResizablePanel defaultSize={50} className="relative">
-						{chatPanelCollapsed && (
-							<div className="flex items-center absolute right-2 bottom-0 top-0 my-auto w-fit h-fit">
-								<Button
-									variant="ghost"
-									className="rounded-full border border-mochaMauve z-10"
-									size="icon"
-									onClick={() => {
-										const chatPanel = chatPanelRef.current;
-										if (chatPanel) {
-											chatPanel.expand();
-										}
-									}}
-								>
-									<ArrowLeftIcon className="text-mochaText min-w-4 h-4" />
-								</Button>
-							</div>
-						)}
-						{displayFormEditor && formData && !document && <FormEditor />}
-						{document && !displayFormEditor && (
+					<ResizablePanel
+						className={cn([
+							"hidden",
+							{
+								flex: displayFormEditor || document,
+							},
+						])}
+					>
+						{formData && !document && <FormEditor />}
+						{document && !formData && (
 							<div className="flex w-full h-full flex-col">
 								<SelectionToolbar
 									selection={selectionContent}
@@ -189,19 +179,47 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								</SelectionToolbar>
 							</div>
 						)}
-						{!document && !displayFormEditor && (
-							<Editor
-								data={workspaceData.note.content}
-								onSave={getNoteContent}
-							/>
+					</ResizablePanel>
+					<ResizableHandle
+						className={cn([
+							"hidden",
+							{
+								flex: displayFormEditor || document,
+							},
+						])}
+						withHandle
+					/>
+					<ResizablePanel className="relative">
+						{chatPanelCollapsed && (
+							<div className="flex items-center absolute right-2 bottom-0 top-0 my-auto w-fit h-fit">
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											variant="ghost"
+											className="rounded-full border border-mochaMauve z-10"
+											size="icon"
+											onClick={() => {
+												const chatPanel = chatPanelRef.current;
+												if (chatPanel) {
+													chatPanel.expand();
+												}
+											}}
+										>
+											<ArrowLeftIcon className="text-mochaText min-w-4 h-4" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Expand chat</TooltipContent>
+								</Tooltip>
+							</div>
 						)}
+						<Editor data={workspaceData.note.content} onSave={getNoteContent} />
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel
-						defaultSize={25}
+						defaultSize={30}
 						collapsible={true}
 						collapsedSize={0}
-						minSize={35}
+						minSize={30}
 						ref={chatPanelRef}
 						onCollapse={() => {
 							setChatPanelCollapsed(true);
@@ -210,7 +228,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							setChatPanelCollapsed(false);
 						}}
 					>
-						<div className="w-full h-full flex bg-mochaCrust overflow-auto flex-col">
+						<div className="w-full h-full flex bg-mochaCrust flex-col">
 							<div className="w-full flex p-2">
 								<Tooltip>
 									<TooltipTrigger asChild>
@@ -230,7 +248,9 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									<TooltipContent>Collapse chat</TooltipContent>
 								</Tooltip>
 							</div>
-							<Chat id={workspaceData.chatId} isNew={false} />
+							<div className="flex flex-1 overflow-auto">
+								<Chat id={workspaceData.chatId} isNew={false} />
+							</div>
 						</div>
 					</ResizablePanel>
 				</ResizablePanelGroup>

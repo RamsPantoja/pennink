@@ -61,8 +61,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 
 	const { handleSubmit, watch, control } = useChatForm;
 
-	console.log(currentAssistantMessage);
-
 	return (
 		<Card
 			className={cn([

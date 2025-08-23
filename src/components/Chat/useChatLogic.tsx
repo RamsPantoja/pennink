@@ -192,6 +192,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 		{
 			enabled: !isNew,
+			refetchOnWindowFocus: false,
 		},
 	);
 

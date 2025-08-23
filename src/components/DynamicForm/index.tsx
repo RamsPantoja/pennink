@@ -401,7 +401,7 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 	};
 
 	return (
-		<div className="flex flex-col gap-4 overflow-auto p-4">
+		<div className="flex flex-col gap-4 overflow-auto p-4 h-full">
 			<div className="flex flex-col gap-3 mb-4">
 				<p className="text-mochaText font-semibold text-xl">{title}</p>
 				{description && <p>{description}</p>}

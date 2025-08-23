@@ -58,6 +58,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 	const [currentMatch, setCurrentMatch] = useState(-1);
 	const contentRef = useRef<HTMLDivElement>(null);
 	const originalContent = useRef<string>("");
+	const [defaultPageMinHeight, setDefaultMinPageHeight] = useState<number>(0);
 
 	const onResize = useCallback<ResizeObserverCallback>((entries) => {
 		const [entry] = entries;
@@ -115,11 +116,18 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 		}
 	};
 
-	const onDocumentLoadSuccess = ({ numPages }: PDFDocumentProxy) => {
-		const pageNumberList = Array.from({ length: numPages }, (_, i) => i);
+	const onDocumentLoadSuccess = async (document: PDFDocumentProxy) => {
+		const pageData = await document.getPage(1);
+
+		setDefaultMinPageHeight(pageData.view[3] ?? 792);
+
+		const pageNumberList = Array.from(
+			{ length: document.numPages },
+			(_, i) => i,
+		);
 
 		setPageNumbers(pageNumberList);
-		setNumPages(numPages);
+		setNumPages(document.numPages);
 	};
 
 	const performSearch = () => {
@@ -399,7 +407,12 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 									id={`page_${index + 1}`}
 									className="flex justify-center min-w-fit p-2"
 								>
-									<Card className="border flex flex-col">
+									<Card
+										className="border flex flex-col"
+										style={{
+											minHeight: `${defaultPageMinHeight}px`,
+										}}
+									>
 										<span className="text-xs font-bold">Page {index + 1}</span>
 										<Page
 											pageNumber={index + 1}
