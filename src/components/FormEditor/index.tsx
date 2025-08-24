@@ -28,7 +28,7 @@ export const FormEditor = () => {
 
 	return (
 		<div className="flex h-full flex-col overflow-hidden p-0">
-			<div className="p-4 flex gap-2 justify-end">
+			<div className="p-2 flex gap-2 justify-end">
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<Button size="icon" variant="outline">

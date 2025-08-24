@@ -29,6 +29,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { BrainIcon } from "lucide-react";
 
 type ChatProps = {
 	id: string;
@@ -82,7 +83,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				>
 					{messages.length === 0 && !isNew && (
 						<Card className="flex flex-col gap-2 items-center justify-center flex-1 bg-transparent">
-							<ChatBubbleOvalLeftIcon className="min-w-16 h-16" />
+							<BrainIcon className="min-w-16 h-16 animate-pulse" />
 							<p className="font-bold">Chat with AI</p>
 							<p className="text-sm">
 								Ask anything or use the tools available below

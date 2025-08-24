@@ -13,7 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { AgentChatRequestData } from "~/app/api/ai/chat/route";
 import { DefaultChatTransport, type ModelMessage } from "ai-v5";
 import { useChat } from "@ai-sdk/react";
-import { AiForm } from "~/lib/schemas/aiForm";
+import type { AiForm } from "~/lib/schemas/aiForm";
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -206,11 +206,16 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 
 			if (tempMessage?.role === "assistant") {
+				const textParts = tempMessage.parts.filter(
+					(part) => part.type === "text",
+				);
+
 				setCurrentAssistantMessage((prev) => {
 					if (prev) {
 						return {
 							...prev,
 							parts: tempMessage.parts,
+							content: textParts.map((part) => part.text).join(""),
 							metadata: tempMessage.metadata,
 						};
 					}
@@ -382,6 +387,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				role: currentAssistantMessage.role,
 			});
 		}
+
+		console.log({ fullContextMessages });
 
 		await sendMessage(undefined, {
 			body: {

@@ -20,6 +20,8 @@ import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
 import { Slider } from "../ui/slider";
 import type { AiForm } from "~/lib/schemas/aiForm";
+import { Separator } from "../ui/separator";
+import { Badge } from "../ui/badge";
 
 interface DynamicFormProps {
 	data: AiForm;
@@ -29,6 +31,8 @@ interface DynamicFormProps {
 
 export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 	const { questions, title, description, type } = data;
+
+	console.log(questions);
 	const renderField = (question: AiForm["questions"][number]) => {
 		const fieldId = question.id;
 		const isRequired = question.required;
@@ -46,6 +50,9 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						render={({ field }) => (
 							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -88,6 +95,9 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						render={({ field }) => (
 							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -126,6 +136,9 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						render={({ field }) => (
 							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -161,6 +174,9 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						render={({ field }) => (
 							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -197,6 +213,9 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						render={({ field }) => (
 							<div className="flex flex-col gap-2">
 								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -237,7 +256,10 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-3">
-								<Label>
+								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -278,9 +300,15 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						name={fieldId}
 						control={control}
 						defaultValue={[]}
+						rules={{
+							required: isRequired ? `${question.label} is required` : false,
+						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-3">
-								<Label>
+								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -342,6 +370,9 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										onCheckedChange={field.onChange}
 									/>
 									<Label htmlFor={fieldId}>
+										<span className="text-mochaSubText text-base font-black">
+											{fieldId}.{" "}
+										</span>
 										{question.label}
 										{isRequired && <span className="text-red-500 ml-1">*</span>}
 									</Label>
@@ -365,6 +396,9 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 						render={({ field }) => (
 							<div className="flex flex-col gap-4">
 								<Label htmlFor={fieldId}>
+									<span className="text-mochaSubText text-base font-black">
+										{fieldId}.{" "}
+									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -401,12 +435,20 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 	};
 
 	return (
-		<div className="flex flex-col gap-4 overflow-auto p-4 h-full">
+		<div className="flex flex-col gap-4 overflow-auto px-8 py-4 h-full">
 			<div className="flex flex-col gap-3 mb-4">
-				<p className="text-mochaText font-semibold text-xl">{title}</p>
-				{description && <p>{description}</p>}
+				<div className="flex items-center gap-4 justify-between">
+					<p className="text-mochaText font-semibold text-xl tracking-widest">
+						{title}
+					</p>
+					<Badge variant="outline">{type}</Badge>
+				</div>
+				{description && (
+					<p className="text-sm text-mochaSubText">{description}</p>
+				)}
 			</div>
-			<div className="flex flex-col gap-8">
+			<Separator />
+			<div className="flex flex-col gap-10">
 				{questions.map((question) => (
 					<Fragment key={question.id}>{renderField(question)}</Fragment>
 				))}

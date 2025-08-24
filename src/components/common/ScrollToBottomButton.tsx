@@ -50,7 +50,7 @@ export const ScrollToBottomButton = ({
 			{isVisible && (
 				<div className="absolute bottom-2 w-fit flex justify-center m-auto items-center left-0 right-0">
 					<Tooltip>
-						<TooltipTrigger>
+						<TooltipTrigger asChild>
 							<Button
 								size="icon"
 								className="rounded-full animate-bounce border border-mochaText"

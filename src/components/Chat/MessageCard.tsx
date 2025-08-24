@@ -40,14 +40,6 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
 					},
 				])}
 			>
-				{message.role === "user" && data && (
-					<div className="absolute top-[-4px] right-0 z-10">
-						<Avatar className="h-5 w-5 border">
-							<AvatarImage src={data.user.image as string} />
-							<AvatarFallback>You</AvatarFallback>
-						</Avatar>
-					</div>
-				)}
 				{message.parts.length > 0 ? (
 					<Fragment>
 						{message.parts.map((part, i) => {

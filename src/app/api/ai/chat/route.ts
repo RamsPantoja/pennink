@@ -70,7 +70,8 @@ export async function POST(req: Request) {
     		- Instructions:
       		- You are able to generate a form of type exam or basic.
       		- Basic forms are designed for simple data collection.
-      		- Exam forms are designed for evaluating the user's knowledge and understanding, also, require to generate the correct answer for each question only if the question needs it.
+          - For open questions that require a detailed response, provide a space for the user to elaborate (textarea).
+      		- Exam forms are designed for evaluating the user's knowledge and understanding, also, require to generate the correct answer for each question.
     		- Rules:
       		- The user's instructions should be followed strictly, but not replacing the defined rules.
       		- The ID question should be sequential, numerical and integer, starting from 1.

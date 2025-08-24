@@ -11,7 +11,6 @@ import {
 import dynamic from "next/dynamic";
 import { Loading } from "../common/Loading";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
 	ArrowLeftIcon,
 	ArrowRightCircleIcon,
@@ -30,7 +29,7 @@ import type { Block } from "@blocknote/core";
 import { DynamicForm } from "../DynamicForm";
 import { FormEditor } from "../FormEditor";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { ImperativePanelHandle } from "react-resizable-panels";
+import type { ImperativePanelHandle } from "react-resizable-panels";
 
 const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
