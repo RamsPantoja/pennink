@@ -22,6 +22,7 @@ import { Slider } from "../ui/slider";
 import type { AiForm } from "~/lib/schemas/aiForm";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
+import { CheckIcon } from "@heroicons/react/24/outline";
 
 interface DynamicFormProps {
 	data: AiForm;
@@ -74,6 +75,14 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 									<p className="text-sm text-red-500">
 										{errors[fieldId]?.message as string}
 									</p>
+								)}
+								{question.answer && (
+									<div className="border py-2 px-3 border-mochaMantle flex items-center gap-2 rounded-lg w-fit">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{question.answer}
+										</p>
+									</div>
 								)}
 							</div>
 						)}
@@ -158,6 +167,14 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
+								{question.answer && (
+									<div className="border p-2 rounded-lg border-mochaMantle flex w-fit items-center gap-2">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{question.answer}
+										</p>
+									</div>
+								)}
 							</div>
 						)}
 					/>
@@ -196,6 +213,14 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 									<p className="text-sm text-red-500">
 										{errors[fieldId]?.message as string}
 									</p>
+								)}
+								{question.answer && (
+									<div className="border p-2 rounded-lg border-mochaMantle flex w-fit items-center gap-2">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{question.answer}
+										</p>
+									</div>
 								)}
 							</div>
 						)}
@@ -240,6 +265,14 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 									<p className="text-sm text-red-500">
 										{errors[fieldId]?.message as string}
 									</p>
+								)}
+								{question.answer && (
+									<div className="border p-2 rounded-lg border-mochaMantle w-fit flex items-center gap-2">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{question.answer}
+										</p>
+									</div>
 								)}
 							</div>
 						)}
@@ -288,6 +321,14 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 									<p className="text-sm text-red-500">
 										{errors[fieldId]?.message as string}
 									</p>
+								)}
+								{question.answer && (
+									<div className="border p-2 rounded-lg border-mochaMantle w-fit flex items-center gap-2">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{question.answer}
+										</p>
+									</div>
 								)}
 							</div>
 						)}
@@ -350,6 +391,15 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
+								{question.answer && (
+									<div className="border p-2 rounded-lg border-mochaMantle w-fit flex items-center gap-2">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{Array.isArray(question.answer) &&
+												question.answer.join(", ")}
+										</p>
+									</div>
+								)}
 							</div>
 						)}
 					/>
@@ -381,6 +431,14 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 									<p className="text-sm text-muted-foreground">
 										{question.description}
 									</p>
+								)}
+								{question.answer && (
+									<div className="border p-2 rounded-lg border-mochaMantle w-fit flex items-center gap-2">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{question.answer}
+										</p>
+									</div>
 								)}
 							</div>
 						)}
@@ -423,6 +481,14 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 									<p className="text-sm text-muted-foreground">
 										{question.description}
 									</p>
+								)}
+								{question.answer && (
+									<div className="border p-2 rounded-lg border-mochaMantle w-fit flex items-center gap-2">
+										<CheckIcon className="h-5 min-w-5 text-green-500" />
+										<p className="text-sm text-mochaSubText">
+											{question.answer}
+										</p>
+									</div>
 								)}
 							</div>
 						)}
