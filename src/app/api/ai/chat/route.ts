@@ -31,21 +31,15 @@ export async function POST(req: Request) {
 		//openai.gpt-oss-20b-1:0
 		// openai.gpt-oss-120b-1:0
 		// us.amazon.nova-pro-v1:0
-		let modelId = "openai.gpt-oss-120b-1:0";
+
 		const session = await getServerSession(authOptions);
 
 		if (!session) {
 			throw new Error("Must be logged in to access");
 		}
 
-		const tools: ToolSet = {};
-
-		const { context, prompt, chatModes } =
-			(await req.json()) as AgentChatRequestData;
-
-		if (chatModes.includes("form-generation-mode")) {
-			modelId = "us.amazon.nova-pro-v1:0";
-			tools.generateForm = tool({
+		const tools: ToolSet = {
+			generateForm: tool({
 				description: "Tool for generating forms and exams",
 				inputSchema: aiFormSchema,
 				execute: async ({ title, description, questions, type }) => {
@@ -56,10 +50,13 @@ export async function POST(req: Request) {
 						type,
 					};
 				},
-			});
-		}
+			}),
+		};
 
-		const model = bedrockV3(modelId);
+		const { context, prompt, chatModes } =
+			(await req.json()) as AgentChatRequestData;
+
+		const model = bedrockV3("openai.gpt-oss-120b-1:0");
 		const systemTemplate = `
 		You are a friendly and professional agent designed to engage users in natural, open-ended conversations. Your responses should be warm, engaging, and thoughtful, ensuring the conversation flows smoothly. Ask follow-up questions to keep the discussion dynamic, show genuine curiosity about the user's thoughts, and adapt your tone to match the user's communication style. Avoid sounding robotic or overly formal—aim for a conversational and approachable style while maintaining professionalism.
 		Your goal is to make the user feel heard, understood, and comfortable sharing their thoughts.
@@ -71,7 +68,7 @@ export async function POST(req: Request) {
       		- You are able to generate a form of type exam or basic.
       		- Basic forms are designed for simple data collection.
           - For open questions that require a detailed response, provide a space for the user to elaborate (textarea).
-      		- Exam forms are designed for evaluating the user's knowledge and understanding, also, require to generate the correct answer for each question.
+      		- Exam forms are designed for evaluating the user's knowledge and understanding, also, require to generate the correct answer for each question if needed and the form fields are not required by default.
     		- Rules:
       		- The user's instructions should be followed strictly, but not replacing the defined rules.
       		- The ID question should be sequential, numerical and integer, starting from 1.
@@ -98,7 +95,7 @@ export async function POST(req: Request) {
 			},
 		});
 
-		return result.toUIMessageStreamResponse();
+		return result.toUIMessageStreamResponse({ sendReasoning: true });
 	} catch (error) {
 		console.log(error);
 		return Response.error();

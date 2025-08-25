@@ -25,7 +25,11 @@ export const questionSchema = z.object({
 		.describe("Type of field"),
 	label: z.string().describe("Label of the field"),
 	placeholder: z.string().optional().describe("Placeholder text for the field"),
-	required: z.boolean().describe("Whether the field is required"),
+	required: z
+		.boolean()
+		.describe(
+			"Whether the field is required (for exams or quizzes required is false)",
+		),
 	options: z
 		.array(questionOptionSchema)
 		.optional()

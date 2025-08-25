@@ -92,6 +92,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		},
 		onFinish: (data) => {
+			console.log(data);
 			if (!session) {
 				toast("Please sign in to save your message");
 				return;

@@ -31,6 +31,10 @@ export default {
 				},
 			},
 			borderRadius: {
+				"4xl": "1.5rem",
+				"3xl": "calc(1.5rem - 2px)",
+				"2xl": "calc(1rem + 2px)",
+				xl: "1rem",
 				lg: "0.5rem",
 				md: "calc(0.5rem - 2px)",
 				sm: "calc(0.5rem - 4px)",
