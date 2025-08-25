@@ -4,7 +4,6 @@ import { cn } from "~/lib/utils";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import { useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { DateTime } from "luxon";
 import { Response } from "../ai-elements/response";
 import {
@@ -33,9 +32,9 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
 			)}
 			<Card
 				className={cn([
-					"flex flex-col",
+					"flex flex-col w-full",
 					{
-						"w-fit bg-transparent": message.role === "assistant",
+						"bg-transparent": message.role === "assistant",
 						"bg-mochaMauve text-mochaText relative": message.role === "user",
 					},
 				])}

@@ -1,6 +1,4 @@
-import PDFUploader from "../PDFUploader";
 import { Button } from "../common/Button";
-import { Separator } from "../ui/separator";
 import {
 	Drawer,
 	DrawerClose,

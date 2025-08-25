@@ -212,7 +212,7 @@ export default function PomodoroTimer() {
 
 	return (
 		<Popover open={openTimer} onOpenChange={setOpenTimer}>
-			<div className="flex items-center border border-mochaMantle rounded-md">
+			<div className="flex items-center border border-mochaMantle rounded-md bg-mochaCrust">
 				<div className="flex items-center">
 					{status === "idle" && (
 						<Tooltip>

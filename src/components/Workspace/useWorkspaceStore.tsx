@@ -32,6 +32,8 @@ type WorkspaceStore = {
 	setDisplayFormEditor: (displayFormEditor: boolean) => void;
 	formData: AiForm | null;
 	setFormData: (formData: AiForm | null) => void;
+	formId: string | null;
+	setFormId: (formId: string | null) => void;
 };
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
@@ -48,4 +50,6 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() => ({ displayFormEditor })),
 	setFormData: (formData) => set(() => ({ formData })),
+	formId: null,
+	setFormId: (formId) => set(() => ({ formId })),
 }));

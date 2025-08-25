@@ -28,9 +28,15 @@ interface DynamicFormProps {
 	data: AiForm;
 	control: Control<FieldValues, any, FieldValues>;
 	errors: FieldErrors<FieldValues>;
+	showAnswer: boolean;
 }
 
-export function DynamicForm({ data, control, errors }: DynamicFormProps) {
+export function DynamicForm({
+	data,
+	control,
+	errors,
+	showAnswer,
+}: DynamicFormProps) {
 	const { questions, title, description, type } = data;
 
 	const renderField = (question: AiForm["questions"][number]) => {
@@ -75,7 +81,7 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && (
+								{question.answer && showAnswer && (
 									<div className="border py-2 px-3 border-mochaMantle bg-mochaCrust flex items-center gap-2 rounded-md w-fit">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
@@ -166,7 +172,7 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && (
+								{question.answer && showAnswer && (
 									<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
@@ -213,7 +219,7 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && (
+								{question.answer && showAnswer && (
 									<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
@@ -265,11 +271,13 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2">
+								{question.answer && showAnswer && (
+									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
-											{question.answer}
+											{question.options?.find(
+												(option) => option.value === question.answer,
+											)?.label || ""}
 										</p>
 									</div>
 								)}
@@ -321,11 +329,13 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2">
+								{question.answer && showAnswer && (
+									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
-											{question.answer}
+											{question.options?.find(
+												(option) => option.value === question.answer,
+											)?.label || ""}
 										</p>
 									</div>
 								)}
@@ -390,12 +400,19 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2">
+								{question.answer && showAnswer && (
+									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
 											{Array.isArray(question.answer) &&
-												question.answer.join(", ")}
+												question.answer
+													.map((item) => {
+														const option = question.options?.find(
+															(opt) => opt.value === item,
+														);
+														return option ? option.label : item;
+													})
+													.join(", ")}
 										</p>
 									</div>
 								)}
@@ -431,11 +448,11 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{question.description}
 									</p>
 								)}
-								{question.answer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2">
+								{typeof question.answer === "boolean" && showAnswer && (
+									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
-											{question.answer}
+											{question.answer ? "True" : "False"}
 										</p>
 									</div>
 								)}
@@ -481,8 +498,8 @@ export function DynamicForm({ data, control, errors }: DynamicFormProps) {
 										{question.description}
 									</p>
 								)}
-								{question.answer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2">
+								{question.answer && showAnswer && (
+									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mochaSubText">
 											{question.answer}

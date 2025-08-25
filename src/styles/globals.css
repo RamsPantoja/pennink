@@ -61,6 +61,7 @@
 			max-height: 480px;
 			margin-top: 8px;
 			margin-bottom: 8px;
+			width: 100%;
 		}
 
 		:not(pre) > code[class*="language-"],

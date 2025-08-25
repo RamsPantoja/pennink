@@ -35,6 +35,7 @@ import { api } from "~/utils/api";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import Image from "next/image";
 import PomodoroTimer from "~/components/Pomodoro";
+import { FormLoader } from "~/components/Workspace/FormLoader";
 
 type DashboardProps = {
 	session: Session;
@@ -50,6 +51,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { setDocument } = useWorkspaceStore();
 	const [isReadingPDF, setIsReadingPDF] = useState<boolean>(false);
+	const [openFormLoader, setOpenFormLoader] = useState<boolean>(false);
 
 	const { mutate: createFile, isPending: createFileIsPending } =
 		api.workspace.createFile.useMutation({
@@ -165,6 +167,14 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 				data-testid="file-input"
 			/>
 			<AppSidebar session={session} />
+			<FormLoader
+				onSelect={(form) => {
+					console.log(form);
+					setOpenFormLoader(false);
+				}}
+				open={openFormLoader}
+				onOpenChange={setOpenFormLoader}
+			/>
 			<DocumentLoader
 				onSelect={(doc) => {
 					setDocument(doc);
@@ -179,7 +189,22 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						<span>Toggle</span>
 					</SidebarTrigger>
 					<div className="flex items-center gap-2">
-						{router.asPath !== "/" && <PomodoroTimer />}
+						{router.asPath !== "/" && (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={() => {
+											setOpenFormLoader(true);
+										}}
+									>
+										<ListBulletIcon className="min-w-5 w-5 h-5" />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Search from your forms</TooltipContent>
+							</Tooltip>
+						)}
 						{router.asPath !== "/" && (
 							<DropdownMenu>
 								<Tooltip>
@@ -238,6 +263,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 								<TooltipContent>New workspace</TooltipContent>
 							</Tooltip>
 						)}
+						{router.asPath !== "/" && <PomodoroTimer />}
 						<Feedback session={session} />
 					</div>
 
