@@ -95,10 +95,12 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							<MessageCard key={message.id} message={message} />
 						))}
 					{currentAssistantMessage && (
-						<MessageCard
-							isStreaming={status === "streaming"}
-							message={currentAssistantMessage}
-						/>
+						<div className="flex flex-1 min-h-96">
+							<MessageCard
+								isStreaming={status === "streaming"}
+								message={currentAssistantMessage}
+							/>
+						</div>
 					)}
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />

@@ -412,15 +412,17 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					behavior: "smooth",
 				});
 			}
-
-			if (lastMessage?.role === "assistant") {
-				chatContainer.current.scrollTo({
-					top: chatContainer.current.scrollTop + 80,
-					behavior: "smooth",
-				});
-			}
 		}
 	}, [chatContainer, messages.length]);
+
+	useEffect(() => {
+		if (chatContainer.current) {
+			chatContainer.current.scrollTo({
+				top: chatContainer.current.scrollHeight,
+				behavior: "smooth",
+			});
+		}
+	}, [currentAssistantMessage?.id, chatContainer]);
 
 	useEffect(() => {
 		if (chatContainer.current) {

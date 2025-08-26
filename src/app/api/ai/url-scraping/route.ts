@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 			throw new Error("Failed to fetch url content");
 		}
 
-		const model = bedrock("openai.gpt-oss-20b-1:0");
+		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
 
 		const systemTemplate = `
   		Content: ${urlContent.htmlBody}

@@ -31,6 +31,7 @@ export async function POST(req: Request) {
 		// openai.gpt-oss-20b-1:0
 		// openai.gpt-oss-120b-1:0
 		// us.amazon.nova-pro-v1:0
+		// us.meta.llama4-scout-17b-instruct-v1:0
 
 		const session = await getServerSession(authOptions);
 
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
 		const { context, prompt, chatModes } =
 			(await req.json()) as AgentChatRequestData;
 
-		const model = bedrockV3("openai.gpt-oss-120b-1:0");
+		const model = bedrockV3("us.meta.llama4-scout-17b-instruct-v1:0");
 		const systemTemplate = `
 		You are a friendly and professional agent designed to engage users in natural, open-ended conversations. Your responses should be warm, engaging, and thoughtful, ensuring the conversation flows smoothly. Ask follow-up questions to keep the discussion dynamic, show genuine curiosity about the user's thoughts, and adapt your tone to match the user's communication style. Avoid sounding robotic or overly formal—aim for a conversational and approachable style while maintaining professionalism.
 		Your goal is to make the user feel heard, understood, and comfortable sharing their thoughts.
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
 			system: systemTemplate,
 			messages: [...context.messages, { role: "user", content: prompt }],
 			temperature: 0.1,
-			tools,
+			// tools,
 			stopWhen: stepCountIs(5), // Stop at step 5 if tools were called
 			onError({ error }) {
 				console.log(error); // your error logging logic here
