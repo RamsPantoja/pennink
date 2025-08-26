@@ -179,6 +179,13 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 				onSelect={(doc) => {
 					setDocument(doc);
 					setOpenDocumentLoader(false);
+					localStorage.setItem(
+						"pennink-doc",
+						JSON.stringify({
+							...doc,
+							workspaceId,
+						}),
+					);
 				}}
 				open={openDocumentLoader}
 				onOpenChange={setOpenDocumentLoader}

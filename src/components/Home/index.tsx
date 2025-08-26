@@ -41,13 +41,24 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 	const { mutate: createFile, isPending: createFileIsPending } =
 		api.workspace.createFile.useMutation({
 			onSuccess: async (data) => {
-				router.push(`/workspace/${workspaceId}`);
-				setDocument({
+				const doc = {
 					id: data.id,
 					filename: data.filename,
 					type: data.type,
 					src: `${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${data.key}`,
-				});
+				};
+
+				localStorage.setItem(
+					"pennink-doc",
+					JSON.stringify({
+						...doc,
+						workspaceId,
+					}),
+				);
+
+				setDocument(doc);
+
+				await router.push(`/workspace/${workspaceId}`);
 				toast("You can now ask to your document!");
 				await utils.user.statics.invalidate();
 				await utils.workspace.filesByUserId.invalidate();
@@ -145,14 +156,22 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 	};
 
 	const onSelectSavedDocument = async (doc: PenninkDocument) => {
-		setDocument(doc);
-
 		try {
 			const data = await createWorkspace({
 				name: "...",
 				messages: [],
 				chatId,
 			});
+
+			localStorage.setItem(
+				"pennink-doc",
+				JSON.stringify({
+					...doc,
+					workspaceId: data.id,
+				}),
+			);
+
+			setDocument(doc);
 
 			await router.push(`/workspace/${data.id}`);
 		} catch (error) {

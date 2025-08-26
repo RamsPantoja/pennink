@@ -19,17 +19,18 @@ import {
 	DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
-import { useWorkspaceStore } from "./useWorkspaceStore";
+import { type PenninkDocument, useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 import { Editor } from "../Editor";
 import type { Block } from "@blocknote/core";
-import { DynamicForm } from "../DynamicForm";
 import { FormEditor } from "../FormEditor";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import type { ImperativePanelHandle } from "react-resizable-panels";
+
+type PreviousDocOpened = PenninkDocument & { workspaceId: string };
 
 const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
@@ -53,6 +54,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		setWorkspaceTitle,
 		displayFormEditor,
 		formData,
+		setDocument,
 	} = useWorkspaceStore();
 	const [selectionContent, setSelectionContent] = useState<{
 		text: string;
@@ -76,6 +78,22 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		if (!workspaceData) return;
 		setWorkspaceTitle(workspaceData.name);
 	}, [workspaceData, setWorkspaceTitle]);
+
+	useEffect(() => {
+		const previousDocOpened = localStorage.getItem("pennink-doc");
+		if (previousDocOpened) {
+			const doc = JSON.parse(previousDocOpened) as PreviousDocOpened;
+
+			if (doc.workspaceId === workspaceId) {
+				setDocument({
+					id: doc.id,
+					filename: doc.filename,
+					type: doc.type,
+					src: doc.src,
+				});
+			}
+		}
+	}, [workspaceId, setDocument]);
 
 	const { mutate: updateWorkspace } = api.note.updateNote.useMutation({
 		onSuccess: async () => {

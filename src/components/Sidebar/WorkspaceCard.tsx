@@ -226,8 +226,8 @@ export const WorkspaceCard = ({
 			{!isWorkspaceNameEditable && (
 				<SidebarMenuButton
 					onClick={async () => {
-						await router.push(`/workspace/${id}`);
 						setDocument(null);
+						await router.push(`/workspace/${id}`);
 					}}
 					asChild
 					isActive={id === selectedWorkspaceId}
