@@ -8,7 +8,7 @@ const questionOptionSchema = z.object({
 
 // Then define the main Question schema
 export const questionSchema = z.object({
-	id: z.string().describe("ID of the question field for the form"),
+	key: z.string().describe("KEY of the question field for the form"),
 	type: z
 		.enum([
 			"text",

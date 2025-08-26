@@ -18,14 +18,13 @@ import { useState } from "react";
 
 export const FormEditor = () => {
 	const [showAnswer, setShowAnswer] = useState<boolean>(false);
+	const { formData, formId } = useWorkspaceStore();
 
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-
-	const { formData } = useWorkspaceStore();
 
 	const onTestForm = () => {
 		toast.success("Form submitted successfully!");

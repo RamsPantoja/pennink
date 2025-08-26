@@ -536,7 +536,7 @@ export const staticsRelations = relations(statics, ({ one }) => ({
 }));
 
 export const feedbacks = createTable("feedback", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
@@ -561,7 +561,7 @@ export const feedbackRelations = relations(feedbacks, ({ one }) => ({
 }));
 
 export const forms = createTable("form", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	title: text().notNull(),
 	description: text(),
 	userId: uuid()
@@ -606,7 +606,7 @@ export const questionsToFormsRelations = relations(
 );
 
 export const questions = createTable("question", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	key: text().notNull(),
 	type: formFieldTypeEnum().notNull(),
 	description: text(),
@@ -625,7 +625,7 @@ export const questionRelations = relations(questions, ({ many }) => ({
 }));
 
 export const questionOptions = createTable("question_option", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	questionId: uuid()
 		.notNull()
 		.references(() => questions.id),
@@ -644,7 +644,7 @@ export const questionOptionRelations = relations(
 );
 
 export const formResponses = createTable("form_response", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	email: text().notNull(),
 	userId: uuid().references(() => users.id),
 	formId: uuid()
@@ -672,7 +672,7 @@ export const formResponseRelations = relations(formResponses, ({ one }) => ({
 }));
 
 export const exams = createTable("exam", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	title: text().notNull(),
 	instructions: text(),
 	userId: uuid()
@@ -691,7 +691,7 @@ export const examRelations = relations(exams, ({ one, many }) => ({
 }));
 
 export const examResponses = createTable("exam_response", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	email: text().notNull(),
 	userId: uuid().references(() => users.id),
 	examId: uuid()
@@ -746,7 +746,7 @@ export const questionsToExamsRelations = relations(
 );
 
 export const shareLinks = createTable("share_link", {
-	id: customId,
+	id: customId.notNull().primaryKey(),
 	key: text().notNull(),
 });
 

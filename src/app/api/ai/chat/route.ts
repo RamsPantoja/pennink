@@ -28,7 +28,7 @@ export type AgentChatRequestData = {
 
 export async function POST(req: Request) {
 	try {
-		//openai.gpt-oss-20b-1:0
+		// openai.gpt-oss-20b-1:0
 		// openai.gpt-oss-120b-1:0
 		// us.amazon.nova-pro-v1:0
 
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
       		- Exam forms are designed for evaluating the user's knowledge and understanding, also, require to generate the correct answer for each question if needed and the form fields are not required by default.
     		- Rules:
       		- The user's instructions should be followed strictly, but not replacing the defined rules.
-      		- The ID question should be sequential, numerical and integer, starting from 1.
+      		- The KEY question should be sequential, numerical and integer, starting from 1.
 
 		`;
 

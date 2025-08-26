@@ -8,6 +8,13 @@
       "when": 1755367702992,
       "tag": "0000_message-role",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1756169918131,
+      "tag": "0001_calm_bastion",
+      "breakpoints": true
     }
   ]
 }

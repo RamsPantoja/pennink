@@ -40,7 +40,7 @@ export function DynamicForm({
 	const { questions, title, description, type } = data;
 
 	const renderField = (question: AiForm["questions"][number]) => {
-		const fieldId = question.id;
+		const fieldId = question.key;
 		const isRequired = question.required;
 
 		switch (question.type) {
