@@ -196,7 +196,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						<span>Toggle</span>
 					</SidebarTrigger>
 					<div className="flex items-center gap-2">
-						{router.asPath !== "/" && (
+						{/*{router.asPath !== "/" && (
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button
@@ -211,7 +211,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 								</TooltipTrigger>
 								<TooltipContent>Search from your forms</TooltipContent>
 							</Tooltip>
-						)}
+						)}*/}
 						{router.asPath !== "/" && (
 							<DropdownMenu>
 								<Tooltip>
