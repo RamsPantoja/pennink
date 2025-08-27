@@ -15,9 +15,10 @@ import {
 type MessageCardProps = {
 	message: Message;
 	isStreaming?: boolean;
+	id: string;
 };
 
-export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
+export const MessageCard = ({ message, isStreaming, id }: MessageCardProps) => {
 	const { data } = useSession();
 
 	return (

@@ -51,24 +51,6 @@
 
 @layer utilities {
 	.prismjs-theme {
-		code[class*="language-"],
-		pre[class*="language-"] {
-			color: #cdd6f4;
-			padding: 12px;
-			border-radius: 8px;
-			overflow: auto;
-			font-size: 12px;
-			max-height: 480px;
-			margin-top: 8px;
-			margin-bottom: 8px;
-			width: 100%;
-		}
-
-		:not(pre) > code[class*="language-"],
-		pre[class*="language-"] {
-			background: #353535;
-		}
-
 		/* https://prismjs.com/tokens.html */
 
 		.token.keyword {
@@ -263,11 +245,11 @@
 		table th {
 			background-color: #353535;
 			padding: 0.5rem;
-			/*border: 1px solid #161616;*/
+			border: 1px solid #161616;
 		}
 		table td {
 			padding: 0.5rem;
-			/*border: 1px solid #353535;*/
+			border: 1px solid #353535;
 		}
 		table caption {
 			font-size: 1rem;

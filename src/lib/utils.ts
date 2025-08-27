@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 import { DateTime, type Duration } from "luxon";
 import markdownit from "markdown-it";
-import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
 import type { MessageRole } from "./enum";
 import type { ReactNode } from "react";
 import type { Session } from "next-auth";
