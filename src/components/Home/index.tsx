@@ -11,7 +11,7 @@ import {
 	type PenninkDocument,
 	useWorkspaceStore,
 } from "../Workspace/useWorkspaceStore";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { api } from "~/utils/api";
 import { toast } from "sonner";
 import type { Session } from "next-auth";
@@ -30,7 +30,9 @@ type HomeComponentProps = {
 export const HomeComponent = ({ session }: HomeComponentProps) => {
 	const router = useRouter();
 	const utils = api.useUtils();
-	const chatId = typeid().toUUID();
+	const memoChatId = useMemo(() => {
+		return typeid().toUUID();
+	}, []);
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { setDocument } = useWorkspaceStore();
@@ -141,7 +143,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 			const data = await createWorkspace({
 				name: "...",
 				messages: [],
-				chatId,
+				chatId: memoChatId,
 			});
 
 			createFile({
@@ -160,7 +162,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 			const data = await createWorkspace({
 				name: "...",
 				messages: [],
-				chatId,
+				chatId: memoChatId,
 			});
 
 			localStorage.setItem(
@@ -184,7 +186,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 			const data = await createWorkspace({
 				name: "...",
 				messages: [],
-				chatId,
+				chatId: memoChatId,
 			});
 
 			await router.push(`/workspace/${data.id}`);
@@ -219,10 +221,10 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 				onOpenChange={setOpenDocumentLoader}
 			/>
 			<Card className="max-w-screen-lg gap-4 flex flex-col w-full justify-center h-full bg-transparent">
-				<p className="text-center text-3xl font-bold text-mochaText">
+				<p className="text-center text-3xl font-bold text-mochaText tracking-wider">
 					Start your writing journey!
 				</p>
-				<Chat id={chatId} isNew={true} />
+				<Chat id={memoChatId} isNew={true} />
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
 					<Card
 						onClick={

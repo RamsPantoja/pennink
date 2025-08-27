@@ -203,8 +203,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	});
 
-	console.log(tempMessages);
-
 	const stopStreaming = async () => {
 		if (!isNew && router.pathname !== "/" && status === "streaming") {
 			await stop();
@@ -339,7 +337,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					updatedAt: Date.now(),
 				}),
 			);
-			
+
 			await sendMessage(undefined, {
 				body: {
 					context: {
@@ -430,7 +428,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	};
 
 	useEffect(() => {
-		console.log("A");
 		const lastMessage = messages[messages.length - 1];
 
 		if (chatContainer.current) {
@@ -444,7 +441,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	}, [chatContainer, messages.length]);
 
 	useEffect(() => {
-		console.log("B");
 		if (chatContainer.current) {
 			chatContainer.current.scrollTo({
 				top: chatContainer.current.scrollHeight,
@@ -454,7 +450,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	}, [tempMessages[0]?.id, chatContainer]);
 
 	useEffect(() => {
-		console.log("C");
 		if (chatContainer.current) {
 			chatContainer.current.scrollTo({
 				top: chatContainer.current.scrollHeight,
@@ -464,7 +459,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 	//ReaderEvent listener
 	useEffect(() => {
-		console.log("D");
 		if (readerEvent) {
 			//Warning! It's very important set to null the event before executing any process or method.
 			//This is for avoid unnecesary rerenders or duplicated executions
