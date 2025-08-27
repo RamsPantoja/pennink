@@ -427,7 +427,7 @@ export class WorkspaceService {
 				.from(
 					sql`vector_top_k('embedding_index', vector32(${JSON.stringify(embedding.embedding)}), 5)`,
 				)
-				.leftJoin(
+				.fullJoin(
 					embeddingDocuments,
 					eq(embeddingDocuments.id, sql`vector_top_k.id`),
 				)
