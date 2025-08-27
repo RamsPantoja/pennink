@@ -12,8 +12,8 @@ import {
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { ArrowUpIcon } from "lucide-react";
-import { type ChatModes, useChatLogic } from "./useChatLogic";
+import { ArrowUpIcon, LucideCurrency } from "lucide-react";
+import { type ChatModes, parseUIMessage, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
@@ -30,6 +30,8 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { BrainIcon } from "lucide-react";
+import { DateTime } from "luxon";
+import { Fragment } from "react";
 
 type ChatProps = {
 	id: string;
@@ -40,7 +42,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 	const {
 		onSentPrompt,
 		useChatForm,
-		currentAssistantMessage,
+		tempMessages,
 		messages,
 		createWorkspaceIsPending,
 		messagesIsLoading,
@@ -94,14 +96,22 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						messages.map((message) => (
 							<MessageCard key={message.id} message={message} />
 						))}
-					{currentAssistantMessage && (
-						<div className="flex flex-1 min-h-96">
-							<MessageCard
-								isStreaming={status === "streaming"}
-								message={currentAssistantMessage}
-							/>
-						</div>
-					)}
+					{tempMessages.map((message) => {
+						const parsedMessage = parseUIMessage(message);
+
+						if (parsedMessage) {
+							return (
+								<div key={message.id} className="flex flex-1 min-h-96">
+									<MessageCard
+										isStreaming={status === "streaming"}
+										message={parsedMessage}
+									/>
+								</div>
+							);
+						}
+
+						return <Fragment key={message.id} />;
+					})}
 				</div>
 				<ScrollToBottomButton scrollableElementId="chat-container" />
 			</div>

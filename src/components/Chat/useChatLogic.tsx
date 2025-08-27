@@ -10,10 +10,25 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
-import type { AgentChatRequestData } from "~/app/api/ai/chat/route";
-import { DefaultChatTransport, type ModelMessage } from "ai-v5";
+import { DefaultChatTransport, type UIMessage, type ModelMessage } from "ai-v5";
 import { useChat } from "@ai-sdk/react";
 import type { AiForm } from "~/lib/schemas/aiForm";
+import { DateTime } from "luxon";
+import type { Session } from "next-auth";
+import { now } from "next-auth/client/_utils";
+
+export type MyUIMessage = UIMessage<{
+	id: Message["id"];
+	userId: Message["userId"];
+	chatId: Message["chatId"];
+	content: Message["content"];
+	metadata: Message["metadata"];
+	parts: Message["parts"];
+	quote: Message["quote"];
+	role: Message["role"];
+	createdAt: number;
+	updatedAt: number;
+}>;
 
 const chatValidationSchema = z.object({
 	prompt: z.string().trim().min(1),
@@ -49,12 +64,50 @@ export type ChatModes =
 	| "web-search-mode"
 	| "reasoning-mode";
 
+export const parseUIMessage = (message?: MyUIMessage): Message | null => {
+	if (message) {
+		const { metadata, parts } = message;
+		const textParts = parts.filter((part) => part.type === "text");
+
+		if (!metadata) {
+			toast(
+				"Metadata is missing in the assistant message, but is required for parsing.",
+			);
+			return null;
+		}
+
+		return {
+			...metadata,
+			createdAt: DateTime.fromMillis(metadata.createdAt).toJSDate(),
+			updatedAt: DateTime.fromMillis(metadata.updatedAt).toJSDate(),
+			content: textParts.map((part) => part.text).join(""),
+			parts,
+			role: message.role,
+		};
+	}
+
+	return null;
+};
+
+const createAssistantMessageMetadata = (chatId: string, session: Session) => {
+	return {
+		id: typeid().toUUID(),
+		chatId,
+		userId: session.user.id,
+		createdAt: Date.now(),
+		updatedAt: Date.now(),
+		content: "",
+		role: "assistant",
+		quote: null,
+		parts: [],
+		metadata: null,
+	};
+};
+
 export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const router = useRouter();
 	const utils = api.useUtils();
 	const { data: session } = useSession();
-	const [currentAssistantMessage, setCurrentAssistantMessage] =
-		useState<Message | null>(null);
 	const [messages, setMessages] = useState<Message[]>([]);
 	const chatContainer = useRef<HTMLDivElement | null>(null);
 	const {
@@ -66,7 +119,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		setFormData,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
-	const [lastUserMessage, setLastUserMessage] = useState<Message | null>();
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
 	const [contextItems, setContextItems] = useState<ContextEntity[]>([
 		{
@@ -81,7 +133,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		setMessages: cleanUseChatMessages,
 		status,
 		stop,
-	} = useChat({
+	} = useChat<MyUIMessage>({
+		experimental_throttle: 100,
 		transport: new DefaultChatTransport({
 			api: "/api/ai/chat",
 		}),
@@ -92,83 +145,77 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		},
 		onFinish: (data) => {
-			console.log(data);
 			if (!session) {
 				toast("Please sign in to save your message");
 				return;
 			}
 
-			const newMessage: Message = {
-				id: typeid().toUUID(),
-				chatId,
-				userId: session.user.id,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-				content: "",
-				role: "assistant",
-				quote,
-				parts: [],
-				metadata: null,
-			};
+			const message = parseUIMessage(data.message);
 
-			const textParts = data.message.parts.filter(
-				(part) => part.type === "text",
-			);
+			if (!message) {
+				toast("Assistant message not found");
+				return;
+			}
 
 			if (!isNew && router.pathname !== "/") {
 				createMessage({
 					chatId,
-					message: {
-						...newMessage,
-						content: textParts.map((part) => part.text).join(""),
-						parts: data.message.parts,
-					},
+					message,
 				});
 			}
 
-			if (router.pathname === "/" && isNew && lastUserMessage) {
-				localStorage.setItem(
-					"buuddy.new-workspace-messages",
-					JSON.stringify([
-						lastUserMessage,
-						{
-							...newMessage,
-							content: textParts.map((part) => part.text).join(""),
-							parts: data.message.parts,
-						},
-					]),
+			if (router.pathname === "/" && isNew) {
+				const firstUserMessageString = localStorage.getItem(
+					"pennink-user-message",
 				);
 
-				createWorkspace({
-					name: "...",
-					messages: [
-						lastUserMessage,
-						{
-							...newMessage,
-							content: textParts.map((part) => part.text).join(""),
-							parts: data.message.parts,
-						},
-					],
-					chatId,
-				});
+				if (firstUserMessageString) {
+					const firstUserMessage = JSON.parse(
+						firstUserMessageString,
+					) as Message;
+
+					localStorage.setItem(
+						"buuddy.new-workspace-messages",
+						JSON.stringify([firstUserMessage, message]),
+					);
+
+					createWorkspace({
+						name: "...",
+						messages: [
+							{
+								...firstUserMessage,
+								createdAt: DateTime.fromMillis(
+									firstUserMessage.createdAt as unknown as number,
+								).toJSDate(),
+								updatedAt: DateTime.fromMillis(
+									firstUserMessage.updatedAt as unknown as number,
+								).toJSDate(),
+							},
+							message,
+						],
+						chatId,
+					});
+				}
 			}
-			cleanUseChatMessages([]);
 		},
 		onError: (error) => {
 			console.error("An error occurred:", error);
 		},
 	});
 
+	console.log(tempMessages);
+
 	const stopStreaming = async () => {
 		if (!isNew && router.pathname !== "/" && status === "streaming") {
 			await stop();
 
-			if (currentAssistantMessage) {
+			const message = parseUIMessage(tempMessages[0]);
+
+			if (message) {
 				createMessage({
 					chatId,
-					message: currentAssistantMessage,
+					message,
 				});
-				setCurrentAssistantMessage(null);
 			}
 		}
 	};
@@ -196,47 +243,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			refetchOnWindowFocus: false,
 		},
 	);
-
-	useEffect(() => {
-		if (tempMessages.length > 0) {
-			const tempMessage = tempMessages[0];
-
-			if (!session) {
-				toast("Please sign in to send messages.");
-				return;
-			}
-
-			if (tempMessage?.role === "assistant") {
-				const textParts = tempMessage.parts.filter(
-					(part) => part.type === "text",
-				);
-
-				setCurrentAssistantMessage((prev) => {
-					if (prev) {
-						return {
-							...prev,
-							parts: tempMessage.parts,
-							content: textParts.map((part) => part.text).join(""),
-							metadata: tempMessage.metadata,
-						};
-					}
-
-					return {
-						id: typeid().toUUID(),
-						chatId,
-						userId: session.user.id,
-						createdAt: new Date(),
-						updatedAt: new Date(),
-						content: "",
-						role: "assistant",
-						quote: null,
-						parts: [],
-						metadata: null,
-					};
-				});
-			}
-		}
-	}, [tempMessages, session]);
 
 	useEffect(() => {
 		if (messagesData) {
@@ -303,14 +309,14 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			metadata: null,
 		};
 
-		setLastUserMessage(message);
+		const currentAssistantMessage = parseUIMessage(tempMessages[0]);
 
 		if (currentAssistantMessage) {
 			setMessages((prev) => {
 				return [...prev, currentAssistantMessage, message];
 			});
 
-			setCurrentAssistantMessage(null);
+			cleanUseChatMessages([]);
 		} else {
 			setMessages((prev) => {
 				return [...prev, message];
@@ -324,12 +330,34 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			return;
 		}
 
-		if (!isNew && router.pathname !== "/") {
-			createMessage({
-				chatId,
-				message,
+		if (isNew || router.pathname === "/") {
+			localStorage.setItem(
+				"pennink-user-message",
+				JSON.stringify({
+					...message,
+					createdAt: Date.now(),
+					updatedAt: Date.now(),
+				}),
+			);
+			
+			await sendMessage(undefined, {
+				body: {
+					context: {
+						messages: [],
+					},
+					chatModes: [],
+					prompt: data.prompt,
+					metadata: createAssistantMessageMetadata(chatId, session),
+				},
 			});
+
+			return;
 		}
+
+		createMessage({
+			chatId,
+			message,
+		});
 
 		if (contextItems.find((item) => item.type === "document")) {
 			if (!document) {
@@ -389,8 +417,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			});
 		}
 
-		console.log({ fullContextMessages });
-
 		await sendMessage(undefined, {
 			body: {
 				context: {
@@ -398,11 +424,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				},
 				chatModes,
 				prompt: data.prompt,
+				metadata: createAssistantMessageMetadata(chatId, session),
 			},
 		});
 	};
 
 	useEffect(() => {
+		console.log("A");
 		const lastMessage = messages[messages.length - 1];
 
 		if (chatContainer.current) {
@@ -416,15 +444,17 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	}, [chatContainer, messages.length]);
 
 	useEffect(() => {
+		console.log("B");
 		if (chatContainer.current) {
 			chatContainer.current.scrollTo({
 				top: chatContainer.current.scrollHeight,
 				behavior: "smooth",
 			});
 		}
-	}, [currentAssistantMessage?.id, chatContainer]);
+	}, [tempMessages[0]?.id, chatContainer]);
 
 	useEffect(() => {
+		console.log("C");
 		if (chatContainer.current) {
 			chatContainer.current.scrollTo({
 				top: chatContainer.current.scrollHeight,
@@ -434,6 +464,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 	//ReaderEvent listener
 	useEffect(() => {
+		console.log("D");
 		if (readerEvent) {
 			//Warning! It's very important set to null the event before executing any process or method.
 			//This is for avoid unnecesary rerenders or duplicated executions
@@ -450,6 +481,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					role: message.role,
 				})),
 			];
+
+			const currentAssistantMessage = parseUIMessage(tempMessages[0]);
 
 			if (currentAssistantMessage) {
 				fullContextMessages.push({
@@ -490,6 +523,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						},
 						chatModes,
 						prompt,
+						metadata: createAssistantMessageMetadata(chatId, session),
 					},
 				});
 			};
@@ -526,6 +560,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						},
 						chatModes,
 						prompt,
+						metadata: createAssistantMessageMetadata(chatId, session),
 					},
 				});
 			};
@@ -566,7 +601,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	return {
 		onSentPrompt,
 		useChatForm,
-		currentAssistantMessage,
+		tempMessages,
 		messages,
 		createWorkspaceIsPending,
 		router,
