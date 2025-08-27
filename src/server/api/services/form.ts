@@ -77,8 +77,8 @@ export class FormService {
 					}
 
 					case "BASIC": {
-						const form = await tx.insert(forms).values({});
-						return form;
+						// const form = await tx.insert(forms).values();
+						// return form;
 					}
 					default:
 						throw new TRPCError({

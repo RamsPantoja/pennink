@@ -8,6 +8,7 @@ import type { MessageRole } from "./enum";
 import type { ReactNode } from "react";
 import type { Session } from "next-auth";
 import { toast } from "sonner";
+import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));

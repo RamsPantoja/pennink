@@ -532,7 +532,7 @@ export function DynamicForm({
 			<Separator />
 			<div className="flex flex-col gap-6">
 				{questions.map((question) => (
-					<Fragment key={question.id}>{renderField(question)}</Fragment>
+					<Fragment key={question.key}>{renderField(question)}</Fragment>
 				))}
 			</div>
 		</div>
