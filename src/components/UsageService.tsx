@@ -29,28 +29,6 @@ export const UsageService = () => {
 		}
 	}, [resetStaticsMutation, staticsData?.id]);
 
-	const resetUploadFilesTime = useMemo(() => {
-		if (staticsData) {
-			const specificDate = DateTime.fromJSDate(staticsData.filesResetedAt);
-			const nextDay = specificDate.plus({ days: 1 });
-
-			return nextDay.toLocaleString(DateTime.DATETIME_SHORT);
-		}
-
-		return "No date";
-	}, [staticsData]);
-
-	const resetChatMessagesTime = useMemo(() => {
-		if (staticsData) {
-			const specificDate = DateTime.fromJSDate(staticsData.messagesResetedAt);
-			const nextDay = specificDate.plus({ days: 1 });
-
-			return nextDay.toLocaleString(DateTime.DATETIME_SHORT);
-		}
-
-		return "No date";
-	}, [staticsData]);
-
 	const resetWorkspacesTime = useMemo(() => {
 		if (staticsData) {
 			const specificDate = DateTime.fromJSDate(staticsData.workspacesResetedAt);
@@ -65,6 +43,10 @@ export const UsageService = () => {
 	return (
 		<Card className="border w-full max-w-80 flex flex-col gap-4">
 			<p className="text-sm">Usage</p>
+			<div className="flex flex-col">
+				<p className="text-xs text-mochaSubtext1">Resets at</p>
+				<span className="text-xs font-semibold">{resetWorkspacesTime}</span>
+			</div>
 			{staticsIsLoading && (
 				<div className="flex flex-col gap-4">
 					<Skeleton className="w-full h-5" />
@@ -81,9 +63,6 @@ export const UsageService = () => {
 			{!staticsIsLoading && !staticsIsError && staticsData && (
 				<Fragment>
 					<div className="flex flex-col gap-2">
-						<span className="text-xs text-right">
-							Resets at {resetWorkspacesTime}
-						</span>
 						<div className="flex gap-4 items-center justify-between">
 							<p className="text-xs ">Workspaces</p>
 							<p className="text-xs">{staticsData.workspaces}/2</p>
@@ -91,9 +70,6 @@ export const UsageService = () => {
 						<Progress value={(staticsData.workspaces / 2) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
-						<span className="text-xs text-right">
-							Resets at {resetChatMessagesTime}
-						</span>
 						<div className="flex gap-4 items-center justify-between">
 							<p className="text-xs ">Messages</p>
 							<p className="text-xs">{staticsData.messages}/20</p>
@@ -101,9 +77,6 @@ export const UsageService = () => {
 						<Progress value={(staticsData.messages / 20) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
-						<span className="text-xs text-right">
-							Resets at {resetUploadFilesTime}
-						</span>
 						<div className="flex gap-4 items-center justify-between">
 							<p className="text-xs ">Upload files</p>
 							<p className="text-xs">{staticsData.files}/5</p>

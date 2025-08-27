@@ -272,7 +272,9 @@ export class WorkspaceService {
 		}
 
 		const ruleForFreeSub = async () => {
-			const referenceDate = DateTime.fromJSDate(userStatics.filesResetedAt);
+			const referenceDate = DateTime.fromJSDate(
+				userStatics.workspacesResetedAt, //Working with workspaces resetDate
+			);
 			const currentDate = DateTime.now();
 			const diff = currentDate.diff(referenceDate, "days");
 
@@ -289,7 +291,7 @@ export class WorkspaceService {
 					.update(statics)
 					.set({
 						files: 0,
-						filesResetedAt: new Date(),
+						workspacesResetedAt: new Date(),
 					})
 					.where(eq(statics.id, userStatics.id));
 			}

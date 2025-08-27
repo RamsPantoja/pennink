@@ -80,7 +80,9 @@ export class UserService {
 			});
 
 			if (userStatics) {
-				const referenceDate = DateTime.fromJSDate(userStatics.filesResetedAt);
+				const referenceDate = DateTime.fromJSDate(
+					userStatics.workspacesResetedAt,
+				);
 				const currentDate = DateTime.now();
 				const diff = currentDate.diff(referenceDate, "days");
 
@@ -89,8 +91,10 @@ export class UserService {
 					await this.ctx.db
 						.update(statics)
 						.set({
+							workspaces: 0,
+							messages: 0,
 							files: 0,
-							filesResetedAt: new Date(),
+							workspacesResetedAt: new Date(),
 						})
 						.where(eq(statics.id, userStatics.id));
 				}

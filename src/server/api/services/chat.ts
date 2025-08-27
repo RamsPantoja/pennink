@@ -52,7 +52,9 @@ export class Chat {
 		}
 
 		const ruleForFreeSub = async () => {
-			const referenceDate = DateTime.fromJSDate(userStatics.messagesResetedAt);
+			const referenceDate = DateTime.fromJSDate(
+				userStatics.workspacesResetedAt, //Working with workspaces resetDate
+			);
 			const currentDate = DateTime.now();
 			const diff = currentDate.diff(referenceDate, "days");
 
@@ -69,7 +71,7 @@ export class Chat {
 					.update(statics)
 					.set({
 						messages: 0,
-						messagesResetedAt: new Date(),
+						workspacesResetedAt: new Date(),
 					})
 					.where(eq(statics.id, userStatics.id));
 			}
