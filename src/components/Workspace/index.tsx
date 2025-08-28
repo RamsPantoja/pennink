@@ -319,7 +319,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								<TooltipContent>Collapse chat</TooltipContent>
 							</Tooltip>
 						</div>
-						<div className="w-full h-full flex bg-mochaCrust flex-col overflow-auto">
+						<div className="w-full h-full flex bg-mochaCrust">
 							<Chat id={workspaceData.chatId} isNew={false} />
 						</div>
 					</ResizablePanel>
