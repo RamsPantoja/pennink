@@ -118,7 +118,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 			{!isNew && <Separator />}
 			<div className="flex flex-col gap-2 p-3">
 				{!isNew && (
-					<div className="flex items-center gap-2">
+					<div className="flex items-center gap-2 w-full flex-wrap">
 						<DropdownMenu>
 							<DropdownMenuTrigger
 								asChild
@@ -190,7 +190,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							contextItems.map((item, index) => (
 								<div
 									key={index}
-									className="flex items-center gap-1 border border-mochaMauve rounded-md pl-2"
+									className="flex items-center gap-1 border border-mochaMauve rounded-md pl-2 max-w-40"
 								>
 									{item.type === "editor" && (
 										<Bars3BottomLeftIcon className="min-w-5 w-5 h-5" />
@@ -198,7 +198,12 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 									{item.type === "document" && (
 										<DocumentTextIcon className="min-w-5 w-5 h-5" />
 									)}
-									<p className="text-mochaSubtext1 text-xs">{item.label}</p>
+									<p
+										className="text-mochaSubtext1 text-xs truncate"
+										title={item.label}
+									>
+										{item.label}
+									</p>
 									<Button
 										variant="ghost"
 										size="icon"

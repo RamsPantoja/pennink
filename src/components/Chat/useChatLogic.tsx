@@ -592,6 +592,20 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 	};
 
+	useEffect(() => {
+		if (document) {
+			setContextItems((prv) => {
+				return [
+					...prv.filter((item) => item.type !== "document"),
+					{
+						label: document.filename,
+						type: "document",
+					},
+				];
+			});
+		}
+	}, [document]);
+
 	return {
 		onSentPrompt,
 		useChatForm,
