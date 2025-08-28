@@ -136,6 +136,8 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	});
 	const [suggestion, setSuggestion] = useState<string>("");
 	const controllerOnSendPrompt = new AbortController();
+	const controllerOnKeyDown = new AbortController();
+	const controllerOnClick = new AbortController();
 	const [suggestionTimer, setSuggestionTimer] = useState<NodeJS.Timeout | null>(
 		null,
 	);
@@ -215,6 +217,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 
 		if (suggestionTimer) {
 			clearTimeout(suggestionTimer);
+			setSuggestionTimer(null);
 		}
 	};
 
@@ -383,7 +386,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 								clearTimeout(saveTimer);
 							}
 
-							controllerOnSendPrompt.abort("A change has been made");
 							const blockEvents = context.getChanges();
 
 							if (blockEvents.length === 1) {
@@ -397,8 +399,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 										isTyping
 									) {
 										setDisplaySuggestion(false);
-										const controllerOnKeyDown = new AbortController();
-										const controllerOnClick = new AbortController();
+
 										const content = concatTextContentFromBlock(block);
 
 										const reset = () => {
@@ -406,7 +407,13 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 											setSuggestion("");
 											controllerOnKeyDown.abort("Closing suggestion");
 											controllerOnClick.abort("Closing suggestion");
-											setSuggestionTimer(null);
+											controllerOnSendPrompt.abort(
+												"Suggestion closed before displaying",
+											);
+											if (suggestionTimer) {
+												clearTimeout(suggestionTimer);
+												setSuggestionTimer(null);
+											}
 										};
 
 										const handleOnHideTooltip = (event: MouseEvent) => {
@@ -484,26 +491,40 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 												}
 											};
 
+											document.addEventListener(
+												"mousedown",
+												handleOnHideTooltip,
+												{
+													signal: controllerOnClick.signal,
+												},
+											);
+
 											setSuggestionTimer(
 												setTimeout(async () => {
-													document.addEventListener(
-														"mousedown",
-														handleOnHideTooltip,
-														{
-															signal: controllerOnClick.signal,
-														},
-													);
+													const signal = controllerOnSendPrompt.signal;
+
+													// Check if cancelled before first async operation
+													if (signal.aborted) return;
 
 													const markdown = await editor.blocksToMarkdownLossy(
 														editor.document,
 													);
+
+													// Check if cancelled before first async operation
+													if (signal.aborted) return;
 
 													const res = await onSentPromptMutation({
 														prompt: `${block.type}: ${content}`,
 														context: markdown,
 													});
 
+													// Check if cancelled before first async operation
+													if (signal.aborted) return;
+
 													const streamRes = await handleStream(res);
+
+													// Check if cancelled before first async operation
+													if (signal.aborted) return;
 
 													if (streamRes) {
 														setSuggestion(streamRes);
