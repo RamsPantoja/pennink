@@ -401,23 +401,23 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 										const controllerOnClick = new AbortController();
 										const content = concatTextContentFromBlock(block);
 
+										const reset = () => {
+											setDisplaySuggestion(false);
+											setSuggestion("");
+											controllerOnKeyDown.abort("Closing suggestion");
+											controllerOnClick.abort("Closing suggestion");
+											setSuggestionTimer(null);
+										};
+
 										const handleOnHideTooltip = (event: MouseEvent) => {
 											if (
-												refs.floating.current &&
-												!refs.floating.current.contains(event.target as Node)
+												!refs.floating.current?.contains(event.target as Node)
 											) {
 												reset();
 											}
 										};
 
-										const reset = () => {
-											setDisplaySuggestion(false);
-											setSuggestion("");
-											controllerOnKeyDown.abort();
-											controllerOnClick.abort();
-										};
-
-										const acceptSuggestion = async ({
+										const acceptSuggestion = ({
 											block,
 											event,
 											suggestion,
@@ -484,16 +484,16 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 												}
 											};
 
-											document.addEventListener(
-												"mousedown",
-												handleOnHideTooltip,
-												{
-													signal: controllerOnClick.signal,
-												},
-											);
-
 											setSuggestionTimer(
 												setTimeout(async () => {
+													document.addEventListener(
+														"mousedown",
+														handleOnHideTooltip,
+														{
+															signal: controllerOnClick.signal,
+														},
+													);
+
 													const markdown = await editor.blocksToMarkdownLossy(
 														editor.document,
 													);
@@ -517,8 +517,8 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 
 														document.addEventListener(
 															"keydown",
-															async (e) => {
-																await acceptSuggestion({
+															(e) => {
+																acceptSuggestion({
 																	event: e,
 																	block,
 																	suggestion: streamRes,
