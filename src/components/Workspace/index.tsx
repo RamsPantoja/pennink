@@ -47,6 +47,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	const router = useRouter();
 	const { workspaceId } = router.query;
 	const chatPanelRef = useRef<ImperativePanelHandle>(null);
+	const contentPanelRef = useRef<ImperativePanelHandle>(null);
 	const utils = api.useUtils();
 	const {
 		document,
@@ -65,6 +66,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	});
 	const [tab, setTab] = useState<TabValue>("chat");
 	const [chatPanelCollapsed, setChatPanelCollapsed] = useState(false);
+	const [contentPanelCollapsed, setContentPanelCollapsed] = useState(false);
 
 	const {
 		data: workspaceData,
@@ -155,13 +157,43 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 					className="min-h-[200px] w-full md:min-w-[450px] flex h-full"
 				>
 					<ResizablePanel
+						defaultSize={30}
+						collapsible={true}
+						collapsedSize={0}
+						ref={contentPanelRef}
+						onCollapse={() => {
+							setContentPanelCollapsed(true);
+						}}
+						onExpand={() => {
+							setContentPanelCollapsed(false);
+						}}
 						className={cn([
-							"hidden",
+							"hidden relative",
 							{
 								flex: displayFormEditor || document,
 							},
 						])}
 					>
+						<div className="flex items-center absolute right-2 bottom-0 top-0 my-auto w-fit h-fit">
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										variant="ghost"
+										className="rounded-full border border-mochaMauve z-10"
+										size="icon"
+										onClick={() => {
+											const contentPanel = contentPanelRef.current;
+											if (contentPanel) {
+												contentPanel.collapse();
+											}
+										}}
+									>
+										<ArrowLeftIcon className="text-mochaText min-w-4 h-4" />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Collapse content</TooltipContent>
+							</Tooltip>
+						</div>
 						{formData && !document && <FormEditor />}
 						{document && !formData && (
 							<div className="flex w-full h-full flex-col">
@@ -229,6 +261,28 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								</Tooltip>
 							</div>
 						)}
+						{contentPanelCollapsed && (
+							<div className="flex items-center absolute left-2 bottom-0 top-0 my-auto w-fit h-fit z-10">
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											variant="ghost"
+											size="icon"
+											className="rounded-full border border-mochaMauve z-10"
+											onClick={() => {
+												const contentPanel = contentPanelRef.current;
+												if (contentPanel) {
+													contentPanel.expand();
+												}
+											}}
+										>
+											<ArrowRightIcon className="text-mochaText min-w-4 h-4" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Expand content</TooltipContent>
+								</Tooltip>
+							</div>
+						)}
 						<Editor data={workspaceData.note.content} onSave={getNoteContent} />
 					</ResizablePanel>
 					<ResizableHandle withHandle />
@@ -236,7 +290,6 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						defaultSize={30}
 						collapsible={true}
 						collapsedSize={0}
-						minSize={30}
 						ref={chatPanelRef}
 						onCollapse={() => {
 							setChatPanelCollapsed(true);
@@ -244,30 +297,30 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 						onExpand={() => {
 							setChatPanelCollapsed(false);
 						}}
+						className="relative"
 					>
-						<div className="w-full h-full flex bg-mochaCrust flex-col">
-							<div className="w-full flex p-2">
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<Button
-											variant="ghost"
-											size="icon"
-											onClick={() => {
-												const chatPanel = chatPanelRef.current;
-												if (chatPanel) {
-													chatPanel.collapse();
-												}
-											}}
-										>
-											<ArrowRightIcon className="text-mochaText min-w-5 h-5" />
-										</Button>
-									</TooltipTrigger>
-									<TooltipContent>Collapse chat</TooltipContent>
-								</Tooltip>
-							</div>
-							<div className="flex flex-1 overflow-auto">
-								<Chat id={workspaceData.chatId} isNew={false} />
-							</div>
+						<div className="flex items-center absolute left-2 bottom-0 top-0 my-auto w-fit h-fit z-10">
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="rounded-full border border-mochaMauve z-10"
+										onClick={() => {
+											const chatPanel = chatPanelRef.current;
+											if (chatPanel) {
+												chatPanel.collapse();
+											}
+										}}
+									>
+										<ArrowRightIcon className="text-mochaText min-w-4 h-4" />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Collapse chat</TooltipContent>
+							</Tooltip>
+						</div>
+						<div className="w-full h-full flex bg-mochaCrust flex-col overflow-auto">
+							<Chat id={workspaceData.chatId} isNew={false} />
 						</div>
 					</ResizablePanel>
 				</ResizablePanelGroup>
