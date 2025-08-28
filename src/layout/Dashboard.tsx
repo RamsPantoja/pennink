@@ -36,6 +36,7 @@ import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import Image from "next/image";
 import PomodoroTimer from "~/components/Pomodoro";
 import { FormLoader } from "~/components/Workspace/FormLoader";
+import { CommandIcon } from "lucide-react";
 
 type DashboardProps = {
 	session: Session;
@@ -192,9 +193,12 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			/>
 			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
 				<div className="flex p-2 gap-4 items-center justify-between w-full border-b border-mochaMauve">
-					<SidebarTrigger className="min-w-8 h-8">
-						<span>Toggle</span>
-					</SidebarTrigger>
+					<div className="flex items-center gap-2">
+						<SidebarTrigger className="min-w-8 h-8">
+							<span>Toggle</span>
+						</SidebarTrigger>
+						<p className="text-xs text-mochaSubText">Ctrl-B</p>
+					</div>
 					<div className="flex items-center gap-2">
 						{/*{router.asPath !== "/" && (
 							<Tooltip>
