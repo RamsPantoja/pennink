@@ -6,3 +6,5 @@ export type MessageRole = z.infer<typeof messageRole>;
 
 const subscription = z.enum(subscriptionEnum.enumValues);
 export type Subscription = z.infer<typeof subscription>;
+
+export type FormType = "BASIC" | "EXAM";

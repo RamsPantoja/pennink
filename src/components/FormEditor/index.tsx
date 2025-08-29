@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	ArrowPathRoundedSquareIcon,
 	BeakerIcon,
@@ -14,21 +12,21 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "~/utils/api";
 
 export const FormEditor = () => {
 	const [showAnswer, setShowAnswer] = useState<boolean>(false);
-	const { formData, formId } = useWorkspaceStore();
+	const { formData, currentForm, setCurrentForm } = useWorkspaceStore();
 
-	// const { mutate: updateWorkspace } = api.form.create.useMutation({
-	// 	onSuccess: async () => {
-	// 		await utils.workspace.workspaceById.invalidate();
-	// 	},
-	// 	onError: (error) => {
-	// 		toast(error.message);
-	// 	},
-	// });
+	const { mutate: createForm, isPending } = api.form.create.useMutation({
+		onSuccess: async () => {
+		setCurrentForm
+		},
+		onError: (error) => {
+			toast(error.message);
+		},
+	});
 
 	const {
 		control,
@@ -39,6 +37,14 @@ export const FormEditor = () => {
 	const onTestForm = () => {
 		toast.success("Form submitted successfully!");
 	};
+
+	useEffect(() => {
+		if (!currentForm && formData) {
+			createForm({
+				formData,
+			});
+		}
+	}, [currentForm, formData]);
 
 	return (
 		<div className="flex h-full flex-col overflow-hidden p-0">
