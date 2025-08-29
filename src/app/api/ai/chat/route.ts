@@ -94,7 +94,7 @@ export async function POST(req: Request) {
 			system: systemTemplate,
 			messages: [...context.messages, { role: "user", content: prompt }],
 			temperature: 0.1,
-			// tools,
+			tools,
 			stopWhen: stepCountIs(5), // Stop at step 5 if tools were called
 			onError({ error }) {
 				console.log(error); // your error logging logic here

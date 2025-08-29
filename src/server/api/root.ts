@@ -8,6 +8,7 @@ import { noteRouter } from "./routers/note";
 import { storageRouter } from "./routers/storage";
 import { subscriptionRouter } from "./routers/subscription";
 import { feedbackRouter } from "./routers/feedback";
+import { formRouter } from "./routers/form";
 
 /**
  * This is the primary router for your server.
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
 	storage: storageRouter,
 	subscription: subscriptionRouter,
 	feedback: feedbackRouter,
+	form: formRouter,
 });
 
 // export type definition of API

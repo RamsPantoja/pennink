@@ -675,6 +675,7 @@ export const exams = createTable("exam", {
 	id: customId.notNull().primaryKey(),
 	title: text().notNull(),
 	instructions: text(),
+	duration: integer(),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
@@ -748,6 +749,7 @@ export const questionsToExamsRelations = relations(
 export const shareLinks = createTable("share_link", {
 	id: customId.notNull().primaryKey(),
 	key: text().notNull(),
+	metadata: jsonb(),
 });
 
 export const shareLinksToForms = createTable(

@@ -8,6 +8,7 @@ import { NoteService } from "./note";
 import { StorageService } from "./storage";
 import { Subscription } from "./subscription";
 import { FeedbackService } from "./feedback";
+import { FormService } from "./form";
 
 export type ServicesContext = {
 	userService: UserService;
@@ -19,6 +20,7 @@ export type ServicesContext = {
 	storageService: StorageService;
 	subscriptionService: Subscription;
 	feedbackService: FeedbackService;
+	formService: FormService;
 };
 
 export type ServicesConfig = {
@@ -36,6 +38,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		storageService: new StorageService({ ctx }),
 		subscriptionService: new Subscription({ ctx }),
 		feedbackService: new FeedbackService({ ctx }),
+		formService: new FormService({ ctx }),
 	};
 };
 

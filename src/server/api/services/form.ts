@@ -7,6 +7,7 @@ import {
 	exams,
 	questions as questionsSchema,
 	questionsToExams,
+	questionsToForms,
 } from "~/server/db/schema";
 import type { createFormSchema } from "../schemas/form";
 
@@ -77,8 +78,35 @@ export class FormService {
 					}
 
 					case "BASIC": {
-						// const form = await tx.insert(forms).values();
-						// return form;
+						const [form] = await tx
+							.insert(forms)
+							.values({
+								title,
+								description,
+								userId: session.user.id,
+							})
+							.returning();
+
+						if (!form) {
+							throw new TRPCError({
+								code: "INTERNAL_SERVER_ERROR",
+								message: "Failed to create form",
+							});
+						}
+
+						const createdQuestions = await tx
+							.insert(questionsSchema)
+							.values(questions)
+							.returning();
+
+						await tx.insert(questionsToForms).values(
+							createdQuestions.map((question) => ({
+								formId: form.id,
+								questionId: question.id,
+							})),
+						);
+
+						return form;
 					}
 					default:
 						throw new TRPCError({
@@ -87,6 +115,8 @@ export class FormService {
 						});
 				}
 			});
+
+			return result;
 		} catch (e) {
 			console.error(e);
 			throw new TRPCError({
