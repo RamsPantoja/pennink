@@ -4,3 +4,8 @@ import { aiFormSchema } from "~/lib/schemas/aiForm";
 export const createFormSchema = z.object({
 	formData: aiFormSchema,
 });
+
+export const getDataSchema = z.object({
+	id: z.string().uuid(),
+	type: z.enum(["BASIC", "EXAM"]),
+});

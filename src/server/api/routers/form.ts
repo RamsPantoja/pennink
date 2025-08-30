@@ -1,4 +1,4 @@
-import { createFormSchema } from "../schemas/form";
+import { createFormSchema, getDataSchema } from "../schemas/form";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const formRouter = createTRPCRouter({
@@ -9,5 +9,10 @@ export const formRouter = createTRPCRouter({
 				createFormInputSchema: input,
 				session: ctx.session,
 			});
+		}),
+	getData: protectedProcedure
+		.input(getDataSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx.services({ ctx }).formService.getData(input);
 		}),
 });

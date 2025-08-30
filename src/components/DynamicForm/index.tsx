@@ -69,6 +69,7 @@ export function DynamicForm({
 									placeholder={question.placeholder}
 									min={question.min}
 									max={question.max}
+									step={question.step}
 									className="focus:ring-mochaSubText"
 								/>
 								{question.description && (
@@ -523,7 +524,6 @@ export function DynamicForm({
 					<p className="text-mochaText font-semibold text-xl tracking-widest">
 						{title}
 					</p>
-					<Badge variant="outline">{type}</Badge>
 				</div>
 				{description && (
 					<p className="text-sm text-mochaSubText">{description}</p>

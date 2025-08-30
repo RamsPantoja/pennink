@@ -20,6 +20,8 @@ import {
 	uuid,
 	json,
 	jsonb,
+	numeric,
+	real,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { typeid } from "typeid-js";
@@ -567,6 +569,16 @@ export const forms = createTable("form", {
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const formsRelations = relations(forms, ({ one, many }) => ({
@@ -574,33 +586,62 @@ export const formsRelations = relations(forms, ({ one, many }) => ({
 		fields: [forms.userId],
 		references: [users.id],
 	}),
-	questionsToForms: many(questionsToForms),
+	formVersions: many(formVersions),
 	shareLinksToForms: many(shareLinksToForms),
 }));
 
-export const questionsToForms = createTable(
-	"questions_to_forms",
+export const formVersions = createTable("form_versions", {
+	id: customId.notNull().primaryKey(),
+	formId: uuid()
+		.notNull()
+		.references(() => forms.id),
+	version: integer().notNull(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const formVersionsRelations = relations(
+	formVersions,
+	({ one, many }) => ({
+		form: one(forms, {
+			fields: [formVersions.formId],
+			references: [forms.id],
+		}),
+		questionsToFormVersions: many(questionsToFormVersions),
+	}),
+);
+
+export const questionsToFormVersions = createTable(
+	"questions_to_form_versions",
 	{
 		questionId: uuid()
 			.notNull()
 			.references(() => questions.id),
-		formId: uuid()
+		formVersionId: uuid()
 			.notNull()
-			.references(() => forms.id),
+			.references(() => formVersions.id),
 	},
-	(t) => [primaryKey({ columns: [t.questionId, t.formId] })],
+	(t) => [primaryKey({ columns: [t.questionId, t.formVersionId] })],
 );
 
-export const questionsToFormsRelations = relations(
-	questionsToForms,
+export const questionsToFormVersionsRelations = relations(
+	questionsToFormVersions,
 	({ one }) => ({
 		question: one(questions, {
-			fields: [questionsToForms.questionId],
+			fields: [questionsToFormVersions.questionId],
 			references: [questions.id],
 		}),
-		form: one(forms, {
-			fields: [questionsToForms.formId],
-			references: [forms.id],
+		formVersion: one(formVersions, {
+			fields: [questionsToFormVersions.formVersionId],
+			references: [formVersions.id],
 		}),
 	}),
 );
@@ -613,15 +654,26 @@ export const questions = createTable("question", {
 	label: text().notNull(),
 	placeholder: text(),
 	required: boolean().notNull().default(false),
-	min: integer(),
-	max: integer(),
-	step: integer(),
+	min: real(),
+	max: real(),
+	step: real(),
 	answer: jsonb(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const questionRelations = relations(questions, ({ many }) => ({
-	questionsToForms: many(questionsToForms),
-	questionsToExams: many(questionsToExams),
+	questionsToFormVersions: many(questionsToFormVersions),
+	questionsToExamVersions: many(questionsToExamVersions),
+	questionOptions: many(questionOptions),
 }));
 
 export const questionOptions = createTable("question_option", {
@@ -646,14 +698,28 @@ export const questionOptionRelations = relations(
 export const formResponses = createTable("form_response", {
 	id: customId.notNull().primaryKey(),
 	email: text().notNull(),
+	name: text().notNull(),
 	userId: uuid().references(() => users.id),
 	formId: uuid()
 		.references(() => forms.id)
+		.notNull(),
+	formVersionId: uuid()
+		.references(() => formVersions.id)
 		.notNull(),
 	answers: jsonb().notNull(),
 	shareLinkId: uuid()
 		.references(() => shareLinks.id)
 		.notNull(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const formResponseRelations = relations(formResponses, ({ one }) => ({
@@ -669,17 +735,31 @@ export const formResponseRelations = relations(formResponses, ({ one }) => ({
 		fields: [formResponses.shareLinkId],
 		references: [shareLinks.id],
 	}),
+	formVersion: one(formVersions, {
+		fields: [formResponses.formVersionId],
+		references: [formVersions.id],
+	}),
 }));
 
 export const exams = createTable("exam", {
 	id: customId.notNull().primaryKey(),
 	title: text().notNull(),
 	instructions: text(),
-	duration: integer(),
+	duration: integer().default(30),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
 	answers: jsonb().notNull(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const examRelations = relations(exams, ({ one, many }) => ({
@@ -687,9 +767,38 @@ export const examRelations = relations(exams, ({ one, many }) => ({
 		fields: [exams.userId],
 		references: [users.id],
 	}),
-	questionsToExams: many(questionsToExams),
+	examVersions: many(examVersions),
 	shareLinksToExams: many(shareLinksToExams),
 }));
+
+export const examVersions = createTable("exam_versions", {
+	id: customId.notNull().primaryKey(),
+	examId: uuid()
+		.notNull()
+		.references(() => exams.id),
+	version: integer().notNull(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const examVersionsRelations = relations(
+	examVersions,
+	({ one, many }) => ({
+		exam: one(exams, {
+			fields: [examVersions.examId],
+			references: [exams.id],
+		}),
+		questionsToExamVersions: many(questionsToExamVersions),
+	}),
+);
 
 export const examResponses = createTable("exam_response", {
 	id: customId.notNull().primaryKey(),
@@ -699,9 +808,22 @@ export const examResponses = createTable("exam_response", {
 		.references(() => exams.id)
 		.notNull(),
 	answers: jsonb().notNull(),
+	examVersionId: uuid()
+		.references(() => examVersions.id)
+		.notNull(),
 	shareLinkId: uuid()
 		.references(() => shareLinks.id)
 		.notNull(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const examResponsesRelations = relations(examResponses, ({ one }) => ({
@@ -713,35 +835,39 @@ export const examResponsesRelations = relations(examResponses, ({ one }) => ({
 		fields: [examResponses.examId],
 		references: [exams.id],
 	}),
+	examVersion: one(examVersions, {
+		fields: [examResponses.examVersionId],
+		references: [examVersions.id],
+	}),
 	shareLink: one(shareLinks, {
 		fields: [examResponses.shareLinkId],
 		references: [shareLinks.id],
 	}),
 }));
 
-export const questionsToExams = createTable(
-	"questions_to_exams",
+export const questionsToExamVersions = createTable(
+	"questions_to_exam_versions",
 	{
 		questionId: uuid()
 			.notNull()
 			.references(() => questions.id),
-		examId: uuid()
+		examVersionId: uuid()
 			.notNull()
-			.references(() => exams.id),
+			.references(() => examVersions.id),
 	},
-	(t) => [primaryKey({ columns: [t.questionId, t.examId] })],
+	(t) => [primaryKey({ columns: [t.questionId, t.examVersionId] })],
 );
 
-export const questionsToExamsRelations = relations(
-	questionsToExams,
+export const questionsToExamVersionsRelations = relations(
+	questionsToExamVersions,
 	({ one }) => ({
 		question: one(questions, {
-			fields: [questionsToExams.questionId],
+			fields: [questionsToExamVersions.questionId],
 			references: [questions.id],
 		}),
-		exam: one(exams, {
-			fields: [questionsToExams.examId],
-			references: [exams.id],
+		examVersion: one(examVersions, {
+			fields: [questionsToExamVersions.examVersionId],
+			references: [examVersions.id],
 		}),
 	}),
 );
@@ -750,6 +876,16 @@ export const shareLinks = createTable("share_link", {
 	id: customId.notNull().primaryKey(),
 	key: text().notNull(),
 	metadata: jsonb(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const shareLinksToForms = createTable(
