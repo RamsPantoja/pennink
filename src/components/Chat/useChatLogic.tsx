@@ -653,6 +653,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					type: "document",
 				},
 			]);
+		} else {
+			setAiContextItems([
+				...aiContextItems.filter((item) => item.type !== "document"),
+			]);
 		}
 	}, [document]);
 

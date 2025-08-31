@@ -58,12 +58,22 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 		api.workspace.createFile.useMutation({
 			onSuccess: async (data) => {
 				toast("You can now ask to your document!");
-				setDocument({
+				const doc = {
 					id: data.id,
 					filename: data.filename,
 					type: data.type,
 					src: `${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${data.key}`,
-				});
+				};
+
+				localStorage.setItem(
+					"pennink-doc",
+					JSON.stringify({
+						...doc,
+						workspaceId,
+					}),
+				);
+
+				setDocument(doc);
 
 				await utils.user.statics.invalidate();
 				await utils.workspace.filesByUserId.invalidate();
