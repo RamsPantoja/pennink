@@ -10,7 +10,7 @@ import { bedrock as bedrockV3 } from "bedrock-v3";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { aiFormSchema } from "~/lib/schemas/aiForm";
-import type { ChatModes } from "~/components/Chat/useChatLogic";
+import type { Tools } from "~/components/Chat/useChatLogic";
 import type { Message } from "~/server/api/services/chat";
 
 export type Context = {
@@ -20,7 +20,7 @@ export type Context = {
 export type AgentChatRequestData = {
 	prompt: string;
 	context: Context;
-	chatModes: ChatModes[];
+	toolsAllowed: Tools[];
 	trigger: "submit-message";
 	id: string;
 	metadata: Message;
@@ -39,23 +39,31 @@ export async function POST(req: Request) {
 			throw new Error("Must be logged in to access");
 		}
 
-		const tools: ToolSet = {
-			generateAndEditForm: tool({
-				description: "Tool for generating or editing forms and exams",
-				inputSchema: aiFormSchema,
-				execute: async ({ title, description, questions, type }) => {
-					return {
-						title,
-						description,
-						questions,
-						type,
-					};
-				},
-			}),
-		};
+		const tools: ToolSet = {};
 
-		const { context, prompt, chatModes, metadata } =
+		const { context, prompt, toolsAllowed, metadata } =
 			(await req.json()) as AgentChatRequestData;
+
+		for (const toolKey of toolsAllowed) {
+			switch (toolKey) {
+				case "form-generation":
+					tools.generateAndEditForm = tool({
+						description: "Tool for generating or editing forms and exams",
+						inputSchema: aiFormSchema,
+						execute: async ({ title, description, questions, type }) => {
+							return {
+								title,
+								description,
+								questions,
+								type,
+							};
+						},
+					});
+					break;
+				default:
+					break;
+			}
+		}
 
 		const model = bedrockV3("openai.gpt-oss-120b-1:0");
 		const systemTemplate = `

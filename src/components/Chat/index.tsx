@@ -50,8 +50,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		chatContainer,
 		quote,
 		onRemoveQuote,
-		onToggleChatModes,
-		chatModes,
+		onToggleTools,
+		tools,
 		document,
 		documentVectorSearchMutationIsPending,
 		stopStreaming,
@@ -255,9 +255,9 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							<ToggleGroup
 								type="multiple"
 								onValueChange={(value: ChatModes[]) => {
-									onToggleChatModes(value);
+									onToggleTools(value);
 								}}
-								value={chatModes}
+								value={tools}
 							>
 								<Tooltip>
 									<TooltipTrigger asChild>

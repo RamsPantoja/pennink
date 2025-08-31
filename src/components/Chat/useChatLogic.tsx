@@ -41,10 +41,7 @@ type UseChatLogicProps = {
 	isNew: boolean;
 };
 
-export type ChatModes =
-	| "form-generation-mode"
-	| "web-search-mode"
-	| "reasoning-mode";
+export type Tools = "form-generation" | "web-search";
 
 export const parseUIMessage = (message?: MyUIMessage): Message | null => {
 	if (message) {
@@ -104,7 +101,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		queryFormData,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
-	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
+	const [tools, setTools] = useState<Tools[]>([]);
 
 	const {
 		messages: tempMessages,
@@ -475,7 +472,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				context: {
 					messages: fullContextMessages,
 				},
-				chatModes,
+				tools,
 				prompt: data.prompt,
 				metadata: createAssistantMessageMetadata(chatId, session),
 			},
@@ -570,7 +567,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						context: {
 							messages: fullContextMessages,
 						},
-						chatModes,
+						tools,
 						prompt,
 						metadata: createAssistantMessageMetadata(chatId, session),
 					},
@@ -607,7 +604,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						context: {
 							messages: fullContextMessages,
 						},
-						chatModes,
+						tools,
 						prompt,
 						metadata: createAssistantMessageMetadata(chatId, session),
 					},
@@ -632,8 +629,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		setQuote(null);
 	};
 
-	const onToggleChatModes = (modes: ChatModes[]) => {
-		setChatModes(modes);
+	const onToggleTools = (tools: Tools[]) => {
+		setTools(tools);
 	};
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -671,8 +668,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		chatContainer,
 		quote,
 		onRemoveQuote,
-		onToggleChatModes,
-		chatModes,
+		onToggleTools,
+		tools,
 		documentVectorSearchMutationIsPending,
 		document,
 		stopStreaming,
