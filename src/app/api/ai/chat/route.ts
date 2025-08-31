@@ -40,8 +40,8 @@ export async function POST(req: Request) {
 		}
 
 		const tools: ToolSet = {
-			generateForm: tool({
-				description: "Tool for generating forms and exams",
+			generateAndEditForm: tool({
+				description: "Tool for generating or editing forms and exams",
 				inputSchema: aiFormSchema,
 				execute: async ({ title, description, questions, type }) => {
 					return {

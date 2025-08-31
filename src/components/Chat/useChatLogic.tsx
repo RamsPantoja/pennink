@@ -116,7 +116,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		document,
 		editor,
 		setDisplayFormEditor,
-		setFormData,
+		setAiFormData,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
@@ -139,9 +139,9 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			api: "/api/ai/chat",
 		}),
 		onToolCall: (data) => {
-			if (data.toolCall.toolName === "generateForm") {
+			if (data.toolCall.toolName === "generateAndEditForm") {
 				setDisplayFormEditor(true);
-				setFormData(data.toolCall.input as AiForm);
+				setAiFormData(data.toolCall.input as AiForm);
 			}
 		},
 		onFinish: (data) => {

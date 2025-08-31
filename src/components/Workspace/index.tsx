@@ -11,18 +11,12 @@ import {
 import dynamic from "next/dynamic";
 import { Loading } from "../common/Loading";
 import { toast } from "sonner";
-import {
-	ArrowLeftIcon,
-	ArrowRightCircleIcon,
-	ArrowRightIcon,
-	ChatBubbleOvalLeftIcon,
-	DocumentTextIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { type PenninkDocument, useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 import { Editor } from "../Editor";
 import type { Block } from "@blocknote/core";
@@ -54,7 +48,6 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		setReaderEvent,
 		setWorkspaceTitle,
 		displayFormEditor,
-		formData,
 		setDocument,
 	} = useWorkspaceStore();
 	const [selectionContent, setSelectionContent] = useState<{
@@ -194,8 +187,8 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								<TooltipContent>Collapse content</TooltipContent>
 							</Tooltip>
 						</div>
-						{formData && !document && <FormEditor />}
-						{document && !formData && (
+						{!document && displayFormEditor && <FormEditor />}
+						{document && !displayFormEditor && (
 							<div className="flex w-full h-full flex-col">
 								<SelectionToolbar
 									selection={selectionContent}

@@ -36,8 +36,8 @@ type WorkspaceStore = {
 	setEditor: (editor: BlockNoteEditor | null) => void;
 	displayFormEditor: boolean;
 	setDisplayFormEditor: (displayFormEditor: boolean) => void;
-	formData: AiForm | null;
-	setFormData: (formData: AiForm | null) => void;
+	aiFormData: AiForm | null;
+	setAiFormData: (data: AiForm | null) => void;
 	currentForm: CurrentForm | null;
 	setCurrentForm: (form: CurrentForm) => void;
 };
@@ -45,8 +45,11 @@ type WorkspaceStore = {
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	workspaceTitle: "",
 	document: null,
-	formData: null,
-	currentForm: null,
+	aiFormData: null,
+	currentForm: {
+		id: "0198f93b-0c45-76fc-b78a-e82b601c4037",
+		type: "BASIC",
+	},
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
 	setDocument: (document) => set(() => ({ document })),
 	readerEvent: null,
@@ -54,8 +57,8 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
 	editor: null,
 	setEditor: (editor) => set(() => ({ editor })),
-	displayFormEditor: false,
+	displayFormEditor: true,
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() => ({ displayFormEditor })),
-	setFormData: (formData) => set(() => ({ formData })),
+	setAiFormData: (data) => set(() => ({ aiFormData: data })),
 }));

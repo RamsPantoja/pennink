@@ -9,3 +9,8 @@ export const getDataSchema = z.object({
 	id: z.string().uuid(),
 	type: z.enum(["BASIC", "EXAM"]),
 });
+
+export const editFormSchema = z.object({
+	id: z.string().uuid(),
+	formData: aiFormSchema,
+});

@@ -19,27 +19,31 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
 import { Slider } from "../ui/slider";
-import type { AiForm } from "~/lib/schemas/aiForm";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
 import { CheckIcon } from "@heroicons/react/24/outline";
+import type { RouterOutputs } from "~/utils/api";
+import type { Questions } from "~/server/api/services/form";
 
 interface DynamicFormProps {
-	data: AiForm;
+	formData: RouterOutputs["form"]["getData"];
 	control: Control<FieldValues, any, FieldValues>;
 	errors: FieldErrors<FieldValues>;
 	showAnswer: boolean;
 }
 
 export function DynamicForm({
-	data,
+	formData,
 	control,
 	errors,
 	showAnswer,
 }: DynamicFormProps) {
-	const { questions, title, description, type } = data;
+	const { data, type } = formData;
 
-	const renderField = (question: AiForm["questions"][number]) => {
+	if (type === "BASIC") {
+	}
+
+	const renderField = (question: Questions) => {
 		const fieldId = question.key;
 		const isRequired = question.required;
 
@@ -66,10 +70,10 @@ export function DynamicForm({
 									{...field}
 									id={fieldId}
 									type={question.type}
-									placeholder={question.placeholder}
-									min={question.min}
-									max={question.max}
-									step={question.step}
+									placeholder={question.placeholder ?? undefined}
+									min={question.min ?? undefined}
+									max={question.max ?? undefined}
+									step={question.step ?? undefined}
 									className="focus:ring-mochaSubText"
 								/>
 								{question.description && (
@@ -82,14 +86,16 @@ export function DynamicForm({
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && showAnswer && (
-									<div className="border py-2 px-3 border-mochaMantle bg-mochaCrust flex items-center gap-2 rounded-md w-fit">
-										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
-											{question.answer}
-										</p>
-									</div>
-								)}
+								{question.answer !== undefined &&
+									question.answer !== null &&
+									showAnswer && (
+										<div className="border py-2 px-3 border-mochaMantle bg-mochaCrust flex items-center gap-2 rounded-md w-fit">
+											<CheckIcon className="h-5 min-w-5 text-green-500" />
+											<p className="text-sm text-mochaSubText">
+												{question.answer as string}
+											</p>
+										</div>
+									)}
 							</div>
 						)}
 					/>
@@ -120,9 +126,9 @@ export function DynamicForm({
 									{...field}
 									id={fieldId}
 									type="email"
-									placeholder={question.placeholder}
-									min={question.min}
-									max={question.max}
+									placeholder={question.placeholder ?? undefined}
+									min={question.min ?? undefined}
+									max={question.max ?? undefined}
 									className="focus:ring-mochaSubText"
 								/>
 								{question.description && (
@@ -173,14 +179,16 @@ export function DynamicForm({
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && showAnswer && (
-									<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
-										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
-											{question.answer}
-										</p>
-									</div>
-								)}
+								{question.answer !== undefined &&
+									question.answer !== null &&
+									showAnswer && (
+										<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
+											<CheckIcon className="h-5 min-w-5 text-green-500" />
+											<p className="text-sm text-mochaSubText">
+												{question.answer as string}
+											</p>
+										</div>
+									)}
 							</div>
 						)}
 					/>
@@ -206,7 +214,7 @@ export function DynamicForm({
 								<Textarea
 									{...field}
 									id={fieldId}
-									placeholder={question.placeholder}
+									placeholder={question.placeholder ?? undefined}
 									rows={4}
 									className="focus:ring-mochaSubText"
 								/>
@@ -220,14 +228,16 @@ export function DynamicForm({
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && showAnswer && (
-									<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
-										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
-											{question.answer}
-										</p>
-									</div>
-								)}
+								{question.answer !== undefined &&
+									question.answer !== null &&
+									showAnswer && (
+										<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
+											<CheckIcon className="h-5 min-w-5 text-green-500" />
+											<p className="text-sm text-mochaSubText">
+												{question.answer as string}
+											</p>
+										</div>
+									)}
 							</div>
 						)}
 					/>
@@ -255,7 +265,7 @@ export function DynamicForm({
 										<SelectValue placeholder={"Select option"} />
 									</SelectTrigger>
 									<SelectContent>
-										{question.options?.map((option) => (
+										{question.questionOptions.map((option) => (
 											<SelectItem key={option.value} value={option.value}>
 												{option.label}
 											</SelectItem>
@@ -272,16 +282,18 @@ export function DynamicForm({
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && showAnswer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
-										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
-											{question.options?.find(
-												(option) => option.value === question.answer,
-											)?.label || ""}
-										</p>
-									</div>
-								)}
+								{question.answer !== undefined &&
+									question.answer !== null &&
+									showAnswer && (
+										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+											<CheckIcon className="h-5 min-w-5 text-green-500" />
+											<p className="text-sm text-mochaSubText">
+												{question.questionOptions.find(
+													(option) => option.value === question.answer,
+												)?.label || ""}
+											</p>
+										</div>
+									)}
 							</div>
 						)}
 					/>
@@ -305,7 +317,7 @@ export function DynamicForm({
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
 								<RadioGroup onValueChange={field.onChange} value={field.value}>
-									{question.options?.map((option) => (
+									{question.questionOptions.map((option) => (
 										<div
 											key={option.value}
 											className="flex items-center space-x-2"
@@ -330,16 +342,18 @@ export function DynamicForm({
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && showAnswer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
-										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
-											{question.options?.find(
-												(option) => option.value === question.answer,
-											)?.label || ""}
-										</p>
-									</div>
-								)}
+								{question.answer !== undefined &&
+									question.answer !== null &&
+									showAnswer && (
+										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+											<CheckIcon className="h-5 min-w-5 text-green-500" />
+											<p className="text-sm text-mochaSubText">
+												{question.questionOptions.find(
+													(option) => option.value === question.answer,
+												)?.label || ""}
+											</p>
+										</div>
+									)}
 							</div>
 						)}
 					/>
@@ -364,7 +378,7 @@ export function DynamicForm({
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
 								<div className="flex flex-col gap-2">
-									{question.options?.map((option) => (
+									{question.questionOptions.map((option) => (
 										<div
 											key={option.value}
 											className="flex items-center space-x-2"
@@ -401,22 +415,24 @@ export function DynamicForm({
 										{errors[fieldId]?.message as string}
 									</p>
 								)}
-								{question.answer && showAnswer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
-										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
-											{Array.isArray(question.answer) &&
-												question.answer
-													.map((item) => {
-														const option = question.options?.find(
-															(opt) => opt.value === item,
-														);
-														return option ? option.label : item;
-													})
-													.join(", ")}
-										</p>
-									</div>
-								)}
+								{question.answer !== undefined &&
+									question.answer !== null &&
+									showAnswer && (
+										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+											<CheckIcon className="h-5 min-w-5 text-green-500" />
+											<p className="text-sm text-mochaSubText">
+												{Array.isArray(question.answer) &&
+													question.answer
+														.map((item) => {
+															const option = question.questionOptions.find(
+																(opt) => opt.value === item,
+															);
+															return option ? option.label : item;
+														})
+														.join(", ")}
+											</p>
+										</div>
+									)}
 							</div>
 						)}
 					/>
@@ -499,14 +515,16 @@ export function DynamicForm({
 										{question.description}
 									</p>
 								)}
-								{question.answer && showAnswer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
-										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
-											{question.answer}
-										</p>
-									</div>
-								)}
+								{question.answer !== undefined &&
+									question.answer !== null &&
+									showAnswer && (
+										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+											<CheckIcon className="h-5 min-w-5 text-green-500" />
+											<p className="text-sm text-mochaSubText">
+												{question.answer as number}
+											</p>
+										</div>
+									)}
 							</div>
 						)}
 					/>
@@ -519,22 +537,54 @@ export function DynamicForm({
 
 	return (
 		<div className="flex flex-col gap-4 overflow-auto px-8 py-4 h-full">
-			<div className="flex flex-col gap-3 mb-4">
-				<div className="flex items-center gap-4 justify-between">
-					<p className="text-mochaText font-semibold text-xl tracking-widest">
-						{title}
-					</p>
-				</div>
-				{description && (
-					<p className="text-sm text-mochaSubText">{description}</p>
-				)}
-			</div>
-			<Separator />
-			<div className="flex flex-col gap-6">
-				{questions.map((question) => (
-					<Fragment key={question.key}>{renderField(question)}</Fragment>
-				))}
-			</div>
+			{type === "BASIC" && (
+				<Fragment>
+					<div className="flex flex-col gap-3 mb-4">
+						<div className="flex items-center gap-4 justify-between">
+							<p className="text-mochaText font-semibold text-xl tracking-widest">
+								{data.form.title}
+							</p>
+						</div>
+						{data.form.description && (
+							<p className="text-sm text-mochaSubText">
+								{data.form.description}
+							</p>
+						)}
+					</div>
+					<Separator />
+					<div className="flex flex-col gap-6">
+						{data.questionsToFormVersions.map((item) => (
+							<Fragment key={item.question.id}>
+								{renderField(item.question)}
+							</Fragment>
+						))}
+					</div>
+				</Fragment>
+			)}
+			{type === "EXAM" && (
+				<Fragment>
+					<div className="flex flex-col gap-3 mb-4">
+						<div className="flex items-center gap-4 justify-between">
+							<p className="text-mochaText font-semibold text-xl tracking-widest">
+								{data.exam.title}
+							</p>
+						</div>
+						{data.exam.instructions && (
+							<p className="text-sm text-mochaSubText">
+								{data.exam.instructions}
+							</p>
+						)}
+					</div>
+					<Separator />
+					<div className="flex flex-col gap-6">
+						{data.questionsToExamVersions.map((item) => (
+							<Fragment key={item.question.id}>
+								{renderField(item.question)}
+							</Fragment>
+						))}
+					</div>
+				</Fragment>
+			)}
 		</div>
 	);
 }
