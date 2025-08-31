@@ -17,7 +17,14 @@ import FeedbackMessage from "../common/FeedbackMessage";
 
 export const FormEditor = () => {
 	const [showAnswer, setShowAnswer] = useState<boolean>(false);
-	const { aiFormData, currentForm, setCurrentForm } = useWorkspaceStore();
+	const {
+		aiFormData,
+		currentForm,
+		setCurrentForm,
+		setQueryFormData,
+		setAiContextItems,
+		aiContextItems,
+	} = useWorkspaceStore();
 	const {
 		control,
 		handleSubmit,
@@ -94,6 +101,26 @@ export const FormEditor = () => {
 			enabled: Boolean(currentForm),
 		},
 	);
+
+	useEffect(() => {
+		if (data) {
+			setQueryFormData(data);
+
+			const hasFormContextItem = aiContextItems.some(
+				(item) => item.type === "form",
+			);
+
+			if (!hasFormContextItem) {
+				setAiContextItems([
+					...aiContextItems,
+					{
+						label: "Form",
+						type: "form",
+					},
+				]);
+			}
+		}
+	}, [data]);
 
 	const onTestForm = () => {
 		toast.success("Form submitted successfully!");

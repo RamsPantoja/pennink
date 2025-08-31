@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { BlockNoteEditor } from "@blocknote/core";
 import type { AiForm } from "~/lib/schemas/aiForm";
 import type { FormType } from "~/lib/enum";
+import type { RouterOutputs } from "~/utils/api";
 
 export type PenninkDocument = {
 	id: string;
@@ -21,6 +22,11 @@ export type DocumentContext = {
 	type: "document";
 };
 
+export type FormContext = {
+	label: string;
+	type: "form";
+};
+
 export type EditorContext = {
 	label: string;
 	type: "editor";
@@ -36,7 +42,11 @@ type ReaderEvent = {
 	data: string;
 };
 
-export type ContextEntity = ThreadContext | DocumentContext | EditorContext;
+export type ContextEntity =
+	| ThreadContext
+	| DocumentContext
+	| EditorContext
+	| FormContext;
 
 type CurrentForm = {
 	id: string;
@@ -60,6 +70,8 @@ type WorkspaceStore = {
 	setCurrentForm: (form: CurrentForm) => void;
 	aiContextItems: ContextEntity[];
 	setAiContextItems: (items: ContextEntity[]) => void;
+	queryFormData: RouterOutputs["form"]["getData"] | null;
+	setQueryFormData: (data: RouterOutputs["form"]["getData"] | null) => void;
 };
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
@@ -70,12 +82,10 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 			type: "editor",
 		},
 	],
+	queryFormData: null,
 	document: null,
 	aiFormData: null,
-	currentForm: {
-		id: "0198f93b-0c45-76fc-b78a-e82b601c4037",
-		type: "BASIC",
-	},
+	currentForm: null,
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
 	setDocument: (document) => set(() => ({ document })),
 	readerEvent: null,
@@ -83,9 +93,10 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
 	editor: null,
 	setEditor: (editor) => set(() => ({ editor })),
-	displayFormEditor: true,
+	displayFormEditor: false,
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() => ({ displayFormEditor })),
 	setAiFormData: (data) => set(() => ({ aiFormData: data })),
 	setAiContextItems: (items) => set((state) => ({ aiContextItems: items })),
+	setQueryFormData: (data) => set(() => ({ queryFormData: data })),
 }));

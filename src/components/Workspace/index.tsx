@@ -56,6 +56,9 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		setDisplayFormEditor,
 		setAiContextItems,
 		aiContextItems,
+		setAiFormData,
+		setCurrentForm,
+		setQueryFormData,
 	} = useWorkspaceStore();
 	const [selectionContent, setSelectionContent] = useState<{
 		text: string;
@@ -143,8 +146,13 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		setDocument(null);
 		setDisplayFormEditor(false);
 		setAiContextItems([
-			...aiContextItems.filter((item) => item.type !== "document"),
+			...aiContextItems.filter(
+				(item) => item.type !== "document" && item.type !== "form",
+			),
 		]);
+		setAiFormData(null);
+		setCurrentForm(null);
+		setQueryFormData(null);
 	};
 
 	return (

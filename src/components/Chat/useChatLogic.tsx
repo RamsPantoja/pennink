@@ -101,6 +101,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		setAiFormData,
 		aiContextItems,
 		setAiContextItems,
+		queryFormData,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
@@ -368,6 +369,82 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			});
 		}
 
+		if (aiContextItems.find((item) => item.type === "form")) {
+			if (!queryFormData) {
+				toast.error("Form instance not found");
+				return;
+			}
+
+			if (queryFormData) {
+				let data = "";
+
+				if (queryFormData.type === "BASIC") {
+					data = JSON.stringify({
+						title: queryFormData.data.form.title,
+						description: queryFormData.data.form.description,
+						type: queryFormData.type,
+						questions: queryFormData.data.questionsToFormVersions.map(
+							(item) => {
+								return {
+									key: item.question.key,
+									type: item.question.type,
+									description: item.question.description,
+									label: item.question.label,
+									placeholder: item.question.placeholder,
+									required: item.question.required,
+									min: item.question.min,
+									max: item.question.max,
+									step: item.question.step,
+									answer: item.question.answer,
+									options: item.question.questionOptions.map((option) => {
+										return {
+											value: option.value,
+											label: option.label,
+										};
+									}),
+								};
+							},
+						),
+					});
+				}
+
+				if (queryFormData.type === "EXAM") {
+					data = JSON.stringify({
+						title: queryFormData.data.exam.title,
+						description: queryFormData.data.exam.instructions,
+						type: queryFormData.type,
+						questions: queryFormData.data.questionsToExamVersions.map(
+							(item) => {
+								return {
+									key: item.question.key,
+									type: item.question.type,
+									description: item.question.description,
+									label: item.question.label,
+									placeholder: item.question.placeholder,
+									required: item.question.required,
+									min: item.question.min,
+									max: item.question.max,
+									step: item.question.step,
+									answer: item.question.answer,
+									options: item.question.questionOptions.map((option) => {
+										return {
+											value: option.value,
+											label: option.label,
+										};
+									}),
+								};
+							},
+						),
+					});
+				}
+
+				messagesContext.push({
+					content: `Form context information: ${data}`,
+					role: "system",
+				});
+			}
+		}
+
 		if (quote) {
 			setQuote(null);
 			messagesContext.push({
@@ -385,8 +462,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				role: message.role,
 			})),
 		];
-
-		console.log(fullContextMessages);
 
 		if (currentAssistantMessage) {
 			fullContextMessages.push({
