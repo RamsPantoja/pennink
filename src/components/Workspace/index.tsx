@@ -11,7 +11,11 @@ import {
 import dynamic from "next/dynamic";
 import { Loading } from "../common/Loading";
 import { toast } from "sonner";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
+import {
+	ArrowLeftIcon,
+	ArrowRightIcon,
+	XMarkIcon,
+} from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { type PenninkDocument, useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
@@ -49,6 +53,9 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		setWorkspaceTitle,
 		displayFormEditor,
 		setDocument,
+		setDisplayFormEditor,
+		setAiContextItems,
+		aiContextItems,
 	} = useWorkspaceStore();
 	const [selectionContent, setSelectionContent] = useState<{
 		text: string;
@@ -132,6 +139,14 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		setSelectionContent({ text: "", range: null });
 	};
 
+	const onCloseContent = () => {
+		setDocument(null);
+		setDisplayFormEditor(false);
+		setAiContextItems([
+			...aiContextItems.filter((item) => item.type !== "document"),
+		]);
+	};
+
 	return (
 		<Card
 			className="w-full h-full flex flex-col items-center p-0 rounded-none"
@@ -167,7 +182,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 							},
 						])}
 					>
-						<div className="flex items-center absolute right-2 bottom-0 top-0 my-auto w-fit h-fit">
+						<div className="flex items-center flex-col absolute right-2 bottom-0 top-0 my-auto w-fit h-fit gap-2">
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button
@@ -185,6 +200,19 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>Collapse content</TooltipContent>
+							</Tooltip>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										variant="ghost"
+										className="rounded-full border border-mochaMauve z-10"
+										size="icon"
+										onClick={onCloseContent}
+									>
+										<XMarkIcon className="text-mochaText min-w-4 h-4" />
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Close content</TooltipContent>
 							</Tooltip>
 						</div>
 						{!document && displayFormEditor && <FormEditor />}

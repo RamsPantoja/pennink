@@ -10,6 +10,22 @@ export type PenninkDocument = {
 	src: string;
 };
 
+export type ThreadContext = {
+	id: string;
+	label: string;
+	type: "thread";
+};
+
+export type DocumentContext = {
+	label: string;
+	type: "document";
+};
+
+export type EditorContext = {
+	label: string;
+	type: "editor";
+};
+
 type ReaderEventType =
 	| "reader-on-summarize"
 	| "reader-on-explain"
@@ -19,6 +35,8 @@ type ReaderEvent = {
 	type: ReaderEventType;
 	data: string;
 };
+
+export type ContextEntity = ThreadContext | DocumentContext | EditorContext;
 
 type CurrentForm = {
 	id: string;
@@ -40,10 +58,18 @@ type WorkspaceStore = {
 	setAiFormData: (data: AiForm | null) => void;
 	currentForm: CurrentForm | null;
 	setCurrentForm: (form: CurrentForm) => void;
+	aiContextItems: ContextEntity[];
+	setAiContextItems: (items: ContextEntity[]) => void;
 };
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	workspaceTitle: "",
+	aiContextItems: [
+		{
+			label: "Editor",
+			type: "editor",
+		},
+	],
 	document: null,
 	aiFormData: null,
 	currentForm: {
@@ -61,4 +87,5 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() => ({ displayFormEditor })),
 	setAiFormData: (data) => set(() => ({ aiFormData: data })),
+	setAiContextItems: (items) => set((state) => ({ aiContextItems: items })),
 }));
