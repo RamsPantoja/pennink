@@ -319,7 +319,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					context: {
 						messages: [],
 					},
-					chatModes: [],
+					tools,
 					prompt: data.prompt,
 					metadata: createAssistantMessageMetadata(chatId, session),
 				},

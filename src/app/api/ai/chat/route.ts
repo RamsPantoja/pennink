@@ -4,7 +4,6 @@ import {
 	streamText,
 	tool,
 	type ToolSet,
-	type UIMessage,
 } from "ai-v5";
 import { bedrock as bedrockV3 } from "bedrock-v3";
 import { getServerSession } from "next-auth";
