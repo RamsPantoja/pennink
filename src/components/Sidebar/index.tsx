@@ -77,7 +77,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					open={displaySignOutAlert}
 				/>
 				{session && (
-					<DropdownMenu>
+					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger asChild>
 							<div className="p-1 rounded-md flex w-full flex-row items-center justify-between gap-2 overflow-hidden cursor-pointer hover:bg-mochaMantle">
 								<div className="flex flex-row items-center gap-2 min-w-32 w-full">

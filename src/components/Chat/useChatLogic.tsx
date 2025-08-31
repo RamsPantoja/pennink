@@ -41,24 +41,6 @@ type UseChatLogicProps = {
 	isNew: boolean;
 };
 
-type ThreadContext = {
-	id: string;
-	label: string;
-	type: "thread";
-};
-
-type DocumentContext = {
-	label: string;
-	type: "document";
-};
-
-type EditorContext = {
-	label: string;
-	type: "editor";
-};
-
-type ContextEntity = ThreadContext | DocumentContext | EditorContext;
-
 export type ChatModes =
 	| "form-generation-mode"
 	| "web-search-mode"
@@ -117,15 +99,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		editor,
 		setDisplayFormEditor,
 		setFormData,
+		aiContextItems,
+		setAiContextItems,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
 	const [chatModes, setChatModes] = useState<ChatModes[]>([]);
-	const [contextItems, setContextItems] = useState<ContextEntity[]>([
-		{
-			label: "Editor",
-			type: "editor",
-		},
-	]);
 
 	const {
 		messages: tempMessages,
@@ -357,7 +335,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			message,
 		});
 
-		if (contextItems.find((item) => item.type === "document")) {
+		if (aiContextItems.find((item) => item.type === "document")) {
 			if (!document) {
 				toast("Select a document before asking");
 				return;
@@ -376,7 +354,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		}
 
-		if (contextItems.find((item) => item.type === "editor")) {
+		if (aiContextItems.find((item) => item.type === "editor")) {
 			if (!editor) {
 				toast.error("Editor instance not found");
 				return;
@@ -407,6 +385,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				role: message.role,
 			})),
 		];
+
+		console.log(fullContextMessages);
 
 		if (currentAssistantMessage) {
 			fullContextMessages.push({
@@ -594,15 +574,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 	useEffect(() => {
 		if (document) {
-			setContextItems((prv) => {
-				return [
-					...prv.filter((item) => item.type !== "document"),
-					{
-						label: document.filename,
-						type: "document",
-					},
-				];
-			});
+			setAiContextItems([
+				...aiContextItems.filter((item) => item.type !== "document"),
+				{
+					label: document.filename,
+					type: "document",
+				},
+			]);
 		}
 	}, [document]);
 
@@ -625,8 +603,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		stopStreaming,
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,
-		contextItems,
-		setContextItems,
+		aiContextItems,
+		setAiContextItems,
 		status,
 	};
 };

@@ -57,8 +57,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		stopStreaming,
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,
-		contextItems,
-		setContextItems,
+		aiContextItems,
+		setAiContextItems,
 		status,
 	} = useChatLogic({ chatId: id, isNew });
 
@@ -147,10 +147,10 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								<DropdownMenuItem
 									onClick={(e) => {
 										if (
-											!contextItems.find((item) => item.type === "document")
+											!aiContextItems.find((item) => item.type === "document")
 										) {
-											setContextItems((prevItems) => [
-												...prevItems,
+											setAiContextItems([
+												...aiContextItems,
 												{
 													label: "Document",
 													type: "document",
@@ -166,9 +166,11 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								</DropdownMenuItem>
 								<DropdownMenuItem
 									onClick={(e) => {
-										if (!contextItems.find((item) => item.type === "editor")) {
-											setContextItems((prevItems) => [
-												...prevItems,
+										if (
+											!aiContextItems.find((item) => item.type === "editor")
+										) {
+											setAiContextItems([
+												...aiContextItems,
 												{
 													label: "Editor",
 													type: "editor",
@@ -183,11 +185,11 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
-						{contextItems.length === 0 && (
+						{aiContextItems.length === 0 && (
 							<span className="text-xs text-mochaSubText">Add context...</span>
 						)}
-						{contextItems.length >= 1 &&
-							contextItems.map((item, index) => (
+						{aiContextItems.length >= 1 &&
+							aiContextItems.map((item, index) => (
 								<div
 									key={index}
 									className="flex items-center gap-1 border border-mochaMauve rounded-md pl-2 max-w-40"
@@ -208,8 +210,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 										variant="ghost"
 										size="icon"
 										onClick={() => {
-											setContextItems((prev) =>
-												prev.filter((_, i) => i !== index),
+											setAiContextItems(
+												aiContextItems.filter((_, i) => i !== index),
 											);
 										}}
 									>
