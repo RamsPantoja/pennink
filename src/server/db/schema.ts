@@ -888,6 +888,40 @@ export const shareLinks = createTable("share_link", {
 		.defaultNow(),
 });
 
+export const shareLinksRelations = relations(shareLinks, ({ one }) => ({
+	sharedLinkToNote: one(sharedLinksToNotes, {
+		fields: [shareLinks.id],
+		references: [sharedLinksToNotes.shareLinkId],
+	}),
+}));
+
+export const sharedLinksToNotes = createTable(
+	"shared_links_to_notes",
+	{
+		shareLinkId: uuid()
+			.notNull()
+			.references(() => shareLinks.id),
+		noteId: uuid()
+			.notNull()
+			.references(() => notes.id),
+	},
+	(t) => [primaryKey({ columns: [t.shareLinkId, t.noteId] })],
+);
+
+export const sharedLinksToNotesRelations = relations(
+	sharedLinksToNotes,
+	({ one }) => ({
+		shareLink: one(shareLinks, {
+			fields: [sharedLinksToNotes.shareLinkId],
+			references: [shareLinks.id],
+		}),
+		note: one(notes, {
+			fields: [sharedLinksToNotes.noteId],
+			references: [notes.id],
+		}),
+	}),
+);
+
 export const shareLinksToForms = createTable(
 	"share_links_to_forms",
 	{

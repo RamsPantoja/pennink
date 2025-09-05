@@ -1,5 +1,13 @@
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { noteByIdInputSchema, updateNoteInputSchema } from "../schemas/note";
+import {
+	createTRPCRouter,
+	protectedProcedure,
+	publicProcedure,
+} from "~/server/api/trpc";
+import {
+	noteByIdInputSchema,
+	sharedNoteInputSchema,
+	updateNoteInputSchema,
+} from "../schemas/note";
 
 export const noteRouter = createTRPCRouter({
 	updateNote: protectedProcedure
@@ -11,5 +19,12 @@ export const noteRouter = createTRPCRouter({
 		.input(noteByIdInputSchema)
 		.query(async ({ ctx, input }) => {
 			return await ctx.services({ ctx }).noteService.getNoteById(input.id);
+		}),
+	sharedNote: publicProcedure
+		.input(sharedNoteInputSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.noteService.getSharedNote(input.sharedLinkId);
 		}),
 });

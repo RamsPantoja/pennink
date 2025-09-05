@@ -287,7 +287,15 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 
 	return (
 		<div className="flex flex-col w-full h-full">
-			<div className="flex p-2 justify-end">
+			<div className="flex p-2 justify-end items-center">
+				<Button
+					variant="ghost"
+					size="sm"
+					isPending={isExporting}
+					disabled={editor.document.length === 0}
+				>
+					Share
+				</Button>
 				<InsertContentLinkDialog onInsert={onInsertContentFromLink} />
 				<DropdownMenu>
 					<Tooltip>
