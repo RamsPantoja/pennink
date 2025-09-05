@@ -53,21 +53,4 @@ export class NoteService {
 
 		return note;
 	}
-
-	public async getSharedNote(sharedLinkId: string) {
-		const note = await this.ctx.db.query.notes.findFirst({
-			where: (notes, { eq }) => {
-				return eq(notes.sharedLinkId, sharedLinkId);
-			},
-		});
-
-		if (!note) {
-			throw new TRPCError({
-				code: "NOT_FOUND",
-				message: "Note not found",
-			});
-		}
-
-		return note;
-	}
 }

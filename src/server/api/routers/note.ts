@@ -20,11 +20,4 @@ export const noteRouter = createTRPCRouter({
 		.query(async ({ ctx, input }) => {
 			return await ctx.services({ ctx }).noteService.getNoteById(input.id);
 		}),
-	sharedNote: publicProcedure
-		.input(sharedNoteInputSchema)
-		.query(async ({ ctx, input }) => {
-			return await ctx
-				.services({ ctx })
-				.noteService.getSharedNote(input.sharedLinkId);
-		}),
 });

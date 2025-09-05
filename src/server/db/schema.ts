@@ -889,14 +889,22 @@ export const shareLinks = createTable("share_link", {
 });
 
 export const shareLinksRelations = relations(shareLinks, ({ one }) => ({
-	sharedLinkToNote: one(sharedLinksToNotes, {
+	shareLinkToNote: one(shareLinksToNotes, {
 		fields: [shareLinks.id],
-		references: [sharedLinksToNotes.shareLinkId],
+		references: [shareLinksToNotes.shareLinkId],
+	}),
+	shareLinkToForm: one(shareLinksToForms, {
+		fields: [shareLinks.id],
+		references: [shareLinksToForms.shareLinkId],
+	}),
+	shareLinkToExam: one(shareLinksToExams, {
+		fields: [shareLinks.id],
+		references: [shareLinksToExams.shareLinkId],
 	}),
 }));
 
-export const sharedLinksToNotes = createTable(
-	"shared_links_to_notes",
+export const shareLinksToNotes = createTable(
+	"share_links_to_notes",
 	{
 		shareLinkId: uuid()
 			.notNull()
@@ -908,15 +916,15 @@ export const sharedLinksToNotes = createTable(
 	(t) => [primaryKey({ columns: [t.shareLinkId, t.noteId] })],
 );
 
-export const sharedLinksToNotesRelations = relations(
-	sharedLinksToNotes,
+export const shareLinksToNotesRelations = relations(
+	shareLinksToNotes,
 	({ one }) => ({
 		shareLink: one(shareLinks, {
-			fields: [sharedLinksToNotes.shareLinkId],
+			fields: [shareLinksToNotes.shareLinkId],
 			references: [shareLinks.id],
 		}),
 		note: one(notes, {
-			fields: [sharedLinksToNotes.noteId],
+			fields: [shareLinksToNotes.noteId],
 			references: [notes.id],
 		}),
 	}),
