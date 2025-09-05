@@ -22,7 +22,7 @@ export const Response = ({ content, reasoning }: ResponseProps) => {
 			// for (const p of paragraphs) {
 			// 	const content = p.textContent || "";
 			// 	if (content.trim().startsWith("<thinking>")) {
-			// 		const classes = ["!text-xs", "text-mochaSubText"];
+			// 		const classes = ["text-xs!", "text-mocha-sub-text"];
 			// 		p.classList.add(...classes);
 			// 		p.innerText = p.innerText
 			// 			.replaceAll("<thinking>", "")

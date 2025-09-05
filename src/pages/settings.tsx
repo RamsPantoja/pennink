@@ -78,13 +78,13 @@ const Settings = ({
 	});
 
 	return (
-		<div className="flex w-full justify-center p-4 bg-mochaBase h-screen">
+		<div className="flex w-full justify-center p-4 bg-mocha-base h-screen">
 			<Head>
 				<title>Pennink - Settings</title>
 				<meta name="description" content="Find a partner to do anything!" />
 				<link rel="icon" href="/icon.png" />
 			</Head>
-			<div className="flex flex-col max-w-screen-xl w-full gap-10">
+			<div className="flex flex-col max-w-(--breakpoint-xl) w-full gap-10">
 				<div className="w-full flex justify-between">
 					<Button
 						onClick={() => {
@@ -118,10 +118,10 @@ const Settings = ({
 							<AvatarFallback>You</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col overflow-hidden gap-1">
-							<p className="truncate font-bold text-mochaText">
+							<p className="truncate font-bold text-mocha-text">
 								{session.user.name}
 							</p>
-							<p className="truncate text-xs text-mochaText">
+							<p className="truncate text-xs text-mocha-text">
 								{session.user.email}
 							</p>
 							<Badge variant="secondary">
@@ -230,12 +230,12 @@ const Settings = ({
 								<Card className="shadow-none transition-colors border">
 									<CardHeader className="pb-2">
 										<div className="flex items-center gap-3 mb-2">
-											<option.icon className="h-5 w-5 text-mochaText" />
-											<CardTitle className="text-base font-medium text-mochaText">
+											<option.icon className="h-5 w-5 text-mocha-text" />
+											<CardTitle className="text-base font-medium text-mocha-text">
 												{option.title}
 											</CardTitle>
 										</div>
-										<CardDescription className="text-sm text-mochaSubText">
+										<CardDescription className="text-sm text-mocha-sub-text">
 											{option.description}
 										</CardDescription>
 									</CardHeader>

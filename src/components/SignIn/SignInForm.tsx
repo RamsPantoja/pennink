@@ -24,16 +24,16 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 		<Card className="max-w-72 bg-transparent p-0 z-10">
 			<CardHeader>
 				<CardTitle>
-					<div className="flex flex-col items-center justify-center gap-4 text-mochaText">
+					<div className="flex flex-col items-center justify-center gap-4 text-mocha-text">
 						<Logo />
-						<p className="text-base text-mochaText text-center">
+						<p className="text-base text-mocha-text text-center">
 							Your AI writing assistant for what's next
 						</p>
 					</div>
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<p className="text-xs text-mochaText text-center">
+				<p className="text-xs text-mocha-text text-center">
 					By Creating an account or Sign in, you agree to the{" "}
 					<a
 						className="text-blackLight underline"

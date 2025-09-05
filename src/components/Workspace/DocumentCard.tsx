@@ -55,13 +55,13 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 
 	return (
 		<Card
-			className="bg-mochaMantle hover:bg-mochaMantle/50 transition-colors cursor-pointer border h-fit w-full"
+			className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors cursor-pointer border h-fit w-full"
 			onClick={onSelectDocument}
 		>
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-3">
 					<div>
-						<h3 className="font-medium text-sm line-clamp-1 text-mochaText">
+						<h3 className="font-medium text-sm line-clamp-1 text-mocha-text">
 							{title}
 						</h3>
 						<div className="flex items-center gap-2 text-xs text-muted-foreground">

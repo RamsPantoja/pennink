@@ -181,11 +181,11 @@ function PricingCard({
 				</div>
 				<CardDescription className="mt-2">{description}</CardDescription>
 			</CardHeader>
-			<CardContent className="flex-grow">
+			<CardContent className="grow">
 				<ul className="space-y-2">
 					{features.map((feature, index) => (
 						<li key={index} className="flex items-center">
-							<Check className="h-4 min-w-4 mr-2 text-mochaText" />
+							<Check className="h-4 min-w-4 mr-2 text-mocha-text" />
 							<span className="text-sm">{feature}</span>
 						</li>
 					))}

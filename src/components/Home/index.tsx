@@ -220,8 +220,8 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 				open={openDocumentLoader}
 				onOpenChange={setOpenDocumentLoader}
 			/>
-			<Card className="max-w-screen-lg gap-4 flex flex-col w-full justify-center h-full bg-transparent">
-				<p className="text-center text-3xl font-bold text-mochaText tracking-wider">
+			<Card className="max-w-(--breakpoint-lg) gap-4 flex flex-col w-full justify-center h-full bg-transparent">
+				<p className="text-center text-3xl font-bold text-mocha-text tracking-wider">
 					Start your writing journey!
 				</p>
 				<Chat id={memoChatId} isNew={true} />
@@ -230,11 +230,11 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 						onClick={
 							pedeningRequest ? undefined : () => fileInputRef.current?.click()
 						}
-						className="border cursor-pointer bg-mochaCrust flex items-center justify-between gap-4 hover:shadow-sm"
+						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mochaText">Upload</p>
-							<p className="text-xs text-mochaSubText">
+							<p className="text-mocha-text">Upload</p>
+							<p className="text-xs text-mocha-sub-text">
 								Upload a PDF to start asking anything about the content
 							</p>
 						</div>
@@ -252,11 +252,11 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 										setOpenDocumentLoader(true);
 									}
 						}
-						className="border cursor-pointer bg-mochaCrust flex items-center justify-between gap-4 hover:shadow-sm"
+						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mochaText">Search</p>
-							<p className="text-xs text-mochaSubText">
+							<p className="text-mocha-text">Search</p>
+							<p className="text-xs text-mocha-sub-text">
 								Search the saved documents to start asking anything about the
 								content
 							</p>
@@ -269,11 +269,11 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 					</Card>
 					<Card
 						onClick={pedeningRequest ? undefined : onStartWriting}
-						className="border cursor-pointer bg-mochaCrust flex items-center justify-between gap-4 hover:shadow-sm"
+						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mochaText">Write</p>
-							<p className="text-xs text-mochaSubText">
+							<p className="text-mocha-text">Write</p>
+							<p className="text-xs text-mocha-sub-text">
 								Start writing articles, notes or whatever you want with smart
 								assistance
 							</p>

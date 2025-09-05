@@ -195,7 +195,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								<TooltipTrigger asChild>
 									<Button
 										variant="ghost"
-										className="rounded-full border border-mochaMauve z-10"
+										className="rounded-full border border-mocha-mauve z-10"
 										size="icon"
 										onClick={() => {
 											const contentPanel = contentPanelRef.current;
@@ -204,7 +204,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 											}
 										}}
 									>
-										<ArrowLeftIcon className="text-mochaText min-w-4 h-4" />
+										<ArrowLeftIcon className="text-mocha-text min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>Collapse content</TooltipContent>
@@ -213,11 +213,11 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								<TooltipTrigger asChild>
 									<Button
 										variant="ghost"
-										className="rounded-full border border-mochaMauve z-10"
+										className="rounded-full border border-mocha-mauve z-10"
 										size="icon"
 										onClick={onCloseContent}
 									>
-										<XMarkIcon className="text-mochaText min-w-4 h-4" />
+										<XMarkIcon className="text-mocha-text min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>Close content</TooltipContent>
@@ -274,7 +274,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									<TooltipTrigger asChild>
 										<Button
 											variant="ghost"
-											className="rounded-full border border-mochaMauve z-10"
+											className="rounded-full border border-mocha-mauve z-10"
 											size="icon"
 											onClick={() => {
 												const chatPanel = chatPanelRef.current;
@@ -283,7 +283,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 												}
 											}}
 										>
-											<ArrowLeftIcon className="text-mochaText min-w-4 h-4" />
+											<ArrowLeftIcon className="text-mocha-text min-w-4 h-4" />
 										</Button>
 									</TooltipTrigger>
 									<TooltipContent>Expand chat</TooltipContent>
@@ -297,7 +297,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 										<Button
 											variant="ghost"
 											size="icon"
-											className="rounded-full border border-mochaMauve z-10"
+											className="rounded-full border border-mocha-mauve z-10"
 											onClick={() => {
 												const contentPanel = contentPanelRef.current;
 												if (contentPanel) {
@@ -305,7 +305,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 												}
 											}}
 										>
-											<ArrowRightIcon className="text-mochaText min-w-4 h-4" />
+											<ArrowRightIcon className="text-mocha-text min-w-4 h-4" />
 										</Button>
 									</TooltipTrigger>
 									<TooltipContent>Expand content</TooltipContent>
@@ -334,7 +334,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="rounded-full border border-mochaMauve z-10"
+										className="rounded-full border border-mocha-mauve z-10"
 										onClick={() => {
 											const chatPanel = chatPanelRef.current;
 											if (chatPanel) {
@@ -342,13 +342,13 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 											}
 										}}
 									>
-										<ArrowRightIcon className="text-mochaText min-w-4 h-4" />
+										<ArrowRightIcon className="text-mocha-text min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>Collapse chat</TooltipContent>
 							</Tooltip>
 						</div>
-						<div className="w-full h-full flex bg-mochaCrust">
+						<div className="w-full h-full flex bg-mocha-crust">
 							<Chat id={workspaceData.chatId} isNew={false} />
 						</div>
 					</ResizablePanel>

@@ -63,7 +63,7 @@ type PreTagProps = {
 
 const PreTag = ({ children }: PreTagProps) => {
 	return (
-		<div className="prismjs-theme bg-mochaMantle p-2 rounded-md overflow-auto text-sm mb-4">
+		<div className="prismjs-theme bg-mocha-mantle p-2 rounded-md overflow-auto text-sm mb-4">
 			{children}
 		</div>
 	);

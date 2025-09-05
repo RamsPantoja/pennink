@@ -51,7 +51,7 @@ export const FormLoader = ({
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
-			<DrawerContent className="left-0 md:left-1/2 bg-mochaBase border-mochaMantle right-2 top-2 bottom-2 overflow-hidden fixed border z-50 rounded-xl outline-none mt-0">
+			<DrawerContent className="left-0 md:left-1/2 bg-mocha-base border-mocha-mantle right-2 top-2 bottom-2 overflow-hidden fixed border z-50 rounded-xl outline-hidden mt-0">
 				<div className="h-full w-full grow p-4 flex flex-col">
 					<DrawerHeader>
 						<DrawerTitle className="text-sm font-semibold">
@@ -109,7 +109,7 @@ export const FormLoader = ({
 							!filesByUserError &&
 							filesByUser &&
 							filesByUser.length === 0 && (
-								<div className="flex items-center justify-center text-mochaText">
+								<div className="flex items-center justify-center text-mocha-text">
 									Your documents will appear here.
 								</div>
 							)}

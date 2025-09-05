@@ -37,7 +37,7 @@ export const Feedback = ({ session }: FeedbackProps) => {
 					Feedback
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="max-h-[--radix-popover-content-available-height] overflow-auto">
+			<PopoverContent className="max-h-(--radix-popover-content-available-height) overflow-auto">
 				<div className="flex gap-2 flex-col items-end w-full">
 					<p className="text-xs">
 						Share feedback or ideas on how we can improve Pennink

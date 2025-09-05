@@ -357,22 +357,22 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 					{displaySuggestion && (
 						<FloatingPortal>
 							<div
-								className="flex p-4 shadow-lg overflow-hidden border border-mochaCrust bg-mochaBase rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
+								className="flex p-4 shadow-lg overflow-hidden border border-mocha-crust bg-mocha-base rounded-md z-10 flex-col gap-4 max-w-xl max-h-96"
 								ref={refs.setFloating}
 								style={floatingStyles}
 							>
 								<div className="flex gap-2 flex-1 items-center">
 									<div className="p-1 rounded-md">
-										<SparklesIcon className="min-w-5 h-5 text-mochaTeal" />
+										<SparklesIcon className="min-w-5 h-5 text-mocha-teal" />
 									</div>
-									<p className="text-sm text-mochaText font-semibold">
+									<p className="text-sm text-mocha-text font-semibold">
 										AI suggestion
 									</p>
 								</div>
-								<p className="text-sm text-mochaText overflow-auto">
+								<p className="text-sm text-mocha-text overflow-auto">
 									{suggestion}
 								</p>
-								<div className="flex items-center gap-2 text-xs text-mochaSubText">
+								<div className="flex items-center gap-2 text-xs text-mocha-sub-text">
 									<p className="text-xs p-1 border rounded-md">Alt</p>+
 									<p className="text-xs p-1 border rounded-md">A</p>
 									Accept
@@ -604,7 +604,7 @@ function FormattingToolbarWithAI() {
 			formattingToolbar={() => (
 				<FormattingToolbar>
 					{/* Add the AI button */}
-					<div className="flex items-center pl-2 gap-2 border rounded-sm border-mochaTeal">
+					<div className="flex items-center pl-2 gap-2 border rounded-sm border-mocha-teal">
 						<p className="text-xs">AI</p>
 						<AIToolbarButton />
 					</div>

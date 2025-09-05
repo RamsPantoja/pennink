@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export const SkeletonWorkspace = () => {
 	return (
-		<div className="flex flex-col gap-4 w-full h-full p-4 max-w-screen-md">
+		<div className="flex flex-col gap-4 w-full h-full p-4 max-w-(--breakpoint-md)">
 			{/* Left aligned message */}
 			<div className="flex gap-3">
 				<Skeleton className="w-10 h-10 rounded-full" /> {/* Avatar */}

@@ -31,7 +31,7 @@ const Notifications = ({ session }: NotificationsProps) => {
 					<BellIcon className="min-w-5 h-5" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="max-h-[--radix-popover-content-available-height] overflow-auto p-0">
+			<PopoverContent className="max-h-(--radix-popover-content-available-height) overflow-auto p-0">
 				{/* {
           notificationsIsLoading && skeletons.map((skeleton, index) => {
             return <Fragment key={index}>

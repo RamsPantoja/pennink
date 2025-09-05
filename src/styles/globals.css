@@ -1,393 +1,440 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@import url("https://prismjs.catppuccin.com/mocha.css");
+@import 'tailwindcss';
+@import url('https://prismjs.catppuccin.com/mocha.css') layer(utilities);
 
-/* width */
-::-webkit-scrollbar {
-	width: 9px;
-	height: 9px;
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@theme {
+  --font-*: initial;
+  --font-sans:
+    GeistMono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+
+  --color-mocha-base: #1f1f1f;
+  --color-mocha-mantle: #2a2a2a;
+  --color-mocha-text: #d1cfc0;
+  --color-mocha-sub-text: #adab9f;
+  --color-mocha-subtext1: #adab9f;
+  --color-mocha-lavender: #7287fd;
+  --color-mocha-mauve: #353535;
+  --color-mocha-crust: #161616;
+  --color-mocha-teal: #f76f53;
+  --color-light-mocha-base: #f2f0e3;
+  --color-light-mocha-text: #2e2e2e;
+  --color-light-mocha-mantle: #e5e3d7;
+  --color-light-mocha-mauve: #e6e4d7;
+  --color-light-mocha-crust: #ffffff;
+
+  --radius-4xl: 1.5rem;
+  --radius-3xl: calc(1.5rem - 2px);
+  --radius-2xl: calc(1rem + 2px);
+  --radius-xl: 1rem;
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-	background: transparent;
-	border-radius: 5px;
-}
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-	background: #adab9f;
-	border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-corner {
-	background: transparent;
-}
-
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
 @layer base {
-	:root {
-		--sidebar-background: #1f1f1f;
-		--sidebar-foreground: #d1cfc0;
-		--sidebar-primary: #d1cfc0;
-		--sidebar-primary-foreground: #d1cfc0;
-		--sidebar-accent: #d1cfc0;
-		--sidebar-accent-foreground: #1f1f1f;
-		--sidebar-border: #1f1f1f;
-		--sidebar-ring: #1f1f1f;
-	}
-	.dark {
-		--sidebar-background: #181825;
-		--sidebar-foreground: #181825;
-		--sidebar-primary: #1e1e2e;
-		--sidebar-primary-foreground: #1e1e2e;
-		--sidebar-accent: #cba6f7;
-		--sidebar-accent-foreground: #1e1e2e;
-		--sidebar-border: #cba6f7;
-		--sidebar-ring: #1e1e2e;
-	}
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility prismjs-theme {
+  /* https://prismjs.com/tokens.html */
+
+  .token.keyword {
+    color: #cba6f7;
+  }
+
+  .token.builtin {
+    color: #f38ba8;
+  }
+
+  .token.class-name {
+    color: #f9e2af;
+  }
+
+  .token.function {
+    color: #89b4fa;
+  }
+
+  .token.boolean,
+  .token.number {
+    color: #fab387;
+  }
+
+  .token.string,
+  .token.char {
+    color: #a6e3a1;
+  }
+
+  .token.symbol {
+    color: #f9e2af;
+  }
+
+  .token.regex {
+    color: #f5c2e7;
+  }
+
+  .token.url {
+    color: #a6e3a1;
+  }
+
+  .token.operator {
+    color: #89dceb;
+  }
+
+  .token.variable {
+    color: #cdd6f4;
+  }
+
+  .token.constant {
+    color: #fab387;
+  }
+
+  .token.property {
+    color: #89b4fa;
+  }
+
+  .token.punctuation {
+    color: #9399b2;
+  }
+
+  .token.important {
+    color: #cba6f7;
+  }
+
+  .token.comment {
+    color: #9399b2;
+  }
+
+  .token.tag {
+    color: #89b4fa;
+  }
+
+  .token.attr-name {
+    color: #f9e2af;
+  }
+
+  .token.attr-value {
+    color: #a6e3a1;
+  }
+
+  .token.namespace {
+    color: #f9e2af;
+  }
+
+  .token.prolog,
+  .token.doctype {
+    color: #cba6f7;
+  }
+
+  .token.cdata {
+    color: #94e2d5;
+  }
+
+  .token.entity {
+    color: #f38ba8;
+  }
+
+  .token.atrule {
+    color: #cba6f7;
+  }
+
+  .token.selector {
+    color: #89b4fa;
+  }
+
+  /* Diff */
+
+  .token.deleted {
+    color: #f38ba8;
+  }
+
+  .token.inserted {
+    color: #a6e3a1;
+  }
+
+  /* Other */
+
+  .token.important,
+  .token.bold {
+    font-weight: bold;
+  }
+  .token.italic {
+    font-style: italic;
+  }
+}
+
+@utility markdown-styles {
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h4 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h6 {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  ul {
+    list-style-type: disc;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  hr {
+    border: none;
+    height: 2px;
+    background-color: #353535;
+    margin-bottom: 1rem;
+  }
+  ol {
+    list-style-type: decimal;
+    margin-left: 1.9rem;
+    margin-bottom: 1rem;
+  }
+  blockquote {
+    font-style: italic;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  table th {
+    background-color: #353535;
+    padding: 0.5rem;
+    border: 1px solid #161616;
+  }
+  table td {
+    padding: 0.5rem;
+    border: 1px solid #353535;
+  }
+  table caption {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  table thead {
+    background-color: #0f0f0f;
+    color: #d1cfc0;
+  }
+  table tbody {
+    background-color: #0f0f0f;
+    color: #d1cfc0;
+  }
+  table tfoot {
+    background-color: #0f0f0f;
+  }
+  table tr:nth-child(even) {
+    background-color: transparent;
+  }
+  table tr:nth-child(odd) {
+    background-color: transparent;
+  }
+  table tr:nth-child(odd) {
+    background-color: transparent;
+  }
+  table tr:nth-child(even) {
+    background-color: transparent;
+  }
+  table tr:nth-child(odd) {
+    background-color: transparent;
+  }
+  table tr:nth-child(even) {
+    background-color: transparent;
+  }
+}
+
+@utility markdown-styles-for-reasoning {
+  h1 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h4 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h5 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  h6 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  p {
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  ul {
+    list-style-type: disc;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  hr {
+    border: none;
+    height: 2px;
+    background-color: #353535;
+    margin-bottom: 1rem;
+  }
+  ol {
+    list-style-type: decimal;
+    margin-left: 1.9rem;
+    margin-bottom: 1rem;
+  }
+  blockquote {
+    font-style: italic;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 2px solid #0f0f0f;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  table th {
+    background-color: #353535;
+    padding: 0.5rem;
+    border: 1px solid #161616;
+  }
+  table td {
+    padding: 0.5rem;
+    border: 1px solid #353535;
+  }
+  table caption {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  table thead {
+    background-color: #0f0f0f;
+    color: #d1cfc0;
+  }
+  table tbody {
+    background-color: #0f0f0f;
+    color: #d1cfc0;
+  }
+  table tfoot {
+    background-color: #0f0f0f;
+  }
+  table tr:nth-child(even) {
+    background-color: transparent;
+  }
+  table tr:nth-child(odd) {
+    background-color: transparent;
+  }
+  table tr:nth-child(odd) {
+    background-color: transparent;
+  }
+  table tr:nth-child(even) {
+    background-color: transparent;
+  }
+  table tr:nth-child(odd) {
+    background-color: transparent;
+  }
+  table tr:nth-child(even) {
+    background-color: transparent;
+  }
 }
 
 @layer utilities {
-	.prismjs-theme {
-		/* https://prismjs.com/tokens.html */
+  /* width */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
 
-		.token.keyword {
-			color: #cba6f7;
-		}
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+  }
 
-		.token.builtin {
-			color: #f38ba8;
-		}
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #adab9f;
+    border-radius: 5px;
+  }
 
-		.token.class-name {
-			color: #f9e2af;
-		}
-
-		.token.function {
-			color: #89b4fa;
-		}
-
-		.token.boolean,
-		.token.number {
-			color: #fab387;
-		}
-
-		.token.string,
-		.token.char {
-			color: #a6e3a1;
-		}
-
-		.token.symbol {
-			color: #f9e2af;
-		}
-
-		.token.regex {
-			color: #f5c2e7;
-		}
-
-		.token.url {
-			color: #a6e3a1;
-		}
-
-		.token.operator {
-			color: #89dceb;
-		}
-
-		.token.variable {
-			color: #cdd6f4;
-		}
-
-		.token.constant {
-			color: #fab387;
-		}
-
-		.token.property {
-			color: #89b4fa;
-		}
-
-		.token.punctuation {
-			color: #9399b2;
-		}
-
-		.token.important {
-			color: #cba6f7;
-		}
-
-		.token.comment {
-			color: #9399b2;
-		}
-
-		.token.tag {
-			color: #89b4fa;
-		}
-
-		.token.attr-name {
-			color: #f9e2af;
-		}
-
-		.token.attr-value {
-			color: #a6e3a1;
-		}
-
-		.token.namespace {
-			color: #f9e2af;
-		}
-
-		.token.prolog,
-		.token.doctype {
-			color: #cba6f7;
-		}
-
-		.token.cdata {
-			color: #94e2d5;
-		}
-
-		.token.entity {
-			color: #f38ba8;
-		}
-
-		.token.atrule {
-			color: #cba6f7;
-		}
-
-		.token.selector {
-			color: #89b4fa;
-		}
-
-		/* Diff */
-
-		.token.deleted {
-			color: #f38ba8;
-		}
-
-		.token.inserted {
-			color: #a6e3a1;
-		}
-
-		/* Other */
-
-		.token.important,
-		.token.bold {
-			font-weight: bold;
-		}
-		.token.italic {
-			font-style: italic;
-		}
-	}
-
-	.markdown-styles {
-		h1 {
-			font-size: 2rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h2 {
-			font-size: 1.5rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h3 {
-			font-size: 1.25rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h4 {
-			font-size: 1.125rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h5 {
-			font-size: 1rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h6 {
-			font-size: 0.875rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		p {
-			font-size: 1rem;
-			line-height: 1.5;
-			margin-bottom: 1rem;
-		}
-		ul {
-			list-style-type: disc;
-			margin-left: 1rem;
-			margin-bottom: 1rem;
-		}
-		hr {
-			border: none;
-			height: 2px;
-			background-color: #353535;
-			margin-bottom: 1rem;
-		}
-		ol {
-			list-style-type: decimal;
-			margin-left: 1.9rem;
-			margin-bottom: 1rem;
-		}
-		blockquote {
-			font-style: italic;
-			margin-left: 1rem;
-			margin-bottom: 1rem;
-		}
-		table {
-			border-collapse: collapse;
-			width: 100%;
-			margin-bottom: 1rem;
-			border-radius: 12px;
-			overflow: hidden;
-			font-size: 12px;
-		}
-		table th {
-			background-color: #353535;
-			padding: 0.5rem;
-			border: 1px solid #161616;
-		}
-		table td {
-			padding: 0.5rem;
-			border: 1px solid #353535;
-		}
-		table caption {
-			font-size: 1rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		table thead {
-			background-color: #0f0f0f;
-			color: #d1cfc0;
-		}
-		table tbody {
-			background-color: #0f0f0f;
-			color: #d1cfc0;
-		}
-		table tfoot {
-			background-color: #0f0f0f;
-		}
-		table tr:nth-child(even) {
-			background-color: transparent;
-		}
-		table tr:nth-child(odd) {
-			background-color: transparent;
-		}
-		table tr:nth-child(odd) {
-			background-color: transparent;
-		}
-		table tr:nth-child(even) {
-			background-color: transparent;
-		}
-		table tr:nth-child(odd) {
-			background-color: transparent;
-		}
-		table tr:nth-child(even) {
-			background-color: transparent;
-		}
-	}
-
-	.markdown-styles-for-reasoning {
-		h1 {
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h2 {
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h3 {
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h4 {
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h5 {
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		h6 {
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		p {
-			line-height: 1.5;
-			margin-bottom: 1rem;
-		}
-		ul {
-			list-style-type: disc;
-			margin-left: 1rem;
-			margin-bottom: 1rem;
-		}
-		hr {
-			border: none;
-			height: 2px;
-			background-color: #353535;
-			margin-bottom: 1rem;
-		}
-		ol {
-			list-style-type: decimal;
-			margin-left: 1.9rem;
-			margin-bottom: 1rem;
-		}
-		blockquote {
-			font-style: italic;
-			margin-left: 1rem;
-			margin-bottom: 1rem;
-		}
-		table {
-			border-collapse: collapse;
-			width: 100%;
-			margin-bottom: 1rem;
-			border: 2px solid #0f0f0f;
-			border-radius: 12px;
-			overflow: hidden;
-			font-size: 12px;
-		}
-		table th {
-			background-color: #353535;
-			padding: 0.5rem;
-			border: 1px solid #161616;
-		}
-		table td {
-			padding: 0.5rem;
-			border: 1px solid #353535;
-		}
-		table caption {
-			font-size: 1rem;
-			font-weight: bold;
-			margin-bottom: 1rem;
-		}
-		table thead {
-			background-color: #0f0f0f;
-			color: #d1cfc0;
-		}
-		table tbody {
-			background-color: #0f0f0f;
-			color: #d1cfc0;
-		}
-		table tfoot {
-			background-color: #0f0f0f;
-		}
-		table tr:nth-child(even) {
-			background-color: transparent;
-		}
-		table tr:nth-child(odd) {
-			background-color: transparent;
-		}
-		table tr:nth-child(odd) {
-			background-color: transparent;
-		}
-		table tr:nth-child(even) {
-			background-color: transparent;
-		}
-		table tr:nth-child(odd) {
-			background-color: transparent;
-		}
-		table tr:nth-child(even) {
-			background-color: transparent;
-		}
-	}
+  /* Handle on hover */
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }

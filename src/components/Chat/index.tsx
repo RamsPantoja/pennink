@@ -186,13 +186,13 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							</DropdownMenuContent>
 						</DropdownMenu>
 						{aiContextItems.length === 0 && (
-							<span className="text-xs text-mochaSubText">Add context...</span>
+							<span className="text-xs text-mocha-sub-text">Add context...</span>
 						)}
 						{aiContextItems.length >= 1 &&
 							aiContextItems.map((item, index) => (
 								<div
 									key={index}
-									className="flex items-center gap-1 border border-mochaMauve rounded-md pl-2 max-w-40"
+									className="flex items-center gap-1 border border-mocha-mauve rounded-md pl-2 max-w-40"
 								>
 									{item.type === "editor" && (
 										<Bars3BottomLeftIcon className="min-w-5 w-5 h-5" />
@@ -201,7 +201,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 										<DocumentTextIcon className="min-w-5 w-5 h-5" />
 									)}
 									<p
-										className="text-mochaSubtext1 text-xs truncate"
+										className="text-mocha-subtext1 text-xs truncate"
 										title={item.label}
 									>
 										{item.label}
@@ -222,11 +222,11 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					</div>
 				)}
 
-				<Card className="w-full bg-mochaBase border border-mochaMauve flex flex-col p-3 shadow-sm shadow-mochaMauve">
+				<Card className="w-full bg-mocha-base border border-mocha-mauve flex flex-col p-3 shadow-xs shadow-mocha-mauve">
 					{quote && (
-						<Card className="flex items-start gap-2 bg-mochaMantle border">
-							<ArrowTurnDownRightIcon className="min-w-5 h-5 text-mochaText" />
-							<p className="text-mochaText text-xs flex-1">{quote}</p>
+						<Card className="flex items-start gap-2 bg-mocha-mantle border">
+							<ArrowTurnDownRightIcon className="min-w-5 h-5 text-mocha-text" />
+							<p className="text-mocha-text text-xs flex-1">{quote}</p>
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button variant="ghost" size="icon" onClick={onRemoveQuote}>
@@ -243,7 +243,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						render={({ field }) => (
 							<AutoResizeTextarea
 								placeholder="Ask anything"
-								className="border-none ring-0 text-mochaText bg-mochaBase"
+								className="border-none ring-0 text-mocha-text bg-mocha-base"
 								onChange={field.onChange}
 								value={field.value}
 								onKeyDown={handleKeyDown}

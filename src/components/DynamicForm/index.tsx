@@ -58,9 +58,9 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -74,7 +74,7 @@ export function DynamicForm({
 									min={question.min ?? undefined}
 									max={question.max ?? undefined}
 									step={question.step ?? undefined}
-									className="focus:ring-mochaSubText"
+									className="focus:ring-mocha-sub-text"
 								/>
 								{question.description && (
 									<p className="text-sm text-muted-foreground">
@@ -89,9 +89,9 @@ export function DynamicForm({
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
-										<div className="border py-2 px-3 border-mochaMantle bg-mochaCrust flex items-center gap-2 rounded-md w-fit">
+										<div className="border py-2 px-3 border-mocha-mantle bg-mocha-crust flex items-center gap-2 rounded-md w-fit">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
-											<p className="text-sm text-mochaSubText">
+											<p className="text-sm text-mocha-sub-text">
 												{question.answer as string}
 											</p>
 										</div>
@@ -114,9 +114,9 @@ export function DynamicForm({
 							},
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -129,7 +129,7 @@ export function DynamicForm({
 									placeholder={question.placeholder ?? undefined}
 									min={question.min ?? undefined}
 									max={question.max ?? undefined}
-									className="focus:ring-mochaSubText"
+									className="focus:ring-mocha-sub-text"
 								/>
 								{question.description && (
 									<p className="text-sm text-muted-foreground">
@@ -155,9 +155,9 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -167,7 +167,7 @@ export function DynamicForm({
 									{...field}
 									id={fieldId}
 									type="date"
-									className="focus:ring-mochaSubText w-fit"
+									className="focus:ring-mocha-sub-text w-fit"
 								/>
 								{question.description && (
 									<p className="text-sm text-muted-foreground">
@@ -182,9 +182,9 @@ export function DynamicForm({
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
-										<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
+										<div className="border bg-mocha-crust p-2 rounded-md border-mocha-mantle flex w-fit items-center gap-2">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
-											<p className="text-sm text-mochaSubText">
+											<p className="text-sm text-mocha-sub-text">
 												{question.answer as string}
 											</p>
 										</div>
@@ -203,9 +203,9 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -216,7 +216,7 @@ export function DynamicForm({
 									id={fieldId}
 									placeholder={question.placeholder ?? undefined}
 									rows={4}
-									className="focus:ring-mochaSubText"
+									className="focus:ring-mocha-sub-text"
 								/>
 								{question.description && (
 									<p className="text-sm text-muted-foreground">
@@ -231,9 +231,9 @@ export function DynamicForm({
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
-										<div className="border bg-mochaCrust p-2 rounded-md border-mochaMantle flex w-fit items-center gap-2">
+										<div className="border bg-mocha-crust p-2 rounded-md border-mocha-mantle flex w-fit items-center gap-2">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
-											<p className="text-sm text-mochaSubText">
+											<p className="text-sm text-mocha-sub-text">
 												{question.answer as string}
 											</p>
 										</div>
@@ -252,16 +252,16 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
 								<Select onValueChange={field.onChange} value={field.value}>
-									<SelectTrigger className="focus:ring-mochaSubText">
+									<SelectTrigger className="focus:ring-mocha-sub-text">
 										<SelectValue placeholder={"Select option"} />
 									</SelectTrigger>
 									<SelectContent>
@@ -285,9 +285,9 @@ export function DynamicForm({
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
-										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
-											<p className="text-sm text-mochaSubText">
+											<p className="text-sm text-mocha-sub-text">
 												{question.questionOptions.find(
 													(option) => option.value === question.answer,
 												)?.label || ""}
@@ -308,9 +308,9 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -345,9 +345,9 @@ export function DynamicForm({
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
-										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
-											<p className="text-sm text-mochaSubText">
+											<p className="text-sm text-mocha-sub-text">
 												{question.questionOptions.find(
 													(option) => option.value === question.answer,
 												)?.label || ""}
@@ -369,9 +369,9 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -418,9 +418,9 @@ export function DynamicForm({
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
-										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
-											<p className="text-sm text-mochaSubText">
+											<p className="text-sm text-mocha-sub-text">
 												{Array.isArray(question.answer) &&
 													question.answer
 														.map((item) => {
@@ -445,7 +445,7 @@ export function DynamicForm({
 						control={control}
 						defaultValue={false}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<div className="flex items-center space-x-2">
 									<Switch
 										id={fieldId}
@@ -453,7 +453,7 @@ export function DynamicForm({
 										onCheckedChange={field.onChange}
 									/>
 									<Label htmlFor={fieldId}>
-										<span className="text-mochaSubText text-base font-black">
+										<span className="text-mocha-sub-text text-base font-black">
 											{fieldId}.{" "}
 										</span>
 										{question.label}
@@ -466,9 +466,9 @@ export function DynamicForm({
 									</p>
 								)}
 								{typeof question.answer === "boolean" && showAnswer && (
-									<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+									<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
-										<p className="text-sm text-mochaSubText">
+										<p className="text-sm text-mocha-sub-text">
 											{question.answer ? "True" : "False"}
 										</p>
 									</div>
@@ -485,9 +485,9 @@ export function DynamicForm({
 						control={control}
 						defaultValue={[question.min || 0]}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mochaMantle bg-mochaCrust rounded-2xl">
+							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mochaSubText text-base font-black">
+									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -518,9 +518,9 @@ export function DynamicForm({
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
-										<div className="border p-2 rounded-md border-mochaMantle w-fit flex items-center gap-2 bg-mochaCrust">
+										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
-											<p className="text-sm text-mochaSubText">
+											<p className="text-sm text-mocha-sub-text">
 												{question.answer as number}
 											</p>
 										</div>
@@ -541,12 +541,12 @@ export function DynamicForm({
 				<Fragment>
 					<div className="flex flex-col gap-3 mb-4">
 						<div className="flex items-center gap-4 justify-between">
-							<p className="text-mochaText font-semibold text-xl tracking-widest">
+							<p className="text-mocha-text font-semibold text-xl tracking-widest">
 								{data.form.title}
 							</p>
 						</div>
 						{data.form.description && (
-							<p className="text-sm text-mochaSubText">
+							<p className="text-sm text-mocha-sub-text">
 								{data.form.description}
 							</p>
 						)}
@@ -565,12 +565,12 @@ export function DynamicForm({
 				<Fragment>
 					<div className="flex flex-col gap-3 mb-4">
 						<div className="flex items-center gap-4 justify-between">
-							<p className="text-mochaText font-semibold text-xl tracking-widest">
+							<p className="text-mocha-text font-semibold text-xl tracking-widest">
 								{data.exam.title}
 							</p>
 						</div>
 						{data.exam.instructions && (
-							<p className="text-sm text-mochaSubText">
+							<p className="text-sm text-mocha-sub-text">
 								{data.exam.instructions}
 							</p>
 						)}

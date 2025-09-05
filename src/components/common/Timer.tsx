@@ -34,7 +34,7 @@ const TimerComponent = ({ start, end, className, onTimerEnds }: TimerProps) => {
   }, []);
 
   return (
-    <span className={cn([" text-mochaBase text-xs font-bold", className])}>
+    <span className={cn([" text-mocha-base text-xs font-bold", className])}>
       {remainingTime}
     </span>
   );

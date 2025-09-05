@@ -159,12 +159,12 @@ export function SelectionToolbar({
 					}}
 				>
 					{/* Main toolbar */}
-					<div className="bg-mochaBase border border-mochaMauve rounded-lg flex items-center p-1.5 gap-1 w-fit h-full">
+					<div className="bg-mocha-base border border-mocha-mauve rounded-lg flex items-center p-1.5 gap-1 w-fit h-full">
 						{tools.map((tool) => {
 							return tool;
 						})}
 						<Separator
-							className="bg-mochaMauve min-h-8"
+							className="bg-mocha-mauve min-h-8"
 							orientation="vertical"
 						/>
 						<Button
@@ -172,7 +172,7 @@ export function SelectionToolbar({
 							onClick={handleCopy}
 							size="icon"
 							variant="ghost"
-							className="hover:bg-mochaMauve hover:text-mochaBase"
+							className="hover:bg-mocha-mauve hover:text-mocha-base"
 							title={"Copy"}
 						>
 							<ClipboardIcon className="min-w-5 h-5" />

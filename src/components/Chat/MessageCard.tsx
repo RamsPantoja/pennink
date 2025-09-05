@@ -23,9 +23,9 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
 	return (
 		<div className={cn(["flex flex-col"])}>
 			{message.quote && (
-				<Card className="flex items-start gap-2 border border-mochaMauve mb-2">
+				<Card className="flex items-start gap-2 border border-mocha-mauve mb-2">
 					<ArrowTurnDownRightIcon className="min-w-5 h-5" />
-					<p className="text-sm flex-1 italic text-mochaText">
+					<p className="text-sm flex-1 italic text-mocha-text">
 						{message.quote}
 					</p>
 				</Card>
@@ -35,7 +35,7 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
 					"flex flex-col w-full",
 					{
 						"bg-transparent": message.role === "assistant",
-						"bg-mochaMauve text-mochaText relative": message.role === "user",
+						"bg-mocha-mauve text-mocha-text relative": message.role === "user",
 					},
 				])}
 			>
@@ -65,7 +65,7 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
 					<Response content={message.content} />
 				)}
 
-				<span className="text-xs text-mochaSubtext1">
+				<span className="text-xs text-mocha-subtext1">
 					{DateTime.fromJSDate(message.createdAt).toLocaleString(
 						DateTime.DATETIME_MED,
 					)}

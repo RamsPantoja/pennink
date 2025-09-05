@@ -44,7 +44,7 @@ export const UsageService = () => {
 		<Card className="border w-full max-w-80 flex flex-col gap-4">
 			<p className="text-sm">Usage</p>
 			<div className="flex flex-col">
-				<p className="text-xs text-mochaSubtext1">Resets at</p>
+				<p className="text-xs text-mocha-subtext1">Resets at</p>
 				<span className="text-xs font-semibold">{resetWorkspacesTime}</span>
 			</div>
 			{staticsIsLoading && (

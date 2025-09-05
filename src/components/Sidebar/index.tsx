@@ -79,22 +79,22 @@ export function AppSidebar({ session }: AppSidebarProps) {
 				{session && (
 					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger asChild>
-							<div className="p-1 rounded-md flex w-full flex-row items-center justify-between gap-2 overflow-hidden cursor-pointer hover:bg-mochaMantle">
-								<div className="flex flex-row items-center gap-2 min-w-32 w-full">
+							<div className="p-1 rounded-md flex w-full flex-row items-center justify-between gap-2 overflow-hidden cursor-pointer hover:bg-light-mocha-mantle dark:hover:bg-mocha-mantle">
+								<div className="flex flex-row items-center gap-2 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
 									<Avatar className="h-7 w-7">
 										<AvatarImage src={session.user.image as string} />
 										<AvatarFallback>You</AvatarFallback>
 									</Avatar>
 									<div className="flex flex-col w-full overflow-hidden">
-										<p className="truncate text-sm font-bold text-mochaText">
+										<p className="truncate text-sm font-bold">
 											{session.user.name}
 										</p>
-										<p className="truncate text-xs text-mochaText">
+										<p className="truncate text-xs">
 											{session.user.subscription}
 										</p>
 									</div>
 								</div>
-								<ChevronUpDownIcon className="h-5 min-w-5 text-mochaText" />
+								<ChevronUpDownIcon className="h-5 min-w-5" />
 							</div>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent
@@ -109,7 +109,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 									await router.push(`/settings?callbackUrl=${router.asPath}`);
 								}}
 							>
-								<Cog6ToothIcon className="mr-2 h-5 min-w-5 text-mochaText" />
+								<Cog6ToothIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
 								Settings
 							</DropdownMenuItem>
 							<DropdownMenuItem
@@ -117,7 +117,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 									setDisplaySignOutAlert(true);
 								}}
 							>
-								<ArrowRightStartOnRectangleIcon className="mr-2 h-5 min-w-5 text-mochaText" />
+								<ArrowRightStartOnRectangleIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
 								Sign out
 							</DropdownMenuItem>
 							{session.user.subscription === "FREE" && (

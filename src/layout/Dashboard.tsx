@@ -201,13 +201,13 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 				open={openDocumentLoader}
 				onOpenChange={setOpenDocumentLoader}
 			/>
-			<main className="bg-mochaBase flex h-screen w-full flex-col overflow-hidden">
-				<div className="flex p-2 gap-4 items-center justify-between w-full border-b border-mochaMauve">
+			<main className="bg-mocha-base flex h-screen w-full flex-col overflow-hidden">
+				<div className="flex p-2 gap-4 items-center justify-between w-full border-b border-mocha-mauve">
 					<div className="flex items-center gap-2">
 						<SidebarTrigger className="min-w-8 h-8">
 							<span>Toggle</span>
 						</SidebarTrigger>
-						<p className="text-xs text-mochaSubText">Ctrl-B</p>
+						<p className="text-xs text-mocha-sub-text">Ctrl-B</p>
 					</div>
 					<div className="flex items-center gap-2">
 						{/*{router.asPath !== "/" && (
@@ -291,7 +291,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 					{/* <div className="flex items-center gap-4">
 						{!session && (
 							<Link
-								className="text-mochaCrust font-bold bg-mochaMauve pl-4 pr-4 pt-2 pb-2 rounded-full"
+								className="text-mocha-crust font-bold bg-mocha-mauve pl-4 pr-4 pt-2 pb-2 rounded-full"
 								href="/sign-in"
 							>
 								Sign in

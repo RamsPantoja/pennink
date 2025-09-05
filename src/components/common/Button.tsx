@@ -4,20 +4,20 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "~/lib/utils";
 
 const buttonVariants = cva(
-	"inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+	"inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
 	{
 		variants: {
 			variant: {
-				default: "text-mochaBase bg-mochaText hover:bg-mochaText/80",
-				teal: "text-mochaCrust bg-mochaTeal hover:bg-mochaTeal/80",
+				default: "text-mocha-base bg-mocha-text hover:bg-mocha-text/80",
+				teal: "text-mocha-crust bg-mocha-teal hover:bg-mocha-teal/80",
 				destructive:
 					"bg-destructive text-destructive-foreground hover:bg-destructive/90",
 				outline:
-					"border border-mochaMauve bg-mochaCrust text-mochaText hover:bg-accent hover:text-accent-foreground",
-				secondary: "bg-mochaMantle text-mochaText hover:bg-mochaMantle/80",
+					"border border-mocha-mauve bg-mocha-crust text-mocha-text hover:bg-accent hover:text-accent-foreground",
+				secondary: "bg-mocha-mantle text-mocha-text hover:bg-mocha-mantle/80",
 				ghost:
-					"hover:bg-accent hover:text-accent-foreground hover:bg-mochaMantle/80 text-mochaText",
-				link: "text-mochaSubText underline-offset-4 hover:underline ",
+					"hover:bg-accent hover:text-accent-foreground hover:bg-mocha-mantle/80 text-mocha-text",
+				link: "text-mocha-sub-text underline-offset-4 hover:underline ",
 			},
 			size: {
 				default: "h-10 px-4 py-2",
