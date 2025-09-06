@@ -55,6 +55,8 @@ import {
 import { Packer } from "docx";
 import InsertContentLinkDialog from "./InsertContentLinkDialog";
 import type { EditPredictionData } from "~/app/api/ai/edit-prediction/route";
+import { ShareLinkEditor } from "./ShareLinkEditor";
+import type { RouterOutputs } from "~/utils/api";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -99,7 +101,7 @@ const concatTextContentFromBlock = (block: Block) => {
 
 export type EditorProps = {
 	onSave: (data: Block[]) => void;
-	data: Block[] | null;
+	data: RouterOutputs["workspace"]["workspaceById"]["note"];
 };
 
 type PredictionRes = {
@@ -123,6 +125,8 @@ const getCredentials = async () => {
 };
 
 export const Editor = ({ onSave, data }: EditorProps) => {
+	const { content, id } = data;
+
 	const bedrock = createAmazonBedrock({
 		region: "us-west-2",
 		credentialProvider: getCredentials,
@@ -162,7 +166,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 				agentCursor: { name: "AI", color: "#f76f53" },
 			}),
 		],
-		initialContent: data ? data : undefined,
+		initialContent: content ? content : undefined,
 	});
 
 	useEffect(() => {
@@ -288,14 +292,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div className="flex p-2 justify-end items-center">
-				<Button
-					variant="ghost"
-					size="sm"
-					isPending={isExporting}
-					disabled={editor.document.length === 0}
-				>
-					Share
-				</Button>
+				<ShareLinkEditor noteId={id} />
 				<InsertContentLinkDialog onInsert={onInsertContentFromLink} />
 				<DropdownMenu>
 					<Tooltip>

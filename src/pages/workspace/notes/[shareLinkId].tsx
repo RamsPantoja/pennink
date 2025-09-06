@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { SharedContentLayout } from "~/layout/SharedContent";
 
-const SharedEditor = () => {
+const SharedNotes = () => {
 	return (
 		<SharedContentLayout>
 			<>
@@ -40,4 +40,4 @@ const SharedEditor = () => {
 	);
 };
 
-export default SharedEditor;
+export default SharedNotes;

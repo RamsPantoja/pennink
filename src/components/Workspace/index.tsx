@@ -312,7 +312,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 								</Tooltip>
 							</div>
 						)}
-						<Editor data={workspaceData.note.content} onSave={getNoteContent} />
+						<Editor data={workspaceData.note} onSave={getNoteContent} />
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel

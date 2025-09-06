@@ -67,7 +67,7 @@ type WorkspaceStore = {
 	aiFormData: AiForm | null;
 	setAiFormData: (data: AiForm | null) => void;
 	currentForm: CurrentForm | null;
-	setCurrentForm: (form: CurrentForm) => void;
+	setCurrentForm: (form: CurrentForm | null) => void;
 	aiContextItems: ContextEntity[];
 	setAiContextItems: (items: ContextEntity[]) => void;
 	queryFormData: RouterOutputs["form"]["getData"] | null;

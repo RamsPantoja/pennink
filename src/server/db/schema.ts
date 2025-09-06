@@ -908,10 +908,12 @@ export const shareLinksToNotes = createTable(
 	{
 		shareLinkId: uuid()
 			.notNull()
-			.references(() => shareLinks.id),
+			.references(() => shareLinks.id)
+			.unique(),
 		noteId: uuid()
 			.notNull()
-			.references(() => notes.id),
+			.references(() => notes.id)
+			.unique(),
 	},
 	(t) => [primaryKey({ columns: [t.shareLinkId, t.noteId] })],
 );
