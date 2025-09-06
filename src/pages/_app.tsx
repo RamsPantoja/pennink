@@ -71,7 +71,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
 	return (
 		<SessionProvider session={pageProps.session}>
-			<main data-theme={theme} className={GeistMono.className}>
+			<main data-theme={"dark"} className={GeistMono.className}>
 				<TooltipProvider delayDuration={300}>
 					<Toaster richColors />
 					<Component {...pageProps} />
