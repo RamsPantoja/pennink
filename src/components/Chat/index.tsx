@@ -13,7 +13,7 @@ import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { ArrowUpIcon, LucideCurrency } from "lucide-react";
-import { type ChatModes, parseUIMessage, useChatLogic } from "./useChatLogic";
+import { parseUIMessage, Tools, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
@@ -186,7 +186,9 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							</DropdownMenuContent>
 						</DropdownMenu>
 						{aiContextItems.length === 0 && (
-							<span className="text-xs text-mocha-sub-text">Add context...</span>
+							<span className="text-xs text-mocha-sub-text">
+								Add context...
+							</span>
 						)}
 						{aiContextItems.length >= 1 &&
 							aiContextItems.map((item, index) => (
@@ -254,7 +256,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						<div className="flex items-center gap-4">
 							<ToggleGroup
 								type="multiple"
-								onValueChange={(value: ChatModes[]) => {
+								onValueChange={(value: Tools[]) => {
 									onToggleTools(value);
 								}}
 								value={tools}

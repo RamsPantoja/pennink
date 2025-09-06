@@ -489,7 +489,7 @@ export default function PomodoroTimer() {
 												<div className="flex items-center gap-2 justify-between">
 													<Badge
 														variant={
-															session.type === "focus" ? "outline-solid" : "secondary"
+															session.type === "focus" ? "outline" : "secondary"
 														}
 													>
 														{session.type === "focus" ? (
