@@ -32,7 +32,7 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 	const { register, formState, handleSubmit } = useFormShareLinkEditor;
 
 	const clipboardContent = useMemo(() => {
-		return `${env.NEXT_PUBLIC_BASE_URL}/workspace/editor/${shareLinkData?.shareLinkId}`;
+		return `${env.NEXT_PUBLIC_BASE_URL}/workspace/notes/${shareLinkData?.shareLinkId}`;
 	}, [shareLinkData]);
 
 	return (
@@ -55,11 +55,14 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 				{!shareLinkIsPending && !shareLinkError && shareLinkData && (
 					<div className="flex gap-2 w-full flex-col">
 						<p>Copy and share your link</p>
-						<div className="flex items-center border-mocha-mauve border rounded-md gap-4 p-3">
-							<p className="text-xs text-mocha-sub-text truncate">
+						<div className="flex items-center border-mocha-mauve border rounded-[5px] gap-4">
+							<p
+								className="text-xs text-mocha-sub-text truncate ml-2"
+								title={clipboardContent}
+							>
 								{clipboardContent}
 							</p>
-							<ClipBoard content={clipboardContent} />
+							<ClipBoard className="rounded-[4px]" content={clipboardContent} />
 						</div>
 					</div>
 				)}

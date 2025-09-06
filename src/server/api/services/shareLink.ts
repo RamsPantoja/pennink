@@ -78,7 +78,15 @@ export class ShareLinkService {
 					return eq(sharedLinksToNotes.shareLinkId, shareLinkId);
 				},
 				with: {
-					note: true,
+					note: {
+						with: {
+							user: {
+								columns: {
+									name: true,
+								},
+							},
+						},
+					},
 				},
 			},
 		);

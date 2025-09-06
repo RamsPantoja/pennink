@@ -10,15 +10,29 @@ import "~/styles/nprogress.css";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { Toaster } from "sonner";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import nProgress from "nprogress";
 import { SessionProvider } from "next-auth/react";
+import { create } from "zustand";
+
+type Theme = "light" | "dark";
+
+type AppStore = {
+	theme: Theme;
+	setTheme: (theme: Theme) => void;
+};
+
+export const useAppStore = create<AppStore>()((set) => ({
+	theme: "light",
+	setTheme: (theme: Theme) => set({ theme }),
+}));
 
 const MyApp: AppType<{ session: Session | null }> = ({
 	Component,
 	pageProps,
 }) => {
 	const router = useRouter();
+	const { theme, setTheme } = useAppStore();
 
 	useEffect(() => {
 		const handleStart = () => {
@@ -40,9 +54,24 @@ const MyApp: AppType<{ session: Session | null }> = ({
 		};
 	}, [router]);
 
+	useEffect(() => {
+		const localStorageTheme = localStorage.getItem("theme");
+
+		if (localStorageTheme) {
+			setTheme(localStorageTheme as Theme);
+			return;
+		}
+
+		if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+			setTheme("dark");
+		} else {
+			setTheme("light");
+		}
+	}, [setTheme]);
+
 	return (
 		<SessionProvider session={pageProps.session}>
-			<main data-theme="dark" className={GeistMono.className}>
+			<main data-theme={theme} className={GeistMono.className}>
 				<TooltipProvider delayDuration={300}>
 					<Toaster richColors />
 					<Component {...pageProps} />
