@@ -13,7 +13,7 @@ import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { ArrowUpIcon, LucideCurrency } from "lucide-react";
-import { parseUIMessage, Tools, useChatLogic } from "./useChatLogic";
+import { parseUIMessage, type Tools, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";

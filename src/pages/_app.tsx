@@ -23,7 +23,7 @@ type AppStore = {
 };
 
 export const useAppStore = create<AppStore>()((set) => ({
-	theme: "light",
+	theme: "dark",
 	setTheme: (theme: Theme) => set({ theme }),
 }));
 
