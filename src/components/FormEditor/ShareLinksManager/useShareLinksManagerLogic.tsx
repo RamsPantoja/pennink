@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { api } from "~/utils/api";
 
-const shareLinkFormValidationSchema = z.object({
+const linkFormValidationSchema = z.object({
 	key: z
 		.string({
 			required_error: "Required field",
@@ -13,9 +13,7 @@ const shareLinkFormValidationSchema = z.object({
 		.min(1, "Required field"),
 });
 
-export type ShareLinkFormValidationSchema = z.infer<
-	typeof shareLinkFormValidationSchema
->;
+export type LinkFormValidationSchema = z.infer<typeof linkFormValidationSchema>;
 
 type UseShareLinkFormLogicProps = {
 	id: string;
@@ -24,8 +22,8 @@ type UseShareLinkFormLogicProps = {
 const useShareLinksManagerLogic = ({ id }: UseShareLinkFormLogicProps) => {
 	const apiUtils = api.useUtils();
 	const [openShareLinkMenu, setShareLinkMenu] = useState<boolean>(false);
-	const useFormShareLinkForm = useForm<ShareLinkFormValidationSchema>({
-		resolver: zodResolver(shareLinkFormValidationSchema),
+	const useFormLinkForm = useForm<LinkFormValidationSchema>({
+		resolver: zodResolver(linkFormValidationSchema),
 		defaultValues: {
 			key: "",
 		},
@@ -35,7 +33,7 @@ const useShareLinksManagerLogic = ({ id }: UseShareLinkFormLogicProps) => {
 		data: shareLinkData,
 		isPending: shareLinkIsPending,
 		error: shareLinkError,
-	} = api.shareLink.shareLinkByNoteId.useQuery({
+	} = api.link.useQuery({
 		noteId,
 	});
 
@@ -52,7 +50,7 @@ const useShareLinksManagerLogic = ({ id }: UseShareLinkFormLogicProps) => {
 		},
 	});
 
-	const onCreateShareLinkForm = (data: ShareLinkFormValidationSchema) => {
+	const onCreateShareLinkForm = (data: LinkFormValidationSchema) => {
 		createShareLinkFormMutation({
 			key: data.key,
 			noteId,
