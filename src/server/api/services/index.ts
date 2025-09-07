@@ -9,7 +9,7 @@ import { StorageService } from "./storage";
 import { Subscription } from "./subscription";
 import { FeedbackService } from "./feedback";
 import { FormService } from "./form";
-import { ShareLinkService } from "./shareLink";
+import { LinkService } from "./link";
 
 export type ServicesContext = {
 	userService: UserService;
@@ -22,7 +22,7 @@ export type ServicesContext = {
 	subscriptionService: Subscription;
 	feedbackService: FeedbackService;
 	formService: FormService;
-	shareLinkService: ShareLinkService;
+	linkService: LinkService;
 };
 
 export type ServicesConfig = {
@@ -41,7 +41,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		subscriptionService: new Subscription({ ctx }),
 		feedbackService: new FeedbackService({ ctx }),
 		formService: new FormService({ ctx }),
-		shareLinkService: new ShareLinkService({ ctx }),
+		linkService: new LinkService({ ctx }),
 	};
 };
 

@@ -587,7 +587,6 @@ export const formsRelations = relations(forms, ({ one, many }) => ({
 		references: [users.id],
 	}),
 	formVersions: many(formVersions),
-	shareLinksToForms: many(shareLinksToForms),
 }));
 
 export const formVersions = createTable("form_versions", {
@@ -707,8 +706,8 @@ export const formResponses = createTable("form_response", {
 		.references(() => formVersions.id)
 		.notNull(),
 	answers: jsonb().notNull(),
-	shareLinkId: uuid()
-		.references(() => shareLinks.id)
+	formLinkId: uuid()
+		.references(() => formLinks.id)
 		.notNull(),
 	createdAt: timestamp({
 		mode: "date",
@@ -731,9 +730,9 @@ export const formResponseRelations = relations(formResponses, ({ one }) => ({
 		fields: [formResponses.formId],
 		references: [forms.id],
 	}),
-	shareLink: one(shareLinks, {
-		fields: [formResponses.shareLinkId],
-		references: [shareLinks.id],
+	formLink: one(formLinks, {
+		fields: [formResponses.formLinkId],
+		references: [formLinks.id],
 	}),
 	formVersion: one(formVersions, {
 		fields: [formResponses.formVersionId],
@@ -768,7 +767,6 @@ export const examRelations = relations(exams, ({ one, many }) => ({
 		references: [users.id],
 	}),
 	examVersions: many(examVersions),
-	shareLinksToExams: many(shareLinksToExams),
 }));
 
 export const examVersions = createTable("exam_versions", {
@@ -811,8 +809,8 @@ export const examResponses = createTable("exam_response", {
 	examVersionId: uuid()
 		.references(() => examVersions.id)
 		.notNull(),
-	shareLinkId: uuid()
-		.references(() => shareLinks.id)
+	examLinkId: uuid()
+		.references(() => examLinks.id)
 		.notNull(),
 	createdAt: timestamp({
 		mode: "date",
@@ -839,9 +837,9 @@ export const examResponsesRelations = relations(examResponses, ({ one }) => ({
 		fields: [examResponses.examVersionId],
 		references: [examVersions.id],
 	}),
-	shareLink: one(shareLinks, {
-		fields: [examResponses.shareLinkId],
-		references: [shareLinks.id],
+	examLink: one(examLinks, {
+		fields: [examResponses.examLinkId],
+		references: [examLinks.id],
 	}),
 }));
 
@@ -872,12 +870,12 @@ export const questionsToExamVersionsRelations = relations(
 	}),
 );
 
-export const formShareLinks = createTable("form_share_link", {
+export const formLinks = createTable("form_link", {
 	id: customId.notNull().primaryKey(),
 	key: text().notNull(),
-	formId: uuid()
+	formVersionId: uuid()
 		.notNull()
-		.references(() => forms.id),
+		.references(() => formVersions.id),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
@@ -894,85 +892,71 @@ export const formShareLinks = createTable("form_share_link", {
 		.defaultNow(),
 });
 
-export const shareLinksToNotes = createTable(
-	"share_links_to_notes",
-	{
-		shareLinkId: uuid()
-			.notNull()
-			.references(() => shareLinks.id)
-			.unique(),
-		noteId: uuid()
-			.notNull()
-			.references(() => notes.id)
-			.unique(),
-	},
-	(t) => [primaryKey({ columns: [t.shareLinkId, t.noteId] })],
-);
-
-export const shareLinksToNotesRelations = relations(
-	shareLinksToNotes,
-	({ one }) => ({
-		shareLink: one(shareLinks, {
-			fields: [shareLinksToNotes.shareLinkId],
-			references: [shareLinks.id],
-		}),
-		note: one(notes, {
-			fields: [shareLinksToNotes.noteId],
-			references: [notes.id],
-		}),
+export const formLinksRelations = relations(formLinks, ({ one }) => ({
+	formVersion: one(formVersions, {
+		fields: [formLinks.formVersionId],
+		references: [formVersions.id],
 	}),
-);
-
-export const shareLinksToForms = createTable(
-	"share_links_to_forms",
-	{
-		shareLinkId: uuid()
-			.notNull()
-			.references(() => shareLinks.id),
-		formId: uuid()
-			.notNull()
-			.references(() => forms.id),
-	},
-	(t) => [primaryKey({ columns: [t.shareLinkId, t.formId] })],
-);
-
-export const shareLinksToFormsRelations = relations(
-	shareLinksToForms,
-	({ one }) => ({
-		shareLink: one(shareLinks, {
-			fields: [shareLinksToForms.shareLinkId],
-			references: [shareLinks.id],
-		}),
-		form: one(forms, {
-			fields: [shareLinksToForms.formId],
-			references: [forms.id],
-		}),
+	user: one(users, {
+		fields: [formLinks.userId],
+		references: [users.id],
 	}),
-);
+}));
 
-export const shareLinksToExams = createTable(
-	"share_links_to_exams",
-	{
-		shareLinkId: uuid()
-			.notNull()
-			.references(() => shareLinks.id),
-		examId: uuid()
-			.notNull()
-			.references(() => exams.id),
-	},
-	(t) => [primaryKey({ columns: [t.shareLinkId, t.examId] })],
-);
+export const examLinks = createTable("exam_link", {
+	id: customId.notNull().primaryKey(),
+	key: text().notNull(),
+	examVersionId: uuid()
+		.notNull()
+		.references(() => examVersions.id),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
+	metadata: jsonb(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
 
-export const shareLinksToExamsRelations = relations(
-	shareLinksToExams,
-	({ one }) => ({
-		shareLink: one(shareLinks, {
-			fields: [shareLinksToExams.shareLinkId],
-			references: [shareLinks.id],
-		}),
-		exam: one(exams, {
-			fields: [shareLinksToExams.examId],
-			references: [exams.id],
-		}),
+export const examLinksRelations = relations(examLinks, ({ one }) => ({
+	examVersion: one(examVersions, {
+		fields: [examLinks.examVersionId],
+		references: [examVersions.id],
 	}),
-);
+	user: one(users, {
+		fields: [examLinks.userId],
+		references: [users.id],
+	}),
+}));
+
+export const noteLinks = createTable("note_link", {
+	id: customId.notNull().primaryKey(),
+	noteId: uuid()
+		.notNull()
+		.references(() => notes.id),
+	metadata: jsonb(),
+	createdAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp({
+		mode: "date",
+	})
+		.notNull()
+		.defaultNow(),
+});
+
+export const noteLinksRelations = relations(noteLinks, ({ one }) => ({
+	note: one(notes, {
+		fields: [noteLinks.noteId],
+		references: [notes.id],
+	}),
+}));

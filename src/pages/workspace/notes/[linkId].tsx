@@ -18,13 +18,12 @@ import { DateTime } from "luxon";
 const SharedNotes = () => {
 	const { query } = useRouter();
 
-	const { data, isPending, isError } = api.shareLink.noteByShareLinkId.useQuery(
+	const { data, isPending, isError } = api.link.noteByLinkId.useQuery(
 		{
-			shareLinkId:
-				typeof query.shareLinkId === "string" ? query.shareLinkId : "",
+			linkId: typeof query.linkId === "string" ? query.linkId : "",
 		},
 		{
-			enabled: query.shareLinkId !== undefined,
+			enabled: query.linkId !== undefined,
 		},
 	);
 

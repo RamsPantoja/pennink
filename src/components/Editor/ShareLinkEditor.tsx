@@ -18,19 +18,16 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 	const {
 		openShareLinkMenu,
 		setShareLinkMenu,
-		onSendShareLinkEditor,
-		createShareLinkEditorIsPending,
-		useFormShareLinkEditor,
-		shareLinkData,
-		shareLinkIsPending,
-		shareLinkError,
+		onCreateLinkEditor,
+		createLinkEditorIsPending,
+		linkData,
+		linkIsPending,
+		linkError,
 	} = useShareLinkEditorLogic({ noteId });
 
-	const { register, formState, handleSubmit } = useFormShareLinkEditor;
-
 	const clipboardContent = useMemo(() => {
-		return `${env.NEXT_PUBLIC_BASE_URL}/workspace/notes/${shareLinkData?.shareLinkId}`;
-	}, [shareLinkData]);
+		return `${env.NEXT_PUBLIC_BASE_URL}/workspace/notes/${linkData?.id}`;
+	}, [linkData]);
 
 	return (
 		<Popover
@@ -45,11 +42,11 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="max-h-(--radix-popover-content-available-height) overflow-auto">
-				{shareLinkIsPending && <Loading />}
-				{!shareLinkIsPending && shareLinkError && (
-					<FeedbackMessage status="ERROR" message={shareLinkError.message} />
+				{linkIsPending && <Loading />}
+				{!linkIsPending && linkError && (
+					<FeedbackMessage status="ERROR" message={linkError.message} />
 				)}
-				{!shareLinkIsPending && !shareLinkError && shareLinkData && (
+				{!linkIsPending && !linkError && linkData && (
 					<div className="flex gap-2 w-full flex-col">
 						<p>Copy and share your link</p>
 						<div className="flex items-center border-mocha-mauve border rounded-[5px] gap-4">
@@ -63,33 +60,19 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 						</div>
 					</div>
 				)}
-				{!shareLinkIsPending && !shareLinkError && !shareLinkData && (
+				{!linkIsPending && !linkError && !linkData && (
 					<div className="flex gap-4 flex-col items-end w-full">
 						<p className="text-sm text-mocha-text">
 							Create a shareable link for your notes
 						</p>
-						<div className="flex flex-col w-full h-full gap-2">
-							<Label htmlFor="key">Keyword</Label>
-							<Input
-								placeholder="Add a keyword to your link"
-								className="resize-none"
-								{...register("key")}
-							/>
-							{formState.errors.key && (
-								<InputFeedbackMessage
-									status="ERROR"
-									message={formState.errors.key.message}
-								/>
-							)}
-						</div>
 						<p className="text-xs text-mocha-sub-text">
 							Anyone on the web with the link can view your notes
 						</p>
 						<Button
 							size="sm"
 							variant="default"
-							isPending={createShareLinkEditorIsPending}
-							onClick={handleSubmit(onSendShareLinkEditor)}
+							isPending={createLinkEditorIsPending}
+							onClick={onCreateLinkEditor}
 						>
 							Generate link
 						</Button>

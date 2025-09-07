@@ -40,7 +40,7 @@ export const FormCard: FC<FormCardProps> = ({
 				</div>
 				<div className="flex items-center gap-2">
 					<span className="text-xs text-muted-foreground">{date}</span>
-					<ShareLinksManager />
+					{/*<ShareLinksManager />*/}
 					{/* <DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="ghost" size="icon" className="h-8 w-8">

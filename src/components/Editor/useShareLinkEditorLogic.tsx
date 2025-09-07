@@ -2,20 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 import { api } from "~/utils/api";
-
-const shareLinkEditorValidationSchema = z.object({
-	key: z
-		.string({
-			required_error: "Required field",
-		})
-		.min(1, "Required field"),
-});
-
-export type ShareLinkEditorValidationSchema = z.infer<
-	typeof shareLinkEditorValidationSchema
->;
 
 type UseShareLinkEditorLogicProps = {
 	noteId: string;
@@ -24,37 +11,29 @@ type UseShareLinkEditorLogicProps = {
 const useShareLinkEditorLogic = ({ noteId }: UseShareLinkEditorLogicProps) => {
 	const apiUtils = api.useUtils();
 	const [openShareLinkMenu, setShareLinkMenu] = useState<boolean>(false);
-	const useFormShareLinkEditor = useForm<ShareLinkEditorValidationSchema>({
-		resolver: zodResolver(shareLinkEditorValidationSchema),
-		defaultValues: {
-			key: "",
-		},
-	});
 
 	const {
-		data: shareLinkData,
-		isPending: shareLinkIsPending,
-		error: shareLinkError,
-	} = api.shareLink.shareLinkByNoteId.useQuery({
+		data: linkData,
+		isPending: linkIsPending,
+		error: linkError,
+	} = api.link.linkByNoteId.useQuery({
 		noteId,
 	});
 
 	const {
-		mutate: createShareLinkEditorMutation,
-		isPending: createShareLinkEditorIsPending,
-	} = api.shareLink.createShareLinkForNote.useMutation({
+		mutate: createLinkEditorMutation,
+		isPending: createLinkEditorIsPending,
+	} = api.link.createLinkForNote.useMutation({
 		onSuccess: async () => {
-			useFormShareLinkEditor.reset();
-			apiUtils.shareLink.shareLinkByNoteId.invalidate();
+			apiUtils.link.linkByNoteId.invalidate();
 		},
 		onError: (error) => {
 			toast.error(error.message);
 		},
 	});
 
-	const onSendShareLinkEditor = (data: ShareLinkEditorValidationSchema) => {
-		createShareLinkEditorMutation({
-			key: data.key,
+	const onCreateLinkEditor = () => {
+		createLinkEditorMutation({
 			noteId,
 		});
 	};
@@ -62,12 +41,11 @@ const useShareLinkEditorLogic = ({ noteId }: UseShareLinkEditorLogicProps) => {
 	return {
 		openShareLinkMenu,
 		setShareLinkMenu,
-		onSendShareLinkEditor,
-		createShareLinkEditorIsPending,
-		useFormShareLinkEditor,
-		shareLinkData,
-		shareLinkIsPending,
-		shareLinkError,
+		onCreateLinkEditor,
+		createLinkEditorIsPending,
+		linkData,
+		linkIsPending,
+		linkError,
 	};
 };
 
