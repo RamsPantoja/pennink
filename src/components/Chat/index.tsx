@@ -120,23 +120,29 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 				{!isNew && (
 					<div className="flex items-center gap-2 w-full flex-wrap">
 						<DropdownMenu>
-							<DropdownMenuTrigger
-								asChild
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-								}}
-								className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md"
-							>
-								<Button
-									variant="outline"
-									onClick={stopStreaming}
-									size="icon"
-									disabled={false}
-								>
-									<PlusIcon className="min-w-5 w-5 h-5" />
-								</Button>
-							</DropdownMenuTrigger>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<DropdownMenuTrigger
+										asChild
+										onClick={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+										}}
+										className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md"
+									>
+										<Button
+											variant="outline"
+											onClick={stopStreaming}
+											size="icon"
+											disabled={false}
+										>
+											<PlusIcon className="min-w-5 w-5 h-5" />
+										</Button>
+									</DropdownMenuTrigger>
+								</TooltipTrigger>
+								<TooltipContent>Add context to chat</TooltipContent>
+							</Tooltip>
+
 							<DropdownMenuContent
 								side="right"
 								onCloseAutoFocus={(e) => {

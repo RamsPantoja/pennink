@@ -1,6 +1,3 @@
-import { MegaphoneIcon } from "@heroicons/react/24/outline";
-import type { Session } from "next-auth";
-import { Textarea } from "../ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../common/Button";
 import InputFeedbackMessage from "../common/InputFeedbackMessage";

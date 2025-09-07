@@ -872,9 +872,15 @@ export const questionsToExamVersionsRelations = relations(
 	}),
 );
 
-export const shareLinks = createTable("share_link", {
+export const formShareLinks = createTable("form_share_link", {
 	id: customId.notNull().primaryKey(),
 	key: text().notNull(),
+	formId: uuid()
+		.notNull()
+		.references(() => forms.id),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
 	metadata: jsonb(),
 	createdAt: timestamp({
 		mode: "date",
@@ -887,21 +893,6 @@ export const shareLinks = createTable("share_link", {
 		.notNull()
 		.defaultNow(),
 });
-
-export const shareLinksRelations = relations(shareLinks, ({ one }) => ({
-	shareLinkToNote: one(shareLinksToNotes, {
-		fields: [shareLinks.id],
-		references: [shareLinksToNotes.shareLinkId],
-	}),
-	shareLinkToForm: one(shareLinksToForms, {
-		fields: [shareLinks.id],
-		references: [shareLinksToForms.shareLinkId],
-	}),
-	shareLinkToExam: one(shareLinksToExams, {
-		fields: [shareLinks.id],
-		references: [shareLinksToExams.shareLinkId],
-	}),
-}));
 
 export const shareLinksToNotes = createTable(
 	"share_links_to_notes",

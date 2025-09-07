@@ -210,7 +210,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						<p className="text-xs text-mocha-sub-text">Ctrl-B</p>
 					</div>
 					<div className="flex items-center gap-2">
-						{/*{router.asPath !== "/" && (
+						{router.asPath !== "/" && (
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button
@@ -225,7 +225,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 								</TooltipTrigger>
 								<TooltipContent>Search from your forms</TooltipContent>
 							</Tooltip>
-						)}*/}
+						)}
 						{router.asPath !== "/" && (
 							<DropdownMenu>
 								<Tooltip>

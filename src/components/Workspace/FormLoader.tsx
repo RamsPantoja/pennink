@@ -20,6 +20,8 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import type { FormType } from "~/lib/enum";
+import { FormCard } from "./FormCard";
 
 type FormLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
@@ -34,12 +36,13 @@ export const FormLoader = ({
 }: FormLoaderProps) => {
 	const [documentName, setDocumentName] = useState<string>("");
 	const [searchParam, setSearchParam] = useState<string | undefined>();
+	const [type, setType] = useState<FormType>("BASIC");
 
 	const {
-		data: filesByUser,
-		isLoading: filesByUserLoading,
-		isError: filesByUserError,
-	} = api.workspace.filesByUserId.useQuery({ search: searchParam });
+		data: forms,
+		isLoading: formsIsLoading,
+		isError: formsIsError,
+	} = api.form.forms.useQuery({ search: searchParam, type });
 
 	const performSearch = () => {
 		if (documentName) {
@@ -49,21 +52,23 @@ export const FormLoader = ({
 		}
 	};
 
+	console.log(forms);
+
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
 			<DrawerContent className="left-0 md:left-1/2 bg-mocha-base border-mocha-mantle right-2 top-2 bottom-2 overflow-hidden fixed border z-50 rounded-xl outline-hidden mt-0">
 				<div className="h-full w-full grow p-4 flex flex-col">
 					<DrawerHeader>
 						<DrawerTitle className="text-sm font-semibold">
-							Your sources
+							Your forms and exams
 						</DrawerTitle>
 						<DrawerDescription>
-							Select a document to read from all saved documents
+							Select an item to see and edit it
 						</DrawerDescription>
 						<div className="flex items-center gap-2">
 							<Input
 								type="text"
-								placeholder="Search for document"
+								placeholder="Search by title"
 								value={documentName}
 								onChange={(e) => setDocumentName(e.target.value)}
 								onKeyDown={(e) => e.key === "Enter" && performSearch()}
@@ -98,38 +103,37 @@ export const FormLoader = ({
 						</div>
 					</DrawerHeader>
 					<div className="grid gap-2 h-fit overflow-auto">
-						{filesByUserLoading && <Loading />}
-						{!filesByUserLoading && filesByUserError && (
+						{formsIsLoading && <Loading />}
+						{!formsIsLoading && formsIsError && (
 							<FeedbackMessage
 								status="ERROR"
 								message="Failed to load documents"
 							/>
 						)}
-						{!filesByUserLoading &&
-							!filesByUserError &&
-							filesByUser &&
-							filesByUser.length === 0 && (
+						{!formsIsLoading &&
+							!formsIsError &&
+							forms &&
+							forms.data.length === 0 && (
 								<div className="flex items-center justify-center text-mocha-text">
 									Your documents will appear here.
 								</div>
 							)}
 
-						{!filesByUserLoading &&
-							!filesByUserError &&
-							filesByUser &&
-							filesByUser.length > 0 && (
+						{!formsIsLoading &&
+							!formsIsError &&
+							forms &&
+							forms.data.length > 0 && (
 								<div className="grid gap-2">
-									{filesByUser.map((doc) => (
-										<DocumentCard
+									{forms.data.map((doc) => (
+										<FormCard
 											key={doc.id}
-											title={doc.filename}
-											type={doc.type}
+											title={doc.title}
+											type={forms.type}
 											date={DateTime.fromJSDate(doc.createdAt).toLocaleString(
 												DateTime.DATETIME_MED,
 											)}
 											onSelect={onSelect}
 											id={doc.id}
-											storageKey={doc.key}
 										/>
 									))}
 								</div>

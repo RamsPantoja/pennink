@@ -12,3 +12,9 @@ export const createShareLinkForNoteInputSchema = z.object({
 export const getShareLinkByNoteIdInputSchema = z.object({
 	noteId: z.string().uuid(),
 });
+
+export const getShareLinksForFormsInputSchema = z.object({
+	type: z.enum(["BASIC", "EXAM"]),
+	key: z.string().optional(),
+	id: z.string().uuid(),
+});

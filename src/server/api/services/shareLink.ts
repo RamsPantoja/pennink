@@ -4,7 +4,10 @@ import { notes, shareLinks, shareLinksToNotes } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import type { updateNoteInputSchema } from "../schemas/note";
-import type { createShareLinkForNoteInputSchema } from "../schemas/shareLink";
+import type {
+	createShareLinkForNoteInputSchema,
+	getShareLinksForFormsInputSchema,
+} from "../schemas/shareLink";
 
 type ShareLinkServiceContructor = {
 	ctx: TRPCContext;
@@ -12,6 +15,10 @@ type ShareLinkServiceContructor = {
 
 type CreateShareLinkForNoteInputSchema = z.infer<
 	typeof createShareLinkForNoteInputSchema
+>;
+
+type GetShareLinksForFormsInputSchema = z.infer<
+	typeof getShareLinksForFormsInputSchema
 >;
 
 export class ShareLinkService {
@@ -116,5 +123,44 @@ export class ShareLinkService {
 		}
 
 		return shareLink;
+	}
+
+	public async getShareLinksForForms(input: GetShareLinksForFormsInputSchema) {
+		const { type, key, id } = input;
+
+		switch (type) {
+			case "BASIC": {
+				if (key) {
+					const shareLinks = await this.ctx.db.query.shareLinks.findMany({
+						where: (shareLinks, { eq }) => {
+							return eq(shareLinks.key, key);
+						},
+						with: {
+							shareLinksToForms: true,
+						},
+					});
+				}
+				const shareLinksToFormsList =
+					await this.ctx.db.query.shareLinksToForms.findMany({
+						where: (shareLinksToForms, { eq }) => {
+							return eq(shareLinksToForms.formId, id);
+						},
+						with: {
+							shareLink: true,
+						},
+					});
+
+				return shareLinksToFormsList;
+			}
+			case "EXAM":
+				return await this.ctx.db.query.shareLinksToExams.findMany({
+					where: (shareLinksToExams, { eq }) => {
+						return eq(shareLinksToExams.examId, id);
+					},
+					with: {
+						shareLink: true,
+					},
+				});
+		}
 	}
 }

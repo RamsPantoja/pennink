@@ -14,3 +14,8 @@ export const editFormSchema = z.object({
 	id: z.string().uuid(),
 	formData: aiFormSchema,
 });
+
+export const getFormsSchema = z.object({
+	type: z.enum(["BASIC", "EXAM"]),
+	search: z.string().optional(),
+});

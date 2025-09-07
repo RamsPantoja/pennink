@@ -16,6 +16,7 @@ import type {
 	createFormSchema,
 	editFormSchema,
 	getDataSchema,
+	getFormsSchema,
 } from "../schemas/form";
 import type { FormType } from "~/lib/enum";
 import { eq } from "drizzle-orm";
@@ -33,6 +34,7 @@ export type CreateFormInput = {
 };
 
 export type EditFormInput = z.infer<typeof editFormSchema>;
+export type GetFormsInput = z.infer<typeof getFormsSchema>;
 
 export type GetDataInput = z.infer<typeof getDataSchema>;
 export type Questions = typeof questionsSchema.$inferSelect & {
@@ -436,6 +438,57 @@ export class FormService {
 			throw new TRPCError({
 				code: "INTERNAL_SERVER_ERROR",
 				message: "Failed to create form",
+			});
+		}
+	}
+
+	public async getForms(input: GetFormsInput, userId: string) {
+		try {
+			const { type, search } = input;
+
+			switch (type) {
+				case "EXAM": {
+					const exams = await this.ctx.db.query.exams.findMany({
+						where: (exams, { eq, and, ilike }) => {
+							const conditions = [eq(exams.userId, userId)];
+
+							if (search) {
+								conditions.push(ilike(exams.title, `%${search}%`));
+							}
+
+							return and(...conditions);
+						},
+						orderBy: (exams, { desc }) => [desc(exams.id)],
+					});
+
+					return { data: exams, type };
+				}
+				case "BASIC": {
+					const forms = await this.ctx.db.query.forms.findMany({
+						where: (forms, { eq, and, ilike }) => {
+							const conditions = [eq(forms.userId, userId)];
+
+							if (search) {
+								conditions.push(ilike(forms.title, `%${search}%`));
+							}
+
+							return and(...conditions);
+						},
+						orderBy: (forms, { desc }) => [desc(forms.id)],
+					});
+
+					return { data: forms, type };
+				}
+				default:
+					throw new TRPCError({
+						code: "BAD_REQUEST",
+						message: "Invalid form type",
+					});
+			}
+		} catch (e) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "Failed to get forms",
 			});
 		}
 	}
