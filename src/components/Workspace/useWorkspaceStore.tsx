@@ -48,7 +48,7 @@ export type ContextEntity =
 	| EditorContext
 	| FormContext;
 
-type CurrentForm = {
+export type CurrentForm = {
 	id: string;
 	type: FormType;
 };

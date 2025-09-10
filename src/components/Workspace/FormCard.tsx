@@ -2,13 +2,14 @@ import type { FC } from "react";
 import { Card } from "../ui/card";
 import type { FormType } from "~/lib/enum";
 import { LinksManager } from "../FormEditor/LinksManager";
+import type { CurrentForm } from "./useWorkspaceStore";
 
 type FormCardProps = {
 	id: string;
 	title: string;
 	type: FormType;
 	date: string;
-	onSelect: (doc: any) => void;
+	onSelect: (form: CurrentForm) => void;
 };
 
 export const FormCard: FC<FormCardProps> = ({
@@ -18,14 +19,10 @@ export const FormCard: FC<FormCardProps> = ({
 	onSelect,
 	id,
 }) => {
-	const onSelectDocument = () => {
-		// onSelect();
-	};
-
 	return (
 		<Card
 			className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors cursor-pointer border h-fit w-full"
-			onClick={onSelectDocument}
+			onClick={(e) => onSelect({ id, type })}
 		>
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-3">

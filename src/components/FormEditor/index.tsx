@@ -14,6 +14,7 @@ import { api } from "~/utils/api";
 import { Badge } from "../ui/badge";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";
+import { LinksManager } from "./LinksManager";
 
 export const FormEditor = () => {
 	const [showAnswer, setShowAnswer] = useState<boolean>(false);
@@ -25,10 +26,12 @@ export const FormEditor = () => {
 		setAiContextItems,
 		aiContextItems,
 	} = useWorkspaceStore();
+
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	} = useForm();
 
 	const { mutate: createForm, isPending: createFormIsPending } =
@@ -104,6 +107,7 @@ export const FormEditor = () => {
 
 	useEffect(() => {
 		if (data) {
+			reset();
 			setQueryFormData(data);
 
 			const hasFormContextItem = aiContextItems.some(
@@ -131,7 +135,10 @@ export const FormEditor = () => {
 	}
 
 	return (
-		<div className="flex h-full flex-col overflow-hidden p-0 w-full">
+		<div
+			key={currentForm.id}
+			className="flex h-full flex-col overflow-hidden p-0 w-full"
+		>
 			{isPending && <Loading />}
 			{!isPending && isError && (
 				<FeedbackMessage status="ERROR" message={"Something went wrong"} />
@@ -176,12 +183,9 @@ export const FormEditor = () => {
 						>
 							Test
 						</Button>
-						<Button
-							isPending={createFormIsPending || editFormIsPending}
-							startIcon={<ShareIcon className="min-w-5 h-5" />}
-						>
-							Share
-						</Button>
+						{!createFormIsPending && !editFormIsPending && currentForm && (
+							<LinksManager id={currentForm.id} type={currentForm.type} />
+						)}
 					</div>
 				</Fragment>
 			)}

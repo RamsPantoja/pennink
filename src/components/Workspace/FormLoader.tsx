@@ -12,7 +12,7 @@ import { api } from "~/utils/api";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { DateTime } from "luxon";
-import type { PenninkDocument } from "./useWorkspaceStore";
+import type { CurrentForm, PenninkDocument } from "./useWorkspaceStore";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -23,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 
 type FormLoaderProps = {
-	onSelect: (doc: PenninkDocument) => void;
+	onSelect: (doc: CurrentForm) => void;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 };

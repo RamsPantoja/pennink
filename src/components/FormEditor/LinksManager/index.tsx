@@ -18,7 +18,11 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "~/components/ui/tooltip";
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+	MagnifyingGlassIcon,
+	ShareIcon,
+	XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 type LinksManagerProps = {
 	id: string;
@@ -52,17 +56,29 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 			modal={true}
 		>
 			<PopoverTrigger asChild>
-				<Button size="sm" variant="ghost">
+				<Button
+					size="sm"
+					variant="secondary"
+					startIcon={<ShareIcon className="min-w-5 h-5" />}
+					onClick={(e) => {
+						e.stopPropagation();
+					}}
+				>
 					Share
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="max-h-(--radix-popover-content-available-height) overflow-auto">
+			<PopoverContent
+				onClick={(e) => {
+					e.stopPropagation();
+				}}
+				className="max-h-(--radix-popover-content-available-height) overflow-auto"
+			>
 				<div className="flex gap-4 flex-col w-full">
 					<div className="flex flex-col gap-4">
 						<div className="flex items-center relative gap-2">
 							<Input
 								type="text"
-								placeholder="Search by title"
+								placeholder="Search by keyword"
 								value={searchKey}
 								onChange={(e) => setSearchKey(e.target.value)}
 								onKeyDown={(e) => e.key === "Enter" && performSearch()}
@@ -103,7 +119,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 							!linksError &&
 							linksData &&
 							linksData.links.length > 0 && (
-								<div className="flex flex-col gap-2">
+								<div className="flex flex-col gap-2 overflow-auto max-h-96">
 									{linksData.type === "BASIC" &&
 										linksData.links.map((link) => (
 											<LinkItem

@@ -1,7 +1,6 @@
 import {
 	ArrowDownTrayIcon,
 	CircleStackIcon,
-	DocumentPlusIcon,
 	ListBulletIcon,
 	MagnifyingGlassIcon,
 	SquaresPlusIcon,
@@ -33,10 +32,8 @@ import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { fileSizeRule } from "~/lib/utils";
 import { api } from "~/utils/api";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
-import Image from "next/image";
 import PomodoroTimer from "~/components/Pomodoro";
 import { FormLoader } from "~/components/Workspace/FormLoader";
-import { CommandIcon } from "lucide-react";
 
 type DashboardProps = {
 	session: Session;
@@ -50,7 +47,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	const { workspaceId } = router.query;
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const { setDocument } = useWorkspaceStore();
+	const { setDocument, setCurrentForm, setDisplayFormEditor } =
+		useWorkspaceStore();
 	const [isReadingPDF, setIsReadingPDF] = useState<boolean>(false);
 	const [openFormLoader, setOpenFormLoader] = useState<boolean>(false);
 
@@ -180,7 +178,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			<AppSidebar session={session} />
 			<FormLoader
 				onSelect={(form) => {
-					console.log(form);
+					setDisplayFormEditor(true);
+					setCurrentForm(form);
 					setOpenFormLoader(false);
 				}}
 				open={openFormLoader}
