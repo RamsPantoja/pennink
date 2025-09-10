@@ -52,8 +52,8 @@ export const DocumentLoader = ({
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
 			<DrawerContent className="left-0 md:left-1/2 bg-mocha-base border-mocha-mantle right-2 top-2 bottom-2 overflow-hidden fixed border z-50 rounded-xl outline-hidden mt-0">
-				<div className="h-full w-full grow p-4 flex flex-col">
-					<DrawerHeader>
+				<div className="h-full w-full grow p-4 flex flex-col gap-4">
+					<DrawerHeader className="p-0">
 						<DrawerTitle className="text-sm font-semibold">
 							Your sources
 						</DrawerTitle>
