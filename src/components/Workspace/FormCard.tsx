@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Card } from "../ui/card";
 import type { FormType } from "~/lib/enum";
-import { ShareLinksManager } from "../FormEditor/ShareLinksManager";
+import { LinksManager } from "../FormEditor/LinksManager";
 
 type FormCardProps = {
 	id: string;
@@ -40,7 +40,7 @@ export const FormCard: FC<FormCardProps> = ({
 				</div>
 				<div className="flex items-center gap-2">
 					<span className="text-xs text-muted-foreground">{date}</span>
-					{/*<ShareLinksManager />*/}
+					<LinksManager id={id} type={type} />
 					{/* <DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="ghost" size="icon" className="h-8 w-8">

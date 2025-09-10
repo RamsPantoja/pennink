@@ -7,11 +7,8 @@ import {
 	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
-	DrawerTrigger,
-	DrawerHandle,
 } from "../ui/drawer";
 import { api } from "~/utils/api";
-import { DocumentCard } from "./DocumentCard";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { DateTime } from "luxon";
@@ -36,7 +33,7 @@ export const FormLoader = ({
 	open,
 	onOpenChange,
 }: FormLoaderProps) => {
-	const [documentName, setDocumentName] = useState<string>("");
+	const [searchKey, setSearchKey] = useState<string>("");
 	const [searchParam, setSearchParam] = useState<string | undefined>();
 	const [type, setType] = useState<FormType>("BASIC");
 
@@ -47,14 +44,12 @@ export const FormLoader = ({
 	} = api.form.forms.useQuery({ search: searchParam, type });
 
 	const performSearch = () => {
-		if (documentName) {
-			setSearchParam(documentName);
+		if (searchKey) {
+			setSearchParam(searchKey);
 		} else {
 			setSearchParam(undefined);
 		}
 	};
-
-	console.log(forms);
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
@@ -72,15 +67,15 @@ export const FormLoader = ({
 								<Input
 									type="text"
 									placeholder="Search by title"
-									value={documentName}
-									onChange={(e) => setDocumentName(e.target.value)}
+									value={searchKey}
+									onChange={(e) => setSearchKey(e.target.value)}
 									onKeyDown={(e) => e.key === "Enter" && performSearch()}
 									className="pr-10"
 								/>
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<Button
-											disabled={documentName === ""}
+											disabled={searchKey === ""}
 											variant="ghost"
 											size="icon"
 											onClick={performSearch}
@@ -90,13 +85,13 @@ export const FormLoader = ({
 									</TooltipTrigger>
 									<TooltipContent>Search</TooltipContent>
 								</Tooltip>
-								{documentName && (
+								{searchKey && (
 									<Button
 										className="absolute right-12"
 										variant="ghost"
 										size="icon"
 										onClick={() => {
-											setDocumentName("");
+											setSearchKey("");
 											setSearchParam(undefined);
 										}}
 									>
@@ -128,17 +123,14 @@ export const FormLoader = ({
 					<div className="grid gap-2 h-fit overflow-auto">
 						{formsIsLoading && <Loading />}
 						{!formsIsLoading && formsIsError && (
-							<FeedbackMessage
-								status="ERROR"
-								message="Failed to load documents"
-							/>
+							<FeedbackMessage status="ERROR" message="Failed to load forms" />
 						)}
 						{!formsIsLoading &&
 							!formsIsError &&
 							forms &&
 							forms.data.length === 0 && (
 								<div className="flex items-center justify-center text-mocha-text">
-									Your documents will appear here.
+									Your forms will appear here.
 								</div>
 							)}
 

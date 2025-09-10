@@ -1,11 +1,13 @@
 import type { z } from "zod";
 import type { TRPCContext } from "../trpc";
-import { noteLinks } from "~/server/db/schema";
+import { examLinks, formLinks, noteLinks } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import type {
+	createLinkFormInputSchema,
 	createLinkForNoteInputSchema,
 	getLinksForFormsInputSchema,
 } from "../schemas/link";
+import { FormType } from "~/lib/enum";
 
 type LinkServiceContructor = {
 	ctx: TRPCContext;
@@ -16,6 +18,7 @@ type CreateLinkForNoteInputSchema = z.infer<
 >;
 
 type GetLinksForFormsInputSchema = z.infer<typeof getLinksForFormsInputSchema>;
+type CreateLinkFormInputSchema = z.infer<typeof createLinkFormInputSchema>;
 
 export class LinkService {
 	ctx: TRPCContext;
@@ -125,9 +128,13 @@ export class LinkService {
 
 						return and(...conditions);
 					},
+					with: {
+						formVersion: true,
+					},
+					orderBy: (formLinks, { desc }) => [desc(formLinks.id)],
 				});
 
-				return links;
+				return { links, type };
 			}
 			case "EXAM": {
 				const examVersion = await this.ctx.db.query.examVersions.findFirst({
@@ -154,9 +161,89 @@ export class LinkService {
 
 						return and(...conditions);
 					},
+					with: {
+						examVersion: true,
+					},
+					orderBy: (examLinks, { desc }) => [desc(examLinks.id)],
 				});
 
-				return links;
+				return { links, type };
+			}
+		}
+	}
+
+	public async createLinkForm(
+		input: CreateLinkFormInputSchema,
+		userId: string,
+	) {
+		const { type, key, id } = input;
+
+		switch (type) {
+			case "BASIC": {
+				const formVersion = await this.ctx.db.query.formVersions.findFirst({
+					where: (formVersions, { eq }) => {
+						return eq(formVersions.formId, id);
+					},
+					orderBy: (formVersions, { desc }) => [desc(formVersions.version)],
+				});
+
+				if (!formVersion) {
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "Form version not found",
+					});
+				}
+
+				const [link] = await this.ctx.db
+					.insert(formLinks)
+					.values({
+						formVersionId: formVersion.id,
+						key,
+						userId,
+					})
+					.returning();
+
+				if (!link) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to create link for form",
+					});
+				}
+
+				return link;
+			}
+			case "EXAM": {
+				const examVersion = await this.ctx.db.query.examVersions.findFirst({
+					where: (examVersions, { eq }) => {
+						return eq(examVersions.examId, id);
+					},
+					orderBy: (examVersions, { desc }) => [desc(examVersions.version)],
+				});
+
+				if (!examVersion) {
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "Exam version not found",
+					});
+				}
+
+				const [link] = await this.ctx.db
+					.insert(examLinks)
+					.values({
+						examVersionId: examVersion.id,
+						key,
+						userId,
+					})
+					.returning();
+
+				if (!link) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Failed to create link for exam",
+					});
+				}
+
+				return link;
 			}
 		}
 	}

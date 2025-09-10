@@ -17,3 +17,9 @@ export const getLinksForFormsInputSchema = z.object({
 	key: z.string().optional(),
 	id: z.string().uuid(),
 });
+
+export const createLinkFormInputSchema = z.object({
+	type: z.enum(["BASIC", "EXAM"]),
+	key: z.string(),
+	id: z.string().uuid(),
+});
