@@ -15,7 +15,7 @@ const SignIn = ({ query }: SignInProps) => {
 		<div className="absolute flex h-full w-full">
 			<Head>
 				<title>Pennink - Sign in</title>
-				<meta name="description" content="Find a partner to do anything!" />
+				<meta name="description" content="Sign in to your account." />
 				<link rel="icon" href="/icon.png" />
 			</Head>
 			<div className="relative flex h-full w-full items-center justify-center bg-mocha-base">

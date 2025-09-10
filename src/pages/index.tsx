@@ -12,8 +12,14 @@ export default function Home({
 		<Dashboard session={session}>
 			<>
 				<Head>
-					<title>Pennink - The writing editor for what's next</title>
-					<meta name="description" content="Find a partner to do anything!" />
+					<title>
+						Pennink - Work Smarter, Not Harder – AI‑Driven Workspaces That Adapt
+						to You.
+					</title>
+					<meta
+						name="description"
+						content="Discover an AI‑powered workspace that organizes your research data and helps you stay productive every day."
+					/>
 					<link rel="icon" href="/icon.png" />
 				</Head>
 				<HomeComponent session={session} />

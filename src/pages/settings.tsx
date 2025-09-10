@@ -81,7 +81,10 @@ const Settings = ({
 		<div className="flex w-full justify-center p-4 bg-mocha-base h-screen">
 			<Head>
 				<title>Pennink - Settings</title>
-				<meta name="description" content="Find a partner to do anything!" />
+				<meta
+					name="description"
+					content="Manage your account settings and subscription."
+				/>
 				<link rel="icon" href="/icon.png" />
 			</Head>
 			<div className="flex flex-col max-w-(--breakpoint-xl) w-full gap-10">

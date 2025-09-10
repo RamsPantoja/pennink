@@ -31,8 +31,8 @@ const SharedNotes = () => {
 		<SharedContentLayout>
 			<>
 				<Head>
-					<title>Pennink - Workspace</title>
-					<meta name="description" content="Find a partner to do anything!" />
+					<title>Pennink - Notes</title>
+					<meta name="description" content="Share your notes with others!" />
 					<link rel="icon" href="/icon.png" />
 				</Head>
 				{isPending && <Loading />}

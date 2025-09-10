@@ -222,7 +222,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 			/>
 			<Card className="max-w-(--breakpoint-lg) gap-4 flex flex-col w-full justify-center h-full bg-transparent">
 				<p className="text-center text-3xl font-bold text-mocha-text tracking-wider">
-					Start your writing journey!
+					Start with a new workspace!
 				</p>
 				<Chat id={memoChatId} isNew={true} />
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">

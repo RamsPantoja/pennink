@@ -21,13 +21,13 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 	};
 
 	return (
-		<Card className="max-w-72 bg-transparent p-0 z-10">
+		<Card className="max-w-96 bg-transparent p-0 z-10">
 			<CardHeader>
 				<CardTitle>
 					<div className="flex flex-col items-center justify-center gap-4 text-mocha-text">
 						<Logo />
 						<p className="text-base text-mocha-text text-center">
-							Your AI writing assistant for what's next
+							Work Smarter, Not Harder – AI‑Driven Workspaces That Adapt to You.
 						</p>
 					</div>
 				</CardTitle>
