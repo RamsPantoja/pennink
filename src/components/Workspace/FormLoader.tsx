@@ -22,6 +22,8 @@ import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import type { FormType } from "~/lib/enum";
 import { FormCard } from "./FormCard";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Label } from "../ui/label";
 
 type FormLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
@@ -65,41 +67,62 @@ export const FormLoader = ({
 						<DrawerDescription>
 							Select an item to see and edit it
 						</DrawerDescription>
-						<div className="flex items-center gap-2">
-							<Input
-								type="text"
-								placeholder="Search by title"
-								value={documentName}
-								onChange={(e) => setDocumentName(e.target.value)}
-								onKeyDown={(e) => e.key === "Enter" && performSearch()}
-								className="pr-10"
-							/>
-							<Tooltip>
-								<TooltipTrigger asChild>
+						<div className="flex items-center gap-4">
+							<div className="flex items-center relative gap-2">
+								<Input
+									type="text"
+									placeholder="Search by title"
+									value={documentName}
+									onChange={(e) => setDocumentName(e.target.value)}
+									onKeyDown={(e) => e.key === "Enter" && performSearch()}
+									className="pr-10"
+								/>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											disabled={documentName === ""}
+											variant="ghost"
+											size="icon"
+											onClick={performSearch}
+										>
+											<MagnifyingGlassIcon className="min-w-5 h-5" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Search</TooltipContent>
+								</Tooltip>
+								{documentName && (
 									<Button
-										disabled={documentName === ""}
+										className="absolute right-12"
 										variant="ghost"
 										size="icon"
-										onClick={performSearch}
+										onClick={() => {
+											setDocumentName("");
+											setSearchParam(undefined);
+										}}
 									>
-										<MagnifyingGlassIcon className="min-w-5 h-5" />
+										<XMarkIcon className="min-w-5 h-5" />
 									</Button>
-								</TooltipTrigger>
-								<TooltipContent>Search</TooltipContent>
-							</Tooltip>
-							{documentName && (
-								<Button
-									className="absolute right-20"
-									variant="ghost"
-									size="icon"
-									onClick={() => {
-										setDocumentName("");
-										setSearchParam(undefined);
-									}}
-								>
-									<XMarkIcon className="min-w-5 h-5" />
-								</Button>
-							)}
+								)}
+							</div>
+							<RadioGroup
+								onValueChange={(value) => {
+									setType(value as FormType);
+								}}
+								defaultValue="BASIC"
+							>
+								<div className="flex items-center gap-3">
+									<RadioGroupItem value="BASIC" id="r1" />
+									<Label className="text-mocha-text" htmlFor="r1">
+										Basic
+									</Label>
+								</div>
+								<div className="flex items-center gap-3">
+									<RadioGroupItem value="EXAM" id="r2" />
+									<Label className="text-mocha-text" htmlFor="r2">
+										Exam
+									</Label>
+								</div>
+							</RadioGroup>
 						</div>
 					</DrawerHeader>
 					<div className="grid gap-2 h-fit overflow-auto">
