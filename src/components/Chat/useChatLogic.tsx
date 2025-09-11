@@ -99,6 +99,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		aiContextItems,
 		setAiContextItems,
 		queryFormData,
+		currentForm,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
 	const [tools, setTools] = useState<Tools[]>([]);
@@ -659,6 +660,18 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			]);
 		}
 	}, [document]);
+
+	useEffect(() => {
+		if (currentForm) {
+			setTools((prv) => {
+				if (prv.includes("form-generation")) {
+					return prv;
+				}
+
+				return [...prv, "form-generation"];
+			});
+		}
+	}, [currentForm]);
 
 	return {
 		onSentPrompt,

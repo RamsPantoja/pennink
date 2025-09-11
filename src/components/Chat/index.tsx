@@ -62,6 +62,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		status,
 	} = useChatLogic({ chatId: id, isNew });
 
+	console.log(tools);
+
 	const { handleSubmit, watch, control } = useChatForm;
 
 	return (
@@ -267,23 +269,25 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								}}
 								value={tools}
 							>
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<span>
-											<ToggleGroupItem
-												value="form-generation-mode"
-												variant="outline"
-												aria-label="Toggle form generation mode"
-												className="rounded-full"
-												type="button"
-											>
-												<ListBulletIcon className="min-w-4 w-4 h-4 mr-2" />
-												Form
-											</ToggleGroupItem>
-										</span>
-									</TooltipTrigger>
-									<TooltipContent>Form generation tool</TooltipContent>
-								</Tooltip>
+								{!isNew && (
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<span>
+												<ToggleGroupItem
+													value="form-generation"
+													variant="outline"
+													aria-label="Toggle form generation mode"
+													className="rounded-full"
+													type="button"
+												>
+													<ListBulletIcon className="min-w-4 w-4 h-4 mr-2" />
+													Form
+												</ToggleGroupItem>
+											</span>
+										</TooltipTrigger>
+										<TooltipContent>Form generation tool</TooltipContent>
+									</Tooltip>
+								)}
 							</ToggleGroup>
 						</div>
 						{(status === "submitted" ||

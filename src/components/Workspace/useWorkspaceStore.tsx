@@ -72,7 +72,10 @@ type WorkspaceStore = {
 	setAiContextItems: (items: ContextEntity[]) => void;
 	queryFormData: RouterOutputs["form"]["getData"] | null;
 	setQueryFormData: (data: RouterOutputs["form"]["getData"] | null) => void;
+	resetWorkspaceStore: () => void;
 };
+
+const initialStore = {};
 
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	workspaceTitle: "",
@@ -86,17 +89,34 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	document: null,
 	aiFormData: null,
 	currentForm: null,
+	readerEvent: null,
+	editor: null,
+	displayFormEditor: false,
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
 	setDocument: (document) => set(() => ({ document })),
-	readerEvent: null,
 	setReaderEvent: (event) => set(() => ({ readerEvent: event })),
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
-	editor: null,
 	setEditor: (editor) => set(() => ({ editor })),
-	displayFormEditor: false,
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() => ({ displayFormEditor })),
 	setAiFormData: (data) => set(() => ({ aiFormData: data })),
 	setAiContextItems: (items) => set((state) => ({ aiContextItems: items })),
 	setQueryFormData: (data) => set(() => ({ queryFormData: data })),
+	resetWorkspaceStore: () =>
+		set(() => ({
+			workspaceTitle: "",
+			aiContextItems: [
+				{
+					label: "Editor",
+					type: "editor",
+				},
+			],
+			queryFormData: null,
+			document: null,
+			aiFormData: null,
+			currentForm: null,
+			readerEvent: null,
+			editor: null,
+			displayFormEditor: false,
+		})),
 }));

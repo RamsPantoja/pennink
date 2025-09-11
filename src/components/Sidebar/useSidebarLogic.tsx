@@ -7,7 +7,7 @@ const useSidebarLogic = () => {
 	const router = useRouter();
 	const [displaySignOutAlert, setDisplaySignOutAlert] =
 		useState<boolean>(false);
-	const { setDocument } = useWorkspaceStore();
+	const { resetWorkspaceStore } = useWorkspaceStore();
 
 	const {
 		data: workspacesData,
@@ -17,7 +17,7 @@ const useSidebarLogic = () => {
 
 	const onNewWorkspace = async () => {
 		await router.push("/");
-		setDocument(null);
+		resetWorkspaceStore();
 	};
 
 	return {

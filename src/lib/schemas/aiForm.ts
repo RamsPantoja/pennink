@@ -46,6 +46,7 @@ export const aiFormSchema = z.object({
 	description: z.string().describe("Description or instructions of the form"),
 	questions: z.array(questionSchema).describe("Questions of the form"),
 	type: z.enum(["BASIC", "EXAM"]).describe("Type of form"),
+	isEdited: z.boolean().describe("Whether the form has been edited"),
 });
 
 export type AiForm = z.infer<typeof aiFormSchema>;
