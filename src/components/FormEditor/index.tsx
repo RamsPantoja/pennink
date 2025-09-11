@@ -167,12 +167,14 @@ export const FormEditor = () => {
 						)}
 					</div>
 					{data && (
-						<DynamicForm
-							showAnswer={showAnswer}
-							formData={data}
-							control={control}
-							errors={errors}
-						/>
+						<div className="flex h-full w-full overflow-auto">
+							<DynamicForm
+								showAnswer={showAnswer}
+								formData={data}
+								control={control}
+								errors={errors}
+							/>
+						</div>
 					)}
 					<div className="flex gap-4 p-3 justify-end">
 						<Button

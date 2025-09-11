@@ -536,7 +536,7 @@ export function DynamicForm({
 	};
 
 	return (
-		<div className="flex flex-col gap-4 overflow-auto px-8 py-4 h-full">
+		<div className="flex flex-col gap-4">
 			{type === "BASIC" && (
 				<Fragment>
 					<div className="flex flex-col gap-3 mb-4">

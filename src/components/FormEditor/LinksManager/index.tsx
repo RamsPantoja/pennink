@@ -58,7 +58,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 			<PopoverTrigger asChild>
 				<Button
 					size="sm"
-					variant="secondary"
+					variant="outline"
 					startIcon={<ShareIcon className="min-w-5 h-5" />}
 					onClick={(e) => {
 						e.stopPropagation();

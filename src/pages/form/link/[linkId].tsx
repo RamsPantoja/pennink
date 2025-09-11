@@ -6,11 +6,24 @@ import { api } from "~/utils/api";
 import "@blocknote/mantine/style.css";
 import { useRouter } from "next/router";
 import { DateTime } from "luxon";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { DynamicForm } from "~/components/DynamicForm";
+import { useForm } from "react-hook-form";
+import { Fragment } from "react";
+import { Button } from "~/components/common/Button";
+import { Badge } from "~/components/ui/badge";
 
 const ShareForm = () => {
 	const { query } = useRouter();
 
-	const { data, isPending, isError } = api.link.noteByLinkId.useQuery(
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm();
+
+	const { data, isPending, isError } = api.link.formByLinkId.useQuery(
 		{
 			linkId: typeof query.linkId === "string" ? query.linkId : "",
 		},
@@ -18,6 +31,10 @@ const ShareForm = () => {
 			enabled: query.linkId !== undefined,
 		},
 	);
+
+	const onSubmit = async (data: any) => {
+		console.log(data);
+	};
 
 	return (
 		<SharedContentLayout>
@@ -29,17 +46,42 @@ const ShareForm = () => {
 				</Head>
 				{isPending && <Loading />}
 				{!isPending && !isError && data && (
-					<div className="flex w-full absolute justify-center left-0 right-0 bottom-0 top-[49px] overflow-auto">
-						<div className="flex w-full max-w-5xl p-6 flex-col gap-4">
-							<div className="flex px-14 flex-col">
-								<p className="text-xs">Author: {data.note.user.name}</p>
+					<div className="flex flex-col pl-4 pb-8 gap-4">
+						<div className="flex flex-row items-center gap-4 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
+							<Avatar className="h-7 w-7">
+								<AvatarImage src={data.formVersion.form.user.image} />
+								<AvatarFallback>
+									{data.formVersion.form.user.name}
+								</AvatarFallback>
+							</Avatar>
+							<div className="flex flex-col w-full overflow-hidden">
+								<p className="truncate text-sm">
+									Created by <strong>{data.formVersion.form.user.name}</strong>
+								</p>
 								<p className="text-xs">
-									Date:{" "}
-									{DateTime.fromJSDate(data.note.createdAt).toLocaleString(
+									{DateTime.fromJSDate(data.createdAt).toLocaleString(
 										DateTime.DATETIME_MED,
 									)}
 								</p>
 							</div>
+						</div>
+						<div className="sticky top-0 z-10 bg-mocha-base/70 p-2 flex items-center clip backdrop-blur-xs rounded-b-xl gap-4 justify-between">
+							<Badge>BASIC</Badge>
+							<p className="font-bold text-xl">30:00 min</p>
+						</div>
+						<DynamicForm
+							showAnswer={false}
+							formData={{
+								data: data.formVersion,
+								type: "BASIC",
+							}}
+							control={control}
+							errors={errors}
+						/>
+						<div className="flex justify-end">
+							<Button className="w-fit" onClick={handleSubmit(onSubmit)}>
+								Submit
+							</Button>
 						</div>
 					</div>
 				)}

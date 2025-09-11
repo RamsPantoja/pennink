@@ -177,10 +177,11 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			/>
 			<AppSidebar session={session} />
 			<FormLoader
-				onSelect={(form) => {
+				onOpen={(form) => {
 					setDisplayFormEditor(true);
 					setCurrentForm(form);
 					setOpenFormLoader(false);
+					setDocument(null);
 				}}
 				open={openFormLoader}
 				onOpenChange={setOpenFormLoader}

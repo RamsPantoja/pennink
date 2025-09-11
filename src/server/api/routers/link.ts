@@ -6,6 +6,8 @@ import {
 import {
 	createLinkFormInputSchema,
 	createLinkForNoteInputSchema,
+	getExamByLinkIdInputSchema,
+	getFormByLinkIdInputSchema,
 	getLinkByNoteIdInputSchema,
 	getLinksForFormsInputSchema,
 	getNoteByLinkIdInputSchema,
@@ -18,6 +20,20 @@ export const linkRouter = createTRPCRouter({
 			return await ctx
 				.services({ ctx })
 				.linkService.getNoteByLinkId(input.linkId);
+		}),
+	formByLinkId: publicProcedure
+		.input(getFormByLinkIdInputSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.linkService.getFormByLinkId(input.linkId);
+		}),
+	examByLinkId: publicProcedure
+		.input(getExamByLinkIdInputSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.linkService.getExamByLinkId(input.linkId);
 		}),
 	createLinkForNote: protectedProcedure
 		.input(createLinkForNoteInputSchema)

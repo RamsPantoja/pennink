@@ -14,6 +14,8 @@ import type { Block } from "@blocknote/core";
 import { useAppStore } from "~/pages/_app";
 import { useRouter } from "next/router";
 import { DateTime } from "luxon";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { Fragment } from "react";
 
 const SharedNotes = () => {
 	const { query } = useRouter();
@@ -37,20 +39,27 @@ const SharedNotes = () => {
 				</Head>
 				{isPending && <Loading />}
 				{!isPending && !isError && data && (
-					<div className="flex w-full absolute justify-center left-0 right-0 bottom-0 top-[49px] overflow-auto">
-						<div className="flex w-full max-w-5xl p-6 flex-col gap-4">
-							<div className="flex px-14 flex-col">
-								<p className="text-xs">Author: {data.note.user.name}</p>
-								<p className="text-xs">
-									Date:{" "}
-									{DateTime.fromJSDate(data.note.createdAt).toLocaleString(
-										DateTime.DATETIME_MED,
-									)}
-								</p>
+					<Fragment>
+						<div className="flex px-14 flex-col">
+							<div className="flex flex-row items-center gap-4 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
+								<Avatar className="h-7 w-7">
+									<AvatarImage src={data.note.user.image} />
+									<AvatarFallback>{data.note.user.name}</AvatarFallback>
+								</Avatar>
+								<div className="flex flex-col w-full overflow-hidden">
+									<p className="truncate text-sm">
+										Created by <strong>{data.note.user.name}</strong>
+									</p>
+									<p className="text-xs">
+										{DateTime.fromJSDate(data.createdAt).toLocaleString(
+											DateTime.DATETIME_MED,
+										)}
+									</p>
+								</div>
 							</div>
-							<ReadEditor content={data.note.content} />
 						</div>
-					</div>
+						<ReadEditor content={data.note.content} />
+					</Fragment>
 				)}
 				{!isPending && !isError && !data && (
 					<FeedbackMessage

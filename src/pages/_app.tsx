@@ -58,20 +58,20 @@ const MyApp: AppType<{ session: Session | null }> = ({
 		const localStorageTheme = localStorage.getItem("theme");
 
 		if (localStorageTheme) {
-			setTheme(localStorageTheme as Theme);
+			// setTheme(localStorageTheme as Theme);
 			return;
 		}
 
 		if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-			setTheme("dark");
+			// setTheme("dark");
 		} else {
-			setTheme("light");
+			// setTheme("light");
 		}
 	}, [setTheme]);
 
 	return (
 		<SessionProvider session={pageProps.session}>
-			<main data-theme={"dark"} className={GeistMono.className}>
+			<main data-theme={theme} className={GeistMono.className}>
 				<TooltipProvider delayDuration={300}>
 					<Toaster richColors />
 					<Component {...pageProps} />

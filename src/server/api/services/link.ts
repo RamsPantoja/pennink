@@ -68,6 +68,7 @@ export class LinkService {
 						user: {
 							columns: {
 								name: true,
+								image: true,
 							},
 						},
 					},
@@ -246,5 +247,89 @@ export class LinkService {
 				return link;
 			}
 		}
+	}
+
+	public async getFormByLinkId(linkId: string) {
+		const form = await this.ctx.db.query.formLinks.findFirst({
+			where: (formLinks, { eq }) => {
+				return eq(formLinks.id, linkId);
+			},
+			with: {
+				formVersion: {
+					with: {
+						form: {
+							with: {
+								user: {
+									columns: {
+										name: true,
+										image: true,
+									},
+								},
+							},
+						},
+						questionsToFormVersions: {
+							with: {
+								question: {
+									with: {
+										questionOptions: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!form) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Form not found",
+			});
+		}
+
+		return form;
+	}
+
+	public async getExamByLinkId(linkId: string) {
+		const exam = await this.ctx.db.query.examLinks.findFirst({
+			where: (examLinks, { eq }) => {
+				return eq(examLinks.id, linkId);
+			},
+			with: {
+				examVersion: {
+					with: {
+						exam: {
+							with: {
+								user: {
+									columns: {
+										name: true,
+										image: true,
+									},
+								},
+							},
+						},
+						questionsToExamVersions: {
+							with: {
+								question: {
+									with: {
+										questionOptions: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!exam) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Exam not found",
+			});
+		}
+
+		return exam;
 	}
 }

@@ -13,7 +13,11 @@ export const SharedContentLayout = ({ children }: SharedContentLayoutProps) => {
 				</div>
 			</div>
 			<div className="flex w-full h-full gap-2 max-w-5xl border-l text-light-mocha-text border-light-mocha-mauve dark:border-mocha-mauve p-6 dark:text-mocha-text overflow-hidden">
-				{children}
+				<div className="flex w-full absolute justify-center left-0 right-0 bottom-0 top-[49px] overflow-auto">
+					<div className="flex w-full max-w-5xl p-6 flex-col gap-4">
+						{children}
+					</div>
+				</div>
 			</div>
 		</div>
 	);

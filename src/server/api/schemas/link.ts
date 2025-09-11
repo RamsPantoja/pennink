@@ -23,3 +23,11 @@ export const createLinkFormInputSchema = z.object({
 	key: z.string(),
 	id: z.string().uuid(),
 });
+
+export const getFormByLinkIdInputSchema = z.object({
+	linkId: z.string().uuid(),
+});
+
+export const getExamByLinkIdInputSchema = z.object({
+	linkId: z.string().uuid(),
+});
