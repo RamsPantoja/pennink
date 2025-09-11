@@ -168,6 +168,12 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								)}
 						</div>
 					</Card>
+					{!currentFormForLinks && (
+						<FeedbackMessage
+							status="INFORMATION"
+							message="Click the Links button from the form card to view links"
+						/>
+					)}
 					{currentFormForLinks && (
 						<Links
 							id={currentFormForLinks.id}

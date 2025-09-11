@@ -806,6 +806,8 @@ export const examResponses = createTable("exam_response", {
 		.references(() => exams.id)
 		.notNull(),
 	answers: jsonb().notNull(),
+	feedback: text().notNull(),
+	score: numeric({ precision: 2, scale: 2 }).notNull(),
 	examVersionId: uuid()
 		.references(() => examVersions.id)
 		.notNull(),

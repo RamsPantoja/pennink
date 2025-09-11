@@ -127,7 +127,7 @@ export const FormEditor = () => {
 	}, [data]);
 
 	const onTestForm = () => {
-		toast.success("Form submitted successfully!");
+		toast.success("Form submitted successfully!", { position: "bottom-left" });
 	};
 
 	if (!currentForm) {
@@ -137,7 +137,7 @@ export const FormEditor = () => {
 	return (
 		<div
 			key={currentForm.id}
-			className="flex h-full flex-col overflow-hidden p-0 w-full"
+			className="flex h-full flex-col overflow-hidden w-full"
 		>
 			{isPending && <Loading />}
 			{!isPending && isError && (
@@ -167,7 +167,7 @@ export const FormEditor = () => {
 						)}
 					</div>
 					{data && (
-						<div className="flex h-full w-full overflow-auto">
+						<div className="flex h-full w-full overflow-auto p-4">
 							<DynamicForm
 								showAnswer={showAnswer}
 								formData={data}

@@ -65,8 +65,9 @@ const ShareExam = () => {
 								</p>
 							</div>
 						</div>
-						<div className="sticky top-4">
-							<Badge>EXAM</Badge>
+						<div className="sticky top-0 z-10 bg-mocha-base/70 p-2 flex items-center clip backdrop-blur-xs rounded-b-xl gap-4 justify-between">
+							<Badge>BASIC</Badge>
+							<p className="font-bold text-xl">30:00 min</p>
 						</div>
 						<DynamicForm
 							showAnswer={false}

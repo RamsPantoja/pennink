@@ -15,7 +15,7 @@ const FeedbackMessage = ({ message, status }: FeedbackMessageProps) => {
 	return (
 		<div className="flex h-full w-full items-center justify-center">
 			{status === "ERROR" && (
-				<div className="flex w-full max-w-96 flex-col items-center gap-2">
+				<div className="flex w-full max-w-96 flex-col items-center justify-center gap-2">
 					<div className="flex items-center gap-2">
 						<ExclamationCircleIcon className="text-mocha-sub-text max-h-5 min-h-5 min-w-5 max-w-5" />
 						<span className=" text-mocha-sub-text text-sm">{message}</span>
@@ -26,19 +26,19 @@ const FeedbackMessage = ({ message, status }: FeedbackMessageProps) => {
 				</div>
 			)}
 			{status === "SUCCESS" && (
-				<div className="flex w-full max-w-96 items-center gap-2">
+				<div className="flex w-full max-w-96 items-center justify-center gap-2">
 					<CheckCircleIcon className="max-h-5 min-h-5 min-w-5 max-w-5 text-green-500" />
 					<span className=" text-mocha-sub-text text-sm">{message}</span>
 				</div>
 			)}
 			{status === "WARNING" && (
-				<div className="flex w-full max-w-96 items-center gap-2">
+				<div className="flex w-full max-w-96 items-center justify-center gap-2">
 					<ExclamationTriangleIcon className="text-mocha-sub-text max-h-5 min-h-5 min-w-5 max-w-5" />
 					<span className=" text-mocha-sub-text text-sm">{message}</span>
 				</div>
 			)}
 			{status === "INFORMATION" && (
-				<div className="flex w-full max-w-96 items-center gap-2">
+				<div className="flex w-full max-w-96 items-center justify-center gap-2">
 					<InformationCircleIcon className="text-mocha-sub-text max-h-5 min-h-5 min-w-5 max-w-5" />
 					<span className=" text-mocha-sub-text text-sm">{message}</span>
 				</div>

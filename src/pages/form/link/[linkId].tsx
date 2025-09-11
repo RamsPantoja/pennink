@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { Fragment } from "react";
 import { Button } from "~/components/common/Button";
 import { Badge } from "~/components/ui/badge";
+import { toast } from "sonner";
 
 const ShareForm = () => {
 	const { query } = useRouter();
@@ -34,6 +35,13 @@ const ShareForm = () => {
 
 	const onSubmit = async (data: any) => {
 		console.log(data);
+	};
+
+	const onInvalid = () => {
+		toast("Some fields are required or invalid", {
+			description:
+				"Please fill in all required fields and ensure they are valid.",
+		});
 	};
 
 	return (
@@ -65,10 +73,6 @@ const ShareForm = () => {
 								</p>
 							</div>
 						</div>
-						<div className="sticky top-0 z-10 bg-mocha-base/70 p-2 flex items-center clip backdrop-blur-xs rounded-b-xl gap-4 justify-between">
-							<Badge>BASIC</Badge>
-							<p className="font-bold text-xl">30:00 min</p>
-						</div>
 						<DynamicForm
 							showAnswer={false}
 							formData={{
@@ -79,7 +83,10 @@ const ShareForm = () => {
 							errors={errors}
 						/>
 						<div className="flex justify-end">
-							<Button className="w-fit" onClick={handleSubmit(onSubmit)}>
+							<Button
+								className="w-fit"
+								onClick={handleSubmit(onSubmit, onInvalid)}
+							>
 								Submit
 							</Button>
 						</div>
