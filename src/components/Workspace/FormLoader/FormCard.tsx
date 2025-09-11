@@ -6,6 +6,7 @@ import type { CurrentForm } from "../useWorkspaceStore";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../common/Button";
 import { LinkIcon } from "@heroicons/react/24/outline";
+import { cn } from "~/lib/utils";
 
 type FormCardProps = {
 	id: string;
@@ -14,6 +15,7 @@ type FormCardProps = {
 	date: string;
 	onOpen: (form: CurrentForm) => void;
 	onResults: () => void;
+	selectedFormId: string | undefined;
 };
 
 export const FormCard: FC<FormCardProps> = ({
@@ -23,9 +25,18 @@ export const FormCard: FC<FormCardProps> = ({
 	onOpen,
 	onResults,
 	id,
+	selectedFormId,
 }) => {
 	return (
-		<Card className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors border h-fit w-full">
+		<Card
+			onClick={onResults}
+			className={cn(
+				"bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors border h-fit w-full",
+				{
+					"border-mocha-teal": selectedFormId === id,
+				},
+			)}
+		>
 			<div className="flex gap-4 flex-col">
 				<div className="flex gap-2 flex-col justify-between">
 					<div className="flex items-center gap-4 justify-between">
@@ -44,14 +55,6 @@ export const FormCard: FC<FormCardProps> = ({
 						Open
 					</Button>
 					<LinksManager id={id} type={type} />
-					<Button
-						size="sm"
-						variant="outline"
-						startIcon={<LinkIcon className="min-w-5 h-5" />}
-						onClick={onResults}
-					>
-						Links
-					</Button>
 				</div>
 			</div>
 		</Card>

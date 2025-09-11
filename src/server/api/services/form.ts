@@ -11,12 +11,14 @@ import {
 	questionsToExamVersions,
 	formVersions,
 	questionsToFormVersions,
+	formResponses,
 } from "~/server/db/schema";
 import type {
 	createFormSchema,
 	editFormSchema,
 	getDataSchema,
 	getFormsSchema,
+	saveFormResponsesSchema,
 } from "../schemas/form";
 import type { FormType } from "~/lib/enum";
 import { eq } from "drizzle-orm";
@@ -35,6 +37,7 @@ export type CreateFormInput = {
 
 export type EditFormInput = z.infer<typeof editFormSchema>;
 export type GetFormsInput = z.infer<typeof getFormsSchema>;
+export type SaveFormResponsesInput = z.infer<typeof saveFormResponsesSchema>;
 
 export type GetDataInput = z.infer<typeof getDataSchema>;
 export type Questions = typeof questionsSchema.$inferSelect & {
@@ -491,5 +494,58 @@ export class FormService {
 				message: "Failed to get forms",
 			});
 		}
+	}
+
+	public async saveFormResponses(input: SaveFormResponsesInput) {
+		const {
+			email,
+			userId,
+			answers,
+			username,
+			formId,
+			formLinkId,
+			formVersionId,
+		} = input;
+
+		const userResponsesExists = await this.ctx.db.query.formResponses.findFirst(
+			{
+				where: (formResponses, { eq, and }) =>
+					and(
+						eq(formResponses.email, email),
+						eq(formResponses.formId, formId),
+						eq(formResponses.formVersionId, formVersionId),
+						eq(formResponses.formLinkId, formLinkId),
+					),
+			},
+		);
+
+		if (userResponsesExists) {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "User has already submitted responses",
+			});
+		}
+
+		const [item] = await this.ctx.db
+			.insert(formResponses)
+			.values({
+				email,
+				userId,
+				username,
+				formId,
+				formLinkId,
+				answers,
+				formVersionId,
+			})
+			.returning();
+
+		if (!item) {
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: "Failed to save form responses",
+			});
+		}
+
+		return item;
 	}
 }

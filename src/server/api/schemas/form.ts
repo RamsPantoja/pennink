@@ -19,3 +19,13 @@ export const getFormsSchema = z.object({
 	type: z.enum(["BASIC", "EXAM"]),
 	search: z.string().optional(),
 });
+
+export const saveFormResponsesSchema = z.object({
+	formId: z.string().uuid(),
+	answers: z.any(),
+	email: z.string(),
+	username: z.string(),
+	userId: z.string().uuid().optional(),
+	formLinkId: z.string().uuid(),
+	formVersionId: z.string().uuid(),
+});

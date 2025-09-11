@@ -29,6 +29,9 @@ declare module "next-auth" {
 	}
 
 	interface User {
+		name: string;
+		email: string;
+		image: string;
 		id: string;
 		onBoardingCompleted: boolean;
 		subscription: Subscription;

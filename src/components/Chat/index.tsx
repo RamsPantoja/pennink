@@ -230,7 +230,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					</div>
 				)}
 
-				<Card className="w-full bg-mocha-base border border-mocha-mauve flex flex-col p-3 shadow-xs shadow-mocha-mauve">
+				<Card className="w-full bg-mocha-base border border-mocha-mauve rounded-2xl flex flex-col p-3 shadow-xs shadow-mocha-mauve">
 					{quote && (
 						<Card className="flex items-start gap-2 bg-mocha-mantle border">
 							<ArrowTurnDownRightIcon className="min-w-5 h-5 text-mocha-text" />
@@ -258,7 +258,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							/>
 						)}
 					/>
-					<div className="flex w-full gap-4 justify-between items-center">
+					<div className="flex w-full gap-4 justify-between items-end">
 						<div className="flex items-center gap-4">
 							<ToggleGroup
 								type="multiple"

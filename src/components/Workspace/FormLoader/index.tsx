@@ -58,9 +58,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 		<Sheet open={open} onOpenChange={onOpenChange}>
 			<SheetContent className="w-full flex flex-col max-w-7xl">
 				<SheetHeader>
-					<SheetTitle className="text-sm font-semibold">
-						Your forms and exams
-					</SheetTitle>
+					<SheetTitle className="text-sm font-semibold">Your forms</SheetTitle>
 					<SheetDescription>
 						Manage your forms and exams, links, and responses
 					</SheetDescription>
@@ -162,6 +160,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 													});
 												}}
 												id={doc.id}
+												selectedFormId={currentFormForLinks?.id}
 											/>
 										))}
 									</div>
@@ -171,7 +170,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 					{!currentFormForLinks && (
 						<FeedbackMessage
 							status="INFORMATION"
-							message="Click the Links button from the form card to view links"
+							message="Click the form card to view links and results"
 						/>
 					)}
 					{currentFormForLinks && (

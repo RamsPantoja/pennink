@@ -49,6 +49,7 @@ export const LinkItem = ({
 			<Button
 				startIcon={<DocumentCheckIcon className="min-w-5 h-5" />}
 				onClick={onResults}
+				size="sm"
 				className="w-fit"
 			>
 				Results

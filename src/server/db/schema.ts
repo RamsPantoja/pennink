@@ -697,7 +697,7 @@ export const questionOptionRelations = relations(
 export const formResponses = createTable("form_response", {
 	id: customId.notNull().primaryKey(),
 	email: text().notNull(),
-	name: text().notNull(),
+	username: text().notNull(),
 	userId: uuid().references(() => users.id),
 	formId: uuid()
 		.references(() => forms.id)
@@ -801,6 +801,7 @@ export const examVersionsRelations = relations(
 export const examResponses = createTable("exam_response", {
 	id: customId.notNull().primaryKey(),
 	email: text().notNull(),
+	username: text().notNull(),
 	userId: uuid().references(() => users.id),
 	examId: uuid()
 		.references(() => exams.id)
