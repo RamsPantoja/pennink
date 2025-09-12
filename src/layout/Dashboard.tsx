@@ -194,6 +194,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 				onSelect={(doc) => {
 					setDocument(doc);
 					setOpenDocumentLoader(false);
+					setDisplayFormEditor(false);
+					setCurrentForm(null);
 					localStorage.setItem(
 						"pennink-doc",
 						JSON.stringify({
@@ -231,7 +233,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 							</Tooltip>
 						)}
 						{router.asPath !== "/" && (
-							<DropdownMenu>
+							<DropdownMenu modal={false}>
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<DropdownMenuTrigger asChild>

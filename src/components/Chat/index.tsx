@@ -1,10 +1,8 @@
 import {
 	ArrowTurnDownRightIcon,
 	Bars3BottomLeftIcon,
-	ChatBubbleOvalLeftIcon,
 	DocumentTextIcon,
 	ListBulletIcon,
-	PencilSquareIcon,
 	PlusIcon,
 	StopIcon,
 	XCircleIcon,
@@ -12,7 +10,7 @@ import {
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { ArrowUpIcon, LucideCurrency } from "lucide-react";
+import { ArrowUpIcon } from "lucide-react";
 import { parseUIMessage, type Tools, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
@@ -30,7 +28,6 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { BrainIcon } from "lucide-react";
-import { DateTime } from "luxon";
 import { Fragment } from "react";
 
 type ChatProps = {
@@ -61,8 +58,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		setAiContextItems,
 		status,
 	} = useChatLogic({ chatId: id, isNew });
-
-	console.log(tools);
 
 	const { handleSubmit, watch, control } = useChatForm;
 

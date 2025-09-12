@@ -1,15 +1,4 @@
 import { Button } from "../common/Button";
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger,
-	DrawerHandle,
-} from "../ui/drawer";
 import { api } from "~/utils/api";
 import { DocumentCard } from "./DocumentCard";
 import { Loading } from "../common/Loading";
@@ -20,6 +9,13 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+} from "../ui/sheet";
 
 type DocumentLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
@@ -50,16 +46,16 @@ export const DocumentLoader = ({
 	};
 
 	return (
-		<Drawer open={open} onOpenChange={onOpenChange} direction="right">
-			<DrawerContent className="left-0 md:left-1/2 bg-mocha-base border-mocha-mantle right-2 top-2 bottom-2 overflow-hidden fixed border z-50 rounded-xl outline-hidden mt-0">
+		<Sheet open={open} onOpenChange={onOpenChange}>
+			<SheetContent className="overflow-hidden max-w-3xl">
 				<div className="h-full w-full grow p-4 flex flex-col gap-4">
-					<DrawerHeader className="p-0">
-						<DrawerTitle className="text-sm font-semibold">
+					<SheetHeader className="p-0">
+						<SheetTitle className="text-sm font-semibold">
 							Your sources
-						</DrawerTitle>
-						<DrawerDescription>
+						</SheetTitle>
+						<SheetDescription>
 							Select a document to read from all saved documents
-						</DrawerDescription>
+						</SheetDescription>
 						<div className="flex items-center gap-2">
 							<Input
 								type="text"
@@ -96,7 +92,7 @@ export const DocumentLoader = ({
 								</Button>
 							)}
 						</div>
-					</DrawerHeader>
+					</SheetHeader>
 					<div className="grid gap-2 h-fit overflow-auto">
 						{filesByUserLoading && <Loading />}
 						{!filesByUserLoading && filesByUserError && (
@@ -135,13 +131,8 @@ export const DocumentLoader = ({
 								</div>
 							)}
 					</div>
-					<DrawerFooter>
-						<DrawerClose asChild>
-							<Button variant="outline">Close</Button>
-						</DrawerClose>
-					</DrawerFooter>
 				</div>
-			</DrawerContent>
-		</Drawer>
+			</SheetContent>
+		</Sheet>
 	);
 };

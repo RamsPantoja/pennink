@@ -58,7 +58,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
@@ -114,7 +114,7 @@ export function DynamicForm({
 							},
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
@@ -155,7 +155,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
@@ -203,7 +203,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
@@ -252,7 +252,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
@@ -308,7 +308,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
@@ -369,7 +369,7 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}
@@ -445,7 +445,7 @@ export function DynamicForm({
 						control={control}
 						defaultValue={false}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<div className="flex items-center space-x-2">
 									<Switch
 										id={fieldId}
@@ -485,7 +485,7 @@ export function DynamicForm({
 						control={control}
 						defaultValue={[question.min || 0]}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 border p-3 border-mocha-mantle bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
 									<span className="text-mocha-sub-text text-base font-black">
 										{fieldId}.{" "}

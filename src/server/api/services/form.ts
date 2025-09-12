@@ -75,7 +75,7 @@ export class FormService {
 							});
 						}
 
-						if (question.options) {
+						if (question.options && question.options.length > 0) {
 							await tx.insert(questionOptions).values(
 								question.options.map((option) => ({
 									questionId: createdQuestion.id,
@@ -281,168 +281,160 @@ export class FormService {
 	}
 
 	public async edit(input: EditFormInput) {
-		try {
-			const result = await this.ctx.db.transaction(async (tx) => {
-				const {
-					formData: { title, description, type, questions },
-					id,
-				} = input;
+		const result = await this.ctx.db.transaction(async (tx) => {
+			const {
+				formData: { title, description, type, questions },
+				id,
+			} = input;
 
-				const createQuestions = async () => {
-					const createdQuestionIds: string[] = [];
+			const createQuestions = async () => {
+				const createdQuestionIds: string[] = [];
 
-					for (const question of questions) {
-						const [createdQuestion] = await tx
-							.insert(questionsSchema)
-							.values(question)
-							.returning();
+				for (const question of questions) {
+					const [createdQuestion] = await tx
+						.insert(questionsSchema)
+						.values(question)
+						.returning();
 
-						if (!createdQuestion) {
-							throw new TRPCError({
-								code: "INTERNAL_SERVER_ERROR",
-								message: "Failed to create question",
-							});
-						}
-
-						if (question.options) {
-							await tx.insert(questionOptions).values(
-								question.options.map((option) => ({
-									questionId: createdQuestion.id,
-									label: option.label,
-									value: option.value,
-								})),
-							);
-						}
-
-						createdQuestionIds.push(createdQuestion.id);
-					}
-
-					return createdQuestionIds;
-				};
-
-				switch (type) {
-					case "EXAM": {
-						await tx
-							.update(exams)
-							.set({
-								title,
-								instructions: description,
-								answers: questions.reduce(
-									(acc, question) => {
-										acc[question.key] = question.answer;
-										return acc;
-									},
-									{} as Record<string, unknown>,
-								),
-							})
-							.where(eq(exams.id, id));
-
-						const queryExamVersion = await tx.query.examVersions.findFirst({
-							where: (examVersions, { eq }) => {
-								return eq(examVersions.examId, id);
-							},
-							orderBy: (examVersions, { desc }) => [desc(examVersions.version)],
-						});
-
-						if (!queryExamVersion) {
-							throw new TRPCError({
-								code: "NOT_FOUND",
-								message: "Exam Version not found",
-							});
-						}
-
-						const [examVersion] = await tx
-							.insert(examVersions)
-							.values({
-								examId: id,
-								version: queryExamVersion.version + 1,
-							})
-							.returning();
-
-						if (!examVersion) {
-							throw new TRPCError({
-								code: "INTERNAL_SERVER_ERROR",
-								message: "Failed to create exam version",
-							});
-						}
-
-						const createdQuestionIds = await createQuestions();
-
-						await tx.insert(questionsToExamVersions).values(
-							createdQuestionIds.map((id) => ({
-								examVersionId: examVersion.id,
-								questionId: id,
-							})),
-						);
-
-						return { data: examVersion, type };
-					}
-
-					case "BASIC": {
-						await tx
-							.update(forms)
-							.set({
-								title,
-								description,
-							})
-							.where(eq(forms.id, id));
-
-						const queryFormVersion = await tx.query.formVersions.findFirst({
-							where: (formVersions, { eq }) => {
-								return eq(formVersions.formId, id);
-							},
-							orderBy: (formVersions, { desc }) => [desc(formVersions.version)],
-						});
-
-						if (!queryFormVersion) {
-							throw new TRPCError({
-								code: "NOT_FOUND",
-								message: "Form Version not found",
-							});
-						}
-
-						const [formVersion] = await tx
-							.insert(formVersions)
-							.values({
-								formId: id,
-								version: queryFormVersion.version + 1,
-							})
-							.returning();
-
-						if (!formVersion) {
-							throw new TRPCError({
-								code: "INTERNAL_SERVER_ERROR",
-								message: "Failed to create form version",
-							});
-						}
-
-						const createdQuestionIds = await createQuestions();
-
-						await tx.insert(questionsToFormVersions).values(
-							createdQuestionIds.map((id) => ({
-								formVersionId: formVersion.id,
-								questionId: id,
-							})),
-						);
-
-						return { data: formVersion, type };
-					}
-					default:
+					if (!createdQuestion) {
 						throw new TRPCError({
-							code: "BAD_REQUEST",
-							message: "Invalid form type",
+							code: "INTERNAL_SERVER_ERROR",
+							message: "Failed to create question",
 						});
-				}
-			});
+					}
 
-			return result;
-		} catch (e) {
-			console.error(e);
-			throw new TRPCError({
-				code: "INTERNAL_SERVER_ERROR",
-				message: "Failed to create form",
-			});
-		}
+					if (question.options && question.options.length > 0) {
+						await tx.insert(questionOptions).values(
+							question.options.map((option) => ({
+								questionId: createdQuestion.id,
+								label: option.label,
+								value: option.value,
+							})),
+						);
+					}
+
+					createdQuestionIds.push(createdQuestion.id);
+				}
+
+				return createdQuestionIds;
+			};
+
+			switch (type) {
+				case "EXAM": {
+					await tx
+						.update(exams)
+						.set({
+							title,
+							instructions: description,
+							answers: questions.reduce(
+								(acc, question) => {
+									acc[question.key] = question.answer;
+									return acc;
+								},
+								{} as Record<string, unknown>,
+							),
+						})
+						.where(eq(exams.id, id));
+
+					const queryExamVersion = await tx.query.examVersions.findFirst({
+						where: (examVersions, { eq }) => {
+							return eq(examVersions.examId, id);
+						},
+						orderBy: (examVersions, { desc }) => [desc(examVersions.version)],
+					});
+
+					if (!queryExamVersion) {
+						throw new TRPCError({
+							code: "NOT_FOUND",
+							message: "Exam Version not found",
+						});
+					}
+
+					const [examVersion] = await tx
+						.insert(examVersions)
+						.values({
+							examId: id,
+							version: queryExamVersion.version + 1,
+						})
+						.returning();
+
+					if (!examVersion) {
+						throw new TRPCError({
+							code: "INTERNAL_SERVER_ERROR",
+							message: "Failed to create exam version",
+						});
+					}
+
+					const createdQuestionIds = await createQuestions();
+
+					await tx.insert(questionsToExamVersions).values(
+						createdQuestionIds.map((id) => ({
+							examVersionId: examVersion.id,
+							questionId: id,
+						})),
+					);
+
+					return { data: examVersion, type };
+				}
+
+				case "BASIC": {
+					await tx
+						.update(forms)
+						.set({
+							title,
+							description,
+						})
+						.where(eq(forms.id, id));
+
+					const queryFormVersion = await tx.query.formVersions.findFirst({
+						where: (formVersions, { eq }) => {
+							return eq(formVersions.formId, id);
+						},
+						orderBy: (formVersions, { desc }) => [desc(formVersions.version)],
+					});
+
+					if (!queryFormVersion) {
+						throw new TRPCError({
+							code: "NOT_FOUND",
+							message: "Form Version not found",
+						});
+					}
+
+					const [formVersion] = await tx
+						.insert(formVersions)
+						.values({
+							formId: id,
+							version: queryFormVersion.version + 1,
+						})
+						.returning();
+
+					if (!formVersion) {
+						throw new TRPCError({
+							code: "INTERNAL_SERVER_ERROR",
+							message: "Failed to create form version",
+						});
+					}
+
+					const createdQuestionIds = await createQuestions();
+
+					await tx.insert(questionsToFormVersions).values(
+						createdQuestionIds.map((id) => ({
+							formVersionId: formVersion.id,
+							questionId: id,
+						})),
+					);
+
+					return { data: formVersion, type };
+				}
+				default:
+					throw new TRPCError({
+						code: "BAD_REQUEST",
+						message: "Invalid form type",
+					});
+			}
+		});
+
+		return result;
 	}
 
 	public async getForms(input: GetFormsInput, userId: string) {

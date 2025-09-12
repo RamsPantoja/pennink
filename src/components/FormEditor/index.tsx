@@ -81,7 +81,7 @@ export const FormEditor = () => {
 					formData: aiFormData,
 				});
 			} else {
-				if (aiFormData.type === currentForm.type) {
+				if (aiFormData.isEdited) {
 					editForm({
 						formData: aiFormData,
 						id: currentForm.id,

@@ -10,12 +10,16 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useMutation } from "@tanstack/react-query";
-import { DefaultChatTransport, type UIMessage, type ModelMessage } from "ai-v5";
+import {
+	DefaultChatTransport,
+	type UIMessage,
+	type ModelMessage,
+	convertToModelMessages,
+} from "ai-v5";
 import { useChat } from "@ai-sdk/react";
 import type { AiForm } from "~/lib/schemas/aiForm";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
-import { now } from "next-auth/client/_utils";
 
 export type MyUIMessage = UIMessage<{
 	id: Message["id"];
@@ -263,7 +267,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	});
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
-		const messagesContext: ModelMessage[] = []; //Array of ModelMessage context
+		const userMessage: ModelMessage = {
+			role: "user",
+			content: [{ type: "text", text: data.prompt }],
+		}; //Array of ModelMessage context
 		useChatForm.setValue("prompt", "");
 
 		if (!session) {
@@ -346,10 +353,12 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			});
 
 			if (documentContext.length > 0) {
-				messagesContext.push({
-					content: `Document context information: ${documentContext.map((context) => context.embedding_document?.content).join(", ")}`,
-					role: "system",
-				});
+				if (Array.isArray(userMessage.content)) {
+					userMessage.content.push({
+						type: "text",
+						text: `Document context information: ${documentContext.map((context) => context.embedding_document?.content).join(", ")}`,
+					});
+				}
 			}
 		}
 
@@ -361,10 +370,12 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 			const markdown = await editor.blocksToMarkdownLossy(editor.document);
 
-			messagesContext.push({
-				content: `Editor context information: ${markdown}`,
-				role: "system",
-			});
+			if (Array.isArray(userMessage.content)) {
+				userMessage.content.push({
+					type: "text",
+					text: `Editor context information: ${markdown}`,
+				});
+			}
 		}
 
 		if (aiContextItems.find((item) => item.type === "form")) {
@@ -436,42 +447,47 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					});
 				}
 
-				messagesContext.push({
-					content: `Form context information: ${data}`,
-					role: "system",
-				});
+				if (Array.isArray(userMessage.content)) {
+					userMessage.content.push({
+						type: "text",
+						text: `Current form to work with: ${data}`,
+					});
+				}
 			}
 		}
 
 		if (quote) {
 			setQuote(null);
-			messagesContext.push({
-				content: `Use the following context quote to enhance your response: "${quote}"`,
-				role: "system",
-			});
 
-			return;
+			if (Array.isArray(userMessage.content)) {
+				userMessage.content.push({
+					type: "text",
+					text: `Use the following context quote to enhance your response: "${quote}"`,
+				});
+			}
 		}
 
-		const fullContextMessages = [
-			...messagesContext,
-			...messages.map((message) => ({
-				content: message.content,
-				role: message.role,
-			})),
-		];
+		const allMessages = messages.map((item) => {
+			if (item.parts.length > 0) {
+				return item;
+			}
+
+			return {
+				...item,
+				parts: [{ type: "text", text: item.content }] as Message["parts"],
+			};
+		});
 
 		if (currentAssistantMessage) {
-			fullContextMessages.push({
-				content: currentAssistantMessage.content,
-				role: currentAssistantMessage.role,
-			});
+			allMessages.push(currentAssistantMessage);
 		}
+
+		const convertedToModelMessages = convertToModelMessages(allMessages);
 
 		await sendMessage(undefined, {
 			body: {
 				context: {
-					messages: fullContextMessages,
+					messages: [...convertedToModelMessages, userMessage],
 				},
 				tools,
 				prompt: data.prompt,

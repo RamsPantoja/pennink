@@ -19,7 +19,7 @@ export type Context = {
 export type AgentChatRequestData = {
 	prompt: string;
 	context: Context;
-	toolsAllowed: Tools[];
+	tools: Tools[];
 	trigger: "submit-message";
 	id: string;
 	metadata: Message;
@@ -40,8 +40,12 @@ export async function POST(req: Request) {
 
 		const tools: ToolSet = {};
 
-		const { context, prompt, toolsAllowed, metadata } =
-			(await req.json()) as AgentChatRequestData;
+		const {
+			context,
+			prompt,
+			tools: toolsAllowed,
+			metadata,
+		} = (await req.json()) as AgentChatRequestData;
 
 		for (const toolKey of toolsAllowed) {
 			switch (toolKey) {
