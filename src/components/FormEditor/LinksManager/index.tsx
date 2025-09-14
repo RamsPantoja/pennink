@@ -73,7 +73,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 				}}
 				className="max-h-(--radix-popover-content-available-height) overflow-auto"
 			>
-				<div className="flex gap-4 flex-col w-full">
+				<div className="flex gap-8 flex-col w-full">
 					<div className="flex flex-col gap-4">
 						<div className="flex items-center relative gap-2">
 							<Input
@@ -128,6 +128,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 												version={link.formVersion.version}
 												customKey={link.key}
 												createdAt={link.createdAt}
+												type="BASIC"
 											/>
 										))}
 
@@ -139,6 +140,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 												version={link.examVersion.version}
 												customKey={link.key}
 												createdAt={link.createdAt}
+												type="EXAM"
 											/>
 										))}
 								</div>
@@ -167,18 +169,18 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 								message={formState.errors.key.message}
 							/>
 						)}
+						<p className="text-xs text-mocha-sub-text">
+							Anyone on the web with the link can answer your form
+						</p>
+						<Button
+							size="sm"
+							variant="default"
+							isPending={createLinkFormIsPending}
+							onClick={handleSubmit(onCreateLinkForm)}
+						>
+							Generate link
+						</Button>
 					</div>
-					<p className="text-xs text-mocha-sub-text">
-						Anyone on the web with the link can answer your form
-					</p>
-					<Button
-						size="sm"
-						variant="default"
-						isPending={createLinkFormIsPending}
-						onClick={handleSubmit(onCreateLinkForm)}
-					>
-						Generate link
-					</Button>
 				</div>
 			</PopoverContent>
 		</Popover>

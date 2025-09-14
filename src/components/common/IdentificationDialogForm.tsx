@@ -58,11 +58,8 @@ export const IdentificationDialogForm = ({
 	const onSubmitIdentificationData = async (
 		data: IdentificationValidationSchema,
 	) => {
-		console.log(data);
 		onSubmit(data);
 	};
-
-	console.log(errors);
 
 	return (
 		<Dialog open={identificationData === null && session === null}>

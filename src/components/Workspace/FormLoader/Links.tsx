@@ -85,6 +85,7 @@ export const Links = ({ id, type }: LinksProps) => {
 										version={link.formVersion.version}
 										customKey={link.key}
 										createdAt={link.createdAt}
+										type={linksData.type}
 									/>
 								))}
 
@@ -96,6 +97,7 @@ export const Links = ({ id, type }: LinksProps) => {
 										version={link.examVersion.version}
 										customKey={link.key}
 										createdAt={link.createdAt}
+										type={linksData.type}
 									/>
 								))}
 						</div>
