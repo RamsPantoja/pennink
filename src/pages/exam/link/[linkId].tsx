@@ -47,6 +47,20 @@ const ShareExam = ({
 	} = useForm();
 
 	const {
+		mutate: saveExamResponsesMutation,
+		isPending: saveExamResponsesPending,
+	} = api.form.saveExamResponses.useMutation({
+		onSuccess: async () => {
+			toast.success("Form submitted successfully", {
+				description: "Thank you for your submission!",
+			});
+		},
+		onError: (error) => {
+			toast.error(error.message);
+		},
+	});
+
+	const {
 		data: examData,
 		isPending,
 		isError,
@@ -57,21 +71,27 @@ const ShareExam = ({
 	const onSubmit = async (data: any) => {
 		if (examData) {
 			if (session) {
-				console.log(data);
-				// saveFormResponsesMutation({
-				// 	formId: formData.formVersion.formId,
-				// 	formLinkId: linkId,
-				// 	formVersionId: formData.formVersionId,
-				// 	username: session.user.name,
-				// 	email: session.user.email,
-				// 	userId: session.user.id,
-				// 	answers: data,
-				// });
+				saveExamResponsesMutation({
+					examId: examData.examVersion.examId,
+					examLinkId: linkId,
+					examVersionId: examData.examVersionId,
+					username: session.user.name,
+					email: session.user.email,
+					userId: session.user.id,
+					answers: data,
+				});
 				return;
 			}
 
 			if (identificationData) {
-				console.log(data);
+				saveExamResponsesMutation({
+					examId: examData.examVersion.examId,
+					examLinkId: linkId,
+					examVersionId: examData.examVersionId,
+					username: identificationData.name,
+					email: identificationData.email,
+					answers: data,
+				});
 			} else {
 				toast.error("Identification data is missing");
 			}
@@ -153,7 +173,7 @@ const ShareExam = ({
 							<Button
 								className="w-fit"
 								disabled={isSubmitSuccessful}
-								isPending={false}
+								isPending={saveExamResponsesPending}
 								onClick={handleSubmit(onSubmit, onInvalid)}
 							>
 								Submit

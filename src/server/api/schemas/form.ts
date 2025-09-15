@@ -29,3 +29,13 @@ export const saveFormResponsesSchema = z.object({
 	formLinkId: z.string().uuid(),
 	formVersionId: z.string().uuid(),
 });
+
+export const saveExamResponsesSchema = z.object({
+	examId: z.string().uuid(),
+	answers: z.any(),
+	email: z.string(),
+	username: z.string(),
+	userId: z.string().uuid().optional(),
+	examLinkId: z.string().uuid(),
+	examVersionId: z.string().uuid(),
+});

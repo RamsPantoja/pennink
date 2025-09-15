@@ -748,7 +748,6 @@ export const exams = createTable("exam", {
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
-	answers: jsonb().notNull(),
 	createdAt: timestamp({
 		mode: "date",
 	})
