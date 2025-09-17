@@ -79,14 +79,16 @@ export async function POST(req: Request) {
 			throw new Error("Missing context messages");
 		}
 
+		// `Evaluate the following exam responses: ${JSON.stringify(
+		// 	questionsWithCorrectAnswers,
+		// )} and ${JSON.stringify(answers)}`
+
 		const result = streamText({
 			model,
 			system: getEvaluationExamSystemPrompt(),
 			temperature: 0.1,
 			tools,
-			prompt: `Evaluate the following exam responses: ${JSON.stringify(
-				questionsWithCorrectAnswers,
-			)} and ${JSON.stringify(answers)}`,
+			prompt: "",
 			stopWhen: stepCountIs(5), // Stop at step 5 if tools were called
 			onError({ error }) {
 				console.log(error); // your error logging logic here

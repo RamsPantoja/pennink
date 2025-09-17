@@ -22,6 +22,7 @@ import {
 } from "~/components/common/IdentificationDialogExam";
 import { useTimer } from "~/hooks/use-timer";
 import { toast } from "sonner";
+import { ExamFeedback } from "~/components/common/ExamFeedback";
 
 const ShareExam = ({
 	session,
@@ -115,6 +116,7 @@ const ShareExam = ({
 					<meta name="description" content="Exam details" />
 					<link rel="icon" href="/icon.png" />
 				</Head>
+				<ExamFeedback open={true} />
 				{isPending && <Loading />}
 				<IdentificationDialogExam
 					identificationData={identificationData}
