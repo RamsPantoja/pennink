@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import type { BlockNoteEditor } from "@blocknote/core";
-import type { AiForm } from "~/lib/schemas/aiForm";
 import type { FormType } from "~/lib/enum";
 import type { RouterOutputs } from "~/utils/api";
+import { AiForm } from "~/lib/aiTools/form";
 
 export type PenninkDocument = {
 	id: string;
