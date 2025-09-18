@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { aiFormSchema } from "~/lib/schemas/aiForm";
+import { aiFormSchema } from "~/lib/aiTools/form";
 
 export const createFormSchema = z.object({
 	formData: aiFormSchema,
@@ -30,7 +30,7 @@ export const saveFormResponsesSchema = z.object({
 	formVersionId: z.string().uuid(),
 });
 
-export const saveExamResponsesSchema = z.object({
+export const saveExamResultsSchema = z.object({
 	examId: z.string().uuid(),
 	answers: z.any(),
 	email: z.string(),
@@ -38,4 +38,6 @@ export const saveExamResponsesSchema = z.object({
 	userId: z.string().uuid().optional(),
 	examLinkId: z.string().uuid(),
 	examVersionId: z.string().uuid(),
+	score: z.number().min(0).max(100),
+	feedback: z.string(),
 });

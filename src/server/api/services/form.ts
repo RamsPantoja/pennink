@@ -1,4 +1,4 @@
-import { z } from "zod";
+import type { z } from "zod";
 import type { TRPCContext } from "../trpc";
 import type { Session } from "next-auth";
 import { TRPCError } from "@trpc/server";
@@ -12,20 +12,18 @@ import {
 	formVersions,
 	questionsToFormVersions,
 	formResponses,
+	examResults,
 } from "~/server/db/schema";
 import type {
 	createFormSchema,
 	editFormSchema,
 	getDataSchema,
 	getFormsSchema,
-	saveExamResponsesSchema,
+	saveExamResultsSchema,
 	saveFormResponsesSchema,
 } from "../schemas/form";
 import type { FormType } from "~/lib/enum";
 import { eq } from "drizzle-orm";
-import { bedrock as bedrockV3 } from "bedrock-v3";
-import { getEvaluationExamSystemPrompt } from "~/lib/prompts/evaluation-exam";
-import { generateObject } from "ai-v5";
 
 type FormServiceContructor = {
 	ctx: TRPCContext;
@@ -42,7 +40,7 @@ export type CreateFormInput = {
 export type EditFormInput = z.infer<typeof editFormSchema>;
 export type GetFormsInput = z.infer<typeof getFormsSchema>;
 export type SaveFormResponsesInput = z.infer<typeof saveFormResponsesSchema>;
-export type SaveExamResponsesInput = z.infer<typeof saveExamResponsesSchema>;
+export type SaveExamResultsInput = z.infer<typeof saveExamResultsSchema>;
 
 export type GetDataInput = z.infer<typeof getDataSchema>;
 export type Questions = typeof questionsSchema.$inferSelect & {
@@ -532,7 +530,7 @@ export class FormService {
 		return item;
 	}
 
-	public async saveExamResponses(input: SaveExamResponsesInput) {
+	public async saveExamResults(input: SaveExamResultsInput) {
 		const {
 			email,
 			userId,
@@ -541,43 +539,42 @@ export class FormService {
 			examId,
 			examLinkId,
 			examVersionId,
+			score,
+			feedback,
 		} = input;
 
-		const userResponsesExists = await this.ctx.db.query.examResponses.findFirst(
-			{
-				where: (examResponses, { eq, and }) =>
-					and(
-						eq(examResponses.email, email),
-						eq(examResponses.examId, examId),
-						eq(examResponses.examVersionId, examVersionId),
-						eq(examResponses.examLinkId, examLinkId),
-					),
-			},
-		);
+		const examResultsExists = await this.ctx.db.query.examResults.findFirst({
+			where: (examResults, { eq, and }) =>
+				and(
+					eq(examResults.email, email),
+					eq(examResults.examId, examId),
+					eq(examResults.examVersionId, examVersionId),
+					eq(examResults.examLinkId, examLinkId),
+				),
+		});
 
-		if (userResponsesExists) {
+		if (examResultsExists) {
 			throw new TRPCError({
 				code: "BAD_REQUEST",
 				message: "User has already submitted responses",
 			});
 		}
 
-		const questions = await this.ctx.db.query.questionsToExamVersions.findMany({
-			where: (questionsToExamVersions, { eq }) =>
-				eq(questionsToExamVersions.examVersionId, examVersionId),
-			with: {
-				question: true,
-			},
-		});
+		const [examResult] = await this.ctx.db
+			.insert(examResults)
+			.values({
+				email,
+				userId,
+				answers,
+				username,
+				examId,
+				examLinkId,
+				examVersionId,
+				score,
+				feedback,
+			})
+			.returning();
 
-		const questionsWithCorrectAnswers = questions.map((question) => ({
-			key: question.question.key,
-			answer: question.question.answer,
-			type: question.question.type,
-			label: question.question.label,
-			description: question.question.description,
-		}));
-
-		return questionsWithCorrectAnswers;
+		return examResult;
 	}
 }

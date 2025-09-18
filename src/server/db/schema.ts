@@ -1,11 +1,3 @@
-import {
-	FileUIPart,
-	ReasoningUIPart,
-	SourceUIPart,
-	StepStartUIPart,
-	TextUIPart,
-	ToolInvocationUIPart,
-} from "@ai-sdk/ui-utils";
 import type { Block } from "@blocknote/core";
 import { relations, sql } from "drizzle-orm";
 import {
@@ -744,7 +736,7 @@ export const exams = createTable("exam", {
 	id: customId.notNull().primaryKey(),
 	title: text().notNull(),
 	instructions: text(),
-	duration: integer().default(30),
+	duration: integer(),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
@@ -797,7 +789,7 @@ export const examVersionsRelations = relations(
 	}),
 );
 
-export const examResponses = createTable("exam_response", {
+export const examResults = createTable("exam_result", {
 	id: customId.notNull().primaryKey(),
 	email: text().notNull(),
 	username: text().notNull(),
@@ -807,7 +799,7 @@ export const examResponses = createTable("exam_response", {
 		.notNull(),
 	answers: jsonb().notNull(),
 	feedback: text().notNull(),
-	score: numeric({ precision: 2, scale: 2 }).notNull(),
+	score: integer().notNull(),
 	examVersionId: uuid()
 		.references(() => examVersions.id)
 		.notNull(),
@@ -826,24 +818,24 @@ export const examResponses = createTable("exam_response", {
 		.defaultNow(),
 });
 
-export const examResponsesRelations = relations(examResponses, ({ one }) => ({
-	user: one(users, {
-		fields: [examResponses.userId],
-		references: [users.id],
-	}),
-	exam: one(exams, {
-		fields: [examResponses.examId],
-		references: [exams.id],
-	}),
-	examVersion: one(examVersions, {
-		fields: [examResponses.examVersionId],
-		references: [examVersions.id],
-	}),
-	examLink: one(examLinks, {
-		fields: [examResponses.examLinkId],
-		references: [examLinks.id],
-	}),
-}));
+// export const examResultsRelations = relations(examResults, ({ one }) => ({
+// 	user: one(users, {
+// 		fields: [examResults.userId],
+// 		references: [users.id],
+// 	}),
+// 	exam: one(exams, {
+// 		fields: [examResults.examId],
+// 		references: [exams.id],
+// 	}),
+// 	examVersion: one(examVersions, {
+// 		fields: [examResults.examVersionId],
+// 		references: [examVersions.id],
+// 	}),
+// 	examLink: one(examLinks, {
+// 		fields: [examResults.examLinkId],
+// 		references: [examLinks.id],
+// 	}),
+// }));
 
 export const questionsToExamVersions = createTable(
 	"questions_to_exam_versions",

@@ -34,6 +34,7 @@ type IdentificationDialogExamProps = {
 	identificationData: IdentificationValidationSchema | null;
 	isStarted: boolean;
 	onStart: () => void;
+	duration: number | null;
 };
 
 export const IdentificationDialogExam = ({
@@ -42,6 +43,7 @@ export const IdentificationDialogExam = ({
 	identificationData,
 	isStarted,
 	onStart,
+	duration,
 }: IdentificationDialogExamProps) => {
 	const {
 		handleSubmit,
@@ -96,7 +98,7 @@ export const IdentificationDialogExam = ({
 								/>
 							)}
 							<p className="text-xs text-mocha-sub-text">
-								Your email will be used to send you updates about your form.
+								Your email will be used to send you updates about this exam
 							</p>
 						</div>
 					</div>
@@ -174,7 +176,17 @@ export const IdentificationDialogExam = ({
 					<DialogHeader>
 						<DialogTitle>Start the Exam</DialogTitle>
 						<DialogDescription>
-							Once you start the exam, you will have 1 hour to complete it.
+							{duration ? (
+								<>
+									Once you start the exam, you will have {duration} minutes to
+									complete it.
+								</>
+							) : (
+								<>
+									Once you start the exam, you will have unlimited time to
+									complete it.
+								</>
+							)}
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>

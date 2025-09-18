@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
-import { useMutation } from "@tanstack/react-query";
 import {
 	DefaultChatTransport,
 	type UIMessage,
@@ -17,7 +16,7 @@ import {
 	convertToModelMessages,
 } from "ai-v5";
 import { useChat } from "@ai-sdk/react";
-import type { AiForm } from "~/lib/schemas/aiForm";
+import type { AiForm } from "~/lib/aiTools/form";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
 

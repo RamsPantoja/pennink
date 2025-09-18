@@ -3,7 +3,7 @@ import {
 	editFormSchema,
 	getDataSchema,
 	getFormsSchema,
-	saveExamResponsesSchema,
+	saveExamResultsSchema,
 	saveFormResponsesSchema,
 } from "../schemas/form";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
@@ -39,9 +39,9 @@ export const formRouter = createTRPCRouter({
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.services({ ctx }).formService.saveFormResponses(input);
 		}),
-	saveExamResponses: publicProcedure
-		.input(saveExamResponsesSchema)
+	saveExamResults: publicProcedure
+		.input(saveExamResultsSchema)
 		.mutation(async ({ ctx, input }) => {
-			return await ctx.services({ ctx }).formService.saveExamResponses(input);
+			return await ctx.services({ ctx }).formService.saveExamResults(input);
 		}),
 });

@@ -4,12 +4,11 @@ import { Loading } from "~/components/common/Loading";
 import { SharedContentLayout } from "~/layout/SharedContent";
 import { api } from "~/utils/api";
 import "@blocknote/mantine/style.css";
-import { useRouter } from "next/router";
 import { DateTime } from "luxon";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { DynamicForm } from "~/components/DynamicForm";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/common/Button";
 import { Badge } from "~/components/ui/badge";
 import { getServerSession, type Session } from "next-auth";
@@ -23,43 +22,58 @@ import {
 import { useTimer } from "~/hooks/use-timer";
 import { toast } from "sonner";
 import { ExamFeedback } from "~/components/common/ExamFeedback";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport, type ToolCallPart } from "ai-v5";
+import type { EvaluationDetailsTool } from "~/lib/aiTools/getEvaluationDetails";
 
 const ShareExam = ({
 	session,
 	linkId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { query } = useRouter();
 	const [identificationData, setIdentificationData] =
 		useState<IdentificationValidationSchema | null>(null);
-	const [isStarted, setIsStarted] = useState<boolean>(false);
-
-	const { timeLeft, onStart, isFinished, formatTime, isRunning } = useTimer({
-		minutes: 1,
-		onFinish: () => {
-			toast.success("Time is up!");
-		},
-	});
+	const [displayResults, setDisplayResults] = useState<boolean>(false);
+	const [toolCallEvaluationDetails, setToolCallEvaluationDetails] =
+		useState<ToolCallPart | null>(null);
+	const [isExamStarted, setIsExamStarted] = useState<boolean>(false);
 
 	const {
 		control,
 		handleSubmit,
 		formState: { errors, isSubmitSuccessful },
-		reset,
 	} = useForm();
 
-	const {
-		mutate: saveExamResponsesMutation,
-		isPending: saveExamResponsesPending,
-	} = api.form.saveExamResponses.useMutation({
-		onSuccess: async () => {
-			toast.success("Form submitted successfully", {
-				description: "Thank you for your submission!",
-			});
+	const { messages, sendMessage, status } = useChat({
+		experimental_throttle: 100,
+		transport: new DefaultChatTransport({
+			api: "/api/ai/exam-evaluation",
+		}),
+		onToolCall: ({ toolCall }) => {
+			// Check if it's a dynamic tool first for proper type narrowing
+			if (toolCall.dynamic) {
+				return;
+			}
+
+			if (toolCall.toolName === "getEvaluationDetails") {
+				setToolCallEvaluationDetails({ ...toolCall, type: "tool-call" });
+			}
 		},
 		onError: (error) => {
-			toast.error(error.message);
+			console.error("An error occurred:", error);
 		},
 	});
+
+	const { mutate: saveExamResultsMutation, isPending: saveExamResultsPending } =
+		api.form.saveExamResults.useMutation({
+			onSuccess: async () => {
+				toast.success("Form submitted successfully", {
+					description: "Thank you for your submission!",
+				});
+			},
+			onError: (error) => {
+				toast.error(error.message);
+			},
+		});
 
 	const {
 		data: examData,
@@ -69,33 +83,41 @@ const ShareExam = ({
 		linkId,
 	});
 
+	const { timeLeft, onStart, isFinished, formatTime, isRunning, onPause } =
+		useTimer({
+			minutes: examData?.examVersion.exam.duration ?? 0,
+			onFinish: () => {
+				handleSubmit(onSubmit, onInvalid)();
+			},
+		});
+
 	const onSubmit = async (data: any) => {
 		if (examData) {
-			if (session) {
-				saveExamResponsesMutation({
-					examId: examData.examVersion.examId,
-					examLinkId: linkId,
-					examVersionId: examData.examVersionId,
-					username: session.user.name,
-					email: session.user.email,
-					userId: session.user.id,
-					answers: data,
-				});
-				return;
-			}
+			setDisplayResults(true);
 
-			if (identificationData) {
-				saveExamResponsesMutation({
-					examId: examData.examVersion.examId,
-					examLinkId: linkId,
-					examVersionId: examData.examVersionId,
-					username: identificationData.name,
-					email: identificationData.email,
-					answers: data,
-				});
-			} else {
-				toast.error("Identification data is missing");
-			}
+			const questionsWithCorrectAnswers =
+				examData.examVersion.questionsToExamVersions.map((item) => ({
+					key: item.question.key,
+					answer: item.question.answer,
+					type: item.question.type,
+					label: item.question.label,
+					description: item.question.description,
+					options: item.question.questionOptions.map((option) => ({
+						label: option.label,
+						value: option.value,
+					})),
+				}));
+
+			await sendMessage(undefined, {
+				body: {
+					context: {
+						messages: [],
+					},
+					prompt: `Evaluate the following exam and extract the score and feedback: Questions: ${JSON.stringify(
+						questionsWithCorrectAnswers,
+					)} and User Answers: ${JSON.stringify(data)}`,
+				},
+			});
 		} else {
 			toast.error("Form data is missing");
 		}
@@ -108,6 +130,64 @@ const ShareExam = ({
 		});
 	};
 
+	useEffect(() => {
+		if (toolCallEvaluationDetails && examData) {
+			const input =
+				toolCallEvaluationDetails.input as EvaluationDetailsTool["input"];
+			handleSubmit((data) => {
+				if (session) {
+					saveExamResultsMutation({
+						examId: examData.examVersion.examId,
+						examLinkId: linkId,
+						examVersionId: examData.examVersionId,
+						username: session.user.name,
+						email: session.user.email,
+						userId: session.user.id,
+						answers: data,
+						score: input.score,
+						feedback: input.feedback,
+					});
+					return;
+				}
+
+				if (identificationData) {
+					saveExamResultsMutation({
+						examId: examData.examVersion.examId,
+						examLinkId: linkId,
+						examVersionId: examData.examVersionId,
+						username: identificationData.name,
+						email: identificationData.email,
+						answers: data,
+						score: input.score,
+						feedback: input.feedback,
+					});
+				} else {
+					toast.error("Identification data is missing");
+				}
+			})();
+		}
+	}, [
+		toolCallEvaluationDetails,
+		examData,
+		handleSubmit,
+		identificationData,
+		linkId,
+		saveExamResultsMutation,
+		session,
+	]);
+
+	const handleOnStartExam = () => {
+		if (
+			examData?.examVersion.exam.duration &&
+			examData?.examVersion.exam.duration > 0
+		) {
+			onStart();
+			setIsExamStarted(true);
+		} else {
+			setIsExamStarted(true);
+		}
+	};
+
 	return (
 		<SharedContentLayout>
 			<>
@@ -116,19 +196,25 @@ const ShareExam = ({
 					<meta name="description" content="Exam details" />
 					<link rel="icon" href="/icon.png" />
 				</Head>
-				<ExamFeedback open={true} />
-				{isPending && <Loading />}
-				<IdentificationDialogExam
-					identificationData={identificationData}
-					session={session}
-					onSubmit={(data) => {
-						setIdentificationData(data);
-					}}
-					isStarted={isRunning || isFinished}
-					onStart={onStart}
+				<ExamFeedback
+					messages={messages}
+					open={displayResults}
+					status={status}
+					setOpen={setDisplayResults}
 				/>
+				{isPending && <Loading />}
 				{!isPending && !isError && examData && (
 					<div className="flex flex-col pl-4 pb-8 gap-4">
+						<IdentificationDialogExam
+							identificationData={identificationData}
+							session={session}
+							onSubmit={(data) => {
+								setIdentificationData(data);
+							}}
+							isStarted={isExamStarted}
+							onStart={handleOnStartExam}
+							duration={examData.examVersion.exam.duration}
+						/>
 						<div className="flex flex-row items-center gap-4 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
 							<Avatar className="h-7 w-7">
 								<AvatarImage src={examData.examVersion.exam.user.image} />
@@ -150,17 +236,19 @@ const ShareExam = ({
 						</div>
 						<div className="sticky top-0 z-10 bg-mocha-base/70 p-4 flex items-center clip backdrop-blur-xs rounded-b-xl gap-4 justify-between">
 							<Badge>EXAM</Badge>
-							<div
-								className={`text-2xl font-mono font-bold ${
-									isFinished
-										? "text-red-500"
-										: timeLeft <= 30
-											? "text-orange-500"
-											: "text-foreground"
-								}`}
-							>
-								{formatTime(timeLeft)}
-							</div>
+							{examData?.examVersion.exam.duration && (
+								<div
+									className={`text-2xl font-mono font-bold ${
+										isFinished
+											? "text-red-500"
+											: timeLeft <= 30
+												? "text-orange-500"
+												: "text-foreground"
+									}`}
+								>
+									{formatTime(timeLeft)}
+								</div>
+							)}
 						</div>
 						<DynamicForm
 							showAnswer={false}
@@ -171,12 +259,28 @@ const ShareExam = ({
 							control={control}
 							errors={errors}
 						/>
-						<div className="flex justify-end">
+						<div className="flex justify-end gap-4">
+							{isSubmitSuccessful && messages.length > 0 && (
+								<Button
+									className="w-fit"
+									variant="outline"
+									onClick={() => {
+										setDisplayResults(true);
+									}}
+								>
+									Results
+								</Button>
+							)}
 							<Button
 								className="w-fit"
 								disabled={isSubmitSuccessful}
-								isPending={saveExamResponsesPending}
-								onClick={handleSubmit(onSubmit, onInvalid)}
+								isPending={saveExamResultsPending}
+								onClick={() => {
+									if (isRunning) {
+										onPause();
+									}
+									handleSubmit(onSubmit, onInvalid)();
+								}}
 							>
 								Submit
 							</Button>

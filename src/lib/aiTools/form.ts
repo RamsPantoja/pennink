@@ -1,3 +1,4 @@
+import { type InferUITool, tool } from "ai-v5";
 import z from "zod";
 
 // First, define the schema for QuestionOption if needed
@@ -50,3 +51,18 @@ export const aiFormSchema = z.object({
 });
 
 export type AiForm = z.infer<typeof aiFormSchema>;
+
+export const generateAndEditForm = tool({
+	description: "Tool for generating or editing forms and exams",
+	inputSchema: aiFormSchema,
+	execute: async ({ title, description, questions, type }) => {
+		return {
+			title,
+			description,
+			questions,
+			type,
+		};
+	},
+});
+
+export type GenerateAndEditFormTool = InferUITool<typeof generateAndEditForm>;

@@ -2,13 +2,12 @@ import {
 	type ModelMessage,
 	stepCountIs,
 	streamText,
-	tool,
 	type ToolSet,
 } from "ai-v5";
 import { bedrock as bedrockV3 } from "bedrock-v3";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
-import { aiFormSchema } from "~/lib/schemas/aiForm";
+import { generateAndEditForm } from "~/lib/aiTools/form";
 import type { Tools } from "~/components/Chat/useChatLogic";
 import type { Message } from "~/server/api/services/chat";
 
@@ -50,18 +49,7 @@ export async function POST(req: Request) {
 		for (const toolKey of toolsAllowed) {
 			switch (toolKey) {
 				case "form-generation":
-					tools.generateAndEditForm = tool({
-						description: "Tool for generating or editing forms and exams",
-						inputSchema: aiFormSchema,
-						execute: async ({ title, description, questions, type }) => {
-							return {
-								title,
-								description,
-								questions,
-								type,
-							};
-						},
-					});
+					tools.generateAndEditForm = generateAndEditForm;
 					break;
 				default:
 					break;

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useInterval } from "usehooks-ts";
 
 type UseTimerProps = {
 	minutes: number;
@@ -9,7 +10,6 @@ export function useTimer({ minutes, onFinish }: UseTimerProps) {
 	const [timeLeft, setTimeLeft] = useState(minutes * 60); // Convert minutes to seconds
 	const [isRunning, setIsRunning] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
-	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	// Reset timer when minutes prop changes
 	useEffect(() => {
@@ -18,38 +18,20 @@ export function useTimer({ minutes, onFinish }: UseTimerProps) {
 		setIsFinished(false);
 	}, [minutes]);
 
-	// Timer logic
-	useEffect(() => {
-		console.log({ isRunning, timeLeft });
+	useInterval(() => {
 		if (isRunning && timeLeft > 0) {
-			intervalRef.current = setInterval(() => {
-				setTimeLeft((prev) => {
-					if (prev <= 1) {
-						setIsRunning(false);
-						setIsFinished(true);
-						return 0;
-					}
-					return prev - 1;
-				});
-			}, 1000);
-		} else {
-			if (intervalRef.current) {
-				clearInterval(intervalRef.current);
-				intervalRef.current = null;
-
+			if (timeLeft <= 1) {
+				setIsRunning(false);
+				setIsFinished(true);
 				// Trigger the callback when timer finishes
 				if (onFinish) {
 					onFinish();
 				}
 			}
-		}
 
-		return () => {
-			if (intervalRef.current) {
-				clearInterval(intervalRef.current);
-			}
-		};
-	}, [isRunning, timeLeft, onFinish]);
+			setTimeLeft(timeLeft - 1);
+		}
+	}, 1000);
 
 	const formatTime = (seconds: number) => {
 		const mins = Math.floor(seconds / 60);
