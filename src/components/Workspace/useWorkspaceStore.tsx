@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { BlockNoteEditor } from "@blocknote/core";
 import type { FormType } from "~/lib/enum";
 import type { RouterOutputs } from "~/utils/api";
-import { AiForm } from "~/lib/aiTools/form";
+import type { AiForm } from "~/lib/aiTools/form";
 
 export type PenninkDocument = {
 	id: string;

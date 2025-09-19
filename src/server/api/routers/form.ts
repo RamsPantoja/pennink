@@ -2,6 +2,10 @@ import {
 	createFormSchema,
 	editFormSchema,
 	getDataSchema,
+	getExamResultSchema,
+	getExamResultsSchema,
+	getFormResponseSchema,
+	getFormResponsesSchema,
 	getFormsSchema,
 	saveExamResultsSchema,
 	saveFormResponsesSchema,
@@ -43,5 +47,29 @@ export const formRouter = createTRPCRouter({
 		.input(saveExamResultsSchema)
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.services({ ctx }).formService.saveExamResults(input);
+		}),
+	examResults: protectedProcedure
+		.input(getExamResultsSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx.services({ ctx }).formService.getExamResults(input);
+		}),
+	formResponses: protectedProcedure
+		.input(getFormResponsesSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx.services({ ctx }).formService.getFormResponses(input);
+		}),
+	formResponse: protectedProcedure
+		.input(getFormResponseSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.formService.getFormResponse(input.formResponseId);
+		}),
+	examResult: protectedProcedure
+		.input(getExamResultSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.formService.getExamResult(input.examResultId);
 		}),
 });

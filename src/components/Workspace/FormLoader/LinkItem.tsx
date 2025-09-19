@@ -7,6 +7,7 @@ import { Badge } from "~/components/ui/badge";
 import { Card } from "~/components/ui/card";
 import { env } from "~/env";
 import type { FormType } from "~/lib/enum";
+import { useFormLoaderStore } from "./useFormLoaderStore";
 
 type LinkItemProps = {
 	id: string;
@@ -23,14 +24,12 @@ export const LinkItem = ({
 	createdAt,
 	type,
 }: LinkItemProps) => {
+	const { setCurrentLink, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
 	const clipboardContent = useMemo(() => {
 		if (type === "BASIC") return `${env.NEXT_PUBLIC_BASE_URL}/form/link/${id}`;
 		if (type === "EXAM") return `${env.NEXT_PUBLIC_BASE_URL}/exam/link/${id}`;
+		return `${env.NEXT_PUBLIC_BASE_URL}/`;
 	}, [id, type]);
-
-	const onResults = () => {
-		console.log("onResults");
-	};
 
 	return (
 		<Card className="flex gap-2 flex-col bg-mocha-mantle h-fit">
@@ -54,7 +53,10 @@ export const LinkItem = ({
 			</p>
 			<Button
 				startIcon={<DocumentCheckIcon className="min-w-5 h-5" />}
-				onClick={onResults}
+				onClick={() => {
+					setCurrentLink({ id, key: customKey, link: clipboardContent });
+					setBreadcrumbs({ ...breadcrumbs, results: "Results" });
+				}}
 				size="sm"
 				className="w-fit"
 			>

@@ -818,24 +818,24 @@ export const examResults = createTable("exam_result", {
 		.defaultNow(),
 });
 
-// export const examResultsRelations = relations(examResults, ({ one }) => ({
-// 	user: one(users, {
-// 		fields: [examResults.userId],
-// 		references: [users.id],
-// 	}),
-// 	exam: one(exams, {
-// 		fields: [examResults.examId],
-// 		references: [exams.id],
-// 	}),
-// 	examVersion: one(examVersions, {
-// 		fields: [examResults.examVersionId],
-// 		references: [examVersions.id],
-// 	}),
-// 	examLink: one(examLinks, {
-// 		fields: [examResults.examLinkId],
-// 		references: [examLinks.id],
-// 	}),
-// }));
+export const examResultsRelations = relations(examResults, ({ one }) => ({
+	user: one(users, {
+		fields: [examResults.userId],
+		references: [users.id],
+	}),
+	exam: one(exams, {
+		fields: [examResults.examId],
+		references: [exams.id],
+	}),
+	examVersion: one(examVersions, {
+		fields: [examResults.examVersionId],
+		references: [examVersions.id],
+	}),
+	examLink: one(examLinks, {
+		fields: [examResults.examLinkId],
+		references: [examLinks.id],
+	}),
+}));
 
 export const questionsToExamVersions = createTable(
 	"questions_to_exam_versions",

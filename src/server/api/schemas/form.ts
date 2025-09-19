@@ -41,3 +41,19 @@ export const saveExamResultsSchema = z.object({
 	score: z.number().min(0).max(100),
 	feedback: z.string(),
 });
+
+export const getExamResultsSchema = z.object({
+	examLinkId: z.string().uuid(),
+});
+
+export const getFormResponsesSchema = z.object({
+	formLinkId: z.string().uuid(),
+});
+
+export const getExamResultSchema = z.object({
+	examResultId: z.string().uuid(),
+});
+
+export const getFormResponseSchema = z.object({
+	formResponseId: z.string().uuid(),
+});

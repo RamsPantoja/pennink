@@ -119,7 +119,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 							!linksError &&
 							linksData &&
 							linksData.links.length > 0 && (
-								<div className="flex flex-col gap-2 overflow-auto max-h-96">
+								<div className="flex flex-col gap-2">
 									{linksData.type === "BASIC" &&
 										linksData.links.map((link) => (
 											<LinkItem

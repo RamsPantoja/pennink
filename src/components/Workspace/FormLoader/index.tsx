@@ -20,7 +20,8 @@ import {
 } from "../../ui/sheet";
 import { Card } from "../../ui/card";
 import { FormCard } from "./FormCard";
-import { Links } from "./Links";
+import { Manager } from "./Manager";
+import { useFormLoaderStore } from "./useFormLoaderStore";
 
 type FormLoaderProps = {
 	onOpen: (doc: CurrentForm) => void;
@@ -28,17 +29,11 @@ type FormLoaderProps = {
 	onOpenChange: (open: boolean) => void;
 };
 
-type CurrentFormForLinks = {
-	id: string;
-	type: FormType;
-};
-
 export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 	const [searchKey, setSearchKey] = useState<string>("");
 	const [searchParam, setSearchParam] = useState<string | undefined>();
 	const [type, setType] = useState<FormType>("BASIC");
-	const [currentFormForLinks, setCurrentFormForLinks] =
-		useState<CurrentFormForLinks | null>(null);
+	const { setCurrentForm, currentForm } = useFormLoaderStore();
 
 	const {
 		data: forms,
@@ -64,7 +59,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 					</SheetDescription>
 				</SheetHeader>
 				<div className="h-full w-full grow flex gap-4 overflow-hidden">
-					<Card className="flex flex-col gap-4 border h-full">
+					<Card className="flex flex-col gap-4 border h-full min-w-96 max-w-96">
 						<div className="flex items-center gap-4">
 							<div className="flex items-center relative gap-2">
 								<Input
@@ -122,7 +117,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								</div>
 							</RadioGroup>
 						</div>
-						<div className="grid gap-2 h-fit overflow-auto">
+						<div className="flex flex-col h-fit overflow-auto w-full">
 							{formsIsLoading && <Loading />}
 							{!formsIsLoading && formsIsError && (
 								<FeedbackMessage
@@ -143,7 +138,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								!formsIsError &&
 								forms &&
 								forms.data.length > 0 && (
-									<div className="grid gap-2">
+									<div className="flex flex-col gap-2">
 										{forms.data.map((doc) => (
 											<FormCard
 												key={doc.id}
@@ -154,31 +149,26 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 												)}
 												onOpen={onOpen}
 												onResults={() => {
-													setCurrentFormForLinks({
+													setCurrentForm({
 														id: doc.id,
 														type: forms.type,
 													});
 												}}
 												id={doc.id}
-												selectedFormId={currentFormForLinks?.id}
+												selectedFormId={currentForm?.id}
 											/>
 										))}
 									</div>
 								)}
 						</div>
 					</Card>
-					{!currentFormForLinks && (
+					{!currentForm && (
 						<FeedbackMessage
 							status="INFORMATION"
 							message="Click the form card to view links and results"
 						/>
 					)}
-					{currentFormForLinks && (
-						<Links
-							id={currentFormForLinks.id}
-							type={currentFormForLinks.type}
-						/>
-					)}
+					{currentForm && <Manager />}
 				</div>
 			</SheetContent>
 		</Sheet>

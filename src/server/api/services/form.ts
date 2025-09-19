@@ -18,6 +18,8 @@ import type {
 	createFormSchema,
 	editFormSchema,
 	getDataSchema,
+	getExamResultsSchema,
+	getFormResponsesSchema,
 	getFormsSchema,
 	saveExamResultsSchema,
 	saveFormResponsesSchema,
@@ -41,6 +43,8 @@ export type EditFormInput = z.infer<typeof editFormSchema>;
 export type GetFormsInput = z.infer<typeof getFormsSchema>;
 export type SaveFormResponsesInput = z.infer<typeof saveFormResponsesSchema>;
 export type SaveExamResultsInput = z.infer<typeof saveExamResultsSchema>;
+export type GetExamResultsInput = z.infer<typeof getExamResultsSchema>;
+export type GetFormResponsesInput = z.infer<typeof getFormResponsesSchema>;
 
 export type GetDataInput = z.infer<typeof getDataSchema>;
 export type Questions = typeof questionsSchema.$inferSelect & {
@@ -54,7 +58,7 @@ export class FormService {
 		this.ctx = ctx;
 	}
 
-	async create(input: CreateFormInput) {
+	public async create(input: CreateFormInput) {
 		try {
 			const { createFormInputSchema, session } = input;
 
@@ -206,7 +210,7 @@ export class FormService {
 		}
 	}
 
-	async getData(input: GetDataInput) {
+	public async getData(input: GetDataInput) {
 		const { id, type } = input;
 
 		switch (type) {
@@ -574,6 +578,99 @@ export class FormService {
 				feedback,
 			})
 			.returning();
+
+		return examResult;
+	}
+
+	public async getExamResults(input: GetExamResultsInput) {
+		const { examLinkId } = input;
+
+		const examResults = await this.ctx.db.query.examResults.findMany({
+			where: (examResults, { eq }) => eq(examResults.examLinkId, examLinkId),
+		});
+
+		return examResults;
+	}
+
+	public async getFormResponses(input: GetFormResponsesInput) {
+		const { formLinkId } = input;
+
+		const formResponses = await this.ctx.db.query.formResponses.findMany({
+			where: (formResponses, { eq }) =>
+				eq(formResponses.formLinkId, formLinkId),
+		});
+
+		return formResponses;
+	}
+
+	public async getFormResponse(formResponseId: string) {
+		const formResponse = await this.ctx.db.query.formResponses.findFirst({
+			where: (formResponses, { eq }) => eq(formResponses.id, formResponseId),
+			with: {
+				form: {
+					columns: {
+						title: true,
+						description: true,
+					},
+				},
+				formVersion: {
+					with: {
+						questionsToFormVersions: {
+							with: {
+								question: {
+									with: {
+										questionOptions: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!formResponse) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Form response not found",
+			});
+		}
+
+		return formResponse;
+	}
+
+	public async getExamResult(examResultId: string) {
+		const examResult = await this.ctx.db.query.examResults.findFirst({
+			where: (examResults, { eq }) => eq(examResults.id, examResultId),
+			with: {
+				exam: {
+					columns: {
+						title: true,
+						instructions: true,
+					},
+				},
+				examVersion: {
+					with: {
+						questionsToExamVersions: {
+							with: {
+								question: {
+									with: {
+										questionOptions: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!examResult) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Exam result not found",
+			});
+		}
 
 		return examResult;
 	}
