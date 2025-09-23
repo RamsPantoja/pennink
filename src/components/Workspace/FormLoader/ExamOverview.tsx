@@ -212,19 +212,29 @@ export function ExamReview({ data }: ExamReviewProps) {
 											<p className="text-sm">{userAnswer[0]}</p>
 										)}
 										{item.type === "textarea" && (
-											<p className="text-sm">{userAnswer}</p>
+											<p className="text-sm">
+												{userAnswer ?? "No answer provided"}
+											</p>
 										)}
 										{item.type === "date" && (
-											<p className="text-sm">{userAnswer}</p>
+											<p className="text-sm">
+												{userAnswer ?? "No answer provided"}
+											</p>
 										)}
 										{item.type === "email" && (
-											<p className="text-sm">{userAnswer}</p>
+											<p className="text-sm">
+												{userAnswer ?? "No answer provided"}
+											</p>
 										)}
 										{item.type === "text" && (
-											<p className="text-sm">{userAnswer}</p>
+											<p className="text-sm">
+												{userAnswer ?? "No answer provided"}
+											</p>
 										)}
 										{item.type === "number" && (
-											<p className="text-sm">{userAnswer}</p>
+											<p className="text-sm">
+												{userAnswer ?? "No answer provided"}
+											</p>
 										)}
 									</div>
 								</div>
