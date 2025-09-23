@@ -8,7 +8,7 @@ const schema = z.object({
 
 export const evaluationDetails = tool({
 	description:
-		"Tool for extracting the score and feedback from the exam evaluation once the evaluation is complete",
+		"Tool for extracting the score and feedback after the exam evaluation is complete",
 	inputSchema: schema,
 	execute: async ({ score, feedback }) => {
 		return {

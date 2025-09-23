@@ -1,18 +1,12 @@
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
-import {
-	CheckCircle,
-	XCircle,
-	AlertCircle,
-	BookOpen,
-	Trophy,
-	Target,
-} from "lucide-react";
+import { CheckCircle, XCircle, AlertCircle, Target } from "lucide-react";
 import { useState } from "react";
 import { Response } from "~/components/ai-elements/response";
 import { Button } from "~/components/common/Button";
 import { Badge } from "~/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Card } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
+import type { FormFieldType } from "~/lib/enum";
 
 type ResultData = {
 	id: string;
@@ -27,7 +21,7 @@ type ResultData = {
 	};
 	questions: {
 		key: string;
-		type: string;
+		type: FormFieldType;
 		label: string;
 		answer: any;
 		questionOptions?: Array<{
@@ -78,7 +72,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 		if (Array.isArray(answer)) {
 			return answer.join(", ");
 		}
-		return answer?.toString() || "Sin respuesta";
+		return answer?.toString() || "No answer";
 	};
 
 	const getStatusIcon = (status: string) => {
@@ -111,19 +105,19 @@ export function ExamReview({ data }: ExamReviewProps) {
 		<div className="flex flex-col px-4 py-8 max-w-4xl text-mocha-text gap-8">
 			{/* Header */}
 			<div className="flex flex-col">
-				<p className="tracking-wider font-semibold text-lg">
-					{data.exam.title}
-				</p>
-				<p className="text-sm text-mocha-sub-text">
-					Instructions: {data.exam.instructions}
-				</p>
-				<div className="flex flex-col pt-4">
+				<div className="flex flex-col">
 					<p className="text-sm">{data.username}</p>
 					<div className="flex items-center gap-2">
 						<AtSymbolIcon className="min-w-4 h-4" />
 						<p className="text-sm text-mocha-sub-text">{data.email}</p>
 					</div>
 				</div>
+				<p className="tracking-wider font-semibold text-lg pt-4">
+					{data.exam.title}
+				</p>
+				<p className="text-sm text-mocha-sub-text">
+					Instructions: {data.exam.instructions}
+				</p>
 			</div>
 			{/* Performance Summary */}
 			<Card className="shadow-none border flex flex-col gap-4 rounded-2xl">
@@ -188,7 +182,57 @@ export function ExamReview({ data }: ExamReviewProps) {
 										Tu Respuesta:
 									</h4>
 									<div className="p-3 bg-muted rounded-lg">
-										<p className="text-sm">{formatAnswer(userAnswer)}</p>
+										{item.type === "select" && (
+											<p className="text-sm">
+												{item.questionOptions?.find(
+													(option) => option.value === userAnswer,
+												)?.label || "No answer"}
+											</p>
+										)}
+										{item.type === "radio" && (
+											<p className="text-sm">
+												{item.questionOptions?.find(
+													(option) => option.value === userAnswer,
+												)?.label || "No answer"}
+											</p>
+										)}
+										{item.type === "checkbox" && (
+											<p className="text-sm">
+												{Array.isArray(userAnswer) &&
+													userAnswer
+														.map((answer) => {
+															const option = item.questionOptions?.find(
+																(opt) => opt.value === answer,
+															);
+															return option ? option.label : item;
+														})
+														.join(", ")}
+											</p>
+										)}
+										{item.type === "switch" &&
+											typeof userAnswer === "boolean" && (
+												<p className="text-sm">
+													{userAnswer ? "True" : "False"}
+												</p>
+											)}
+										{item.type === "slider" && Array.isArray(userAnswer) && (
+											<p className="text-sm">{userAnswer[0]}</p>
+										)}
+										{item.type === "textarea" && (
+											<p className="text-sm">{userAnswer}</p>
+										)}
+										{item.type === "date" && (
+											<p className="text-sm">{userAnswer}</p>
+										)}
+										{item.type === "email" && (
+											<p className="text-sm">{userAnswer}</p>
+										)}
+										{item.type === "text" && (
+											<p className="text-sm">{userAnswer}</p>
+										)}
+										{item.type === "number" && (
+											<p className="text-sm">{userAnswer}</p>
+										)}
 									</div>
 								</div>
 								<div className="space-y-2">
@@ -196,7 +240,58 @@ export function ExamReview({ data }: ExamReviewProps) {
 										Respuesta Correcta:
 									</h4>
 									<div className="p-3 border border-mocha-mauve bg-mocha-base rounded-2xl">
-										<p className="text-sm">{formatAnswer(item.answer)}</p>
+										{item.type === "select" && (
+											<p className="text-sm">
+												{item.questionOptions?.find(
+													(option) => option.value === item.answer,
+												)?.label || "No answer"}
+											</p>
+										)}
+										{item.type === "radio" && (
+											<p className="text-sm">
+												{item.questionOptions?.find(
+													(option) => option.value === item.answer,
+												)?.label || "No answer"}
+											</p>
+										)}
+										{item.type === "checkbox" && (
+											<p className="text-sm">
+												{Array.isArray(item.answer) &&
+													item.answer
+														.map((answer) => {
+															const option = item.questionOptions?.find(
+																(opt) => opt.value === answer,
+															);
+															return option ? option.label : item;
+														})
+														.join(", ")}
+											</p>
+										)}
+										{item.type === "switch" &&
+											typeof item.answer === "boolean" && (
+												<p className="text-sm">
+													{item.answer ? "True" : "False"}
+												</p>
+											)}
+										{item.type === "slider" &&
+											typeof item.answer === "number" && (
+												<p className="text-sm">{item.answer}</p>
+											)}
+										{item.type === "textarea" && (
+											<p className="text-sm">{item.answer}</p>
+										)}
+										{item.type === "date" && (
+											<p className="text-sm">{item.answer}</p>
+										)}
+										{item.type === "email" && (
+											<p className="text-sm">{item.answer}</p>
+										)}
+										{item.type === "text" && (
+											<p className="text-sm">{item.answer}</p>
+										)}
+										{item.type === "number" && (
+											<p className="text-sm">{item.answer}</p>
+										)}
 									</div>
 								</div>
 							</div>
@@ -208,19 +303,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 									</h4>
 									<div className="flex flex-wrap gap-2">
 										{item.questionOptions.map((option) => (
-											<Badge
-												key={option.value}
-												variant="outline"
-												className={
-													Array.isArray(item.answer)
-														? item.answer.includes(option.value)
-															? "border-accent text-accent"
-															: ""
-														: item.answer === option.value
-															? "border-accent text-accent"
-															: ""
-												}
-											>
+											<Badge key={option.value} variant="outline">
 												{option.label}
 											</Badge>
 										))}

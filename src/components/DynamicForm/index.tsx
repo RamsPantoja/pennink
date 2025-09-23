@@ -60,7 +60,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -116,7 +116,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -157,7 +157,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -205,7 +205,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -254,7 +254,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -310,7 +310,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -371,7 +371,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
@@ -453,7 +453,7 @@ export function DynamicForm({
 										onCheckedChange={field.onChange}
 									/>
 									<Label htmlFor={fieldId}>
-										<span className="text-mocha-sub-text text-base font-black">
+										<span className="text-mocha-sub-text text-base">
 											{fieldId}.{" "}
 										</span>
 										{question.label}
@@ -487,7 +487,7 @@ export function DynamicForm({
 						render={({ field }) => (
 							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base font-black">
+									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
 									{question.label}
