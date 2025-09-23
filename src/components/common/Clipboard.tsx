@@ -32,7 +32,8 @@ const ClipBoard = ({ content, className }: ClipBoardProps) => {
 			variant="ghost"
 			size="icon"
 			className={className}
-			onClick={() => {
+			onClick={(e) => {
+				e.stopPropagation();
 				handleCopy(content);
 			}}
 		>

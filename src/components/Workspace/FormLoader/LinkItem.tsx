@@ -32,7 +32,13 @@ export const LinkItem = ({
 	}, [id, type]);
 
 	return (
-		<Card className="flex gap-2 flex-col bg-mocha-mantle h-fit">
+		<Card
+			onClick={() => {
+				setCurrentLink({ id, key: customKey, link: clipboardContent });
+				setBreadcrumbs({ ...breadcrumbs, results: "Results" });
+			}}
+			className="flex gap-2 flex-col bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors h-fit"
+		>
 			<div className="flex gap-4 justify-between">
 				<p className="text-sm font-semibold">{customKey}</p>
 				<Badge variant="outline">v{version}</Badge>
@@ -51,17 +57,6 @@ export const LinkItem = ({
 			<p className="text-xs">
 				{DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED)}
 			</p>
-			<Button
-				startIcon={<DocumentCheckIcon className="min-w-5 h-5" />}
-				onClick={() => {
-					setCurrentLink({ id, key: customKey, link: clipboardContent });
-					setBreadcrumbs({ ...breadcrumbs, results: "Results" });
-				}}
-				size="sm"
-				className="w-fit"
-			>
-				Results
-			</Button>
 		</Card>
 	);
 };

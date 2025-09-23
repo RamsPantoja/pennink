@@ -33,7 +33,13 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 	const [searchKey, setSearchKey] = useState<string>("");
 	const [searchParam, setSearchParam] = useState<string | undefined>();
 	const [type, setType] = useState<FormType>("BASIC");
-	const { setCurrentForm, currentForm } = useFormLoaderStore();
+	const {
+		setCurrentForm,
+		currentForm,
+		setBreadcrumbs,
+		setCurrentLink,
+		setResultId,
+	} = useFormLoaderStore();
 
 	const {
 		data: forms,
@@ -153,6 +159,9 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 														id: doc.id,
 														type: forms.type,
 													});
+													setBreadcrumbs({ links: "Links" });
+													setCurrentLink(null);
+													setResultId(null);
 												}}
 												id={doc.id}
 												selectedFormId={currentForm?.id}
