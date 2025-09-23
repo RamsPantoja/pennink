@@ -9,6 +9,7 @@ import { Separator } from "~/components/ui/separator";
 import type { SelectedLink } from "./useFormLoaderStore";
 import { FormResultCard } from "./FormResultCard";
 import { ExamReview } from "./ExamOverview";
+import { FormReview } from "./FormOverview";
 
 type ResultOverviewProps = {
 	resultId: string;
@@ -84,10 +85,38 @@ const FormResultOverview = ({ formResponseId }: { formResponseId: string }) => {
 	});
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 w-full h-full">
 			{resultIsPending && <Loading />}
 			{!resultIsPending && resultError && (
 				<FeedbackMessage status="ERROR" message={resultError.message} />
+			)}
+			{!resultIsPending && !resultError && result && (
+				<FormReview
+					data={{
+						id: result.id,
+						username: result.username,
+						email: result.email,
+						answers: result.answers as JSON,
+						form: {
+							title: result.form.title,
+							description: result.form.description,
+						},
+						questions: result.formVersion.questionsToFormVersions.map(
+							(questionToFormersion) => ({
+								key: questionToFormersion.question.key,
+								type: questionToFormersion.question.type,
+								label: questionToFormersion.question.label,
+								questionOptions:
+									questionToFormersion.question.questionOptions.map(
+										(option) => ({
+											label: option.label,
+											value: option.value,
+										}),
+									),
+							}),
+						),
+					}}
+				/>
 			)}
 		</div>
 	);

@@ -65,8 +65,8 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 					</SheetDescription>
 				</SheetHeader>
 				<div className="h-full w-full grow flex gap-4 overflow-hidden">
-					<Card className="flex flex-col gap-4 border h-full min-w-96 max-w-96">
-						<div className="flex items-center gap-4">
+					<Card className="flex flex-col gap-4 border h-full min-w-96 max-w-96 p-0">
+						<div className="flex items-center gap-4 p-4">
 							<div className="flex items-center relative gap-2">
 								<Input
 									type="text"
@@ -123,7 +123,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								</div>
 							</RadioGroup>
 						</div>
-						<div className="flex flex-col h-fit overflow-auto w-full">
+						<div className="flex flex-col h-fit overflow-auto w-full px-4 pb-4">
 							{formsIsLoading && <Loading />}
 							{!formsIsLoading && formsIsError && (
 								<FeedbackMessage

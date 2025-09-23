@@ -68,13 +68,6 @@ export function ExamReview({ data }: ExamReviewProps) {
 			: "incorrect";
 	};
 
-	const formatAnswer = (answer: any) => {
-		if (Array.isArray(answer)) {
-			return answer.join(", ");
-		}
-		return answer?.toString() || "No answer";
-	};
-
 	const getStatusIcon = (status: string) => {
 		switch (status) {
 			case "correct":
@@ -179,7 +172,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div className="space-y-2">
 									<h4 className="font-semibold text-sm text-mocha-sub-text">
-										Tu Respuesta:
+										Answer:
 									</h4>
 									<div className="p-3 bg-muted rounded-lg">
 										{item.type === "select" && (
@@ -237,7 +230,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 								</div>
 								<div className="space-y-2">
 									<h4 className="font-semibold text-sm text-mocha-sub-text">
-										Respuesta Correcta:
+										Correct Answer:
 									</h4>
 									<div className="p-3 border border-mocha-mauve bg-mocha-base rounded-2xl">
 										{item.type === "select" && (
