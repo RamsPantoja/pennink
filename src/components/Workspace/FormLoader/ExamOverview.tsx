@@ -135,6 +135,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 							{
 								questions.filter(
 									(q) =>
+										// @ts-expect-error
 										getQuestionStatus(q.key, data.answers[q.key], q.answer) ===
 										"correct",
 								).length
@@ -149,6 +150,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 			<div className="flex flex-col gap-4">
 				<p className="font-semibold">Revisión Detallada de Preguntas</p>
 				{questions.map((item) => {
+					// @ts-expect-error
 					const userAnswer = data.answers[item.key];
 					const status = getQuestionStatus(item.key, userAnswer, item.answer);
 

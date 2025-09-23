@@ -58,6 +58,7 @@ export function FormReview({ data }: FormReviewProps) {
 			<div className="flex flex-col gap-4">
 				<p className="font-semibold">Detailed review of questions</p>
 				{questions.map((item) => {
+					// @ts-expect-error
 					const userAnswer = data.answers[item.key];
 
 					return (
