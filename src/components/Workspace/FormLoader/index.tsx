@@ -144,7 +144,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								!formsIsError &&
 								forms &&
 								forms.data.length > 0 && (
-									<div className="flex flex-col gap-2">
+									<div className="flex flex-col gap-3">
 										{forms.data.map((doc) => (
 											<FormCard
 												key={doc.id}

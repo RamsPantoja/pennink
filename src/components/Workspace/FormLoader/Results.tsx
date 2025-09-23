@@ -49,7 +49,7 @@ const ExamResults = ({ linkId }: { linkId: string }) => {
 				<FeedbackMessage status="ERROR" message={resultsError.message} />
 			)}
 			{!resultsIsPending && !resultsError && results && results.length > 0 && (
-				<div className="flex flex-col gap-2 w-full overflow-auto">
+				<div className="flex flex-col gap-3 w-full overflow-auto">
 					{results.map((result) => (
 						<ExamResultCard
 							key={result.id}
@@ -91,7 +91,7 @@ const FormResults = ({ linkId }: { linkId: string }) => {
 				<FeedbackMessage status="ERROR" message={resultsError.message} />
 			)}
 			{!resultsIsPending && !resultsError && results && results.length > 0 && (
-				<div className="flex flex-col gap-2 w-full overflow-auto">
+				<div className="flex flex-col gap-3 w-full overflow-auto">
 					{results.map((result) => (
 						<FormResultCard
 							key={result.id}

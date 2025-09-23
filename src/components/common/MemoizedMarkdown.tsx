@@ -24,13 +24,20 @@ const MemoizedMarkdownBlock = memo(
 							<SyntaxHighlighter
 								style={{}}
 								customStyle={{}}
-								PreTag={PreTag}
+								PreTag={Codeblock}
 								language={match[1]}
 							>
 								{String(children).replace(/\n$/, "")}
 							</SyntaxHighlighter>
 						) : (
 							<code className="prismjs-theme">{children}</code>
+						);
+					},
+					table(props) {
+						return (
+							<div className="flex w-full overflow-auto rounded-xl mb-4 border border-mocha-mauve">
+								<table>{props.children}</table>
+							</div>
 						);
 					},
 				}}
@@ -61,9 +68,9 @@ type PreTagProps = {
 	children: React.ReactNode;
 };
 
-const PreTag = ({ children }: PreTagProps) => {
+const Codeblock = ({ children }: PreTagProps) => {
 	return (
-		<div className="prismjs-theme bg-mocha-mantle p-2 rounded-md overflow-auto text-sm mb-4">
+		<div className="prismjs-theme bg-mocha-mantle p-2 rounded-md overflow-auto text-sm mb-4 w-full">
 			{children}
 		</div>
 	);

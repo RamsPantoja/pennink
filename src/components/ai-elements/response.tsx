@@ -9,36 +9,13 @@ type ResponseProps = {
 };
 
 export const Response = ({ content, reasoning }: ResponseProps) => {
-	const messageContainerRef = useRef<HTMLDivElement | null>(null);
-	const { data } = useSession();
-
-	useEffect(() => {
-		if (messageContainerRef.current) {
-			const html = markdownToHtml(content);
-			messageContainerRef.current.innerHTML = html;
-
-			// const paragraphs = document.querySelectorAll("p");
-
-			// for (const p of paragraphs) {
-			// 	const content = p.textContent || "";
-			// 	if (content.trim().startsWith("<thinking>")) {
-			// 		const classes = ["text-xs!", "text-mocha-sub-text"];
-			// 		p.classList.add(...classes);
-			// 		p.innerText = p.innerText
-			// 			.replaceAll("<thinking>", "")
-			// 			.replaceAll("</thinking>", "")
-			// 			.trim();
-			// 	}
-			// }
-		}
-	}, [content]);
-
 	return (
 		<div
 			className={cn([
-				"flex flex-col overflow-auto",
+				"flex flex-col overflow-auto w-full",
 				{
-					"markdown-styles-for-reasoning text-xs": reasoning,
+					"markdown-styles-for-reasoning text-xs text-mocha-sub-text":
+						reasoning,
 					"markdown-styles": !reasoning,
 				},
 			])}

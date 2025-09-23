@@ -21,7 +21,7 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
 	const { data } = useSession();
 
 	return (
-		<div className={cn(["flex flex-col"])}>
+		<div className="flex flex-col w-full">
 			{message.quote && (
 				<Card className="flex items-start gap-2 border border-mocha-mauve mb-2">
 					<ArrowTurnDownRightIcon className="min-w-5 h-5" />

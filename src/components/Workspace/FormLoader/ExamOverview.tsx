@@ -116,19 +116,19 @@ export function ExamReview({ data }: ExamReviewProps) {
 			<Card className="shadow-none border flex flex-col gap-4 rounded-2xl">
 				<div className="flex items-center gap-2">
 					<Target className="h-5 w-5" />
-					<p className="text-base font-semibold">Resumen de Rendimiento</p>
+					<p className="text-base font-semibold">Performance Summary</p>
 				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 					<div className="text-center">
 						<div className="text-xl font-bold mb-2">{data.score}/100</div>
-						<div className="text-sm">Puntuación Final</div>
+						<div className="text-sm">Final Score</div>
 						<Progress value={scorePercentage} className="mt-2" />
 					</div>
 					<div className="text-center">
 						<div className="text-xl font-bold text-accent mb-2">
 							{answeredQuestions}/{totalQuestions}
 						</div>
-						<div className="text-sm">Preguntas Respondidas</div>
+						<div className="text-sm">Answered questions</div>
 					</div>
 					<div className="text-center">
 						<div className="text-xl font-bold mb-2">
@@ -141,14 +141,14 @@ export function ExamReview({ data }: ExamReviewProps) {
 								).length
 							}
 						</div>
-						<div className="text-sm">Respuestas Correctas</div>
+						<div className="text-sm">Correct answers</div>
 					</div>
 				</div>
 			</Card>
 
 			{/* Questions Review */}
 			<div className="flex flex-col gap-4">
-				<p className="font-semibold">Revisión Detallada de Preguntas</p>
+				<p className="font-semibold">Detailed question review</p>
 				{questions.map((item) => {
 					// @ts-expect-error
 					const userAnswer = data.answers[item.key];

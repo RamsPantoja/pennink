@@ -72,74 +72,70 @@ export function FormReview({ data }: FormReviewProps) {
 									{item.label}
 								</p>
 							</div>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<div className="space-y-2">
-									<h4 className="font-semibold text-sm text-mocha-sub-text">
-										Answer:
-									</h4>
-									<div className="p-3 bg-muted rounded-lg">
-										{item.type === "select" && (
-											<p className="text-sm">
-												{item.questionOptions?.find(
-													(option) => option.value === userAnswer,
-												)?.label || "No answer"}
-											</p>
+							<div className="space-y-2">
+								<h4 className="font-semibold text-sm text-mocha-sub-text">
+									Answer:
+								</h4>
+								<div className="p-3 bg-muted rounded-lg">
+									{item.type === "select" && (
+										<p className="text-sm">
+											{item.questionOptions?.find(
+												(option) => option.value === userAnswer,
+											)?.label || "No answer"}
+										</p>
+									)}
+									{item.type === "radio" && (
+										<p className="text-sm">
+											{item.questionOptions?.find(
+												(option) => option.value === userAnswer,
+											)?.label || "No answer"}
+										</p>
+									)}
+									{item.type === "checkbox" && (
+										<p className="text-sm">
+											{Array.isArray(userAnswer) &&
+												userAnswer
+													.map((answer) => {
+														const option = item.questionOptions?.find(
+															(opt) => opt.value === answer,
+														);
+														return option ? option.label : item;
+													})
+													.join(", ")}
+										</p>
+									)}
+									{item.type === "switch" &&
+										typeof userAnswer === "boolean" && (
+											<p className="text-sm">{userAnswer ? "True" : "False"}</p>
 										)}
-										{item.type === "radio" && (
-											<p className="text-sm">
-												{item.questionOptions?.find(
-													(option) => option.value === userAnswer,
-												)?.label || "No answer"}
-											</p>
-										)}
-										{item.type === "checkbox" && (
-											<p className="text-sm">
-												{Array.isArray(userAnswer) &&
-													userAnswer
-														.map((answer) => {
-															const option = item.questionOptions?.find(
-																(opt) => opt.value === answer,
-															);
-															return option ? option.label : item;
-														})
-														.join(", ")}
-											</p>
-										)}
-										{item.type === "switch" &&
-											typeof userAnswer === "boolean" && (
-												<p className="text-sm">
-													{userAnswer ? "True" : "False"}
-												</p>
-											)}
-										{item.type === "slider" && Array.isArray(userAnswer) && (
-											<p className="text-sm">{userAnswer[0]}</p>
-										)}
-										{item.type === "textarea" && (
-											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
-											</p>
-										)}
-										{item.type === "date" && (
-											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
-											</p>
-										)}
-										{item.type === "email" && (
-											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
-											</p>
-										)}
-										{item.type === "text" && (
-											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
-											</p>
-										)}
-										{item.type === "number" && (
-											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
-											</p>
-										)}
-									</div>
+									{item.type === "slider" && Array.isArray(userAnswer) && (
+										<p className="text-sm">{userAnswer[0]}</p>
+									)}
+									{item.type === "textarea" && (
+										<p className="text-sm">
+											{userAnswer ?? "No answer provided"}
+										</p>
+									)}
+									{item.type === "date" && (
+										<p className="text-sm">
+											{userAnswer ?? "No answer provided"}
+										</p>
+									)}
+									{item.type === "email" && (
+										<p className="text-sm">
+											{userAnswer ?? "No answer provided"}
+										</p>
+									)}
+									{item.type === "text" && (
+										<p className="text-sm">
+											{userAnswer ?? "No answer provided"}
+										</p>
+									)}
+									{item.type === "number" && (
+										<p className="text-sm">
+											{userAnswer ?? "No answer provided"}
+										</p>
+									)}
 								</div>
 							</div>
 							{item.questionOptions && item.questionOptions.length > 0 && (

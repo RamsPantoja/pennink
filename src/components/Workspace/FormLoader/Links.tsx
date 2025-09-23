@@ -76,7 +76,7 @@ export const Links = ({ id, type }: LinksProps) => {
 					!linksError &&
 					linksData &&
 					linksData.links.length > 0 && (
-						<div className="grid grid-cols-2 gap-4 w-full overflow-auto">
+						<div className="grid grid-cols-2 gap-3 w-full overflow-auto">
 							{linksData.type === "BASIC" &&
 								linksData.links.map((link) => (
 									<LinkItem
