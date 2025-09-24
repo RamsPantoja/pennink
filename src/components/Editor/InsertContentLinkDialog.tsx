@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
-import type { Subscription } from "~/lib/enum";
-import { api } from "~/utils/api";
 import { toast } from "sonner";
-import { useRouter } from "next/router";
-import { env } from "~/env";
 import {
 	Dialog,
 	DialogContent,
@@ -15,13 +10,7 @@ import {
 	DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../common/Button";
-import {
-	ArrowPathIcon,
-	DocumentMagnifyingGlassIcon,
-	LinkIcon,
-	PaperAirplaneIcon,
-	SparklesIcon,
-} from "@heroicons/react/24/outline";
+import { LinkIcon, SparklesIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Card } from "../ui/card";
 import { Input } from "../ui/input";
@@ -154,6 +143,20 @@ export default function InsertContentLinkDialog({
 					</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-4 h-full w-full">
+					<div className="flex gap-2 w-full">
+						<div className="flex flex-col gap-1 w-full">
+							<Input
+								{...register("link")}
+								placeholder="Type or paste link here"
+							/>
+							{errors.link && (
+								<InputFeedbackMessage
+									status="ERROR"
+									message={errors.link.message}
+								/>
+							)}
+						</div>
+					</div>
 					<div className="flex gap-2 items-center">
 						<SparklesIcon className="min-w-4 h-4 text-mocha-text" />
 						<Controller
@@ -169,32 +172,6 @@ export default function InsertContentLinkDialog({
 							)}
 						/>
 					</div>
-					<div className="flex gap-2 w-full">
-						<div className="flex flex-col gap-1">
-							<Input
-								{...register("link")}
-								placeholder="Type or paste link here"
-							/>
-							{errors.link && (
-								<InputFeedbackMessage
-									status="ERROR"
-									message={errors.link.message}
-								/>
-							)}
-						</div>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button
-									variant="secondary"
-									onClick={handleSubmit(onProcessLink)}
-									isPending={onProcessLinkIsPending}
-								>
-									<DocumentMagnifyingGlassIcon className="h-5 min-w-5" />
-								</Button>
-							</TooltipTrigger>
-							<TooltipContent>Search link</TooltipContent>
-						</Tooltip>
-					</div>
 					{linkContent && (
 						<Card className="flex flex-col flex-1 max-h-96 w-full p-4 border border-mocha-mantle overflow-auto">
 							<div
@@ -206,15 +183,23 @@ export default function InsertContentLinkDialog({
 				</div>
 				<DialogFooter>
 					<Button
-						disabled={linkContent === "" || onProcessLinkIsPending}
-						className="w-fit"
-						onClick={() => {
-							onInsert(linkContent);
-							setOpen(false);
-						}}
+						variant="secondary"
+						onClick={handleSubmit(onProcessLink)}
+						isPending={onProcessLinkIsPending}
 					>
-						Insert content
+						Search link
 					</Button>
+					{!(linkContent === "" || onProcessLinkIsPending) && (
+						<Button
+							className="w-fit"
+							onClick={() => {
+								onInsert(linkContent);
+								setOpen(false);
+							}}
+						>
+							Insert content
+						</Button>
+					)}
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

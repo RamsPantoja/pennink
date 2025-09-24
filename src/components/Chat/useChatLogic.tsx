@@ -518,12 +518,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	}, [tempMessages[0]?.id, chatContainer]);
 
 	useEffect(() => {
-		if (chatContainer.current) {
-			chatContainer.current.scrollTo({
-				top: chatContainer.current.scrollHeight,
-			});
+		if (chatContainer.current && !messagesIsLoading && messages) {
+			if (chatContainer.current.childElementCount === messages.length)
+				chatContainer.current.scrollTo({
+					top: chatContainer.current.scrollHeight,
+				});
 		}
-	}, [chatContainer.current]);
+	}, [messagesIsLoading, messages]);
 
 	//ReaderEvent listener
 	useEffect(() => {
