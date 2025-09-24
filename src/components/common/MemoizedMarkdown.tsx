@@ -35,7 +35,7 @@ const MemoizedMarkdownBlock = memo(
 					},
 					table(props) {
 						return (
-							<div className="flex w-full overflow-auto rounded-xl mb-4 border border-mocha-mauve">
+							<div className="flex w-full overflow-auto rounded-md mb-4 border border-mocha-mauve">
 								<table>{props.children}</table>
 							</div>
 						);

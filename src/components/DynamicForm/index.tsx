@@ -58,8 +58,8 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
 									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
@@ -77,7 +77,7 @@ export function DynamicForm({
 									className="focus:ring-mocha-sub-text"
 								/>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -114,8 +114,8 @@ export function DynamicForm({
 							},
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
 									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
@@ -132,7 +132,7 @@ export function DynamicForm({
 									className="focus:ring-mocha-sub-text"
 								/>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -155,8 +155,8 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
 									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
@@ -170,7 +170,7 @@ export function DynamicForm({
 									className="focus:ring-mocha-sub-text w-fit"
 								/>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -203,8 +203,8 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
 									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
@@ -219,7 +219,7 @@ export function DynamicForm({
 									className="focus:ring-mocha-sub-text"
 								/>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -252,8 +252,8 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
 									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
@@ -273,7 +273,7 @@ export function DynamicForm({
 									</SelectContent>
 								</Select>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -308,11 +308,9 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
-									<span className="text-mocha-sub-text text-base">
-										{fieldId}.{" "}
-									</span>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
+									<span className="text-mocha-sub-text">{fieldId}. </span>
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
@@ -326,14 +324,17 @@ export function DynamicForm({
 												value={option.value}
 												id={`${fieldId}-${option.value}`}
 											/>
-											<Label htmlFor={`${fieldId}-${option.value}`}>
+											<Label
+												htmlFor={`${fieldId}-${option.value}`}
+												className="font-normal text-mocha-text"
+											>
 												{option.label}
 											</Label>
 										</div>
 									))}
 								</RadioGroup>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -369,8 +370,8 @@ export function DynamicForm({
 							required: isRequired ? `${question.label} is required` : false,
 						}}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
 									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
@@ -399,14 +400,17 @@ export function DynamicForm({
 													}
 												}}
 											/>
-											<Label htmlFor={`${fieldId}-${option.value}`}>
+											<Label
+												htmlFor={`${fieldId}-${option.value}`}
+												className="font-normal"
+											>
 												{option.label}
 											</Label>
 										</div>
 									))}
 								</div>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -445,14 +449,14 @@ export function DynamicForm({
 						control={control}
 						defaultValue={false}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
 								<div className="flex items-center space-x-2">
 									<Switch
 										id={fieldId}
 										checked={field.value}
 										onCheckedChange={field.onChange}
 									/>
-									<Label htmlFor={fieldId}>
+									<Label htmlFor={fieldId} className="text-base">
 										<span className="text-mocha-sub-text text-base">
 											{fieldId}.{" "}
 										</span>
@@ -461,7 +465,7 @@ export function DynamicForm({
 									</Label>
 								</div>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -485,8 +489,8 @@ export function DynamicForm({
 						control={control}
 						defaultValue={[question.min || 0]}
 						render={({ field }) => (
-							<div className="flex flex-col gap-4 p-3 bg-mocha-crust rounded-2xl">
-								<Label htmlFor={fieldId}>
+							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
+								<Label htmlFor={fieldId} className="text-base">
 									<span className="text-mocha-sub-text text-base">
 										{fieldId}.{" "}
 									</span>
@@ -502,7 +506,7 @@ export function DynamicForm({
 										step={question.step || 1}
 										className="w-full"
 									/>
-									<div className="flex justify-between text-sm text-muted-foreground mt-1">
+									<div className="flex justify-between text-sm text-mocha-sub-text mt-1">
 										<span>{question.min || 0}</span>
 										<span className="font-medium">
 											Value: {field.value?.[0] || question.min || 0}
@@ -511,7 +515,7 @@ export function DynamicForm({
 									</div>
 								</div>
 								{question.description && (
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-mocha-sub-text">
 										{question.description}
 									</p>
 								)}
@@ -529,7 +533,6 @@ export function DynamicForm({
 						)}
 					/>
 				);
-
 			default:
 				break;
 		}
