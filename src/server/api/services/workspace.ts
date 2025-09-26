@@ -21,10 +21,10 @@ import { and, eq, isNull, sql } from "drizzle-orm";
 import { env } from "~/env";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { embedMany, embed } from "ai";
 import { embeddingDocuments } from "~/server/db/turso-schema";
+import { embed, embedMany } from "ai-v5";
 import { DateTime } from "luxon";
-import { bedrock } from "@ai-sdk/amazon-bedrock";
+import { bedrock as bedrockV3 } from "bedrock-v3";
 
 type WorkspaceServiceContructor = {
 	ctx: TRPCContext;
@@ -318,7 +318,7 @@ export class WorkspaceService {
 	}
 
 	public async createFile(input: CreateFileInput, userId: string) {
-		const model = bedrock.embedding("amazon.titan-embed-text-v2:0");
+		const model = bedrockV3.textEmbeddingModel("amazon.titan-embed-text-v2:0");
 		const textSplitter = new RecursiveCharacterTextSplitter({
 			chunkSize: 1000,
 			chunkOverlap: 200,
@@ -365,6 +365,7 @@ export class WorkspaceService {
 			const { embeddings, values } = await embedMany({
 				model,
 				values: allSplits.map((split) => split.pageContent),
+				maxRetries: 5,
 			});
 
 			//Create a vector index for the embedding column from the embedding_documents table
@@ -415,7 +416,9 @@ export class WorkspaceService {
 
 	public async documentVectorSearch(input: DocumentVectorSearchInput) {
 		try {
-			const model = bedrock.embedding("amazon.titan-embed-text-v2:0");
+			const model = bedrockV3.textEmbeddingModel(
+				"amazon.titan-embed-text-v2:0",
+			);
 
 			const embedding = await embed({
 				model,
