@@ -76,7 +76,7 @@ export function FormReview({ data }: FormReviewProps) {
 								<h4 className="font-semibold text-sm text-mocha-sub-text">
 									Answer:
 								</h4>
-								<div className="p-3 bg-muted rounded-lg">
+								<div className="p-3 bg-mocha-crust rounded-lg">
 									{item.type === "select" && (
 										<p className="text-sm">
 											{item.questionOptions?.find(
