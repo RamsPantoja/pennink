@@ -75,6 +75,7 @@ export const HomeComponent = () => {
 			onSuccess: async (data) => {
 				setWorkspaceId(data.id);
 				await utils.workspace.workspaces.invalidate();
+				await utils.user.statics.invalidate();
 			},
 			onError: (error) => {
 				if (error.data?.code === "PRECONDITION_FAILED") {
