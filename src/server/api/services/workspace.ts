@@ -5,7 +5,7 @@ import type {
 	documentVectorSearchInputSchema,
 	updateWorkspaceNameInputSchema,
 } from "../schemas/workspace";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import {
 	chats,
 	workspaces,

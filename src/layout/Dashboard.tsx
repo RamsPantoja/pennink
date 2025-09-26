@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	ArrowDownTrayIcon,
 	CircleStackIcon,
@@ -6,7 +8,6 @@ import {
 	SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Feedback } from "~/components/Feedback";
@@ -25,15 +26,18 @@ import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
 import {
 	Tooltip,
 	TooltipContent,
+	TooltipProvider,
 	TooltipTrigger,
 } from "~/components/ui/tooltip";
 import { env } from "~/env";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { fileSizeRule } from "~/lib/utils";
-import { api } from "~/utils/api";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import PomodoroTimer from "~/components/Pomodoro";
 import { FormLoader } from "~/components/Workspace/FormLoader";
+import { SessionProvider } from "next-auth/react";
+import { api } from "~/trpc/react";
+import { useRouter, usePathname, useParams } from "next/navigation";
 
 type DashboardProps = {
 	session: Session;
@@ -41,10 +45,12 @@ type DashboardProps = {
 };
 
 const Dashboard = ({ children, session }: DashboardProps) => {
+	const pathname = usePathname();
 	const router = useRouter();
+	const params = useParams();
 	const utils = api.useUtils();
 	const [openDocumentLoader, setOpenDocumentLoader] = useState<boolean>(false);
-	const { workspaceId } = router.query;
+	const workspaceId = params?.workspaceId;
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const {
@@ -165,161 +171,148 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	};
 
 	const onNewWorkspace = async () => {
-		await router.push("/");
+		router.push("/");
 		resetWorkspaceStore();
 	};
 
 	return (
-		<SidebarProvider>
-			<Input
-				ref={fileInputRef}
-				type="file"
-				accept="application/pdf"
-				className="hidden"
-				onChange={handleFileChange}
-				data-testid="file-input"
-			/>
-			<AppSidebar session={session} />
-			<FormLoader
-				onOpen={(form) => {
-					setDisplayFormEditor(true);
-					setCurrentForm(form);
-					setOpenFormLoader(false);
-					setDocument(null);
-				}}
-				open={openFormLoader}
-				onOpenChange={setOpenFormLoader}
-			/>
-			<DocumentLoader
-				onSelect={(doc) => {
-					setDocument(doc);
-					setOpenDocumentLoader(false);
-					setDisplayFormEditor(false);
-					setCurrentForm(null);
-					localStorage.setItem(
-						"pennink-doc",
-						JSON.stringify({
-							...doc,
-							workspaceId,
-						}),
-					);
-				}}
-				open={openDocumentLoader}
-				onOpenChange={setOpenDocumentLoader}
-			/>
-			<main className="bg-mocha-base flex h-screen w-full flex-col overflow-hidden">
-				<div className="flex p-2 gap-4 items-center justify-between w-full border-b border-mocha-mauve">
-					<div className="flex items-center gap-2">
-						<SidebarTrigger className="min-w-8 h-8">
-							<span>Toggle</span>
-						</SidebarTrigger>
-						<p className="text-xs text-mocha-sub-text">Ctrl-B</p>
-					</div>
-					<div className="flex items-center gap-2">
-						{router.asPath !== "/" && (
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button
-										variant="ghost"
-										size="icon"
-										onClick={() => {
-											setOpenFormLoader(true);
-										}}
-									>
-										<ListBulletIcon className="min-w-5 w-5 h-5" />
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>Search from your forms</TooltipContent>
-							</Tooltip>
-						)}
-						{router.asPath !== "/" && (
-							<DropdownMenu modal={false}>
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<DropdownMenuTrigger asChild>
+		<SessionProvider session={session}>
+			<SidebarProvider>
+				<TooltipProvider delayDuration={300}>
+					<Input
+						ref={fileInputRef}
+						type="file"
+						accept="application/pdf"
+						className="hidden"
+						onChange={handleFileChange}
+						data-testid="file-input"
+					/>
+					<AppSidebar session={session} />
+					<FormLoader
+						onOpen={(form) => {
+							setDisplayFormEditor(true);
+							setCurrentForm(form);
+							setOpenFormLoader(false);
+							setDocument(null);
+						}}
+						open={openFormLoader}
+						onOpenChange={setOpenFormLoader}
+					/>
+					<DocumentLoader
+						onSelect={(doc) => {
+							setDocument(doc);
+							setOpenDocumentLoader(false);
+							setDisplayFormEditor(false);
+							setCurrentForm(null);
+							localStorage.setItem(
+								"pennink-doc",
+								JSON.stringify({
+									...doc,
+									workspaceId,
+								}),
+							);
+						}}
+						open={openDocumentLoader}
+						onOpenChange={setOpenDocumentLoader}
+					/>
+					<main className="bg-mocha-base flex h-full w-full flex-col overflow-hidden">
+						<div className="flex p-2 gap-4 items-center justify-between w-full border-b border-mocha-mauve">
+							<div className="flex items-center gap-2">
+								<SidebarTrigger className="min-w-8 h-8">
+									<span>Toggle</span>
+								</SidebarTrigger>
+								<p className="text-xs text-mocha-sub-text">Ctrl-B</p>
+							</div>
+							<div className="flex items-center gap-2">
+								{pathname !== "/" && (
+									<Tooltip>
+										<TooltipTrigger asChild>
 											<Button
 												variant="ghost"
 												size="icon"
-												isPending={
-													uploadingFile ||
-													createFileIsPending ||
-													triggerUploadFilesRuleIsPending ||
-													isReadingPDF
-												}
+												onClick={() => {
+													setOpenFormLoader(true);
+												}}
 											>
-												<CircleStackIcon className="min-w-5 w-5 h-5" />
+												<ListBulletIcon className="min-w-5 w-5 h-5" />
 											</Button>
-										</DropdownMenuTrigger>
-									</TooltipTrigger>
-									<TooltipContent>Search from your sources</TooltipContent>
-								</Tooltip>
-								<DropdownMenuContent
-									side="right"
-									onCloseAutoFocus={(e) => {
-										e.preventDefault();
-										e.stopPropagation();
-									}}
-								>
-									<DropdownMenuItem
-										onClick={() => fileInputRef.current?.click()}
-										className="flex gap-2"
-									>
-										<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
-										Import PDF
-									</DropdownMenuItem>
-									<DropdownMenuItem
-										onClick={() => {
-											setOpenDocumentLoader(true);
-										}}
-										className="flex gap-2"
-									>
-										<MagnifyingGlassIcon className="min-w-5 w-5 h-5" />
-										Search sources
-									</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
-						)}
+										</TooltipTrigger>
+										<TooltipContent>Search from your forms</TooltipContent>
+									</Tooltip>
+								)}
+								{pathname !== "/" && (
+									<DropdownMenu modal={false}>
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<DropdownMenuTrigger asChild>
+													<Button
+														variant="ghost"
+														size="icon"
+														isPending={
+															uploadingFile ||
+															createFileIsPending ||
+															triggerUploadFilesRuleIsPending ||
+															isReadingPDF
+														}
+													>
+														<CircleStackIcon className="min-w-5 w-5 h-5" />
+													</Button>
+												</DropdownMenuTrigger>
+											</TooltipTrigger>
+											<TooltipContent>Search from your sources</TooltipContent>
+										</Tooltip>
+										<DropdownMenuContent
+											side="right"
+											onCloseAutoFocus={(e) => {
+												e.preventDefault();
+												e.stopPropagation();
+											}}
+										>
+											<DropdownMenuItem
+												onClick={() => fileInputRef.current?.click()}
+												className="flex gap-2"
+											>
+												<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
+												Import PDF
+											</DropdownMenuItem>
+											<DropdownMenuItem
+												onClick={() => {
+													setOpenDocumentLoader(true);
+												}}
+												className="flex gap-2"
+											>
+												<MagnifyingGlassIcon className="min-w-5 w-5 h-5" />
+												Search sources
+											</DropdownMenuItem>
+										</DropdownMenuContent>
+									</DropdownMenu>
+								)}
 
-						{router.asPath !== "/" && (
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button onClick={onNewWorkspace} variant="ghost" size="icon">
-										<SquaresPlusIcon className="min-w-5 w-5 h-5" />
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>New workspace</TooltipContent>
-							</Tooltip>
-						)}
-						{router.asPath !== "/" && <PomodoroTimer />}
-						<Feedback session={session} />
-					</div>
-
-					{/* <div className="flex items-center gap-4">
-						{!session && (
-							<Link
-								className="text-mocha-crust font-bold bg-mocha-mauve pl-4 pr-4 pt-2 pb-2 rounded-full"
-								href="/sign-in"
-							>
-								Sign in
-							</Link>
-						)}
-						{session && (
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<span>
-										<Notifications session={session} />
-									</span>
-								</TooltipTrigger>
-								<TooltipContent>Notifications</TooltipContent>
-							</Tooltip>
-						)}
-					</div> */}
-				</div>
-				<div className="flex w-full h-full gap-2 overflow-hidden">
-					{children}
-				</div>
-			</main>
-		</SidebarProvider>
+								{pathname !== "/" && (
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button
+												onClick={onNewWorkspace}
+												variant="ghost"
+												size="icon"
+											>
+												<SquaresPlusIcon className="min-w-5 w-5 h-5" />
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>New workspace</TooltipContent>
+									</Tooltip>
+								)}
+								{pathname !== "/" && <PomodoroTimer />}
+								<Feedback session={session} />
+							</div>
+						</div>
+						<div className="flex w-full h-full gap-2 overflow-hidden">
+							{children}
+						</div>
+					</main>
+				</TooltipProvider>
+			</SidebarProvider>
+		</SessionProvider>
 	);
 };
 

@@ -1,10 +1,6 @@
 import { GeistMono } from "geist/font/mono";
-
 import type { Session } from "next-auth";
 import type { AppType } from "next/app";
-
-import { api } from "~/utils/api";
-
 import "~/styles/globals.css";
 import "~/styles/nprogress.css";
 import { TooltipProvider } from "~/components/ui/tooltip";
@@ -14,6 +10,7 @@ import { useEffect, useState } from "react";
 import nProgress from "nprogress";
 import { SessionProvider } from "next-auth/react";
 import { create } from "zustand";
+import { apiPageRouter } from "~/utils/api";
 
 type Theme = "light" | "dark";
 
@@ -81,4 +78,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
 	);
 };
 
-export default api.withTRPC(MyApp);
+export default apiPageRouter.withTRPC(MyApp);

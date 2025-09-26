@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import type { FormType } from "~/lib/enum";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 type UseLinksLogicProps = {
 	id: string;

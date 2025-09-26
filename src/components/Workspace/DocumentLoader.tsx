@@ -1,5 +1,5 @@
 import { Button } from "../common/Button";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { DocumentCard } from "./DocumentCard";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";

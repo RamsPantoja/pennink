@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import { statics } from "~/server/db/schema";
 import { DateTime } from "luxon";
 import { eq } from "drizzle-orm";

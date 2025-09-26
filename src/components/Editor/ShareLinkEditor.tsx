@@ -26,7 +26,7 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 	} = useShareLinkEditorLogic({ noteId });
 
 	const clipboardContent = useMemo(() => {
-		return `${env.NEXT_PUBLIC_BASE_URL}/workspace/notes/${linkData?.id}`;
+		return `${env.NEXT_PUBLIC_BASE_URL}/notes/${linkData?.id}`;
 	}, [linkData]);
 
 	return (

@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Skeleton } from "./ui/skeleton";

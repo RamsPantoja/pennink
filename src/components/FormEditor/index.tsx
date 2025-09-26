@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useState, useEffect, Fragment } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { Badge } from "../ui/badge";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";

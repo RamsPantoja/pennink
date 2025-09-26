@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import { messages, statics } from "~/server/db/schema";
 import type { createMessageInputSchema } from "../schemas/chat";
 import { TRPCError } from "@trpc/server";

@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { notifications } from "~/server/db/schema";

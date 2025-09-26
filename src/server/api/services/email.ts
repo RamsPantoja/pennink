@@ -1,5 +1,5 @@
 import { env } from "~/env";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import { Resend } from "resend";
 import { TRPCError } from "@trpc/server";
 

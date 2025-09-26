@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { Loading } from "~/components/common/Loading";
 import type { FormType } from "~/lib/enum";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { ExamResultCard } from "./ExamResultCard";
 import ClipBoard from "~/components/common/Clipboard";
 import { Separator } from "~/components/ui/separator";

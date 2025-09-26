@@ -27,7 +27,6 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import useSidebarLogic from "./useSidebarLogic";
-import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { mapSkeletons } from "~/lib/utils";
 import { Skeleton } from "../ui/skeleton";
@@ -38,6 +37,8 @@ import { Button } from "../common/Button";
 import { WorkspaceCard } from "./WorkspaceCard";
 import SubscriptionPlansModal from "../SubscriptionPlanSelector";
 import { UsageService } from "../UsageService";
+import { useParams, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 type AppSidebarProps = {
 	session: Session | null;
@@ -45,7 +46,8 @@ type AppSidebarProps = {
 
 export function AppSidebar({ session }: AppSidebarProps) {
 	const router = useRouter();
-	const { workspaceId } = router.query;
+	const pathname = usePathname();
+	const params = useParams();
 
 	const {
 		displaySignOutAlert,
@@ -106,7 +108,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 						>
 							<DropdownMenuItem
 								onSelect={async () => {
-									await router.push(`/settings?callbackUrl=${router.asPath}`);
+									router.push(`/settings?callbackUrl=${pathname}`);
 								}}
 							>
 								<Cog6ToothIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
@@ -136,7 +138,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 					<SidebarGroupLabel asChild>
 						<div className="flex items-center gap-4 justify-between mb-2">
 							<span>Workspaces</span>
-							{router.asPath !== "/" && (
+							{pathname !== "/" && (
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<Button onClick={onNewWorkspace} size="icon">
@@ -148,7 +150,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 							)}
 						</div>
 					</SidebarGroupLabel>
-					<SidebarGroupContent className="overflow-auto">
+					<SidebarGroupContent className="overflow-auto p-1">
 						<SidebarMenu>
 							{workspacesIsLoading &&
 								skeletons.map((skeleton, index) => {
@@ -163,7 +165,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 											key={workspace.id}
 											id={workspace.id}
 											name={workspace.name}
-											selectedWorkspaceId={workspaceId as string}
+											selectedWorkspaceId={params?.workspaceId as string}
 										/>
 									);
 								})}

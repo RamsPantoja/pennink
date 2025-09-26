@@ -72,7 +72,7 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 				<div className="flex items-center gap-2">
 					<span className="text-xs text-muted-foreground">{date}</span>
 					<Tooltip>
-						<TooltipTrigger>
+						<TooltipTrigger asChild>
 							<Button
 								variant="ghost"
 								size="icon"

@@ -2,7 +2,7 @@ import Head from "next/head";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { Loading } from "~/components/common/Loading";
 import { SharedContentLayout } from "~/layout/SharedContent";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import "@blocknote/mantine/style.css";
 import { DateTime } from "luxon";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";

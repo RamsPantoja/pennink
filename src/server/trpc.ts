@@ -19,9 +19,9 @@ import { db as tursoDb } from "~/server/db/turso";
 import Services, {
 	type ServicesConfig,
 	type ServicesContext,
-} from "./services";
-import type * as schema from "../db/schema";
-import type * as tursoSchema from "../db/turso-schema";
+} from "./api/services";
+import type * as schema from "./db/schema";
+import type * as tursoSchema from "./db/turso-schema";
 import type { NeonDatabase } from "drizzle-orm/neon-serverless";
 import type { LibSQLDatabase } from "drizzle-orm/libsql/driver-core";
 
@@ -33,17 +33,21 @@ import type { LibSQLDatabase } from "drizzle-orm/libsql/driver-core";
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-interface CreateContextOptions {
+type Options = {
+	headers: Headers;
+};
+
+type CreateInnerTRPCContextProps = {
 	session: Session | null;
-	opts: CreateNextContextOptions;
-}
+	opts: Options;
+};
 
 export type TRPCContext = {
 	db: NeonDatabase<typeof schema>;
 	tursoDb: LibSQLDatabase<typeof tursoSchema>;
 	session: Session | null;
 	services: (config: ServicesConfig) => ServicesContext;
-	opts: CreateNextContextOptions;
+	opts: Options;
 };
 
 /**
@@ -56,13 +60,15 @@ export type TRPCContext = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions): TRPCContext => {
+const createInnerTRPCContext = (
+	params: CreateInnerTRPCContextProps,
+): TRPCContext => {
 	return {
-		session: opts.session,
+		session: params.session,
 		db,
 		tursoDb,
 		services: (config) => Services(config),
-		opts: opts.opts,
+		opts: params.opts,
 	};
 };
 
@@ -72,11 +78,9 @@ const createInnerTRPCContext = (opts: CreateContextOptions): TRPCContext => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-	const { req, res } = opts;
-
+export const createTRPCContext = async (opts: Options) => {
 	// Get the session from the server using the getServerSession wrapper function
-	const session = await getServerAuthSession({ req, res });
+	const session = await getServerAuthSession();
 
 	return createInnerTRPCContext({
 		session,

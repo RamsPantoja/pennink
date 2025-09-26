@@ -1,11 +1,10 @@
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import type { Message } from "~/server/api/services/chat";
 import { typeid } from "typeid-js";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
@@ -19,6 +18,7 @@ import { useChat } from "@ai-sdk/react";
 import type { AiForm } from "~/lib/aiTools/form";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
+import { usePathname, useRouter } from "next/navigation";
 
 export type MyUIMessage = UIMessage<{
 	id: Message["id"];
@@ -88,6 +88,7 @@ const createAssistantMessageMetadata = (chatId: string, session: Session) => {
 
 export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const router = useRouter();
+	const pathname = usePathname();
 	const utils = api.useUtils();
 	const { data: session } = useSession();
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -137,14 +138,14 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				return;
 			}
 
-			if (!isNew && router.pathname !== "/") {
+			if (!isNew && pathname !== "/") {
 				createMessage({
 					chatId,
 					message,
 				});
 			}
 
-			if (router.pathname === "/" && isNew) {
+			if (pathname === "/" && isNew) {
 				const firstUserMessageString = localStorage.getItem(
 					"pennink-user-message",
 				);
@@ -184,7 +185,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	});
 
 	const stopStreaming = async () => {
-		if (!isNew && router.pathname !== "/" && status === "streaming") {
+		if (!isNew && pathname !== "/" && status === "streaming") {
 			await stop();
 
 			const message = parseUIMessage(tempMessages[0]);
@@ -239,6 +240,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		api.workspace.create.useMutation({
 			onSuccess: async (data) => {
 				router.push(`/workspace/${data.id}`);
+				await utils.workspace.workspaces.invalidate();
 			},
 			onError: (error) => {
 				console.error(error.message);
@@ -311,7 +313,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			return;
 		}
 
-		if (isNew || router.pathname === "/") {
+		if (isNew || pathname === "/") {
 			localStorage.setItem(
 				"pennink-user-message",
 				JSON.stringify({

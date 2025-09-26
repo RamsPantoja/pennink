@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { api } from "~/utils/api";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
+import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
 
 const useSidebarLogic = () => {
 	const router = useRouter();
@@ -15,8 +15,8 @@ const useSidebarLogic = () => {
 		isError: workspacesIsError,
 	} = api.workspace.workspaces.useQuery();
 
-	const onNewWorkspace = async () => {
-		await router.push("/");
+	const onNewWorkspace = () => {
+		router.push("/");
 		resetWorkspaceStore();
 	};
 

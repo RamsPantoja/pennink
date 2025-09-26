@@ -21,10 +21,10 @@ import {
 	CardTitle,
 } from "./ui/card";
 import type { Subscription } from "~/lib/enum";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { toast } from "sonner";
-import { useRouter } from "next/router";
 import { env } from "~/env";
+import { usePathname, useRouter } from "next/navigation";
 
 type SubscriptionPlansModalProps = {
 	currentSubscription: Subscription;
@@ -147,6 +147,7 @@ function PricingCard({
 	lookupKey,
 }: PricingCardProps) {
 	const router = useRouter();
+	const pathname = usePathname();
 
 	const {
 		mutate: paymentSubscriptionLink,
@@ -165,7 +166,7 @@ function PricingCard({
 		paymentSubscriptionLink({
 			lookupKeys: [lookupKey],
 			successUrl: `${env.NEXT_PUBLIC_BASE_URL}/api/subscription/success`,
-			cancelUrl: `${env.NEXT_PUBLIC_BASE_URL}${router.asPath}`,
+			cancelUrl: `${env.NEXT_PUBLIC_BASE_URL}${pathname}`,
 		});
 	};
 

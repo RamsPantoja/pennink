@@ -116,7 +116,7 @@ type AcceptSuggestionProps = {
 };
 
 const getCredentials = async () => {
-	const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/ai-credentials`, {
+	const res = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/ai/credentials`, {
 		method: "GET",
 	});
 	const resJson = await res.json();

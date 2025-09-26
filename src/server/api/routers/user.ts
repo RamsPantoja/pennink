@@ -1,13 +1,4 @@
-import {
-	createTRPCRouter,
-	protectedProcedure,
-	publicProcedure,
-} from "~/server/api/trpc";
-import {
-	buuddiesInputSchema,
-	buuddyModeUserInputSchema,
-	getUserByIdInputSchema,
-} from "../schemas/user";
+import { createTRPCRouter, protectedProcedure } from "~/server/trpc";
 
 export const userRouter = createTRPCRouter({
 	initStatics: protectedProcedure.mutation(async ({ ctx }) => {

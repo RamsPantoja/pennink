@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import type { Session } from "next-auth";
 import { TRPCError } from "@trpc/server";
 import {

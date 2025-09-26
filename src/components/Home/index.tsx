@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	ArrowUpTrayIcon,
 	LanguageIcon,
@@ -12,27 +14,25 @@ import {
 	useWorkspaceStore,
 } from "../Workspace/useWorkspaceStore";
 import { useMemo, useRef, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { toast } from "sonner";
 import type { Session } from "next-auth";
 import { Input } from "../ui/input";
 import { DocumentLoader } from "../Workspace/DocumentLoader";
-import { useRouter } from "next/router";
 import { Loading } from "../common/Loading";
 import { env } from "~/env";
 import { fileSizeRule } from "~/lib/utils";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-type HomeComponentProps = {
-	session: Session;
-};
-
-export const HomeComponent = ({ session }: HomeComponentProps) => {
+export const HomeComponent = () => {
 	const router = useRouter();
 	const utils = api.useUtils();
 	const memoChatId = useMemo(() => {
 		return typeid().toUUID();
 	}, []);
+	const { data: sessionData } = useSession();
 	const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const { setDocument } = useWorkspaceStore();
@@ -60,7 +60,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 
 				setDocument(doc);
 
-				await router.push(`/workspace/${workspaceId}`);
+				router.push(`/workspace/${workspaceId}`);
 				toast("You can now ask to your document!");
 				await utils.user.statics.invalidate();
 				await utils.workspace.filesByUserId.invalidate();
@@ -74,6 +74,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 		api.workspace.create.useMutation({
 			onSuccess: async (data) => {
 				setWorkspaceId(data.id);
+				await utils.workspace.workspaces.invalidate();
 			},
 			onError: (error) => {
 				if (error.data?.code === "PRECONDITION_FAILED") {
@@ -96,9 +97,14 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 
 		if (!selectedFile) return;
 
+		if (!sessionData) {
+			toast("Please sign in to upload files");
+			return;
+		}
+
 		const ruleRes = fileSizeRule({
 			file: selectedFile,
-			session,
+			session: sessionData,
 		});
 
 		if (!ruleRes.isValid) {
@@ -130,9 +136,14 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 
 			toast("Your file is processing, wait a moment, please...");
 
+			if (!sessionData) {
+				toast("Please sign in to upload files");
+				return;
+			}
+
 			const res = await onUploadFile({
 				file: selectedFile,
-				path: `workspace/documents/${session.user.id}`,
+				path: `workspace/documents/${sessionData.user.id}`,
 			});
 
 			if (!res) {
@@ -175,7 +186,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 
 			setDocument(doc);
 
-			await router.push(`/workspace/${data.id}`);
+			router.push(`/workspace/${data.id}`);
 		} catch (error) {
 			console.error(error);
 		}
@@ -189,7 +200,7 @@ export const HomeComponent = ({ session }: HomeComponentProps) => {
 				chatId: memoChatId,
 			});
 
-			await router.push(`/workspace/${data.id}`);
+			router.push(`/workspace/${data.id}`);
 		} catch (error) {
 			console.error(error);
 		}

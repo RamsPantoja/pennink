@@ -1,4 +1,4 @@
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import { UserService } from "./user";
 import EmailService from "./email";
 import PaymentService from "./payment";

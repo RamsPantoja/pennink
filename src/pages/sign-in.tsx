@@ -1,8 +1,8 @@
 import SignInForm from "~/components/SignIn/SignInForm";
 import type { GetServerSideProps } from "next";
 import { type Session, getServerSession } from "next-auth";
-import { authOptions } from "~/server/auth";
 import Head from "next/head";
+import { authOptions } from "~/server/auth";
 
 type SignInProps = {
 	query: {

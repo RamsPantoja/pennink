@@ -20,7 +20,7 @@ import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import SubscriptionPlansModal from "~/components/SubscriptionPlanSelector";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { Skeleton } from "~/components/ui/skeleton";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { DateTime } from "luxon";

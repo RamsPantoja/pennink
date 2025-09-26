@@ -10,7 +10,11 @@ import {
 	saveExamResultsSchema,
 	saveFormResponsesSchema,
 } from "../schemas/form";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import {
+	createTRPCRouter,
+	protectedProcedure,
+	publicProcedure,
+} from "../../trpc";
 
 export const formRouter = createTRPCRouter({
 	create: protectedProcedure

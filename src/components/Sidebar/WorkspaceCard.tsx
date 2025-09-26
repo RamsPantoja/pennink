@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
-import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
 import type { Message } from "~/server/api/services/chat";
 import {
@@ -26,6 +25,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isWeakMap } from "node:util/types";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type WorkspaceCardProps = {
 	id: string;
@@ -44,6 +45,7 @@ export const WorkspaceCard = ({
 	selectedWorkspaceId,
 	name,
 }: WorkspaceCardProps) => {
+	const router = useRouter();
 	const { data: session } = useSession();
 	const [workspaceName, setWorkspaceName] = useState<string>(name);
 	const { setDocument } = useWorkspaceStore();
@@ -94,8 +96,6 @@ export const WorkspaceCard = ({
 				toast.error("Failed to delete workspace");
 			},
 		});
-
-	const router = useRouter();
 
 	const generateWorkspaceTitle = async () => {
 		const newWorkspaceMessages = localStorage.getItem(
@@ -225,69 +225,73 @@ export const WorkspaceCard = ({
 			)}
 			{!isWorkspaceNameEditable && (
 				<SidebarMenuButton
-					onClick={async () => {
-						setDocument(null);
-						await router.push(`/workspace/${id}`);
-					}}
 					asChild
 					isActive={id === selectedWorkspaceId}
 					className={cn(["pr-0 cursor-pointer"])}
 				>
-					<div className="flex items-center w-full">
-						<span
-							title={workspaceName}
-							className={cn([
-								"text-xs truncate w-full font-semibold",
-								{
-									"animate-pulse":
-										updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,
-								},
-							])}
-						>
-							{workspaceName}
-						</span>
-						<DropdownMenu modal={false}>
-							<DropdownMenuTrigger
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-								}}
-								className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md"
+					<Link
+						onClick={() => {
+							setDocument(null);
+						}}
+						prefetch={false}
+						href={`/workspace/${id}`}
+					>
+						<div className="flex items-center w-full">
+							<span
+								title={workspaceName}
+								className={cn([
+									"text-xs truncate w-full font-semibold",
+									{
+										"animate-pulse":
+											updateWorkspaceNameIsPending || isLoadingWorkspaceTitle,
+									},
+								])}
 							>
-								<EllipsisVerticalIcon className="h-5 min-w-5" />
-							</DropdownMenuTrigger>
-							<DropdownMenuContent
-								side="right"
-								onCloseAutoFocus={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-								}}
-							>
-								<DropdownMenuItem
+								{workspaceName}
+							</span>
+							<DropdownMenu modal={false}>
+								<DropdownMenuTrigger
 									onClick={(e) => {
 										e.preventDefault();
 										e.stopPropagation();
-										setIsWorkspaceNameEditable(true);
 									}}
-									className="flex gap-2"
+									className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md"
 								>
-									<PencilSquareIcon className="min-w-5 w-5 h-5" />
-									Rename
-								</DropdownMenuItem>
-								<DropdownMenuItem
-									onClick={(e) => {
+									<EllipsisVerticalIcon className="h-5 min-w-5" />
+								</DropdownMenuTrigger>
+								<DropdownMenuContent
+									side="right"
+									onCloseAutoFocus={(e) => {
 										e.preventDefault();
 										e.stopPropagation();
-										setDisplayDeleteWorkspaceAlert(true);
 									}}
-									className="flex gap-2 text-red-500"
 								>
-									<TrashIcon className="min-w-5 w-5 h-5" />
-									Delete
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
-					</div>
+									<DropdownMenuItem
+										onClick={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+											setIsWorkspaceNameEditable(true);
+										}}
+										className="flex gap-2"
+									>
+										<PencilSquareIcon className="min-w-5 w-5 h-5" />
+										Rename
+									</DropdownMenuItem>
+									<DropdownMenuItem
+										onClick={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+											setDisplayDeleteWorkspaceAlert(true);
+										}}
+										className="flex gap-2 text-red-500"
+									>
+										<TrashIcon className="min-w-5 w-5 h-5" />
+										Delete
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</div>
+					</Link>
 				</SidebarMenuButton>
 			)}
 		</SidebarMenuItem>

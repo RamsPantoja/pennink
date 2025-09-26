@@ -1,6 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
 import { Card } from "../ui/card";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { Chat } from "../Chat";
 import FeedbackMessage from "../common/FeedbackMessage";
 import {
@@ -16,7 +16,6 @@ import {
 	ArrowRightIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
-import type { Session } from "next-auth";
 import { type PenninkDocument, useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
@@ -27,6 +26,7 @@ import type { Block } from "@blocknote/core";
 import { FormEditor } from "../FormEditor";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import type { ImperativePanelHandle } from "react-resizable-panels";
+import { useRouter, useParams } from "next/navigation";
 
 type PreviousDocOpened = PenninkDocument & { workspaceId: string };
 
@@ -35,15 +35,12 @@ const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	loading: () => <Loading />,
 });
 
-type WorkspaceProps = {
-	session: Session;
-};
-
 type TabValue = "notes" | "chat";
 
-export const Workspace = ({ session }: WorkspaceProps) => {
+export const Workspace = () => {
 	const router = useRouter();
-	const { workspaceId } = router.query;
+	const params = useParams();
+
 	const chatPanelRef = useRef<ImperativePanelHandle>(null);
 	const contentPanelRef = useRef<ImperativePanelHandle>(null);
 	const utils = api.useUtils();
@@ -76,7 +73,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		isLoading: workspaceIsLoading,
 		isError: workspaceIsError,
 	} = api.workspace.workspaceById.useQuery({
-		id: workspaceId as string,
+		id: params?.workspaceId as string,
 	});
 
 	useEffect(() => {
@@ -89,7 +86,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 		if (previousDocOpened) {
 			const doc = JSON.parse(previousDocOpened) as PreviousDocOpened;
 
-			if (doc.workspaceId === workspaceId) {
+			if (doc.workspaceId === params?.workspaceId) {
 				setDocument({
 					id: doc.id,
 					filename: doc.filename,
@@ -98,7 +95,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 				});
 			}
 		}
-	}, [workspaceId, setDocument]);
+	}, [params?.workspaceId, setDocument]);
 
 	const { mutate: updateWorkspace } = api.note.updateNote.useMutation({
 		onSuccess: async () => {
@@ -158,7 +155,7 @@ export const Workspace = ({ session }: WorkspaceProps) => {
 	return (
 		<Card
 			className="w-full h-full flex flex-col items-center p-0 rounded-none"
-			key={workspaceId as string}
+			key={params?.workspaceId as string}
 		>
 			{workspaceIsLoading && <Loading />}
 			{workspaceIsError && (

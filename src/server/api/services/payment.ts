@@ -1,6 +1,6 @@
 import type { z } from "zod";
 import type { Session } from "next-auth";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import { TRPCError } from "@trpc/server";
 import { Stripe } from "stripe";
 import { and, eq } from "drizzle-orm";

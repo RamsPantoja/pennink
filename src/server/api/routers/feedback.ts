@@ -1,5 +1,5 @@
 import { createFeedbackInputSchema } from "../schemas/feedback";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
 export const feedbackRouter = createTRPCRouter({
 	createFeedback: protectedProcedure

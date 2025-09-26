@@ -2,7 +2,7 @@ import {
 	createTRPCRouter,
 	publicProcedure,
 	protectedProcedure,
-} from "~/server/api/trpc";
+} from "~/server/trpc";
 import type Stripe from "stripe";
 import {
 	createPaymentSubscriptionInput,

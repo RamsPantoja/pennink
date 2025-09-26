@@ -1,21 +1,14 @@
-import { Stripe } from "stripe";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { createCaller } from "~/server/api/root";
-import { createTRPCContext } from "~/server/api/trpc";
-import type { TRPCRequestInfo } from "@trpc/server/unstable-core-do-not-import";
+import { NextResponse } from "next/server";
+import Stripe from "stripe";
 import { env } from "~/env";
+import { createTRPCContext } from "~/server/trpc";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export async function POST(req: Request) {
 	try {
-		const trpcContext = await createTRPCContext({
-			req,
-			res,
-			info: {} as TRPCRequestInfo,
-		});
-
+		const trpcContext = await createTRPCContext({ headers: req.headers });
 		const endpointSecret = env.STRIPE_ENDPOINT_SECRET;
-		const signature = req.headers["stripe-signature"];
-		const requestData = req.read();
+		const signature = req.headers.get("stripe-signature");
+		const requestData = await req.text();
 
 		if (!requestData) {
 			throw new Error("[STRIPE HOOK] Buffer is undefined???");
@@ -35,25 +28,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			.services({ ctx: trpcContext })
 			.paymentService.processEvent(event);
 
-		res.status(200).json({
+		return NextResponse.json({
 			code: 200,
 			message: "We have received the event and was processed",
 		});
 	} catch (error) {
 		console.error("[STRIPE WEBHOOK]:", error);
 
-		res.status(500).json({
+		return NextResponse.json({
 			code: 500,
 			message:
 				"Something went wrong generating the onboarding stripe account url",
 		});
 	}
-};
+}
 
 export const config = {
 	api: {
 		bodyParser: false,
 	},
 };
-
-export default handler;

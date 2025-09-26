@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { TRPCContext } from "../trpc";
+import type { TRPCContext } from "../../trpc";
 import { examLinks, formLinks, noteLinks } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import type {

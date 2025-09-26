@@ -1,20 +1,19 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
-import { authOptions } from "~/server/auth";
+import { getServerAuthSession } from "~/server/auth";
 import { env } from "~/env";
+import { NextResponse } from "next/server";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export async function GET(req: Request) {
 	try {
-		const session = await getServerSession(req, res, authOptions);
+		const session = await getServerAuthSession();
 
 		if (!session) {
-			return res.status(401).json({
+			return NextResponse.json({
 				code: 401,
 				message: "Must be logged in to access this resource",
 			});
 		}
 
-		res.status(200).json({
+		return NextResponse.json({
 			code: 200,
 			credentials: {
 				region: env.AWS_REGION,
@@ -25,12 +24,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	} catch (error) {
 		console.error("[AI RETRIEVER CREDENTIALS]:", error);
 
-		res.status(500).json({
+		return NextResponse.json({
 			code: 500,
 			message:
 				"Something went wrong generating the onboarding stripe account url",
 		});
 	}
-};
-
-export default handler;
+}

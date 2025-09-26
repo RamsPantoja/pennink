@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { typeid } from "typeid-js";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 
 export type onUploadFileInput = {
 	path: string;
