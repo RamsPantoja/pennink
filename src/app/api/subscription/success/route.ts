@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
 import { createTRPCContext } from "~/server/trpc";
 
@@ -52,7 +53,7 @@ export async function GET(req: Request) {
 
 		await fetchUntilChanged(customer.customerId, session.user.id);
 		await getServerAuthSession();
-		return NextResponse.redirect("/");
+		return NextResponse.redirect(`${env.NEXT_PUBLIC_BASE_URL}/`);
 	} catch (error) {
 		console.error("[STRIPE SUCCESS SUBSCRIPTION]:", error);
 
