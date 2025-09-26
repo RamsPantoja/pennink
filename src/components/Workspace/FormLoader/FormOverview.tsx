@@ -1,11 +1,6 @@
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
-import { CheckCircle, XCircle, AlertCircle, Target } from "lucide-react";
-import { useState } from "react";
-import { Response } from "~/components/ai-elements/response";
-import { Button } from "~/components/common/Button";
 import { Badge } from "~/components/ui/badge";
 import { Card } from "~/components/ui/card";
-import { Progress } from "~/components/ui/progress";
 import type { FormFieldType } from "~/lib/enum";
 
 type ResultData = {
