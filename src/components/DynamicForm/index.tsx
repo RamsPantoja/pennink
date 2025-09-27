@@ -352,7 +352,7 @@ export function DynamicForm({
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
 												{question.questionOptions.find(
-													(option) => option.value === question.answer,
+													(option) => option.value === `${question.answer}`,
 												)?.label || ""}
 											</p>
 										</div>
