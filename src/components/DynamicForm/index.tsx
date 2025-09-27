@@ -47,8 +47,6 @@ export function DynamicForm({
 		const fieldId = question.key;
 		const isRequired = question.required;
 
-		console.log(question);
-
 		switch (question.type) {
 			case "text":
 			case "number":
