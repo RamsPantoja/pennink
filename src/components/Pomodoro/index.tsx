@@ -134,8 +134,8 @@ export default function PomodoroTimer() {
 				`${mode === "focus" ? "Focus" : "Rest"} session completed!`,
 				{
 					body: `Time for a ${nextMode === "focus" ? "focus" : "rest"} session.`,
-					icon: "/icon.png",
-					badge: "/icon.png",
+					icon: "/favicon.svg",
+					badge: "/favicon.svg",
 				},
 			);
 
