@@ -85,7 +85,7 @@ const Settings = ({
 					name="description"
 					content="Manage your account settings and subscription."
 				/>
-				<link rel="icon" href="/icon.png" />
+				<link rel="icon" href="/favicon.svg" />
 			</Head>
 			<div className="flex flex-col max-w-(--breakpoint-xl) w-full gap-10">
 				<div className="w-full flex justify-between">

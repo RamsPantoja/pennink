@@ -35,7 +35,7 @@ const SharedNotes = () => {
 				<Head>
 					<title>Pennink - Notes</title>
 					<meta name="description" content="Share your notes with others!" />
-					<link rel="icon" href="/icon.png" />
+					<link rel="icon" href="/favicon.svg" />
 				</Head>
 				{isPending && <Loading />}
 				{!isPending && !isError && data && (

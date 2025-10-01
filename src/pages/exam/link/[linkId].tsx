@@ -194,7 +194,7 @@ const ShareExam = ({
 				<Head>
 					<title>Pennink - Exam</title>
 					<meta name="description" content="Exam details" />
-					<link rel="icon" href="/icon.png" />
+					<link rel="icon" href="/favicon.svg" />
 				</Head>
 				<ExamFeedback
 					messages={messages}

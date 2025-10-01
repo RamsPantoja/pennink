@@ -100,7 +100,7 @@ const ShareForm = ({
 				<Head>
 					<title>Pennink - Form</title>
 					<meta name="description" content="Form details" />
-					<link rel="icon" href="/icon.png" />
+					<link rel="icon" href="/favicon.svg" />
 				</Head>
 				{isPending && <Loading />}
 				<IdentificationDialogForm
