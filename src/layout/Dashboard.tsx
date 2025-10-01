@@ -12,7 +12,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Feedback } from "~/components/Feedback";
 import { AppSidebar } from "~/components/Sidebar";
-import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
 import { useWorkspaceStore } from "~/components/Workspace/useWorkspaceStore";
 import { Button } from "~/components/common/Button";
 import {
@@ -38,11 +37,18 @@ import { FormLoader } from "~/components/Workspace/FormLoader";
 import { SessionProvider } from "next-auth/react";
 import { api } from "~/trpc/react";
 import { useRouter, usePathname, useParams } from "next/navigation";
+import dynamic from "next/dynamic";
+import { Loading } from "~/components/common/Loading";
 
 type DashboardProps = {
 	session: Session;
 	children: ReactNode;
 };
+
+const DocumentLoader = dynamic(
+	() => import("~/components/Workspace/DocumentLoader"),
+	{ ssr: false },
+);
 
 const Dashboard = ({ children, session }: DashboardProps) => {
 	const pathname = usePathname();

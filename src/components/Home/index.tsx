@@ -18,13 +18,18 @@ import { api } from "~/trpc/react";
 import { toast } from "sonner";
 import type { Session } from "next-auth";
 import { Input } from "../ui/input";
-import { DocumentLoader } from "../Workspace/DocumentLoader";
 import { Loading } from "../common/Loading";
 import { env } from "~/env";
 import { fileSizeRule } from "~/lib/utils";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+
+const DocumentLoader = dynamic(
+	() => import("~/components/Workspace/DocumentLoader"),
+	{ ssr: false },
+);
 
 export const HomeComponent = () => {
 	const router = useRouter();

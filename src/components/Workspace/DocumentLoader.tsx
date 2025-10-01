@@ -1,6 +1,5 @@
 import { Button } from "../common/Button";
 import { api } from "~/trpc/react";
-import { DocumentCard } from "./DocumentCard";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { DateTime } from "luxon";
@@ -9,6 +8,7 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { pdfjs } from "react-pdf";
 import {
 	Sheet,
 	SheetContent,
@@ -16,6 +16,12 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "../ui/sheet";
+import { DocumentCard } from "./DocumentCard";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+	"pdfjs-dist/build/pdf.worker.min.mjs",
+	import.meta.url,
+).toString();
 
 type DocumentLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
@@ -23,7 +29,7 @@ type DocumentLoaderProps = {
 	onOpenChange: (open: boolean) => void;
 };
 
-export const DocumentLoader = ({
+const DocumentLoader = ({
 	onSelect,
 	open,
 	onOpenChange,
@@ -93,7 +99,7 @@ export const DocumentLoader = ({
 							)}
 						</div>
 					</SheetHeader>
-					<div className="grid gap-2 h-fit overflow-auto">
+					<div className="flex gap-2 h-fit overflow-auto">
 						{filesByUserLoading && <Loading />}
 						{!filesByUserLoading && filesByUserError && (
 							<FeedbackMessage
@@ -114,7 +120,7 @@ export const DocumentLoader = ({
 							!filesByUserError &&
 							filesByUser &&
 							filesByUser.length > 0 && (
-								<div className="grid gap-2">
+								<div className="grid gap-4 grid-cols-4">
 									{filesByUser.map((doc) => (
 										<DocumentCard
 											key={doc.id}
@@ -136,3 +142,5 @@ export const DocumentLoader = ({
 		</Sheet>
 	);
 };
+
+export default DocumentLoader;
