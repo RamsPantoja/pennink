@@ -16,18 +16,15 @@ import { useRouter } from "next/router";
 import { DateTime } from "luxon";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Fragment } from "react";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { notFound } from "next/navigation";
 
-const SharedNotes = () => {
-	const { query } = useRouter();
-
-	const { data, isPending, isError } = api.link.noteByLinkId.useQuery(
-		{
-			linkId: typeof query.linkId === "string" ? query.linkId : "",
-		},
-		{
-			enabled: query.linkId !== undefined,
-		},
-	);
+const SharedNotes = ({
+	linkId,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { data, isPending, isError } = api.link.noteByLinkId.useQuery({
+		linkId: linkId,
+	});
 
 	return (
 		<SharedContentLayout>
@@ -112,5 +109,19 @@ const ReadEditor = ({ content }: ReadEditorProps) => {
 		/>
 	);
 };
+
+type ServerSideProps = {
+	linkId: string;
+};
+
+export const getServerSideProps = (async ({ req, res, query }) => {
+	const { linkId } = query;
+
+	if (typeof linkId !== "string") {
+		return notFound();
+	}
+
+	return { props: { linkId } };
+}) satisfies GetServerSideProps<ServerSideProps>;
 
 export default SharedNotes;
