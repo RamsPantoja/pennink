@@ -357,7 +357,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				if (Array.isArray(userMessage.content)) {
 					userMessage.content.push({
 						type: "text",
-						text: `Document context information: ${documentContext.map((context) => context.embedding_document?.content).join(", ")}`,
+						text: `Document context information: ${documentContext.map((context) => context.content).join(", ")}`,
 					});
 				}
 			}
@@ -369,7 +369,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				return;
 			}
 
-			const markdown = await editor.blocksToMarkdownLossy(editor.document);
+			const markdown = editor.blocksToMarkdownLossy(editor.document);
 
 			if (Array.isArray(userMessage.content)) {
 				userMessage.content.push({

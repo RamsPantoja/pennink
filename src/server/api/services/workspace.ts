@@ -17,7 +17,7 @@ import {
 	statics,
 } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
-import { and, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, eq, getTableColumns, isNull, sql } from "drizzle-orm";
 import { env } from "~/env";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
@@ -426,15 +426,17 @@ export class WorkspaceService {
 			});
 
 			const topK = await this.ctx.tursoDb
-				.select()
-				.from(
-					sql`vector_top_k('embedding_index', vector32(${JSON.stringify(embedding.embedding)}), 5)`,
-				)
-				.fullJoin(
-					embeddingDocuments,
-					eq(embeddingDocuments.id, sql`vector_top_k.id`),
-				)
-				.where(eq(embeddingDocuments.fileId, input.fileId));
+				.select({
+					...getTableColumns(embeddingDocuments),
+					distance:
+						sql<number>`vector_distance_cos(${embeddingDocuments.embedding}, vector32(${JSON.stringify(embedding.embedding)}))`.as(
+							"distance",
+						),
+				})
+				.from(embeddingDocuments)
+				.where(eq(embeddingDocuments.fileId, input.fileId))
+				.orderBy(asc(sql`distance`))
+				.limit(5);
 
 			return topK;
 		} catch (error) {
