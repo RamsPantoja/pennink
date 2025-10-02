@@ -4,9 +4,16 @@ import { Button } from "../common/Button";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { env } from "~/env";
 import type { PenninkDocument } from "./useWorkspaceStore";
-import { Document, Page } from "react-pdf";
+import { pdfjs, Document, Page } from "react-pdf";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Loading } from "../common/Loading";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+	"pdfjs-dist/build/pdf.worker.min.mjs",
+	import.meta.url,
+).toString();
 
 type DocumentCardProps = {
 	id: string;
@@ -16,7 +23,7 @@ type DocumentCardProps = {
 	onSelect: (doc: PenninkDocument) => void;
 	storageKey: string;
 };
-export const DocumentCard: FC<DocumentCardProps> = ({
+const DocumentCard: FC<DocumentCardProps> = ({
 	title,
 	type,
 	date,
@@ -56,20 +63,30 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 
 	return (
 		<Card
-			className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors cursor-pointer border h-fit w-full p-0"
+			className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors cursor-pointer h-full w-full p-0 flex"
 			onClick={onSelectDocument}
 		>
 			<div className="flex flex-col w-full">
-				<div className="flex p-3 w-full h-32">
+				<div className="flex p-3 w-full h-32 relative">
+					<div className="left-0 top-0 right-0 bottom-0 absolute flex" />
 					<Document
 						file={`${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${storageKey}`}
 						loading={<Loading />}
 						className="h-full w-full flex overflow-hidden rounded-md"
+						onLoadError={() => {
+							console.log("Error while loading document!");
+						}}
 					>
 						<Page
 							height={128}
 							width={160}
 							pageNumber={1}
+							onRenderError={() => {
+								console.log("Error while rendering page!");
+							}}
+							onLoadError={() => {
+								console.log("Error while loading page!");
+							}}
 							loading={<Loading />}
 						/>
 					</Document>
@@ -124,3 +141,5 @@ export const DocumentCard: FC<DocumentCardProps> = ({
 		</Card>
 	);
 };
+
+export default DocumentCard;

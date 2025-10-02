@@ -37,18 +37,12 @@ import { FormLoader } from "~/components/Workspace/FormLoader";
 import { SessionProvider } from "next-auth/react";
 import { api } from "~/trpc/react";
 import { useRouter, usePathname, useParams } from "next/navigation";
-import dynamic from "next/dynamic";
-import { Loading } from "~/components/common/Loading";
+import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
 
 type DashboardProps = {
 	session: Session;
 	children: ReactNode;
 };
-
-const DocumentLoader = dynamic(
-	() => import("~/components/Workspace/DocumentLoader"),
-	{ ssr: false },
-);
 
 const Dashboard = ({ children, session }: DashboardProps) => {
 	const pathname = usePathname();

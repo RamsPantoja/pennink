@@ -8,7 +8,6 @@ import { Input } from "../ui/input";
 import { useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { pdfjs } from "react-pdf";
 import {
 	Sheet,
 	SheetContent,
@@ -16,12 +15,7 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "../ui/sheet";
-import { DocumentCard } from "./DocumentCard";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-	"pdfjs-dist/build/pdf.worker.min.mjs",
-	import.meta.url,
-).toString();
+import dynamic from "next/dynamic";
 
 type DocumentLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
@@ -29,7 +23,12 @@ type DocumentLoaderProps = {
 	onOpenChange: (open: boolean) => void;
 };
 
-const DocumentLoader = ({
+const DocumentCard = dynamic(() => import("./DocumentCard"), {
+	ssr: false,
+	loading: () => <Loading />,
+});
+
+export const DocumentLoader = ({
 	onSelect,
 	open,
 	onOpenChange,
@@ -99,7 +98,7 @@ const DocumentLoader = ({
 							)}
 						</div>
 					</SheetHeader>
-					<div className="flex gap-2 h-fit overflow-auto">
+					<div className="flex gap-2 h-fit overflow-auto w-full">
 						{filesByUserLoading && <Loading />}
 						{!filesByUserLoading && filesByUserError && (
 							<FeedbackMessage
@@ -120,7 +119,7 @@ const DocumentLoader = ({
 							!filesByUserError &&
 							filesByUser &&
 							filesByUser.length > 0 && (
-								<div className="grid gap-4 grid-cols-4">
+								<div className="grid gap-4 grid-cols-4 w-full">
 									{filesByUser.map((doc) => (
 										<DocumentCard
 											key={doc.id}
@@ -142,5 +141,3 @@ const DocumentLoader = ({
 		</Sheet>
 	);
 };
-
-export default DocumentLoader;

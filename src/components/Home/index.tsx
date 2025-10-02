@@ -24,12 +24,7 @@ import { fileSizeRule } from "~/lib/utils";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import dynamic from "next/dynamic";
-
-const DocumentLoader = dynamic(
-	() => import("~/components/Workspace/DocumentLoader"),
-	{ ssr: false },
-);
+import { DocumentLoader } from "../Workspace/DocumentLoader";
 
 export const HomeComponent = () => {
 	const router = useRouter();
