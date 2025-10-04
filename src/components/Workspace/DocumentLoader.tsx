@@ -5,7 +5,7 @@ import FeedbackMessage from "../common/FeedbackMessage";
 import { DateTime } from "luxon";
 import type { PenninkDocument } from "./useWorkspaceStore";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import {
@@ -23,7 +23,7 @@ type DocumentLoaderProps = {
 	onOpenChange: (open: boolean) => void;
 };
 
-const DocumentCard = dynamic(() => import("./DocumentCard"), {
+const PDFDocumentCard = dynamic(() => import("./PDFDocumentCard"), {
 	ssr: false,
 	loading: () => <Loading />,
 });
@@ -120,19 +120,25 @@ export const DocumentLoader = ({
 							filesByUser &&
 							filesByUser.length > 0 && (
 								<div className="grid gap-4 grid-cols-4 w-full">
-									{filesByUser.map((doc) => (
-										<DocumentCard
-											key={doc.id}
-											title={doc.filename}
-											type={doc.type}
-											date={DateTime.fromJSDate(doc.createdAt).toLocaleString(
-												DateTime.DATETIME_MED,
-											)}
-											onSelect={onSelect}
-											id={doc.id}
-											storageKey={doc.key}
-										/>
-									))}
+									{filesByUser.map((doc) => {
+										return (
+											<Fragment key={doc.id}>
+												{doc.type === "application/pdf" && (
+													<PDFDocumentCard
+														key={doc.id}
+														title={doc.filename}
+														type={doc.type}
+														date={DateTime.fromJSDate(
+															doc.createdAt,
+														).toLocaleString(DateTime.DATETIME_MED)}
+														onSelect={onSelect}
+														id={doc.id}
+														storageKey={doc.key}
+													/>
+												)}
+											</Fragment>
+										);
+									})}
 								</div>
 							)}
 					</div>
