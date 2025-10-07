@@ -482,5 +482,90 @@
 		"prompt": {
 			"evaluateExam": "Evaluate the following exam and extract the score and feedback: Questions: {questions} and User Answers: {answers}"
 		}
+	},
+
+	"ShareForm": {
+		"head": {
+			"title": "Form",
+			"description": "Form details"
+		},
+		"toast": {
+			"success": "Form submitted successfully",
+			"successDescription": "Thank you for your submission!",
+			"identificationMissing": "Identification data is missing",
+			"formDataMissing": "Form data is missing",
+			"invalidFields": "Some fields are required or invalid",
+			"invalidFieldsDescription": "Please fill in all required fields and ensure they are valid."
+		},
+		"createdBy": "Created by <name>name</name>",
+		"button": {
+			"submit": "Submit"
+		},
+		"feedback": {
+			"noSharedNotes": "No shared notes found.",
+			"errorFetching": "An error occurred while fetching the shared notes."
+		}
+	},
+
+	"SubscriptionPlans": {
+		"upgradeButton": "Upgrade plan",
+		"dialog": {
+			"title": "Choose Your Plan",
+			"description": "Select the perfect subscription plan for your needs. Upgrade or downgrade at any time."
+		},
+		"plans": {
+			"free": {
+				"title": "Free",
+				"price": "$0",
+				"period": "forever",
+				"description": "Perfect for individuals just getting started",
+				"features": {
+					"workspaces": "2 workspaces / day",
+					"uploads": "5 upload files / day",
+					"fileSize": "Upload files, each up to 50 pages / 6 MB in size",
+					"aiSuggestions": "AI writing suggestions",
+					"pdfQuestions": "Ask questions to your PDFs",
+					"chatMessages": "20 chat messages / day",
+					"forms": "Create and share forms unlimited"
+				},
+				"buttonText": "Cancel current subscription"
+			},
+			"pro": {
+				"title": "Pro",
+				"price": "$12",
+				"period": "per month",
+				"description": "Ideal for professionals",
+				"features": {
+					"freeIncluded": "Everything in Free",
+					"unlimitedWorkspaces": "Unlimited workspaces",
+					"moreMessages": "10-20x more messages than Free",
+					"unlimitedUploads": "Unlimited upload files",
+					"largeFiles": "Upload files, each up to 50 MB in size"
+				},
+				"buttonText": "Upgrade to Pennink Pro"
+			}
+		},
+		"currentPlan": "Current Plan",
+		"toast": {
+			"error": "An error occurred"
+		}
+	},
+
+	"UsageService": {
+		"title": "Usage",
+		"resetsAt": "Resets at",
+		"noDate": "No date",
+		"workspaces": {
+			"label": "Workspaces",
+			"limit": "2"
+		},
+		"messages": {
+			"label": "Messages",
+			"limit": "20"
+		},
+		"files": {
+			"label": "Upload files",
+			"limit": "5"
+		}
 	}
 }

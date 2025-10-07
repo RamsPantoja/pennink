@@ -131,14 +131,14 @@ const Settings = ({
 							<Badge variant="secondary">
 								{session.user.subscription} {t("planLabel")}
 							</Badge>
+							{session.user.subscription === "FREE" && (
+								<SubscriptionPlansModal
+									currentSubscription={session.user.subscription}
+								/>
+							)}
 						</div>
 						{session.user.subscription === "FREE" && <UsageService />}
 					</div>
-					{session.user.subscription === "FREE" && (
-						<SubscriptionPlansModal
-							currentSubscription={session.user.subscription}
-						/>
-					)}
 					{session.user.subscription !== "FREE" && (
 						<Fragment>
 							{isSubscriptionLoading && (

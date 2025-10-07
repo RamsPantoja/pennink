@@ -15,19 +15,14 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "../ui/sheet";
-import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
+import PDFDocumentCard from "./PDFDocumentCard";
 
 type DocumentLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 };
-
-const PDFDocumentCard = dynamic(() => import("./PDFDocumentCard"), {
-	ssr: false,
-	loading: () => <Loading />,
-});
 
 export const DocumentLoader = ({
 	onSelect,

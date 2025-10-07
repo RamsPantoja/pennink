@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Check } from "lucide-react";
 import {
@@ -25,6 +24,7 @@ import { api } from "~/trpc/react";
 import { toast } from "sonner";
 import { env } from "~/env";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type SubscriptionPlansModalProps = {
 	currentSubscription: Subscription;
@@ -33,90 +33,76 @@ type SubscriptionPlansModalProps = {
 export default function SubscriptionPlansModal({
 	currentSubscription,
 }: SubscriptionPlansModalProps) {
+	const t = useTranslations("SubscriptionPlans");
 	const [open, setOpen] = useState(false);
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button size="sm" className="px-6">
-					Upgrade plan
+				<Button
+					variant="teal"
+					size="sm"
+					className="px-6 w-full font-bold tracking-wider"
+				>
+					{t("upgradeButton")}
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[700px]">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-bold text-center">
-						Choose Your Plan
+						{t("dialog.title")}
 					</DialogTitle>
 					<DialogDescription className="text-center mx-auto max-w-md">
-						Select the perfect subscription plan for your needs. Upgrade or
-						downgrade at any time.
+						{t("dialog.description")}
 					</DialogDescription>
 				</DialogHeader>
 
 				<Tabs defaultValue={currentSubscription} className="w-full mt-4">
 					<TabsList className="grid w-full grid-cols-2">
-						<TabsTrigger value="FREE">Free</TabsTrigger>
-						<TabsTrigger value="PRO">Pro</TabsTrigger>
-						{/* <TabsTrigger value="PREMIUM">Premium</TabsTrigger> */}
+						<TabsTrigger value="FREE">{t("plans.free.title")}</TabsTrigger>
+						<TabsTrigger value="PRO">{t("plans.pro.title")}</TabsTrigger>
 					</TabsList>
 					<TabsContent value="FREE" className="space-y-4">
 						<PricingCard
-							title="Free"
-							price="$0"
-							description="Perfect for individuals just getting started"
+							title={t("plans.free.title")}
+							price={t("plans.free.price")}
+							description={t("plans.free.description")}
 							features={[
-								"2 workspaces / day",
-								"5 upload files / day",
-								"Upload files, each up to 50 pages / 6 MB in size",
-								"AI writing suggestions",
-								"Ask questions to your PDFs",
-								"20 chat messages / day",
+								t("plans.free.features.workspaces"),
+								t("plans.free.features.uploads"),
+								t("plans.free.features.fileSize"),
+								t("plans.free.features.aiSuggestions"),
+								t("plans.free.features.pdfQuestions"),
+								t("plans.free.features.chatMessages"),
+								t("plans.free.features.forms"),
 							]}
-							buttonText="Cancel current subscription"
+							buttonText={t("plans.free.buttonText")}
 							subscriptionType="FREE"
 							currentSubscription={currentSubscription}
 							lookupKey="pennink_free"
-							period="forever"
+							period={t("plans.free.period")}
 						/>
 					</TabsContent>
 
 					<TabsContent value="PRO" className="space-y-4">
 						<PricingCard
-							title="Pro"
-							price="$12"
-							description="Ideal for professionals"
+							title={t("plans.pro.title")}
+							price={t("plans.pro.price")}
+							description={t("plans.pro.description")}
 							features={[
-								"Everything in Free",
-								"Unlimited workspaces",
-								"10-20x more messages than Free",
-								"Unlimited upload files",
-								"Upload files, each up to 50 MB in size",
+								t("plans.pro.features.freeIncluded"),
+								t("plans.pro.features.unlimitedWorkspaces"),
+								t("plans.pro.features.moreMessages"),
+								t("plans.pro.features.unlimitedUploads"),
+								t("plans.pro.features.largeFiles"),
 							]}
-							buttonText="Upgrade to Pennink Pro"
+							buttonText={t("plans.pro.buttonText")}
 							subscriptionType="PRO"
 							currentSubscription={currentSubscription}
 							lookupKey="pennink_pro_12"
+							period={t("plans.pro.period")}
 						/>
 					</TabsContent>
-
-					{/* <TabsContent value="PREMIUM">
-						<PricingCard
-							title="Premium"
-							price="$20"
-							description="For professionals with advanced needs and extended resources"
-							features={[
-								"Unlimited users",
-								"Unlimited projects",
-								"100GB storage",
-								"24/7 dedicated support",
-								"Custom integrations",
-								"Advanced security",
-							]}
-							buttonText="Upgrade to Pennink Premium"
-							subscriptionType="PREMIUM"
-							currentSubscription={currentSubscription}
-						/>
-					</TabsContent> */}
 				</Tabs>
 			</DialogContent>
 		</Dialog>
@@ -138,7 +124,7 @@ interface PricingCardProps {
 function PricingCard({
 	title,
 	price,
-	period = "per month",
+	period = "",
 	description,
 	features,
 	buttonText,
@@ -146,9 +132,9 @@ function PricingCard({
 	subscriptionType,
 	lookupKey,
 }: PricingCardProps) {
+	const t = useTranslations("SubscriptionPlans");
 	const router = useRouter();
 	const pathname = usePathname();
-
 	const {
 		mutate: paymentSubscriptionLink,
 		isPending: paymentSubscriptionLinkIsPending,
@@ -158,7 +144,7 @@ function PricingCard({
 		},
 		onError: (error) => {
 			console.error("Mutation failed:", error.message);
-			toast.error("An error occurred");
+			toast.error(t("toast.error"));
 		},
 	});
 
@@ -199,7 +185,7 @@ function PricingCard({
 					disabled={subscriptionType === currentSubscription}
 				>
 					{subscriptionType === currentSubscription
-						? "Current Plan"
+						? t("currentPlan")
 						: buttonText}
 				</Button>
 			</CardFooter>

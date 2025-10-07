@@ -18,8 +18,8 @@ import {
 	SuggestionMenuController,
 	useCreateBlockNote,
 } from "@blocknote/react";
-import { en } from "@blocknote/core/locales";
-import { en as aiEn } from "@blocknote/xl-ai/locales";
+import { en, es } from "@blocknote/core/locales";
+import { en as aiEn, es as aiEs } from "@blocknote/xl-ai/locales";
 import {
 	AIMenuController,
 	AIToolbarButton,
@@ -511,7 +511,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 													// Check if cancelled before first async operation
 													if (signal.aborted) return;
 
-													const markdown = await editor.blocksToMarkdownLossy(
+													const markdown = editor.blocksToMarkdownLossy(
 														editor.document,
 													);
 

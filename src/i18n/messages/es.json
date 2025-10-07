@@ -482,5 +482,90 @@
 		"prompt": {
 			"evaluateExam": "Evalúa el siguiente examen y extrae la puntuación y comentarios: Preguntas: {questions} y Respuestas del usuario: {answers}"
 		}
+	},
+
+	"ShareForm": {
+		"head": {
+			"title": "Formulario",
+			"description": "Detalles del formulario"
+		},
+		"toast": {
+			"success": "Formulario enviado con éxito",
+			"successDescription": "¡Gracias por tu envío!",
+			"identificationMissing": "Faltan datos de identificación",
+			"formDataMissing": "Faltan datos del formulario",
+			"invalidFields": "Algunos campos son obligatorios o no son válidos",
+			"invalidFieldsDescription": "Por favor, completa todos los campos obligatorios y asegúrate de que sean válidos."
+		},
+		"createdBy": "Creado por <name>name</name>",
+		"button": {
+			"submit": "Enviar"
+		},
+		"feedback": {
+			"noSharedNotes": "No se encontraron notas compartidas.",
+			"errorFetching": "Ocurrió un error al obtener las notas compartidas."
+		}
+	},
+
+	"SubscriptionPlans": {
+		"upgradeButton": "Actualizar plan",
+		"dialog": {
+			"title": "Elige Tu Plan",
+			"description": "Selecciona el plan de suscripción perfecto para tus necesidades. Actualiza o reduce tu plan en cualquier momento."
+		},
+		"plans": {
+			"free": {
+				"title": "Gratis",
+				"price": "$0",
+				"period": "para siempre",
+				"description": "Perfecto para individuos que recién comienzan",
+				"features": {
+					"workspaces": "2 espacios de trabajo / día",
+					"uploads": "5 archivos subidos / día",
+					"fileSize": "Subir archivos, cada uno hasta 50 páginas / 6 MB de tamaño",
+					"aiSuggestions": "Sugerencias de escritura con IA",
+					"pdfQuestions": "Haz preguntas a tus PDFs",
+					"chatMessages": "20 mensajes de chat / día",
+					"forms": "Crea y comparte formularios ilimitados"
+				},
+				"buttonText": "Cancelar suscripción actual"
+			},
+			"pro": {
+				"title": "Pro",
+				"price": "$12 USD",
+				"period": "por mes",
+				"description": "Ideal para profesionales",
+				"features": {
+					"freeIncluded": "Todo lo incluido en Gratis",
+					"unlimitedWorkspaces": "Espacios de trabajo ilimitados",
+					"moreMessages": "10-20x más mensajes que el plan Gratis",
+					"unlimitedUploads": "Subidas de archivos ilimitadas",
+					"largeFiles": "Subir archivos de hasta 50 MB cada uno"
+				},
+				"buttonText": "Actualizar a Pennink Pro"
+			}
+		},
+		"currentPlan": "Plan actual",
+		"toast": {
+			"error": "Ocurrió un error"
+		}
+	},
+
+	"UsageService": {
+		"title": "Uso",
+		"resetsAt": "Se reinicia en",
+		"noDate": "Sin fecha",
+		"workspaces": {
+			"label": "Espacios de trabajo",
+			"limit": "2"
+		},
+		"messages": {
+			"label": "Mensajes",
+			"limit": "20"
+		},
+		"files": {
+			"label": "Archivos subidos",
+			"limit": "5"
+		}
 	}
 }

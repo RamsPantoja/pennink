@@ -19,11 +19,15 @@ import {
 	IdentificationDialogForm,
 	type IdentificationValidationSchema,
 } from "~/components/common/IdentificationDialogForm";
+import { getPreferredLocale, type Locale } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 const ShareForm = ({
 	session,
 	linkId,
+	locale,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const t = useTranslations("ShareForm");
 	const [identificationData, setIdentificationData] =
 		useState<IdentificationValidationSchema | null>(null);
 
@@ -38,8 +42,8 @@ const ShareForm = ({
 		isPending: saveFormResponsesPending,
 	} = api.form.saveFormResponses.useMutation({
 		onSuccess: async () => {
-			toast.success("Form submitted successfully", {
-				description: "Thank you for your submission!",
+			toast.success(t("toast.success"), {
+				description: t("toast.successDescription"),
 			});
 		},
 		onError: (error) => {
@@ -80,17 +84,16 @@ const ShareForm = ({
 					answers: data,
 				});
 			} else {
-				toast.error("Identification data is missing");
+				toast.error(t("toast.identificationMissing"));
 			}
 		} else {
-			toast.error("Form data is missing");
+			toast.error(t("toast.formDataMissing"));
 		}
 	};
 
 	const onInvalid = () => {
-		toast("Some fields are required or invalid", {
-			description:
-				"Please fill in all required fields and ensure they are valid.",
+		toast(t("toast.invalidFields"), {
+			description: t("toast.invalidFieldsDescription"),
 		});
 	};
 
@@ -98,8 +101,8 @@ const ShareForm = ({
 		<SharedContentLayout>
 			<>
 				<Head>
-					<title>Pennink - Form</title>
-					<meta name="description" content="Form details" />
+					<title>Pennink - {t("head.title")}</title>
+					<meta name="description" content={t("head.description")} />
 					<link rel="icon" href="/favicon.svg" />
 				</Head>
 				{isPending && <Loading />}
@@ -121,13 +124,16 @@ const ShareForm = ({
 							</Avatar>
 							<div className="flex flex-col w-full overflow-hidden">
 								<p className="truncate text-sm">
-									Created by{" "}
-									<strong>{formData.formVersion.form.user.name}</strong>
+									{t.rich("createdBy", {
+										name: (chunks) => (
+											<b>{formData.formVersion.form.user.name}</b>
+										),
+									})}
 								</p>
 								<p className="text-xs">
-									{DateTime.fromJSDate(formData.createdAt).toLocaleString(
-										DateTime.DATETIME_MED,
-									)}
+									{DateTime.fromJSDate(formData.createdAt)
+										.setLocale(locale)
+										.toLocaleString(DateTime.DATETIME_MED)}
 								</p>
 							</div>
 						</div>
@@ -147,7 +153,7 @@ const ShareForm = ({
 								isPending={saveFormResponsesPending}
 								onClick={handleSubmit(onSubmit, onInvalid)}
 							>
-								Submit
+								{t("button.submit")}
 							</Button>
 						</div>
 					</div>
@@ -155,13 +161,13 @@ const ShareForm = ({
 				{!isPending && !isError && !formData && (
 					<FeedbackMessage
 						status="INFORMATION"
-						message="No shared notes found."
+						message={t("feedback.noSharedNotes")}
 					/>
 				)}
 				{!isPending && isError && (
 					<FeedbackMessage
 						status="ERROR"
-						message="An error occurred while fetching the shared notes."
+						message={t("feedback.errorFetching")}
 					/>
 				)}
 			</>
@@ -172,17 +178,22 @@ const ShareForm = ({
 type ServerSideProps = {
 	session: Session | null;
 	linkId: string;
+	locale: Locale;
+	messages: any;
 };
 
 export const getServerSideProps = (async ({ req, res, query }) => {
 	const session = await getServerSession(req, res, authOptions);
 	const { linkId } = query;
+	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const messages = (await import(`../../../i18n/messages/${locale}.json`))
+		.default;
 
 	if (typeof linkId !== "string") {
 		return notFound();
 	}
 
-	return { props: { session, linkId } };
+	return { props: { session, linkId, locale, messages } };
 }) satisfies GetServerSideProps<ServerSideProps>;
 
 export default ShareForm;

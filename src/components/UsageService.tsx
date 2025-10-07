@@ -5,8 +5,10 @@ import { Skeleton } from "./ui/skeleton";
 import { Fragment, useEffect, useMemo } from "react";
 import { DateTime } from "luxon";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export const UsageService = () => {
+	const t = useTranslations("UsageService");
 	const utils = api.useUtils();
 	const {
 		data: staticsData,
@@ -37,14 +39,14 @@ export const UsageService = () => {
 			return nextDay.toLocaleString(DateTime.DATETIME_SHORT);
 		}
 
-		return "No date";
-	}, [staticsData]);
+		return t("noDate");
+	}, [staticsData, t]);
 
 	return (
 		<Card className="border w-full max-w-80 flex flex-col gap-4">
-			<p className="text-sm">Usage</p>
+			<p className="text-sm">{t("title")}</p>
 			<div className="flex flex-col">
-				<p className="text-xs text-mocha-subtext1">Resets at</p>
+				<p className="text-xs text-mocha-subtext1">{t("resetsAt")}</p>
 				<span className="text-xs font-semibold">{resetWorkspacesTime}</span>
 			</div>
 			{staticsIsLoading && (
@@ -64,22 +66,28 @@ export const UsageService = () => {
 				<Fragment>
 					<div className="flex flex-col gap-2">
 						<div className="flex gap-4 items-center justify-between">
-							<p className="text-xs ">Workspaces</p>
-							<p className="text-xs">{staticsData.workspaces}/2</p>
+							<p className="text-xs">{t("workspaces.label")}</p>
+							<p className="text-xs">
+								{staticsData.workspaces}/{t("workspaces.limit")}
+							</p>
 						</div>
 						<Progress value={(staticsData.workspaces / 2) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
 						<div className="flex gap-4 items-center justify-between">
-							<p className="text-xs ">Messages</p>
-							<p className="text-xs">{staticsData.messages}/20</p>
+							<p className="text-xs">{t("messages.label")}</p>
+							<p className="text-xs">
+								{staticsData.messages}/{t("messages.limit")}
+							</p>
 						</div>
 						<Progress value={(staticsData.messages / 20) * 100} />
 					</div>
 					<div className="flex flex-col gap-2">
 						<div className="flex gap-4 items-center justify-between">
-							<p className="text-xs ">Upload files</p>
-							<p className="text-xs">{staticsData.files}/5</p>
+							<p className="text-xs">{t("files.label")}</p>
+							<p className="text-xs">
+								{staticsData.files}/{t("files.limit")}
+							</p>
 						</div>
 						<Progress value={(staticsData.files / 5) * 100} />
 					</div>

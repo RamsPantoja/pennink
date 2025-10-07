@@ -126,13 +126,6 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								<ArrowRightStartOnRectangleIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
 								{t("menu.signOut")}
 							</DropdownMenuItem>
-							{session.user.subscription === "FREE" && (
-								<DropdownMenuItem asChild>
-									<SubscriptionPlansModal
-										currentSubscription={session.user.subscription}
-									/>
-								</DropdownMenuItem>
-							)}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				)}
@@ -199,6 +192,9 @@ export function AppSidebar({ session }: AppSidebarProps) {
 			{session?.user.subscription === "FREE" && (
 				<SidebarFooter>
 					<UsageService />
+					<SubscriptionPlansModal
+						currentSubscription={session.user.subscription}
+					/>
 				</SidebarFooter>
 			)}
 		</Sidebar>

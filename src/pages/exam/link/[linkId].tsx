@@ -26,11 +26,12 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type ToolCallPart } from "ai-v5";
 import type { EvaluationDetailsTool } from "~/lib/aiTools/getEvaluationDetails";
 import { useTranslations } from "next-intl";
-import { getPreferredLocale, Locale } from "~/lib/utils";
+import { getPreferredLocale, type Locale } from "~/lib/utils";
 
 const ShareExam = ({
 	session,
 	linkId,
+	locale,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const t = useTranslations("ShareExam");
 	const [identificationData, setIdentificationData] =
@@ -234,9 +235,9 @@ const ShareExam = ({
 									})}
 								</p>
 								<p className="text-xs">
-									{DateTime.fromJSDate(examData.createdAt).toLocaleString(
-										DateTime.DATETIME_MED,
-									)}
+									{DateTime.fromJSDate(examData.createdAt)
+										.setLocale(locale)
+										.toLocaleString(DateTime.DATETIME_MED)}
 								</p>
 							</div>
 						</div>

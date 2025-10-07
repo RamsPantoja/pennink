@@ -4,16 +4,9 @@ import { Button } from "../common/Button";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { env } from "~/env";
 import type { PenninkDocument } from "./useWorkspaceStore";
-import { pdfjs, Document, Page } from "react-pdf";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Loading } from "../common/Loading";
 import { Badge } from "../ui/badge";
 import { useTranslations } from "next-intl";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-	"pdfjs-dist/build/pdf.worker.min.mjs",
-	import.meta.url,
-).toString();
 
 type PDFDocumentCardProps = {
 	id: string;
@@ -75,19 +68,6 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 							<Badge variant="secondary">{t("badge.pdf")}</Badge>
 						)}
 					</div>
-					<div className="left-0 top-0 right-0 bottom-0 absolute flex z-20" />
-					<Document
-						file={`${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${storageKey}`}
-						loading={<Loading />}
-						className="h-full w-full flex overflow-hidden rounded-t-2xl"
-					>
-						<Page
-							height={128}
-							width={160}
-							pageNumber={1}
-							loading={<Loading />}
-						/>
-					</Document>
 				</div>
 				<div className="flex gap-3 p-3 w-full flex-col backdrop-blur-xs bg-black-main/30">
 					<h3
