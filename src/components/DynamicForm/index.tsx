@@ -24,6 +24,7 @@ import { Badge } from "../ui/badge";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import type { RouterOutputs } from "~/utils/api";
 import type { Questions } from "~/server/api/services/form";
+import { useTranslations } from "next-intl";
 
 interface DynamicFormProps {
 	formData: RouterOutputs["form"]["getData"];
@@ -38,14 +39,19 @@ export function DynamicForm({
 	errors,
 	showAnswer,
 }: DynamicFormProps) {
+	const t = useTranslations("DynamicForm");
 	const { data, type } = formData;
-
-	if (type === "BASIC") {
-	}
 
 	const renderField = (question: Questions) => {
 		const fieldId = question.key;
 		const isRequired = question.required;
+
+		const getErrorMessage = (fieldId: string) => {
+			if (question.type === "email") return t("validation.invalidEmail");
+			return isRequired
+				? t("validation.required", { field: question.label })
+				: "";
+		};
 
 		switch (question.type) {
 			case "text":
@@ -55,7 +61,19 @@ export function DynamicForm({
 						name={fieldId}
 						control={control}
 						rules={{
-							required: isRequired ? `${question.label} is required` : false,
+							required: isRequired ? getErrorMessage(fieldId) : false,
+							min: question.min
+								? {
+										value: question.min,
+										message: t("validation.min", { min: question.min }),
+									}
+								: undefined,
+							max: question.max
+								? {
+										value: question.max,
+										message: t("validation.max", { max: question.max }),
+									}
+								: undefined,
 						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
@@ -93,7 +111,7 @@ export function DynamicForm({
 										<div className="border py-2 px-3 border-mocha-mantle bg-mocha-crust flex items-center gap-2 rounded-md w-fit">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
-												{question.answer as string}
+												{t("answerLabel.answer")}: {question.answer as string}
 											</p>
 										</div>
 									)}
@@ -108,10 +126,10 @@ export function DynamicForm({
 						name={fieldId}
 						control={control}
 						rules={{
-							required: isRequired ? `${question.label} is required` : false,
+							required: isRequired ? getErrorMessage(fieldId) : false,
 							validate: (value) => {
 								const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-								return emailRegex.test(value) || "Invalid email address";
+								return emailRegex.test(value) || t("validation.invalidEmail");
 							},
 						}}
 						render={({ field }) => (
@@ -127,9 +145,7 @@ export function DynamicForm({
 									{...field}
 									id={fieldId}
 									type="email"
-									placeholder={question.placeholder ?? undefined}
-									min={question.min ?? undefined}
-									max={question.max ?? undefined}
+									placeholder={question.placeholder ?? t("placeholders.email")}
 									className="focus:ring-mocha-sub-text"
 								/>
 								{question.description && (
@@ -153,7 +169,7 @@ export function DynamicForm({
 						name={fieldId}
 						control={control}
 						rules={{
-							required: isRequired ? `${question.label} is required` : false,
+							required: isRequired ? getErrorMessage(fieldId) : false,
 						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
@@ -186,7 +202,7 @@ export function DynamicForm({
 										<div className="border bg-mocha-crust p-2 rounded-md border-mocha-mantle flex w-fit items-center gap-2">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
-												{question.answer as string}
+												{t("answerLabel.answer")}: {question.answer as string}
 											</p>
 										</div>
 									)}
@@ -201,7 +217,7 @@ export function DynamicForm({
 						name={fieldId}
 						control={control}
 						rules={{
-							required: isRequired ? `${question.label} is required` : false,
+							required: isRequired ? getErrorMessage(fieldId) : false,
 						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
@@ -215,7 +231,9 @@ export function DynamicForm({
 								<Textarea
 									{...field}
 									id={fieldId}
-									placeholder={question.placeholder ?? undefined}
+									placeholder={
+										question.placeholder ?? t("placeholders.textarea")
+									}
 									rows={4}
 									className="focus:ring-mocha-sub-text"
 								/>
@@ -235,7 +253,7 @@ export function DynamicForm({
 										<div className="border bg-mocha-crust p-2 rounded-md border-mocha-mantle flex w-fit items-center gap-2">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
-												{question.answer as string}
+												{t("answerLabel.answer")}: {question.answer as string}
 											</p>
 										</div>
 									)}
@@ -250,7 +268,7 @@ export function DynamicForm({
 						name={fieldId}
 						control={control}
 						rules={{
-							required: isRequired ? `${question.label} is required` : false,
+							required: isRequired ? getErrorMessage(fieldId) : false,
 						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
@@ -263,7 +281,7 @@ export function DynamicForm({
 								</Label>
 								<Select onValueChange={field.onChange} value={field.value}>
 									<SelectTrigger className="focus:ring-mocha-sub-text">
-										<SelectValue placeholder={"Select option"} />
+										<SelectValue placeholder={t("placeholders.selectOption")} />
 									</SelectTrigger>
 									<SelectContent>
 										{question.questionOptions.map((option) => (
@@ -289,6 +307,7 @@ export function DynamicForm({
 										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
+												{t("answerLabel.answer")}:{" "}
 												{question.questionOptions.find(
 													(option) => option.value === question.answer,
 												)?.label || ""}
@@ -306,7 +325,7 @@ export function DynamicForm({
 						name={fieldId}
 						control={control}
 						rules={{
-							required: isRequired ? `${question.label} is required` : false,
+							required: isRequired ? getErrorMessage(fieldId) : false,
 						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
@@ -315,7 +334,11 @@ export function DynamicForm({
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
-								<RadioGroup onValueChange={field.onChange} value={field.value}>
+								<RadioGroup
+									className="gap-4"
+									onValueChange={field.onChange}
+									value={field.value}
+								>
 									{question.questionOptions.map((option) => (
 										<div
 											key={option.value}
@@ -350,6 +373,7 @@ export function DynamicForm({
 										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
+												{t("answerLabel.answer")}:{" "}
 												{question.questionOptions.find(
 													(option) => option.value === `${question.answer}`,
 												)?.label || ""}
@@ -368,7 +392,7 @@ export function DynamicForm({
 						control={control}
 						defaultValue={[]}
 						rules={{
-							required: isRequired ? `${question.label} is required` : false,
+							required: isRequired ? getErrorMessage(fieldId) : false,
 						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
@@ -379,7 +403,7 @@ export function DynamicForm({
 									{question.label}
 									{isRequired && <span className="text-red-500 ml-1">*</span>}
 								</Label>
-								<div className="flex flex-col gap-2">
+								<div className="flex flex-col gap-4">
 									{question.questionOptions.map((option) => (
 										<div
 											key={option.value}
@@ -426,6 +450,7 @@ export function DynamicForm({
 										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
+												{t("answerLabel.answer")}:{" "}
 												{Array.isArray(question.answer) &&
 													question.answer
 														.map((item) => {
@@ -474,7 +499,8 @@ export function DynamicForm({
 									<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 										<CheckIcon className="h-5 min-w-5 text-green-500" />
 										<p className="text-sm text-mocha-sub-text">
-											{question.answer ? "True" : "False"}
+											{t("answerLabel.answer")}:{" "}
+											{question.answer ? t("boolean.true") : t("boolean.false")}
 										</p>
 									</div>
 								)}
@@ -489,6 +515,9 @@ export function DynamicForm({
 						name={fieldId}
 						control={control}
 						defaultValue={[question.min || 0]}
+						rules={{
+							required: isRequired ? getErrorMessage(fieldId) : false,
+						}}
 						render={({ field }) => (
 							<div className="flex flex-col gap-6 p-3 bg-mocha-crust rounded-2xl">
 								<Label htmlFor={fieldId} className="text-base">
@@ -510,7 +539,8 @@ export function DynamicForm({
 									<div className="flex justify-between text-sm text-mocha-sub-text mt-1">
 										<span>{question.min || 0}</span>
 										<span className="font-medium">
-											Value: {field.value?.[0] || question.min || 0}
+											{t("slider.currentValue")}:{" "}
+											{field.value?.[0] || question.min || 0}
 										</span>
 										<span>{question.max || 100}</span>
 									</div>
@@ -520,13 +550,18 @@ export function DynamicForm({
 										{question.description}
 									</p>
 								)}
+								{errors[fieldId] && (
+									<p className="text-sm text-red-500">
+										{errors[fieldId]?.message as string}
+									</p>
+								)}
 								{question.answer !== undefined &&
 									question.answer !== null &&
 									showAnswer && (
 										<div className="border p-2 rounded-md border-mocha-mantle w-fit flex items-center gap-2 bg-mocha-crust">
 											<CheckIcon className="h-5 min-w-5 text-green-500" />
 											<p className="text-sm text-mocha-sub-text">
-												{question.answer as number}
+												{t("answerLabel.answer")}: {question.answer as number}
 											</p>
 										</div>
 									)}
@@ -534,8 +569,9 @@ export function DynamicForm({
 						)}
 					/>
 				);
+
 			default:
-				break;
+				return null;
 		}
 	};
 

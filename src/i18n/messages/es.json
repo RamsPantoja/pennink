@@ -390,5 +390,97 @@
 				"description": "Lee nuestros términos del servicio"
 			}
 		}
+	},
+
+	"FormEditor": {
+		"toast": {
+			"error": "Ocurrió un error",
+			"submitSuccess": "¡Formulario enviado con éxito!"
+		},
+		"error": {
+			"loadError": "Algo salió mal"
+		},
+		"context": {
+			"formLabel": "Formulario"
+		},
+		"button": {
+			"hideAnswers": "Ocultar respuestas",
+			"showAnswers": "Mostrar respuestas",
+			"test": "Probar"
+		}
+	},
+
+	"DynamicForm": {
+		"validation": {
+			"required": "{field} es obligatorio",
+			"invalidEmail": "Dirección de correo electrónico no válida",
+			"min": "El valor debe ser al menos {min}",
+			"max": "El valor debe ser como máximo {max}"
+		},
+		"placeholders": {
+			"email": "Ingresa tu correo electrónico",
+			"textarea": "Ingresa tu texto aquí...",
+			"selectOption": "Selecciona una opción"
+		},
+		"answerLabel": {
+			"answer": "Respuesta"
+		},
+		"boolean": {
+			"true": "Verdadero",
+			"false": "Falso"
+		},
+		"slider": {
+			"currentValue": "Valor"
+		}
+	},
+
+	"SharedNotes": {
+		"title": {
+			"notes": "Notas"
+		},
+		"meta": {
+			"description": "¡Comparte tus notas con otros!"
+		},
+		"createdBy": "Creado por <name>name</name>",
+		"feedback": {
+			"noSharedNotes": "No se encontraron notas compartidas.",
+			"errorFetching": "Ocurrió un error al obtener las notas compartidas."
+		},
+		"editor": {
+			"placeholder": "Esta nota es de solo lectura..."
+		}
+	},
+
+	"ShareExam": {
+		"title": {
+			"exam": "Examen"
+		},
+		"meta": {
+			"description": "Detalles del examen"
+		},
+		"createdBy": "Creado por <name>name</name>",
+		"badge": {
+			"exam": "EXAMEN"
+		},
+		"button": {
+			"results": "Resultados",
+			"submit": "Enviar"
+		},
+		"toast": {
+			"errorOccurred": "Ocurrió un error",
+			"submitSuccess": "Formulario enviado con éxito",
+			"submitSuccessDescription": "¡Gracias por tu envío!",
+			"formDataMissing": "Faltan datos del formulario",
+			"invalidFieldsTitle": "Algunos campos son obligatorios o no son válidos",
+			"invalidFieldsDescription": "Por favor, completa todos los campos obligatorios y asegúrate de que sean válidos.",
+			"identificationDataMissing": "Faltan datos de identificación"
+		},
+		"feedback": {
+			"noExamFound": "No se encontró ningún examen compartido.",
+			"errorFetchingExam": "Ocurrió un error al obtener el examen."
+		},
+		"prompt": {
+			"evaluateExam": "Evalúa el siguiente examen y extrae la puntuación y comentarios: Preguntas: {questions} y Respuestas del usuario: {answers}"
+		}
 	}
 }

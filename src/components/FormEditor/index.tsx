@@ -15,8 +15,10 @@ import { Badge } from "../ui/badge";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { LinksManager } from "./LinksManager";
+import { useTranslations } from "next-intl";
 
 export const FormEditor = () => {
+	const t = useTranslations("FormEditor");
 	const [showAnswer, setShowAnswer] = useState<boolean>(false);
 	const {
 		aiFormData,
@@ -43,7 +45,7 @@ export const FormEditor = () => {
 				});
 			},
 			onError: (error) => {
-				toast(error.message);
+				toast(t("toast.error"));
 			},
 		});
 
@@ -70,7 +72,7 @@ export const FormEditor = () => {
 				refetch();
 			},
 			onError: (error) => {
-				toast(error.message);
+				toast(t("toast.error"));
 			},
 		});
 
@@ -118,7 +120,7 @@ export const FormEditor = () => {
 				setAiContextItems([
 					...aiContextItems,
 					{
-						label: "Form",
+						label: t("context.formLabel"),
 						type: "form",
 					},
 				]);
@@ -127,7 +129,7 @@ export const FormEditor = () => {
 	}, [data]);
 
 	const onTestForm = () => {
-		toast.success("Form submitted successfully!", { position: "bottom-left" });
+		toast.success(t("toast.submitSuccess"), { position: "bottom-left" });
 	};
 
 	if (!currentForm) {
@@ -141,7 +143,7 @@ export const FormEditor = () => {
 		>
 			{isPending && <Loading />}
 			{!isPending && isError && (
-				<FeedbackMessage status="ERROR" message={"Something went wrong"} />
+				<FeedbackMessage status="ERROR" message={t("error.loadError")} />
 			)}
 			{!isPending && !isError && data && (
 				<Fragment>
@@ -162,7 +164,7 @@ export const FormEditor = () => {
 								}
 								onClick={() => setShowAnswer(!showAnswer)}
 							>
-								{showAnswer ? "Hide answers" : "Show answers"}
+								{showAnswer ? t("button.hideAnswers") : t("button.showAnswers")}
 							</Button>
 						)}
 					</div>
@@ -183,7 +185,7 @@ export const FormEditor = () => {
 							startIcon={<BeakerIcon className="min-w-5 h-5" />}
 							onClick={handleSubmit(onTestForm)}
 						>
-							Test
+							{t("button.test")}
 						</Button>
 						{!createFormIsPending && !editFormIsPending && currentForm && (
 							<LinksManager id={currentForm.id} type={currentForm.type} />

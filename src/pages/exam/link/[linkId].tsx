@@ -25,11 +25,14 @@ import { ExamFeedback } from "~/components/common/ExamFeedback";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type ToolCallPart } from "ai-v5";
 import type { EvaluationDetailsTool } from "~/lib/aiTools/getEvaluationDetails";
+import { useTranslations } from "next-intl";
+import { getPreferredLocale, Locale } from "~/lib/utils";
 
 const ShareExam = ({
 	session,
 	linkId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const t = useTranslations("ShareExam");
 	const [identificationData, setIdentificationData] =
 		useState<IdentificationValidationSchema | null>(null);
 	const [displayResults, setDisplayResults] = useState<boolean>(false);
@@ -59,6 +62,7 @@ const ShareExam = ({
 			}
 		},
 		onError: (error) => {
+			toast.error(t("toast.errorOccurred"));
 			console.error("An error occurred:", error);
 		},
 	});
@@ -66,8 +70,8 @@ const ShareExam = ({
 	const { mutate: saveExamResultsMutation, isPending: saveExamResultsPending } =
 		api.form.saveExamResults.useMutation({
 			onSuccess: async () => {
-				toast.success("Form submitted successfully", {
-					description: "Thank you for your submission!",
+				toast.success(t("toast.submitSuccess"), {
+					description: t("toast.submitSuccessDescription"),
 				});
 			},
 			onError: (error) => {
@@ -119,14 +123,13 @@ const ShareExam = ({
 				},
 			});
 		} else {
-			toast.error("Form data is missing");
+			toast.error(t("toast.formDataMissing"));
 		}
 	};
 
 	const onInvalid = () => {
-		toast("Some fields are required or invalid", {
-			description:
-				"Please fill in all required fields and ensure they are valid.",
+		toast(t("toast.invalidFieldsTitle"), {
+			description: t("toast.invalidFieldsDescription"),
 		});
 	};
 
@@ -162,7 +165,7 @@ const ShareExam = ({
 						feedback: input.feedback,
 					});
 				} else {
-					toast.error("Identification data is missing");
+					toast.error(t("toast.identificationDataMissing"));
 				}
 			})();
 		}
@@ -192,8 +195,8 @@ const ShareExam = ({
 		<SharedContentLayout>
 			<>
 				<Head>
-					<title>Pennink - Exam</title>
-					<meta name="description" content="Exam details" />
+					<title>Pennink - {t("title.exam")}</title>
+					<meta name="description" content={t("meta.description")} />
 					<link rel="icon" href="/favicon.svg" />
 				</Head>
 				<ExamFeedback
@@ -224,8 +227,11 @@ const ShareExam = ({
 							</Avatar>
 							<div className="flex flex-col w-full overflow-hidden">
 								<p className="truncate text-sm">
-									Created by{" "}
-									<strong>{examData.examVersion.exam.user.name}</strong>
+									{t.rich("createdBy", {
+										name: (chunks) => (
+											<b>{examData.examVersion.exam.user.name}</b>
+										),
+									})}
 								</p>
 								<p className="text-xs">
 									{DateTime.fromJSDate(examData.createdAt).toLocaleString(
@@ -235,7 +241,7 @@ const ShareExam = ({
 							</div>
 						</div>
 						<div className="sticky top-0 z-10 bg-mocha-base/70 p-4 flex items-center clip backdrop-blur-xs rounded-b-xl gap-4 justify-between">
-							<Badge>EXAM</Badge>
+							<Badge>{t("badge.exam")}</Badge>
 							{examData?.examVersion.exam.duration && (
 								<div
 									className={`text-2xl font-mono font-bold ${
@@ -268,7 +274,7 @@ const ShareExam = ({
 										setDisplayResults(true);
 									}}
 								>
-									Results
+									{t("button.results")}
 								</Button>
 							)}
 							<Button
@@ -282,7 +288,7 @@ const ShareExam = ({
 									handleSubmit(onSubmit, onInvalid)();
 								}}
 							>
-								Submit
+								{t("button.submit")}
 							</Button>
 						</div>
 					</div>
@@ -290,13 +296,13 @@ const ShareExam = ({
 				{!isPending && !isError && !examData && (
 					<FeedbackMessage
 						status="INFORMATION"
-						message="No shared notes found."
+						message={t("feedback.noExamFound")}
 					/>
 				)}
 				{!isPending && isError && (
 					<FeedbackMessage
 						status="ERROR"
-						message="An error occurred while fetching the shared notes."
+						message={t("feedback.errorFetchingExam")}
 					/>
 				)}
 			</>
@@ -307,17 +313,22 @@ const ShareExam = ({
 type ServerSideProps = {
 	session: Session | null;
 	linkId: string;
+	locale: Locale;
+	messages: any;
 };
 
 export const getServerSideProps = (async ({ req, res, query }) => {
 	const session = await getServerSession(req, res, authOptions);
 	const { linkId } = query;
+	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const messages = (await import(`../../../i18n/messages/${locale}.json`))
+		.default;
 
 	if (typeof linkId !== "string") {
 		return notFound();
 	}
 
-	return { props: { session, linkId } };
+	return { props: { session, linkId, locale, messages } };
 }) satisfies GetServerSideProps<ServerSideProps>;
 
 export default ShareExam;

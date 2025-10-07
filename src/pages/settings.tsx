@@ -270,6 +270,8 @@ type ServerSideProps = {
 export const getServerSideProps = (async ({ req, res }) => {
 	const session = await getServerSession(req, res, authOptions);
 	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const messages = (await import(`../i18n/messages/${locale}.json`)).default;
+
 	if (!session) {
 		return {
 			redirect: {
@@ -278,7 +280,7 @@ export const getServerSideProps = (async ({ req, res }) => {
 			},
 		};
 	}
-	const messages = (await import(`../i18n/messages/${locale}.json`)).default;
+
 	return { props: { session, locale, messages } };
 }) satisfies GetServerSideProps<ServerSideProps>;
 

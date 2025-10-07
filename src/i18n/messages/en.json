@@ -390,5 +390,97 @@
 				"description": "Read our terms of service"
 			}
 		}
+	},
+
+	"FormEditor": {
+		"toast": {
+			"error": "An error occurred",
+			"submitSuccess": "Form submitted successfully!"
+		},
+		"error": {
+			"loadError": "Something went wrong"
+		},
+		"context": {
+			"formLabel": "Form"
+		},
+		"button": {
+			"hideAnswers": "Hide answers",
+			"showAnswers": "Show answers",
+			"test": "Test"
+		}
+	},
+
+	"DynamicForm": {
+		"validation": {
+			"required": "{field} is required",
+			"invalidEmail": "Invalid email address",
+			"min": "Value must be at least {min}",
+			"max": "Value must be at most {max}"
+		},
+		"placeholders": {
+			"email": "Enter your email",
+			"textarea": "Enter your text here...",
+			"selectOption": "Select option"
+		},
+		"answerLabel": {
+			"answer": "Answer"
+		},
+		"boolean": {
+			"true": "True",
+			"false": "False"
+		},
+		"slider": {
+			"currentValue": "Value"
+		}
+	},
+
+	"SharedNotes": {
+		"title": {
+			"notes": "Notes"
+		},
+		"meta": {
+			"description": "Share your notes with others!"
+		},
+		"createdBy": "Created by <name>name</name>",
+		"feedback": {
+			"noSharedNotes": "No shared notes found.",
+			"errorFetching": "An error occurred while fetching the shared notes."
+		},
+		"editor": {
+			"placeholder": "This note is read-only..."
+		}
+	},
+
+	"ShareExam": {
+		"title": {
+			"exam": "Exam"
+		},
+		"meta": {
+			"description": "Exam details"
+		},
+		"createdBy": "Created by <name>name</name>",
+		"badge": {
+			"exam": "EXAM"
+		},
+		"button": {
+			"results": "Results",
+			"submit": "Submit"
+		},
+		"toast": {
+			"errorOccurred": "An error occurred",
+			"submitSuccess": "Form submitted successfully",
+			"submitSuccessDescription": "Thank you for your submission!",
+			"formDataMissing": "Form data is missing",
+			"invalidFieldsTitle": "Some fields are required or invalid",
+			"invalidFieldsDescription": "Please fill in all required fields and ensure they are valid.",
+			"identificationDataMissing": "Identification data is missing"
+		},
+		"feedback": {
+			"noExamFound": "No shared exam found.",
+			"errorFetchingExam": "An error occurred while fetching the exam."
+		},
+		"prompt": {
+			"evaluateExam": "Evaluate the following exam and extract the score and feedback: Questions: {questions} and User Answers: {answers}"
+		}
 	}
 }

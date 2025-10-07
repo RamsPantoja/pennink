@@ -18,10 +18,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Fragment } from "react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { notFound } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { getPreferredLocale, type Locale } from "~/lib/utils";
 
 const SharedNotes = ({
 	linkId,
+	locale,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const t = useTranslations("SharedNotes");
 	const { data, isPending, isError } = api.link.noteByLinkId.useQuery({
 		linkId: linkId,
 	});
@@ -30,8 +34,8 @@ const SharedNotes = ({
 		<SharedContentLayout>
 			<>
 				<Head>
-					<title>Pennink - Notes</title>
-					<meta name="description" content="Share your notes with others!" />
+					<title>Pennink - {t("title.notes")}</title>
+					<meta name="description" content={t("meta.description")} />
 					<link rel="icon" href="/favicon.svg" />
 				</Head>
 				{isPending && <Loading />}
@@ -45,12 +49,14 @@ const SharedNotes = ({
 								</Avatar>
 								<div className="flex flex-col w-full overflow-hidden">
 									<p className="truncate text-sm">
-										Created by <strong>{data.note.user.name}</strong>
+										{t.rich("createdBy", {
+											name: (chunks) => <b>{data.note.user.name}</b>,
+										})}
 									</p>
 									<p className="text-xs">
-										{DateTime.fromJSDate(data.createdAt).toLocaleString(
-											DateTime.DATETIME_MED,
-										)}
+										{DateTime.fromJSDate(data.createdAt)
+											.setLocale(locale)
+											.toLocaleString(DateTime.DATETIME_MED)}
 									</p>
 								</div>
 							</div>
@@ -61,13 +67,13 @@ const SharedNotes = ({
 				{!isPending && !isError && !data && (
 					<FeedbackMessage
 						status="INFORMATION"
-						message="No shared notes found."
+						message={t("feedback.noSharedNotes")}
 					/>
 				)}
 				{!isPending && isError && (
 					<FeedbackMessage
 						status="ERROR"
-						message="An error occurred while fetching the shared notes."
+						message={t("feedback.errorFetching")}
 					/>
 				)}
 			</>
@@ -80,6 +86,7 @@ type ReadEditorProps = {
 };
 
 const ReadEditor = ({ content }: ReadEditorProps) => {
+	const t = useTranslations("SharedNotes");
 	const editor = useCreateBlockNote({
 		defaultStyles: false,
 		initialContent: content ? content : undefined,
@@ -112,16 +119,20 @@ const ReadEditor = ({ content }: ReadEditorProps) => {
 
 type ServerSideProps = {
 	linkId: string;
+	messages: any;
+	locale: Locale;
 };
 
 export const getServerSideProps = (async ({ req, res, query }) => {
+	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const messages = (await import(`../../i18n/messages/${locale}.json`)).default;
 	const { linkId } = query;
 
 	if (typeof linkId !== "string") {
 		return notFound();
 	}
 
-	return { props: { linkId } };
+	return { props: { linkId, messages, locale } };
 }) satisfies GetServerSideProps<ServerSideProps>;
 
 export default SharedNotes;

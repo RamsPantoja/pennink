@@ -27,10 +27,6 @@ const config = {
 
 		return config;
 	},
-	i18n: {
-		locales: ["en"],
-		defaultLocale: "en",
-	},
 };
 
 export default withNextIntl(config);
