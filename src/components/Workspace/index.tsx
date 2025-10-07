@@ -20,14 +20,14 @@ import { type PenninkDocument, useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "~/lib/utils";
+import { cn, type Locale } from "~/lib/utils";
 import { Editor } from "../Editor";
 import type { Block } from "@blocknote/core";
 import { FormEditor } from "../FormEditor";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import type { ImperativePanelHandle } from "react-resizable-panels";
 import { useRouter, useParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 type PreviousDocOpened = PenninkDocument & { workspaceId: string };
 type TabValue = "notes" | "chat";
@@ -38,6 +38,7 @@ const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 });
 
 export const Workspace = () => {
+	const locale = useLocale();
 	const params = useParams();
 	const t = useTranslations("Workspace");
 	const chatPanelRef = useRef<ImperativePanelHandle>(null);
@@ -306,7 +307,11 @@ export const Workspace = () => {
 								</Tooltip>
 							</div>
 						)}
-						<Editor data={workspaceData.note} onSave={getNoteContent} />
+						<Editor
+							locale={locale as Locale}
+							data={workspaceData.note}
+							onSave={getNoteContent}
+						/>
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel

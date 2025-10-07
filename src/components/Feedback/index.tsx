@@ -1,5 +1,6 @@
 import { MegaphoneIcon } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
+import { useTranslations } from "next-intl";
 import { Textarea } from "../ui/textarea";
 import useFeedbackLogic from "./useFeedbackLogic";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -11,6 +12,7 @@ type FeedbackProps = {
 };
 
 export const Feedback = ({ session }: FeedbackProps) => {
+	const t = useTranslations("Feedback");
 	const {
 		openCommentsBox,
 		setOpenCommentsBox,
@@ -34,17 +36,15 @@ export const Feedback = ({ session }: FeedbackProps) => {
 					variant="outline"
 					startIcon={<MegaphoneIcon className="w-5 h-5" />}
 				>
-					Feedback
+					{t("button.feedback")}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="max-h-(--radix-popover-content-available-height) overflow-auto">
 				<div className="flex gap-2 flex-col items-end w-full">
-					<p className="text-xs">
-						Share feedback or ideas on how we can improve Pennink
-					</p>
+					<p className="text-xs">{t("message.shareFeedback")}</p>
 					<div className="flex flex-col w-full h-full gap-2">
 						<Textarea
-							placeholder="Please share your feedback"
+							placeholder={t("placeholder.feedback")}
 							className="resize-none"
 							rows={7}
 							{...register("content")}
@@ -62,7 +62,7 @@ export const Feedback = ({ session }: FeedbackProps) => {
 						isPending={createFeedbackIsPending}
 						onClick={handleSubmit(onSendFeedback)}
 					>
-						Send
+						{t("button.send")}
 					</Button>
 				</div>
 			</PopoverContent>

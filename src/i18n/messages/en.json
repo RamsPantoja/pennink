@@ -567,5 +567,84 @@
 			"label": "Upload files",
 			"limit": "5"
 		}
+	},
+
+	"Editor": {
+		"placeholders": {
+			"default": "Write, type '/ai' for AI, '/' for commands..."
+		},
+		"tooltip": {
+			"exportOptions": "Export options"
+		},
+		"menu": {
+			"exportPdf": "Export to PDF",
+			"exportMd": "Export to MD",
+			"exportDocx": "Export to DOCX"
+		},
+		"export": {
+			"notesPdf": "notes.pdf",
+			"notesMd": "notes.md",
+			"notesDocx": "notes.docx"
+		},
+		"suggestion": {
+			"title": "AI suggestion",
+			"accept": "Accept"
+		}
+	},
+
+	"ShareLinkEditor": {
+		"button": {
+			"share": "Share",
+			"generateLink": "Generate link"
+		},
+		"message": {
+			"copyAndShare": "Copy and share your link",
+			"createShareableLink": "Create a shareable link for your notes",
+			"anyoneCanView": "Anyone on the web with the link can view your notes"
+		}
+	},
+
+	"InsertContentLinkDialog": {
+		"tooltip": {
+			"importFromLink": "Import content from link"
+		},
+		"dialog": {
+			"title": "Import content from link",
+			"description": "Copy the link to the content you want to insert in editor and paste it here. You can also process the content with AI."
+		},
+		"input": {
+			"linkPlaceholder": "Type or paste link here",
+			"promptPlaceholder": "Ask AI to process the content..."
+		},
+		"button": {
+			"searchLink": "Search link",
+			"insertContent": "Insert content"
+		},
+		"validation": {
+			"required": "Required field",
+			"invalidUrl": "Please enter a valid URL"
+		},
+		"toast": {
+			"error": "An error occurred while processing your request."
+		}
+	},
+
+	"Feedback": {
+		"button": {
+			"feedback": "Feedback",
+			"send": "Send"
+		},
+		"message": {
+			"shareFeedback": "Share feedback or ideas on how we can improve Pennink"
+		},
+		"placeholder": {
+			"feedback": "Please share your feedback"
+		},
+		"validation": {
+			"required": "This field is required"
+		},
+		"toast": {
+			"success": "Feedback sent successfully!"
+		}
 	}
 }

@@ -1,5 +1,6 @@
 import { type KeyboardEvent, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import {
 	useFloating,
 	autoUpdate,
@@ -26,7 +27,7 @@ import {
 	createAIExtension,
 	getAISlashMenuItems,
 } from "@blocknote/xl-ai";
-import "@blocknote/xl-ai/style.css"; // add the AI stylesheet
+import "@blocknote/xl-ai/style.css";
 import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
 import {
 	type BlockNoteEditor,
@@ -57,6 +58,7 @@ import InsertContentLinkDialog from "./InsertContentLinkDialog";
 import type { EditPredictionData } from "~/app/api/ai/edit-prediction/route";
 import { ShareLinkEditor } from "./ShareLinkEditor";
 import type { RouterOutputs } from "~/utils/api";
+import type { Locale } from "~/lib/utils";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -102,6 +104,7 @@ const concatTextContentFromBlock = (block: Block) => {
 export type EditorProps = {
 	onSave: (data: Block[]) => void;
 	data: RouterOutputs["workspace"]["workspaceById"]["note"];
+	locale: Locale;
 };
 
 type PredictionRes = {
@@ -120,13 +123,12 @@ const getCredentials = async () => {
 		method: "GET",
 	});
 	const resJson = await res.json();
-
 	return resJson.credentials;
 };
 
-export const Editor = ({ onSave, data }: EditorProps) => {
+export const Editor = ({ onSave, data, locale }: EditorProps) => {
+	const t = useTranslations("Editor");
 	const { content, id } = data;
-
 	const bedrock = createAmazonBedrock({
 		region: "us-west-2",
 		credentialProvider: getCredentials,
@@ -149,17 +151,28 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	const { workspaceTitle, setEditor } = useWorkspaceStore();
 	const [isExporting, setIsExporting] = useState<boolean>(false);
 
+	const dictionary =
+		locale === "es"
+			? {
+					...es,
+					ai: aiEs,
+					placeholders: {
+						...es.placeholders,
+						default: t("placeholders.default"),
+					},
+				}
+			: {
+					...en,
+					ai: aiEn,
+					placeholders: {
+						...en.placeholders,
+						default: t("placeholders.default"),
+					},
+				};
+
 	const editor = useCreateBlockNote({
 		defaultStyles: false,
-		dictionary: {
-			...en,
-			ai: aiEn, // add default translations for the AI extension
-			placeholders: {
-				...en.placeholders,
-				default: "Write, type '/ai' for AI, '/' for commands...",
-			},
-		},
-		// Register the AI extension
+		dictionary,
 		extensions: [
 			createAIExtension({
 				model,
@@ -227,19 +240,13 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 
 	const onExportPDF = async () => {
 		setIsExporting(true);
-		// Create the exporter
 		const exporter = new PDFExporter(editor.schema, pdfDefaultSchemaMappings);
-
-		// Convert the blocks to a react-pdf document
 		const pdfDocument = await exporter.toReactPDFDocument(editor.document);
-
-		// Use react-pdf to write to file:
-		// Create blob and download
 		const blob = await ReactPDF.pdf(pdfDocument).toBlob();
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
-		link.download = `${workspaceTitle}-notes.pdf`;
+		link.download = `${workspaceTitle}-${t("export.notesPdf")}`;
 		link.click();
 		URL.revokeObjectURL(url);
 		setIsExporting(false);
@@ -248,13 +255,11 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 	const onExportToMarkdown = async () => {
 		setIsExporting(true);
 		const markdown = await editor.blocksToMarkdownLossy(editor.document);
-
-		// Create blob and download
 		const blob = new Blob([markdown], { type: "text/markdown" });
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
-		link.download = `${workspaceTitle}-notes.md`;
+		link.download = `${workspaceTitle}-${t("export.notesMd")}`;
 		link.click();
 		URL.revokeObjectURL(url);
 		setIsExporting(false);
@@ -262,24 +267,16 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 
 	const onExportToDocx = async () => {
 		setIsExporting(true);
-		// Create the exporter
 		const exporter = new DOCXExporter(editor.schema, docxDefaultSchemaMappings);
-
-		// Convert the blocks to a docxjs document
 		const docxDocument = await exporter.toDocxJsDocument(editor.document);
-
-		// Use docx to write to file:
 		const buffer = await Packer.toBuffer(docxDocument);
-
-		//  Use docx to write to file:
-		// Create blob and download
 		const blob = new Blob([buffer], {
 			type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 		});
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 		link.href = url;
-		link.download = `${workspaceTitle}-notes.docx`;
+		link.download = `${workspaceTitle}-${t("export.notesDocx")}`;
 		link.click();
 		URL.revokeObjectURL(url);
 		setIsExporting(false);
@@ -308,7 +305,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 								</Button>
 							</DropdownMenuTrigger>
 						</TooltipTrigger>
-						<TooltipContent>Export options</TooltipContent>
+						<TooltipContent>{t("tooltip.exportOptions")}</TooltipContent>
 					</Tooltip>
 					<DropdownMenuContent
 						side="right"
@@ -326,7 +323,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 							disabled={isExporting}
 							className="flex gap-2"
 						>
-							Export to PDF
+							{t("menu.exportPdf")}
 						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={(e) => {
@@ -337,7 +334,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 							disabled={isExporting}
 							className="flex gap-2"
 						>
-							Export to MD
+							{t("menu.exportMd")}
 						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={(e) => {
@@ -348,7 +345,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 							disabled={isExporting}
 							className="flex gap-2"
 						>
-							Export to DOCX
+							{t("menu.exportDocx")}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
@@ -358,7 +355,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 					className="w-full h-full overflow-auto relative"
 					onKeyDown={(e) => handleKeyDown(e)}
 				>
-					{/* <FloatingOverlay /> */}
 					{displaySuggestion && (
 						<FloatingPortal>
 							<div
@@ -371,7 +367,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 										<SparklesIcon className="min-w-5 h-5 text-mocha-teal" />
 									</div>
 									<p className="text-sm text-mocha-text font-semibold">
-										AI suggestion
+										{t("suggestion.title")}
 									</p>
 								</div>
 								<p className="text-sm text-mocha-text overflow-auto">
@@ -380,7 +376,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 								<div className="flex items-center gap-2 text-xs text-mocha-sub-text">
 									<p className="text-xs p-1 border rounded-md">Alt</p>+
 									<p className="text-xs p-1 border rounded-md">A</p>
-									Accept
+									{t("suggestion.accept")}
 								</div>
 							</div>
 						</FloatingPortal>
@@ -390,7 +386,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 							if (saveTimer) {
 								clearTimeout(saveTimer);
 							}
-
 							const blockEvents = context.getChanges();
 
 							if (blockEvents.length === 1) {
@@ -404,7 +399,6 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 										isTyping
 									) {
 										setDisplaySuggestion(false);
-
 										const content = concatTextContentFromBlock(block);
 
 										const reset = () => {
@@ -415,6 +409,7 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 											controllerOnSendPrompt.abort(
 												"Suggestion closed before displaying",
 											);
+
 											if (suggestionTimer) {
 												clearTimeout(suggestionTimer);
 												setSuggestionTimer(null);
@@ -508,14 +503,12 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 												setTimeout(async () => {
 													const signal = controllerOnSendPrompt.signal;
 
-													// Check if cancelled before first async operation
 													if (signal.aborted) return;
 
 													const markdown = editor.blocksToMarkdownLossy(
 														editor.document,
 													);
 
-													// Check if cancelled before first async operation
 													if (signal.aborted) return;
 
 													const res = await onSentPromptMutation({
@@ -604,6 +597,8 @@ export const Editor = ({ onSave, data }: EditorProps) => {
 
 // Formatting toolbar with the `AIToolbarButton` added
 function FormattingToolbarWithAI() {
+	const t = useTranslations("Editor");
+
 	return (
 		<FormattingToolbarController
 			formattingToolbar={() => (
@@ -612,7 +607,6 @@ function FormattingToolbarWithAI() {
 					<div className="flex border-mocha-teal border-2 rounded-sm">
 						<AIToolbarButton />
 					</div>
-
 					{...getFormattingToolbarItems()}
 				</FormattingToolbar>
 			)}

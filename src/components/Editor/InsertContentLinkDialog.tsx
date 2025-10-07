@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import {
 	Dialog,
 	DialogContent,
@@ -23,7 +24,7 @@ import { cn, markdownToHtml } from "~/lib/utils";
 import InputFeedbackMessage from "../common/InputFeedbackMessage";
 
 const insertLinkValidationSchema = z.object({
-	link: z.string().min(1, "Required field").url().min(1),
+	link: z.string().min(1, "validation.required").url("validation.invalidUrl"),
 	prompt: z.string().trim().optional(),
 });
 
@@ -38,6 +39,7 @@ type InsertContentLinkDialogProps = {
 export default function InsertContentLinkDialog({
 	onInsert,
 }: InsertContentLinkDialogProps) {
+	const t = useTranslations("InsertContentLinkDialog");
 	const [open, setOpen] = useState(false);
 	const [linkContent, setLinkContent] = useState("");
 	const messageContainerRef = useRef<HTMLDivElement | null>(null);
@@ -79,18 +81,14 @@ export default function InsertContentLinkDialog({
 			onSuccess: async (data) => {
 				try {
 					const stream = data.body;
-
 					if (stream) {
 						const reader = stream.getReader();
 						const textDecoder = new TextDecoder();
-
 						while (true) {
 							const { done, value } = await reader.read();
-
 							if (value) {
 								setLinkContent((prev) => prev + textDecoder.decode(value));
 							}
-
 							if (done) {
 								reader.releaseLock();
 								break;
@@ -99,13 +97,12 @@ export default function InsertContentLinkDialog({
 					}
 				} catch (error) {
 					console.error("Mutation failed:", error);
-					toast.error("An error occurred while sending your message.");
+					toast.error(t("toast.error"));
 				}
 			},
 			onError: (error) => {
-				// Handle error
 				console.error("Mutation failed:", error);
-				toast.error("An error occurred while sending your message.");
+				toast.error(t("toast.error"));
 			},
 		});
 
@@ -130,29 +127,30 @@ export default function InsertContentLinkDialog({
 						</Button>
 					</DialogTrigger>
 				</TooltipTrigger>
-				<TooltipContent>Import content from link</TooltipContent>
+				<TooltipContent>{t("tooltip.importFromLink")}</TooltipContent>
 			</Tooltip>
 			<DialogContent className="max-w-(--breakpoint-md) w-full flex flex-col">
 				<DialogHeader>
 					<DialogTitle className="text-2xl font-bold">
-						Import content from link
+						{t("dialog.title")}
 					</DialogTitle>
-					<DialogDescription className="">
-						Copy the link to the content you want to insert in editor and paste
-						it here. You can also process the content with AI.
-					</DialogDescription>
+					<DialogDescription>{t("dialog.description")}</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-4 h-full w-full">
 					<div className="flex gap-2 w-full">
 						<div className="flex flex-col gap-1 w-full">
 							<Input
 								{...register("link")}
-								placeholder="Type or paste link here"
+								placeholder={t("input.linkPlaceholder")}
 							/>
 							{errors.link && (
 								<InputFeedbackMessage
 									status="ERROR"
-									message={errors.link.message}
+									message={
+										errors.link.message === "Required field"
+											? t("validation.required")
+											: t("validation.invalidUrl")
+									}
 								/>
 							)}
 						</div>
@@ -164,7 +162,7 @@ export default function InsertContentLinkDialog({
 							name="prompt"
 							render={({ field }) => (
 								<AutoResizeTextarea
-									placeholder="Ask AI to process the content..."
+									placeholder={t("input.promptPlaceholder")}
 									className="border-none ring-0 text-mocha-text bg-mocha-mantle"
 									onChange={field.onChange}
 									value={field.value}
@@ -187,7 +185,7 @@ export default function InsertContentLinkDialog({
 						onClick={handleSubmit(onProcessLink)}
 						isPending={onProcessLinkIsPending}
 					>
-						Search link
+						{t("button.searchLink")}
 					</Button>
 					{!(linkContent === "" || onProcessLinkIsPending) && (
 						<Button
@@ -197,7 +195,7 @@ export default function InsertContentLinkDialog({
 								setOpen(false);
 							}}
 						>
-							Insert content
+							{t("button.insertContent")}
 						</Button>
 					)}
 				</DialogFooter>

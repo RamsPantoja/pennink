@@ -1,9 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../common/Button";
-import InputFeedbackMessage from "../common/InputFeedbackMessage";
+import { useTranslations } from "next-intl";
 import useShareLinkEditorLogic from "./useShareLinkEditorLogic";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Loading } from "../common/Loading";
 import FeedbackMessage from "../common/FeedbackMessage";
 import ClipBoard from "../common/Clipboard";
@@ -15,6 +13,7 @@ type ShareLinkEditorProps = {
 };
 
 export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
+	const t = useTranslations("ShareLinkEditor");
 	const {
 		openShareLinkMenu,
 		setShareLinkMenu,
@@ -38,7 +37,7 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 		>
 			<PopoverTrigger asChild>
 				<Button size="sm" variant="ghost">
-					Share
+					{t("button.share")}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="max-h-(--radix-popover-content-available-height) overflow-auto">
@@ -48,7 +47,7 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 				)}
 				{!linkIsPending && !linkError && linkData && (
 					<div className="flex gap-2 w-full flex-col">
-						<p>Copy and share your link</p>
+						<p>{t("message.copyAndShare")}</p>
 						<div className="flex items-center border-mocha-mauve border rounded-[5px] gap-4">
 							<p
 								className="text-xs text-mocha-sub-text truncate ml-2"
@@ -63,10 +62,10 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 				{!linkIsPending && !linkError && !linkData && (
 					<div className="flex gap-4 flex-col items-end w-full">
 						<p className="text-sm text-mocha-text">
-							Create a shareable link for your notes
+							{t("message.createShareableLink")}
 						</p>
 						<p className="text-xs text-mocha-sub-text">
-							Anyone on the web with the link can view your notes
+							{t("message.anyoneCanView")}
 						</p>
 						<Button
 							size="sm"
@@ -74,7 +73,7 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 							isPending={createLinkEditorIsPending}
 							onClick={onCreateLinkEditor}
 						>
-							Generate link
+							{t("button.generateLink")}
 						</Button>
 					</div>
 				)}

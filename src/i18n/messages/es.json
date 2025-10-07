@@ -567,5 +567,84 @@
 			"label": "Archivos subidos",
 			"limit": "5"
 		}
+	},
+
+	"Editor": {
+		"placeholders": {
+			"default": "Escribe, usa '/ai' para IA, '/' para comandos..."
+		},
+		"tooltip": {
+			"exportOptions": "Opciones de exportación"
+		},
+		"menu": {
+			"exportPdf": "Exportar a PDF",
+			"exportMd": "Exportar a MD",
+			"exportDocx": "Exportar a DOCX"
+		},
+		"export": {
+			"notesPdf": "notas.pdf",
+			"notesMd": "notas.md",
+			"notesDocx": "notas.docx"
+		},
+		"suggestion": {
+			"title": "Sugerencia de IA",
+			"accept": "Aceptar"
+		}
+	},
+
+	"ShareLinkEditor": {
+		"button": {
+			"share": "Compartir",
+			"generateLink": "Generar enlace"
+		},
+		"message": {
+			"copyAndShare": "Copia y comparte tu enlace",
+			"createShareableLink": "Crea un enlace compartible para tus notas",
+			"anyoneCanView": "Cualquiera en la web con el enlace puede ver tus notas"
+		}
+	},
+
+	"InsertContentLinkDialog": {
+		"tooltip": {
+			"importFromLink": "Importar contenido desde enlace"
+		},
+		"dialog": {
+			"title": "Importar contenido desde enlace",
+			"description": "Copie el enlace del contenido que desea insertar en el editor y péguelo aquí. También puede procesar el contenido con IA."
+		},
+		"input": {
+			"linkPlaceholder": "Escribe o pega el enlace aquí",
+			"promptPlaceholder": "Pide a la IA que procese el contenido..."
+		},
+		"button": {
+			"searchLink": "Buscar enlace",
+			"insertContent": "Insertar contenido"
+		},
+		"validation": {
+			"required": "Campo obligatorio",
+			"invalidUrl": "Por favor ingrese una URL válida"
+		},
+		"toast": {
+			"error": "Ocurrió un error al procesar su solicitud."
+		}
+	},
+
+	"Feedback": {
+		"button": {
+			"feedback": "Comentarios",
+			"send": "Enviar"
+		},
+		"message": {
+			"shareFeedback": "Comparte comentarios o ideas sobre cómo podemos mejorar Pennink"
+		},
+		"placeholder": {
+			"feedback": "Por favor comparte tus comentarios"
+		},
+		"validation": {
+			"required": "Este campo es obligatorio"
+		},
+		"toast": {
+			"success": "¡Comentarios enviados con éxito!"
+		}
 	}
 }
