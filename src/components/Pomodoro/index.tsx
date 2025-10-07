@@ -9,6 +9,7 @@ import {
 	Coffee,
 	Brain,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
 	Dialog,
@@ -43,6 +44,7 @@ interface PomodoroSettings {
 }
 
 export default function PomodoroTimer() {
+	const t = useTranslations("PomodoroTimer");
 	const [openTimer, setOpenTimer] = useState<boolean>(false);
 	const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
 	const [mode, setMode] = useState<TimerMode>("focus");
@@ -54,7 +56,6 @@ export default function PomodoroTimer() {
 	});
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 	const [tempSettings, setTempSettings] = useState<PomodoroSettings>(settings);
-
 	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	// Load settings and sessions from localStorage on mount
@@ -131,14 +132,13 @@ export default function PomodoroTimer() {
 		// Play notification sound (browser notification)
 		if ("Notification" in window && Notification.permission === "granted") {
 			new Notification(
-				`${mode === "focus" ? "Focus" : "Rest"} session completed!`,
+				`${mode === "focus" ? t("focusSession") : t("restSession")} ${t("completed")}!`,
 				{
-					body: `Time for a ${nextMode === "focus" ? "focus" : "rest"} session.`,
+					body: `${t("timeFor")} ${nextMode === "focus" ? t("focusSession").toLowerCase() : t("restSession").toLowerCase()} ${t("session")}.`,
 					icon: "/favicon.svg",
 					badge: "/favicon.svg",
 				},
 			);
-
 			const audio = new Audio("/long-pop-notification.wav");
 			audio.volume = 1;
 			audio.play().catch((error) => {
@@ -174,8 +174,7 @@ export default function PomodoroTimer() {
 	const handleSaveSettings = () => {
 		setSettings(tempSettings);
 		setIsSettingsOpen(false);
-		toast("Settings saved");
-
+		toast(t("settingsSaved"));
 		// Reset timer with new settings if idle
 		if (status === "idle") {
 			setTimeLeft(
@@ -221,10 +220,9 @@ export default function PomodoroTimer() {
 									<Play className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
-							<TooltipContent>Start session</TooltipContent>
+							<TooltipContent>{t("startSession")}</TooltipContent>
 						</Tooltip>
 					)}
-
 					{status === "running" && (
 						<Tooltip>
 							<TooltipTrigger asChild>
@@ -232,10 +230,9 @@ export default function PomodoroTimer() {
 									<Pause className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
-							<TooltipContent>Pause session</TooltipContent>
+							<TooltipContent>{t("pauseSession")}</TooltipContent>
 						</Tooltip>
 					)}
-
 					{status === "paused" && (
 						<>
 							<Tooltip>
@@ -244,7 +241,7 @@ export default function PomodoroTimer() {
 										<Play className="h-4 w-4" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Resume session</TooltipContent>
+								<TooltipContent>{t("resumeSession")}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger asChild>
@@ -252,11 +249,10 @@ export default function PomodoroTimer() {
 										<Square className="h-4 w-4" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Stop session</TooltipContent>
+								<TooltipContent>{t("stopSession")}</TooltipContent>
 							</Tooltip>
 						</>
 					)}
-
 					{status !== "idle" && (
 						<Tooltip>
 							<TooltipTrigger asChild>
@@ -264,7 +260,7 @@ export default function PomodoroTimer() {
 									<RotateCcw className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
-							<TooltipContent>Reset session</TooltipContent>
+							<TooltipContent>{t("resetSession")}</TooltipContent>
 						</Tooltip>
 					)}
 				</div>
@@ -279,12 +275,12 @@ export default function PomodoroTimer() {
 									src={"/icons/pomodoro-technique.png"}
 									width={24}
 									height={24}
-									alt="Pomodoro icon"
+									alt={t("pomodoroIconAlt")}
 								/>
 							</Button>
 						</PopoverTrigger>
 					</TooltipTrigger>
-					<TooltipContent>Pomodoro details</TooltipContent>
+					<TooltipContent>{t("pomodoroDetails")}</TooltipContent>
 				</Tooltip>
 			</div>
 			<PopoverContent className="max-h-(--radix-popover-content-available-height) overflow-auto">
@@ -296,12 +292,12 @@ export default function PomodoroTimer() {
 								{mode === "focus" ? (
 									<>
 										<Focus className="h-5 w-5" />
-										Focus session
+										{t("focusSession")}
 									</>
 								) : (
 									<>
 										<Coffee className="h-5 w-5" />
-										Rest break
+										{t("restBreak")}
 									</>
 								)}
 							</p>
@@ -313,12 +309,12 @@ export default function PomodoroTimer() {
 								</DialogTrigger>
 								<DialogContent>
 									<DialogHeader>
-										<DialogTitle>Timer settings</DialogTitle>
+										<DialogTitle>{t("timerSettings")}</DialogTitle>
 									</DialogHeader>
 									<div className="space-y-4">
 										<div className="flex flex-col gap-2">
 											<Label htmlFor="focus-time" className="text-mocha-text">
-												Focus time
+												{t("focusTime")}
 											</Label>
 											<div className="flex items-center gap-4">
 												<Input
@@ -335,13 +331,13 @@ export default function PomodoroTimer() {
 													}
 												/>
 												<span className="text-xs text-mocha-sub-text">
-													minutes
+													{t("minutes")}
 												</span>
 											</div>
 										</div>
 										<div className="flex flex-col gap-2">
 											<Label htmlFor="rest-time" className="text-mocha-text">
-												Rest time
+												{t("restTime")}
 											</Label>
 											<div className="flex items-center gap-4">
 												<Input
@@ -358,7 +354,7 @@ export default function PomodoroTimer() {
 													}
 												/>
 												<span className="text-xs text-mocha-sub-text">
-													minutes
+													{t("minutes")}
 												</span>
 											</div>
 										</div>
@@ -371,10 +367,10 @@ export default function PomodoroTimer() {
 												}}
 												className="flex-1"
 											>
-												Cancel
+												{t("cancel")}
 											</Button>
 											<Button onClick={handleSaveSettings} className="flex-1">
-												Save settings
+												{t("saveSettings")}
 											</Button>
 										</div>
 									</div>
@@ -385,7 +381,6 @@ export default function PomodoroTimer() {
 							<div className="font-bold text-primary tracking-wider text-4xl text-center">
 								{formatTime(timeLeft)}
 							</div>
-
 							<div className="flex justify-center gap-2 w-full flex-wrap">
 								{status === "idle" && (
 									<Button
@@ -394,10 +389,9 @@ export default function PomodoroTimer() {
 										className="gap-2"
 									>
 										<Play className="h-5 w-5" />
-										Start
+										{t("start")}
 									</Button>
 								)}
-
 								{status === "running" && (
 									<Button
 										onClick={handlePause}
@@ -405,15 +399,14 @@ export default function PomodoroTimer() {
 										className="gap-2"
 									>
 										<Pause className="h-5 w-5" />
-										Pause
+										{t("pause")}
 									</Button>
 								)}
-
 								{status === "paused" && (
 									<>
 										<Button onClick={handleStart} className="gap-2">
 											<Play className="h-5 w-5" />
-											Resume
+											{t("resume")}
 										</Button>
 										<Button
 											onClick={handleStop}
@@ -421,11 +414,10 @@ export default function PomodoroTimer() {
 											className="gap-2"
 										>
 											<Square className="h-5 w-5" />
-											Stop
+											{t("stop")}
 										</Button>
 									</>
 								)}
-
 								{status !== "idle" && (
 									<Button
 										onClick={handleReset}
@@ -433,47 +425,50 @@ export default function PomodoroTimer() {
 										className="gap-2 bg-transparent"
 									>
 										<RotateCcw className="h-5 w-5" />
-										Reset
+										{t("reset")}
 									</Button>
 								)}
 							</div>
-
 							<div className="flex justify-center gap-4 text-sm text-muted-foreground">
-								<span>Focus: {settings.focusTime} min</span>
+								<span>
+									{t("focus")}: {settings.focusTime} {t("min")}
+								</span>
 								<span>•</span>
-								<span>Rest: {settings.restTime} min</span>
+								<span>
+									{t("rest")}: {settings.restTime} {t("min")}
+								</span>
 							</div>
 						</div>
 					</div>
-
 					{/* Today's Stats */}
 					<Card className="border flex gap-4 flex-col">
-						<p className="text-mocha-text text-sm">Today's progress</p>
+						<p className="text-mocha-text text-sm">{t("todayProgress")}</p>
 						<div className="grid grid-cols-2 gap-4 text-center">
 							<div>
 								<div className="font-bold text-primary">
 									{focusSessionsToday}
 								</div>
 								<div className="text-xs text-muted-foreground">
-									Focus sessions
+									{t("focusSessions")}
 								</div>
 							</div>
 							<div>
 								<div className="font-bold text-secondary">
 									{restSessionsToday}
 								</div>
-								<div className="text-xs text-muted-foreground">Rest breaks</div>
+								<div className="text-xs text-muted-foreground">
+									{t("restBreaks")}
+								</div>
 							</div>
 						</div>
 					</Card>
-
 					{/* Session History */}
 					<Card className="border flex gap-4 flex-col">
-						<p className="text-mocha-text text-sm">Today's sessions</p>
+						<p className="text-mocha-text text-sm">{t("todaySessions")}</p>
 						<div>
 							{sessions.length === 0 ? (
 								<p className="text-center text-muted-foreground py-4 text-xs">
-									No sessions completed yet. Start your first Pomodoro!
+									{t("noSessionsCompleted")}
 								</p>
 							) : (
 								<div className="space-y-2 max-h-60 overflow-y-auto">
@@ -495,17 +490,17 @@ export default function PomodoroTimer() {
 														{session.type === "focus" ? (
 															<>
 																<Focus className="h-3 w-3 mr-1" />
-																Focus
+																{t("focus")}
 															</>
 														) : (
 															<>
 																<Coffee className="h-3 w-3 mr-1" />
-																Rest
+																{t("rest")}
 															</>
 														)}
 													</Badge>
 													<span className="text-sm">
-														{session.duration} minutes
+														{session.duration} {t("minutes")}
 													</span>
 												</div>
 											</div>

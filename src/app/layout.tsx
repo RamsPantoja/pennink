@@ -8,6 +8,7 @@ import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import { getServerAuthSession } from "~/server/auth";
 import ClientSessionProvider from "~/components/ClientSessionProvider";
+import { NextIntlClientProvider } from "next-intl";
 
 const getUserSession = async () => {
 	const session = await getServerAuthSession();
@@ -39,18 +40,20 @@ export default async function RootLayout({
 			className={GeistMono.className}
 		>
 			<body className="flex w-full h-screen">
-				<ThemeProvider
-					attribute="data-theme"
-					defaultTheme="system"
-					enableSystem
-				>
-					<TRPCReactProvider>
-						<Toaster richColors className={GeistMono.className} />
-						<ClientSessionProvider session={session}>
-							<Dashboard session={session}>{children}</Dashboard>
-						</ClientSessionProvider>
-					</TRPCReactProvider>
-				</ThemeProvider>
+				<NextIntlClientProvider>
+					<ThemeProvider
+						attribute="data-theme"
+						defaultTheme="system"
+						enableSystem
+					>
+						<TRPCReactProvider>
+							<Toaster richColors className={GeistMono.className} />
+							<ClientSessionProvider session={session}>
+								<Dashboard session={session}>{children}</Dashboard>
+							</ClientSessionProvider>
+						</TRPCReactProvider>
+					</ThemeProvider>
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	);

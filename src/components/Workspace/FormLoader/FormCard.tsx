@@ -7,6 +7,7 @@ import { Badge } from "../../ui/badge";
 import { Button } from "../../common/Button";
 import { LinkIcon } from "@heroicons/react/24/outline";
 import { cn } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 type FormCardProps = {
 	id: string;
@@ -27,6 +28,8 @@ export const FormCard: FC<FormCardProps> = ({
 	id,
 	selectedFormId,
 }) => {
+	const t = useTranslations("FormCard");
+
 	return (
 		<Card
 			onClick={onResults}
@@ -51,8 +54,14 @@ export const FormCard: FC<FormCardProps> = ({
 					<span className="text-xs text-muted-foreground">{date}</span>
 				</div>
 				<div className="flex items-center gap-2">
-					<Button size="sm" onClick={(e) => onOpen({ id, type })}>
-						Open
+					<Button
+						size="sm"
+						onClick={(e) => {
+							e.stopPropagation();
+							onOpen({ id, type });
+						}}
+					>
+						{t("button.open")}
 					</Button>
 					<LinksManager id={id} type={type} />
 				</div>

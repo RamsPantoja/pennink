@@ -7,9 +7,8 @@ import type { PenninkDocument } from "./useWorkspaceStore";
 import { pdfjs, Document, Page } from "react-pdf";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Loading } from "../common/Loading";
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import "react-pdf/dist/esm/Page/TextLayer.css";
 import { Badge } from "../ui/badge";
+import { useTranslations } from "next-intl";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 	"pdfjs-dist/build/pdf.worker.min.mjs",
@@ -33,9 +32,10 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 	id,
 	storageKey,
 }) => {
+	const t = useTranslations("PDFDocumentCard");
+
 	const handleDownload = async (e: React.MouseEvent) => {
 		e.stopPropagation();
-
 		try {
 			const response = await fetch(
 				`${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${storageKey}`,
@@ -50,7 +50,7 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(a);
 		} catch (error) {
-			console.error("Error downloading file:", error);
+			console.error(t("error.download"), error);
 		}
 	};
 
@@ -72,7 +72,7 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 				<div className="flex w-full h-32 relative">
 					<div className="flex gap-2 text-xs absolute top-2 right-2 z-10">
 						{type === "application/pdf" && (
-							<Badge variant="secondary">PDF</Badge>
+							<Badge variant="secondary">{t("badge.pdf")}</Badge>
 						)}
 					</div>
 					<div className="left-0 top-0 right-0 bottom-0 absolute flex z-20" />
@@ -109,26 +109,8 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 									<ArrowUpTrayIcon className="h-4 min-w-4" />
 								</Button>
 							</TooltipTrigger>
-							<TooltipContent>Download</TooltipContent>
+							<TooltipContent>{t("tooltip.download")}</TooltipContent>
 						</Tooltip>
-						{/* <DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant="ghost" size="icon" className="h-8 w-8">
-									<EllipsisVerticalIcon className="h-4 min-w-4" />
-									<span className="sr-only">Open menu</span>
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuItem className="flex gap-2">
-									<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
-									Download
-								</DropdownMenuItem>
-								<DropdownMenuItem className="flex gap-2 text-red-500">
-									<TrashIcon className="min-w-5 w-5 h-5" />
-									Delete
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu> */}
 					</div>
 				</div>
 			</div>

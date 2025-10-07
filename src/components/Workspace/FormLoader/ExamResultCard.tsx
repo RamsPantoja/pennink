@@ -1,6 +1,7 @@
 import { Card } from "~/components/ui/card";
 import { Progress } from "~/components/ui/progress";
 import { useFormLoaderStore } from "./useFormLoaderStore";
+import { useTranslations } from "next-intl";
 
 type ExamResultCardProps = {
 	email: string;
@@ -17,13 +18,17 @@ export const ExamResultCard = ({
 	score,
 	id,
 }: ExamResultCardProps) => {
+	const t = useTranslations();
 	const { setResultId, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
 
 	return (
 		<Card
 			onClick={() => {
 				setResultId(id);
-				setBreadcrumbs({ ...breadcrumbs, overview: "Overview" });
+				setBreadcrumbs({
+					...breadcrumbs,
+					overview: t("FormLoader.breadcrumbs.overview"),
+				});
 			}}
 			className="flex w-full gap-4 justify-between bg-mocha-mantle hover:bg-mocha-mantle/50"
 		>

@@ -1,5 +1,4 @@
 "use client";
-
 import {
 	ArrowDownTrayIcon,
 	CircleStackIcon,
@@ -38,6 +37,7 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "~/trpc/react";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
+import { useTranslations } from "next-intl";
 
 type DashboardProps = {
 	session: Session;
@@ -45,6 +45,7 @@ type DashboardProps = {
 };
 
 const Dashboard = ({ children, session }: DashboardProps) => {
+	const t = useTranslations("Dashboard");
 	const pathname = usePathname();
 	const router = useRouter();
 	const params = useParams();
@@ -65,7 +66,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 	const { mutate: createFile, isPending: createFileIsPending } =
 		api.workspace.createFile.useMutation({
 			onSuccess: async (data) => {
-				toast("You can now ask to your document!");
+				toast(t("toast.success.upload"));
 				const doc = {
 					id: data.id,
 					filename: data.filename,
@@ -82,7 +83,6 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 				);
 
 				setDocument(doc);
-
 				await utils.user.statics.invalidate();
 				await utils.workspace.filesByUserId.invalidate();
 			},
@@ -116,12 +116,10 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			session,
 		});
 
-		if (!ruleRes.isValid) {
-			return;
-		}
+		if (!ruleRes.isValid) return;
 
 		if (selectedFile.type !== "application/pdf") {
-			toast("Invalid file type");
+			toast(t("toast.error.invalidFileType"));
 			return;
 		}
 
@@ -131,12 +129,12 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 		setIsReadingPDF(false);
 
 		if (docs.length === 0) {
-			toast("No pages found in the PDF");
+			toast(t("toast.error.noPages"));
 			return;
 		}
 
 		if (docs.length > 50) {
-			toast(`Too many pages in the PDF: ${docs.length} pages (max 50)`);
+			toast(t("toast.error.tooManyPages", { count: docs.length }));
 			return;
 		}
 
@@ -144,11 +142,11 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 			await triggerUploadFilesRuleMutation();
 
 			if (typeof workspaceId !== "string") {
-				toast("Invalid workspace ID");
+				toast(t("toast.error.invalidWorkspaceId"));
 				return;
 			}
 
-			toast("Your file is processing, wait a moment, please...");
+			toast(t("toast.info.processing"));
 
 			const res = await onUploadFile({
 				file: selectedFile,
@@ -219,9 +217,11 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 						<div className="flex p-2 gap-4 items-center justify-between w-full border-b border-mocha-mauve">
 							<div className="flex items-center gap-2">
 								<SidebarTrigger className="min-w-8 h-8">
-									<span>Toggle</span>
+									<span>{t("sidebar.toggle")}</span>
 								</SidebarTrigger>
-								<p className="text-xs text-mocha-sub-text">Ctrl-B</p>
+								<p className="text-xs text-mocha-sub-text">
+									{t("sidebar.shortcut")}
+								</p>
 							</div>
 							<div className="flex items-center gap-2">
 								{pathname !== "/" && (
@@ -237,7 +237,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 												<ListBulletIcon className="min-w-5 w-5 h-5" />
 											</Button>
 										</TooltipTrigger>
-										<TooltipContent>Search from your forms</TooltipContent>
+										<TooltipContent>{t("tooltips.searchForms")}</TooltipContent>
 									</Tooltip>
 								)}
 								{pathname !== "/" && (
@@ -259,7 +259,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 													</Button>
 												</DropdownMenuTrigger>
 											</TooltipTrigger>
-											<TooltipContent>Search from your sources</TooltipContent>
+											<TooltipContent>
+												{t("tooltips.searchSources")}
+											</TooltipContent>
 										</Tooltip>
 										<DropdownMenuContent
 											side="right"
@@ -273,7 +275,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 												className="flex gap-2"
 											>
 												<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
-												Import PDF
+												{t("dropdown.importPDF")}
 											</DropdownMenuItem>
 											<DropdownMenuItem
 												onClick={() => {
@@ -282,12 +284,11 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 												className="flex gap-2"
 											>
 												<MagnifyingGlassIcon className="min-w-5 w-5 h-5" />
-												Search sources
+												{t("dropdown.searchSources")}
 											</DropdownMenuItem>
 										</DropdownMenuContent>
 									</DropdownMenu>
 								)}
-
 								{pathname !== "/" && (
 									<Tooltip>
 										<TooltipTrigger asChild>
@@ -299,7 +300,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 												<SquaresPlusIcon className="min-w-5 w-5 h-5" />
 											</Button>
 										</TooltipTrigger>
-										<TooltipContent>New workspace</TooltipContent>
+										<TooltipContent>
+											{t("tooltips.newWorkspace")}
+										</TooltipContent>
 									</Tooltip>
 								)}
 								{pathname !== "/" && <PomodoroTimer />}

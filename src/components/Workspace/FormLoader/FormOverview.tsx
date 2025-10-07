@@ -2,6 +2,7 @@ import { AtSymbolIcon } from "@heroicons/react/24/outline";
 import { Badge } from "~/components/ui/badge";
 import { Card } from "~/components/ui/card";
 import type { FormFieldType } from "~/lib/enum";
+import { useTranslations } from "next-intl";
 
 type ResultData = {
 	id: string;
@@ -28,6 +29,7 @@ interface FormReviewProps {
 }
 
 export function FormReview({ data }: FormReviewProps) {
+	const t = useTranslations("FormReview");
 	const questions = data.questions;
 
 	return (
@@ -45,17 +47,16 @@ export function FormReview({ data }: FormReviewProps) {
 					{data.form.title}
 				</p>
 				<p className="text-sm text-mocha-sub-text">
-					Description: {data.form.description}
+					{t("descriptionLabel")}: {data.form.description}
 				</p>
 			</div>
 
 			{/* Questions Review */}
 			<div className="flex flex-col gap-4">
-				<p className="font-semibold">Detailed review of questions</p>
+				<p className="font-semibold">{t("detailedReview")}</p>
 				{questions.map((item) => {
 					// @ts-expect-error
 					const userAnswer = data.answers[item.key];
-
 					return (
 						<Card
 							key={item.key}
@@ -69,21 +70,21 @@ export function FormReview({ data }: FormReviewProps) {
 							</div>
 							<div className="space-y-2">
 								<h4 className="font-semibold text-sm text-mocha-sub-text">
-									Answer:
+									{t("answerLabel")}:
 								</h4>
 								<div className="p-3 bg-mocha-crust rounded-lg">
 									{item.type === "select" && (
 										<p className="text-sm">
 											{item.questionOptions?.find(
 												(option) => option.value === userAnswer,
-											)?.label || "No answer"}
+											)?.label || t("noAnswer")}
 										</p>
 									)}
 									{item.type === "radio" && (
 										<p className="text-sm">
 											{item.questionOptions?.find(
 												(option) => option.value === userAnswer,
-											)?.label || "No answer"}
+											)?.label || t("noAnswer")}
 										</p>
 									)}
 									{item.type === "checkbox" && (
@@ -94,41 +95,43 @@ export function FormReview({ data }: FormReviewProps) {
 														const option = item.questionOptions?.find(
 															(opt) => opt.value === answer,
 														);
-														return option ? option.label : item;
+														return option ? option.label : answer;
 													})
 													.join(", ")}
 										</p>
 									)}
 									{item.type === "switch" &&
 										typeof userAnswer === "boolean" && (
-											<p className="text-sm">{userAnswer ? "True" : "False"}</p>
+											<p className="text-sm">
+												{userAnswer ? t("trueValue") : t("falseValue")}
+											</p>
 										)}
 									{item.type === "slider" && Array.isArray(userAnswer) && (
 										<p className="text-sm">{userAnswer[0]}</p>
 									)}
 									{item.type === "textarea" && (
 										<p className="text-sm">
-											{userAnswer ?? "No answer provided"}
+											{userAnswer ?? t("noAnswerProvided")}
 										</p>
 									)}
 									{item.type === "date" && (
 										<p className="text-sm">
-											{userAnswer ?? "No answer provided"}
+											{userAnswer ?? t("noAnswerProvided")}
 										</p>
 									)}
 									{item.type === "email" && (
 										<p className="text-sm">
-											{userAnswer ?? "No answer provided"}
+											{userAnswer ?? t("noAnswerProvided")}
 										</p>
 									)}
 									{item.type === "text" && (
 										<p className="text-sm">
-											{userAnswer ?? "No answer provided"}
+											{userAnswer ?? t("noAnswerProvided")}
 										</p>
 									)}
 									{item.type === "number" && (
 										<p className="text-sm">
-											{userAnswer ?? "No answer provided"}
+											{userAnswer ?? t("noAnswerProvided")}
 										</p>
 									)}
 								</div>
@@ -136,7 +139,7 @@ export function FormReview({ data }: FormReviewProps) {
 							{item.questionOptions && item.questionOptions.length > 0 && (
 								<div className="space-y-2">
 									<h4 className="font-semibold text-sm text-mocha-sub-text">
-										Available options:
+										{t("availableOptions")}:
 									</h4>
 									<div className="flex flex-wrap gap-2">
 										{item.questionOptions.map((option) => (

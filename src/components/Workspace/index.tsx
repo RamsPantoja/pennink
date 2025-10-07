@@ -27,20 +27,19 @@ import { FormEditor } from "../FormEditor";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import type { ImperativePanelHandle } from "react-resizable-panels";
 import { useRouter, useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type PreviousDocOpened = PenninkDocument & { workspaceId: string };
+type TabValue = "notes" | "chat";
 
 const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
 	loading: () => <Loading />,
 });
 
-type TabValue = "notes" | "chat";
-
 export const Workspace = () => {
-	const router = useRouter();
 	const params = useParams();
-
+	const t = useTranslations("Workspace");
 	const chatPanelRef = useRef<ImperativePanelHandle>(null);
 	const contentPanelRef = useRef<ImperativePanelHandle>(null);
 	const utils = api.useUtils();
@@ -83,6 +82,7 @@ export const Workspace = () => {
 
 	useEffect(() => {
 		const previousDocOpened = localStorage.getItem("pennink-doc");
+
 		if (previousDocOpened) {
 			const doc = JSON.parse(previousDocOpened) as PreviousDocOpened;
 
@@ -102,13 +102,13 @@ export const Workspace = () => {
 			await utils.workspace.workspaceById.invalidate();
 		},
 		onError: (error) => {
-			toast(error.message);
+			toast(t("toast.error"));
 		},
 	});
 
 	const getNoteContent = async (data: Block[]) => {
 		if (!workspaceData?.noteId) {
-			toast("Invalid note ID");
+			toast(t("toast.invalidNoteId"));
 			return;
 		}
 
@@ -159,10 +159,7 @@ export const Workspace = () => {
 		>
 			{workspaceIsLoading && <Loading />}
 			{workspaceIsError && (
-				<FeedbackMessage
-					status="ERROR"
-					message="Something went wrong, try again later."
-				/>
+				<FeedbackMessage status="ERROR" message={t("error.workspaceLoad")} />
 			)}
 			{!workspaceIsLoading && !workspaceIsError && workspaceData && (
 				<ResizablePanelGroup
@@ -204,7 +201,7 @@ export const Workspace = () => {
 										<ArrowLeftIcon className="text-mocha-text min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Collapse content</TooltipContent>
+								<TooltipContent>{t("tooltip.collapseContent")}</TooltipContent>
 							</Tooltip>
 							<Tooltip>
 								<TooltipTrigger asChild>
@@ -217,7 +214,7 @@ export const Workspace = () => {
 										<XMarkIcon className="text-mocha-text min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Close content</TooltipContent>
+								<TooltipContent>{t("tooltip.closeContent")}</TooltipContent>
 							</Tooltip>
 						</div>
 						{!document && displayFormEditor && <FormEditor />}
@@ -232,21 +229,21 @@ export const Workspace = () => {
 											key="summarize"
 											onClick={onSummarizeFromReader}
 										>
-											Summarize
+											{t("button.summarize")}
 										</Button>,
 										<Button
 											variant="ghost"
 											key="chat"
 											onClick={onChatFromReader}
 										>
-											Chat
+											{t("button.chat")}
 										</Button>,
 										<Button
 											variant="ghost"
 											key="explain"
 											onClick={onExplainFromReader}
 										>
-											Explain
+											{t("button.explain")}
 										</Button>,
 									]}
 								>
@@ -283,7 +280,7 @@ export const Workspace = () => {
 											<ArrowLeftIcon className="text-mocha-text min-w-4 h-4" />
 										</Button>
 									</TooltipTrigger>
-									<TooltipContent>Expand chat</TooltipContent>
+									<TooltipContent>{t("tooltip.expandChat")}</TooltipContent>
 								</Tooltip>
 							</div>
 						)}
@@ -305,7 +302,7 @@ export const Workspace = () => {
 											<ArrowRightIcon className="text-mocha-text min-w-4 h-4" />
 										</Button>
 									</TooltipTrigger>
-									<TooltipContent>Expand content</TooltipContent>
+									<TooltipContent>{t("tooltip.expandContent")}</TooltipContent>
 								</Tooltip>
 							</div>
 						)}
@@ -342,7 +339,7 @@ export const Workspace = () => {
 										<ArrowRightIcon className="text-mocha-text min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Collapse chat</TooltipContent>
+								<TooltipContent>{t("tooltip.collapseChat")}</TooltipContent>
 							</Tooltip>
 						</div>
 						<div className="w-full h-full flex bg-mocha-crust">

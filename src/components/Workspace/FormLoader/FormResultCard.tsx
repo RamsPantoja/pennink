@@ -1,5 +1,6 @@
 import { Card } from "~/components/ui/card";
 import { useFormLoaderStore } from "./useFormLoaderStore";
+import { useTranslations } from "next-intl";
 
 type FormResultCardProps = {
 	email: string;
@@ -14,13 +15,17 @@ export const FormResultCard = ({
 	createdAt,
 	id,
 }: FormResultCardProps) => {
+	const t = useTranslations();
 	const { setResultId, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
 
 	return (
 		<Card
 			onClick={() => {
 				setResultId(id);
-				setBreadcrumbs({ ...breadcrumbs, overview: "Overview" });
+				setBreadcrumbs({
+					...breadcrumbs,
+					overview: t("FormLoader.breadcrumbs.overview"),
+				});
 			}}
 			className="flex w-full gap-4 justify-between bg-mocha-mantle hover:bg-mocha-mantle/50"
 		>

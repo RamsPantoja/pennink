@@ -1,6 +1,6 @@
 "use client";
-
 import { signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import {
 	Card,
 	CardContent,
@@ -16,6 +16,8 @@ type SignInFormProps = {
 };
 
 const SignInForm = ({ callbackUrl }: SignInFormProps) => {
+	const t = useTranslations("SignIn");
+
 	const onSignInWithGoogle = async () => {
 		await signIn("google", { callbackUrl });
 	};
@@ -27,30 +29,35 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 					<div className="flex flex-col items-center justify-center gap-4 text-mocha-text">
 						<Logo />
 						<p className="text-base text-mocha-text text-center">
-							Work Smarter, Not Harder – AI‑Driven Workspaces That Adapt to You.
+							{t("tagline")}
 						</p>
 					</div>
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<p className="text-xs text-mocha-text text-center">
-					By Creating an account or Sign in, you agree to the{" "}
-					<a
-						className="text-blackLight underline"
-						target="_blank"
-						href="https://www.pennink.xyz/terms"
-					>
-						Terms
-					</a>{" "}
-					and our{" "}
-					<a
-						className="text-blackLight underline"
-						target="_blank"
-						href="https://www.pennink.xyz/privacy-policy"
-					>
-						Privacy Policy
-					</a>
-					.
+					{t.rich("legalText", {
+						terms: (chunk) => (
+							<a
+								className="text-mocha-sub-text underline"
+								target="_blank"
+								rel="noreferrer"
+								href="https://www.pennink.xyz/terms"
+							>
+								{chunk}
+							</a>
+						),
+						privacy: (chunk) => (
+							<a
+								className="text-mocha-sub-text underline"
+								target="_blank"
+								rel="noreferrer"
+								href="https://www.pennink.xyz/privacy-policy"
+							>
+								{chunk}
+							</a>
+						),
+					})}
 				</p>
 			</CardContent>
 			<CardFooter className="flex flex-col justify-center gap-2">
@@ -91,7 +98,7 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 						</svg>
 					}
 				>
-					Sign in with Google
+					{t("googleSignIn")}
 				</Button>
 			</CardFooter>
 		</Card>

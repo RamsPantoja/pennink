@@ -8,6 +8,7 @@ import { Card } from "~/components/ui/card";
 import { env } from "~/env";
 import type { FormType } from "~/lib/enum";
 import { useFormLoaderStore } from "./useFormLoaderStore";
+import { useTranslations } from "next-intl";
 
 type LinkItemProps = {
 	id: string;
@@ -24,6 +25,7 @@ export const LinkItem = ({
 	createdAt,
 	type,
 }: LinkItemProps) => {
+	const t = useTranslations("FormLoader");
 	const { setCurrentLink, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
 	const clipboardContent = useMemo(() => {
 		if (type === "BASIC") return `${env.NEXT_PUBLIC_BASE_URL}/form/link/${id}`;
@@ -35,7 +37,7 @@ export const LinkItem = ({
 		<Card
 			onClick={() => {
 				setCurrentLink({ id, key: customKey, link: clipboardContent });
-				setBreadcrumbs({ ...breadcrumbs, results: "Results" });
+				setBreadcrumbs({ ...breadcrumbs, results: t("breadcrumbs.results") });
 			}}
 			className="flex gap-2 flex-col bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors h-fit"
 		>

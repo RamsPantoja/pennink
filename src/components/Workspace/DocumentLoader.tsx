@@ -16,6 +16,7 @@ import {
 	SheetTitle,
 } from "../ui/sheet";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 
 type DocumentLoaderProps = {
 	onSelect: (doc: PenninkDocument) => void;
@@ -33,6 +34,7 @@ export const DocumentLoader = ({
 	open,
 	onOpenChange,
 }: DocumentLoaderProps) => {
+	const t = useTranslations("DocumentLoader");
 	const [documentName, setDocumentName] = useState<string>("");
 	const [searchParam, setSearchParam] = useState<string | undefined>();
 
@@ -56,15 +58,13 @@ export const DocumentLoader = ({
 				<div className="h-full w-full grow p-4 flex flex-col gap-4">
 					<SheetHeader className="p-0">
 						<SheetTitle className="text-sm font-semibold">
-							Your sources
+							{t("sheetTitle")}
 						</SheetTitle>
-						<SheetDescription>
-							Select a document to read from all saved documents
-						</SheetDescription>
+						<SheetDescription>{t("sheetDescription")}</SheetDescription>
 						<div className="flex items-center gap-2">
 							<Input
 								type="text"
-								placeholder="Search for document"
+								placeholder={t("input.placeholder")}
 								value={documentName}
 								onChange={(e) => setDocumentName(e.target.value)}
 								onKeyDown={(e) => e.key === "Enter" && performSearch()}
@@ -81,7 +81,7 @@ export const DocumentLoader = ({
 										<MagnifyingGlassIcon className="min-w-5 h-5" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Search</TooltipContent>
+								<TooltipContent>{t("tooltip.search")}</TooltipContent>
 							</Tooltip>
 							{documentName && (
 								<Button
@@ -103,7 +103,7 @@ export const DocumentLoader = ({
 						{!filesByUserLoading && filesByUserError && (
 							<FeedbackMessage
 								status="ERROR"
-								message="Failed to load documents"
+								message={t("error.loadDocuments")}
 							/>
 						)}
 						{!filesByUserLoading &&
@@ -111,10 +111,9 @@ export const DocumentLoader = ({
 							filesByUser &&
 							filesByUser.length === 0 && (
 								<div className="flex items-center justify-center text-mocha-text">
-									Your documents will appear here.
+									{t("emptyState.documents")}
 								</div>
 							)}
-
 						{!filesByUserLoading &&
 							!filesByUserError &&
 							filesByUser &&

@@ -16,7 +16,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Button } from "../common/Button";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { toast } from "sonner";
 import CustomAlertDialog from "../common/AlertDialog";
@@ -24,9 +23,9 @@ import { Input } from "../ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isWeakMap } from "node:util/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type WorkspaceCardProps = {
 	id: string;
@@ -45,6 +44,7 @@ export const WorkspaceCard = ({
 	selectedWorkspaceId,
 	name,
 }: WorkspaceCardProps) => {
+	const t = useTranslations("WorkspaceCard");
 	const router = useRouter();
 	const { data: session } = useSession();
 	const [workspaceName, setWorkspaceName] = useState<string>(name);
@@ -93,7 +93,7 @@ export const WorkspaceCard = ({
 			},
 			onError: (error) => {
 				console.error(error.message);
-				toast.error("Failed to delete workspace");
+				toast.error(t("toast.error.deleteFailed"));
 			},
 		});
 
@@ -198,10 +198,10 @@ export const WorkspaceCard = ({
 	return (
 		<SidebarMenuItem>
 			<CustomAlertDialog
-				cancelText="Cancel"
-				actionText="Delete"
-				title="Delete chat?"
-				description={"Warning! Are you sure you want to delete this chat?"}
+				cancelText={t("deleteDialog.cancel")}
+				actionText={t("deleteDialog.confirm")}
+				title={t("deleteDialog.title")}
+				description={t("deleteDialog.description")}
 				onCancel={() => {
 					setDisplayDeleteWorkspaceAlert(false);
 				}}
@@ -221,6 +221,7 @@ export const WorkspaceCard = ({
 							});
 						})();
 					}}
+					placeholder={t("input.placeholder")}
 				/>
 			)}
 			{!isWorkspaceNameEditable && (
@@ -275,7 +276,7 @@ export const WorkspaceCard = ({
 										className="flex gap-2"
 									>
 										<PencilSquareIcon className="min-w-5 w-5 h-5" />
-										Rename
+										{t("menu.rename")}
 									</DropdownMenuItem>
 									<DropdownMenuItem
 										onClick={(e) => {
@@ -286,7 +287,7 @@ export const WorkspaceCard = ({
 										className="flex gap-2 text-red-500"
 									>
 										<TrashIcon className="min-w-5 w-5 h-5" />
-										Delete
+										{t("menu.delete")}
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>

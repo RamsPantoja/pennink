@@ -1,5 +1,4 @@
 "use client";
-
 import {
 	ArrowUpTrayIcon,
 	LanguageIcon,
@@ -16,7 +15,6 @@ import {
 import { useMemo, useRef, useState } from "react";
 import { api } from "~/trpc/react";
 import { toast } from "sonner";
-import type { Session } from "next-auth";
 import { Input } from "../ui/input";
 import { Loading } from "../common/Loading";
 import { env } from "~/env";
@@ -25,8 +23,10 @@ import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { DocumentLoader } from "../Workspace/DocumentLoader";
+import { useTranslations } from "next-intl";
 
 export const HomeComponent = () => {
+	const t = useTranslations("HomePage");
 	const router = useRouter();
 	const utils = api.useUtils();
 	const memoChatId = useMemo(() => {
@@ -59,9 +59,8 @@ export const HomeComponent = () => {
 				);
 
 				setDocument(doc);
-
 				router.push(`/workspace/${workspaceId}`);
-				toast("You can now ask to your document!");
+				toast(t("toast.success.upload"));
 				await utils.user.statics.invalidate();
 				await utils.workspace.filesByUserId.invalidate();
 			},
@@ -99,7 +98,7 @@ export const HomeComponent = () => {
 		if (!selectedFile) return;
 
 		if (!sessionData) {
-			toast("Please sign in to upload files");
+			toast(t("toast.error.signIn"));
 			return;
 		}
 
@@ -113,7 +112,7 @@ export const HomeComponent = () => {
 		}
 
 		if (selectedFile.type !== "application/pdf") {
-			toast("Invalid file type");
+			toast(t("toast.error.invalidFileType"));
 			return;
 		}
 
@@ -123,22 +122,20 @@ export const HomeComponent = () => {
 		setIsReadingPDF(false);
 
 		if (docs.length === 0) {
-			toast("No pages found in the PDF");
+			toast(t("toast.error.noPages"));
 			return;
 		}
 
 		if (docs.length > 50) {
-			toast(`Too many pages in the PDF: ${docs.length} pages (max 50)`);
+			toast(t("toast.error.tooManyPages", { count: docs.length }));
 			return;
 		}
 
 		try {
 			await triggerUploadFilesRuleMutation();
-
-			toast("Your file is processing, wait a moment, please...");
-
+			toast(t("toast.info.processing"));
 			if (!sessionData) {
-				toast("Please sign in to upload files");
+				toast(t("toast.error.signIn"));
 				return;
 			}
 
@@ -148,7 +145,7 @@ export const HomeComponent = () => {
 			});
 
 			if (!res) {
-				toast.error("No file uploaded");
+				toast.error(t("toast.error.noFileUploaded"));
 				return;
 			}
 
@@ -186,7 +183,6 @@ export const HomeComponent = () => {
 			);
 
 			setDocument(doc);
-
 			router.push(`/workspace/${data.id}`);
 		} catch (error) {
 			console.error(error);
@@ -234,7 +230,7 @@ export const HomeComponent = () => {
 			/>
 			<Card className="max-w-(--breakpoint-lg) gap-4 flex flex-col w-full justify-center h-full bg-transparent">
 				<p className="text-center text-3xl font-bold text-mocha-text tracking-wider">
-					Start with a new workspace!
+					{t("title")}
 				</p>
 				<Chat id={memoChatId} isNew={true} />
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
@@ -245,9 +241,9 @@ export const HomeComponent = () => {
 						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mocha-text">Upload</p>
+							<p className="text-mocha-text">{t("cards.upload.title")}</p>
 							<p className="text-xs text-mocha-sub-text">
-								Upload a PDF to start asking anything about the content
+								{t("cards.upload.description")}
 							</p>
 						</div>
 						{pedeningRequest ? (
@@ -267,10 +263,9 @@ export const HomeComponent = () => {
 						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mocha-text">Search</p>
+							<p className="text-mocha-text">{t("cards.search.title")}</p>
 							<p className="text-xs text-mocha-sub-text">
-								Search the saved documents to start asking anything about the
-								content
+								{t("cards.search.description")}
 							</p>
 						</div>
 						{pedeningRequest ? (
@@ -284,10 +279,9 @@ export const HomeComponent = () => {
 						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mocha-text">Write</p>
+							<p className="text-mocha-text">{t("cards.write.title")}</p>
 							<p className="text-xs text-mocha-sub-text">
-								Start writing articles, notes or whatever you want with smart
-								assistance
+								{t("cards.write.description")}
 							</p>
 						</div>
 						{pedeningRequest ? (

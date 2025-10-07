@@ -1,0 +1,394 @@
+{
+	"HomePage": {
+		"title": "¡Comienza con un nuevo espacio de trabajo!",
+		"toast": {
+			"success": {
+				"upload": "¡Ahora puedes hacer preguntas sobre tu documento!"
+			},
+			"error": {
+				"signIn": "Inicia sesión para subir archivos",
+				"invalidFileType": "Tipo de archivo no válido",
+				"noPages": "No se encontraron páginas en el PDF",
+				"tooManyPages": "Demasiadas páginas en el PDF: {count} páginas (máx. 50)",
+				"noFileUploaded": "No se subió ningún archivo"
+			},
+			"info": {
+				"processing": "Tu archivo se está procesando, espera un momento, por favor..."
+			}
+		},
+		"cards": {
+			"upload": {
+				"title": "Subir",
+				"description": "Sube un PDF para empezar a preguntar sobre su contenido"
+			},
+			"search": {
+				"title": "Buscar",
+				"description": "Busca en los documentos guardados para empezar a preguntar sobre su contenido"
+			},
+			"write": {
+				"title": "Escribir",
+				"description": "Empieza a escribir artículos, notas o lo que quieras con asistencia inteligente"
+			}
+		}
+	},
+
+	"Dashboard": {
+		"toast": {
+			"success": {
+				"upload": "¡Ahora puedes hacer preguntas sobre tu documento!"
+			},
+			"error": {
+				"invalidFileType": "Tipo de archivo no válido",
+				"noPages": "No se encontraron páginas en el PDF",
+				"tooManyPages": "Demasiadas páginas en el PDF: {count} páginas (máx. 50)",
+				"invalidWorkspaceId": "ID de espacio de trabajo no válido"
+			},
+			"info": {
+				"processing": "Tu archivo se está procesando, espera un momento, por favor..."
+			}
+		},
+		"sidebar": {
+			"toggle": "Alternar",
+			"shortcut": "Ctrl-B"
+		},
+		"tooltips": {
+			"searchForms": "Buscar en tus formularios",
+			"searchSources": "Buscar en tus fuentes",
+			"newWorkspace": "Nuevo espacio de trabajo"
+		},
+		"dropdown": {
+			"importPDF": "Importar PDF",
+			"searchSources": "Buscar fuentes"
+		}
+	},
+
+	"AppSidebar": {
+		"signOutDialog": {
+			"title": "Cerrar sesión",
+			"description": "¡Advertencia! ¿Estás seguro de que quieres cerrar sesión?",
+			"cancel": "Cancelar",
+			"confirm": "Cerrar sesión"
+		},
+		"user": {
+			"avatarFallback": "Tú"
+		},
+		"subscriptions": {
+			"free": "GRATIS",
+			"pro": "PRO",
+			"premium": "PREMIUM"
+		},
+		"menu": {
+			"settings": "Configuración",
+			"signOut": "Cerrar sesión"
+		},
+		"workspaces": {
+			"title": "Espacios de trabajo",
+			"empty": "No hay espacios de trabajo para mostrar",
+			"error": "¡Algo salió mal!"
+		},
+		"tooltips": {
+			"newWorkspace": "Nuevo espacio de trabajo"
+		}
+	},
+
+	"WorkspaceCard": {
+		"toast": {
+			"error": {
+				"deleteFailed": "Error al eliminar el espacio de trabajo"
+			}
+		},
+		"deleteDialog": {
+			"title": "¿Eliminar espacio de trabajo?",
+			"description": "¡Advertencia! ¿Estás seguro de que quieres eliminar este espacio de trabajo?",
+			"cancel": "Cancelar",
+			"confirm": "Eliminar"
+		},
+		"input": {
+			"placeholder": "Ingresa el nombre del espacio de trabajo"
+		},
+		"aria": {
+			"workspaceLink": "Ir al espacio de trabajo: {name}",
+			"menuOptions": "Menú de opciones del espacio de trabajo"
+		},
+		"menu": {
+			"rename": "Renombrar",
+			"delete": "Eliminar"
+		}
+	},
+
+	"Chat": {
+		"errors": {
+			"fetchMessages": "Error al cargar los mensajes"
+		},
+		"emptyState": {
+			"title": "Chatea con la IA",
+			"description": "Pregunta lo que quieras o usa las herramientas disponibles abajo"
+		},
+		"tooltips": {
+			"addContext": "Agregar contexto al chat",
+			"removeQuote": "Eliminar cita",
+			"formGeneration": "Herramienta de generación de formularios"
+		},
+		"contextItems": {
+			"document": "Documento actual",
+			"editor": "Contenido del editor",
+			"addPrompt": "Agregar contexto..."
+		},
+		"tools": {
+			"formGeneration": "Formulario"
+		},
+		"input": {
+			"placeholder": "Pregunta lo que quieras"
+		},
+		"aria": {
+			"addContext": "Agregar contexto al chat",
+			"removeContextItem": "Eliminar {item} del contexto",
+			"removeQuote": "Eliminar cita",
+			"chatInput": "Campo de entrada de chat",
+			"formGenerationToggle": "Alternar modo de generación de formularios",
+			"stopStreaming": "Detener la transmisión de la respuesta",
+			"sendMessage": "Enviar mensaje"
+		}
+	},
+
+	"Workspace": {
+		"toast": {
+			"error": "Algo salió mal, inténtalo más tarde.",
+			"invalidNoteId": "ID de nota inválido"
+		},
+		"error": {
+			"workspaceLoad": "Algo salió mal, inténtalo más tarde."
+		},
+		"tooltip": {
+			"collapseContent": "Contraer contenido",
+			"closeContent": "Cerrar contenido",
+			"expandChat": "Expandir chat",
+			"expandContent": "Expandir contenido",
+			"collapseChat": "Contraer chat"
+		},
+		"button": {
+			"summarize": "Resumir",
+			"chat": "Chatear",
+			"explain": "Explicar"
+		}
+	},
+
+	"DocumentLoader": {
+		"sheetTitle": "Tus fuentes",
+		"sheetDescription": "Selecciona un documento para leer de todos los documentos guardados",
+		"input": {
+			"placeholder": "Buscar documento"
+		},
+		"tooltip": {
+			"search": "Buscar"
+		},
+		"error": {
+			"loadDocuments": "Error al cargar los documentos"
+		},
+		"emptyState": {
+			"documents": "Tus documentos aparecerán aquí."
+		}
+	},
+
+	"PDFDocumentCard": {
+		"badge": {
+			"pdf": "PDF"
+		},
+		"tooltip": {
+			"download": "Descargar"
+		},
+		"error": {
+			"download": "Error al descargar el archivo:"
+		}
+	},
+
+	"FormLoader": {
+		"sheetTitle": "Tus formularios",
+		"sheetDescription": "Administra tus formularios, exámenes, enlaces y respuestas",
+		"input": {
+			"placeholder": "Buscar por título"
+		},
+		"tooltip": {
+			"search": "Buscar"
+		},
+		"formType": {
+			"basic": "Básico",
+			"exam": "Examen"
+		},
+		"error": {
+			"loadForms": "Error al cargar los formularios"
+		},
+		"emptyState": {
+			"forms": "Tus formularios aparecerán aquí."
+		},
+		"breadcrumbs": {
+			"links": "Enlaces",
+			"results": "Resultados",
+			"overview": "Resumen"
+		},
+		"message": {
+			"selectForm": "Haz clic en la tarjeta del formulario para ver enlaces y resultados"
+		}
+	},
+
+	"FormCard": {
+		"button": {
+			"open": "Abrir"
+		}
+	},
+
+	"LinksManager": {
+		"button": {
+			"share": "Compartir",
+			"generateLink": "Generar Enlace"
+		},
+		"placeholder": {
+			"search": "Buscar...",
+			"linkKeyword": "Ingresa una palabra clave para el enlace"
+		},
+		"tooltip": {
+			"search": "Buscar"
+		},
+		"message": {
+			"noLinks": "No se encontraron enlaces",
+			"linkAccess": "Cualquiera con el enlace puede acceder a este formulario"
+		},
+		"label": {
+			"keyword": "Palabra clave"
+		}
+	},
+
+	"Links": {
+		"placeholder": {
+			"search": "Buscar por palabra clave"
+		},
+		"tooltip": {
+			"search": "Buscar"
+		},
+		"message": {
+			"noLinks": "Tus enlaces aparecerán aquí"
+		}
+	},
+
+	"FormReview": {
+		"descriptionLabel": "Descripción",
+		"detailedReview": "Revisión detallada de preguntas",
+		"answerLabel": "Respuesta",
+		"noAnswer": "Sin respuesta",
+		"noAnswerProvided": "No se proporcionó respuesta",
+		"trueValue": "Verdadero",
+		"falseValue": "Falso",
+		"availableOptions": "Opciones disponibles"
+	},
+
+	"ExamReview": {
+		"instructions": "Instrucciones",
+		"performanceSummary": "Resumen de rendimiento",
+		"finalScore": "Puntuación final",
+		"answeredQuestions": "Preguntas respondidas",
+		"correctAnswers": "Respuestas correctas",
+		"detailedQuestionReview": "Revisión detallada de preguntas",
+		"answer": "Respuesta",
+		"correctAnswer": "Respuesta correcta",
+		"availableOptions": "Opciones disponibles",
+		"correct": "Correcto",
+		"incorrect": "Incorrecto",
+		"unanswered": "Sin responder",
+		"noAnswer": "Sin respuesta",
+		"noAnswerProvided": "No se proporcionó respuesta",
+		"true": "Verdadero",
+		"false": "Falso",
+		"showFeedback": "Mostrar retroalimentación",
+		"hideFeedback": "Ocultar retroalimentación"
+	},
+
+	"PomodoroTimer": {
+		"startSession": "Iniciar sesión",
+		"pauseSession": "Pausar sesión",
+		"resumeSession": "Reanudar sesión",
+		"stopSession": "Detener sesión",
+		"resetSession": "Reiniciar sesión",
+		"pomodoroDetails": "Detalles de Pomodoro",
+		"pomodoroIconAlt": "Icono de Pomodoro",
+		"focusSession": "Sesión de enfoque",
+		"restSession": "Sesión de descanso",
+		"completed": "completada",
+		"timeFor": "Hora de",
+		"session": "sesión",
+		"timerSettings": "Configuración del temporizador",
+		"focusTime": "Tiempo de enfoque",
+		"restTime": "Tiempo de descanso",
+		"minutes": "minutos",
+		"cancel": "Cancelar",
+		"saveSettings": "Guardar configuración",
+		"settingsSaved": "Configuración guardada",
+		"start": "Iniciar",
+		"pause": "Pausar",
+		"resume": "Reanudar",
+		"stop": "Detener",
+		"reset": "Reiniciar",
+		"focus": "Enfoque",
+		"rest": "Descanso",
+		"min": "min",
+		"todayProgress": "Progreso de hoy",
+		"focusSessions": "Sesiones de enfoque",
+		"restBreaks": "Descansos",
+		"todaySessions": "Sesiones de hoy",
+		"noSessionsCompleted": "No hay sesiones completadas aún. ¡Comienza tu primer Pomodoro!",
+		"restBreak": "Descanso"
+	},
+
+	"SignIn": {
+		"tagline": "Trabaja inteligente, no duro – Espacios de trabajo impulsados por IA que se adaptan a ti.",
+		"legalText": "Al crear una cuenta o iniciar sesión, aceptas los <terms>Terminos</terms> y nuestra <privacy>Política de privacidad</privacy>.",
+		"terms": "Términos",
+		"privacy": "Política de Privacidad",
+		"googleSignIn": "Iniciar sesión con Google"
+	},
+
+	"Settings": {
+		"head": {
+			"title": "Pennink - Configuración",
+			"description": "Administra la configuración de tu cuenta y suscripción."
+		},
+		"buttons": {
+			"back": "Atrás",
+			"signOut": "Cerrar sesión",
+			"manageBilling": "Gestionar suscripción"
+		},
+		"avatar": {
+			"fallback": "Tú"
+		},
+		"planLabel": "plan",
+		"toast": {
+			"customerPortalError": "Error al abrir el portal del cliente"
+		},
+		"errors": {
+			"subscriptionLoad": "Error al cargar los detalles de la suscripción."
+		},
+		"subscription": {
+			"currentPlan": "Plan actual",
+			"endsOn": "Finaliza el",
+			"renewsOn": "Se renueva el",
+			"updatePayment": "Actualizar método de pago",
+			"period": "mes"
+		},
+		"support": {
+			"title": "Soporte y recursos"
+		},
+		"supportOptions": {
+			"email": {
+				"title": "Soporte por correo",
+				"description": "Obtén ayuda por correo electrónico"
+			},
+			"privacy": {
+				"title": "Política de privacidad",
+				"description": "Lee nuestra política de privacidad"
+			},
+			"terms": {
+				"title": "Términos del servicio",
+				"description": "Lee nuestros términos del servicio"
+			}
+		}
+	}
+}

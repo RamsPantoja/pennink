@@ -11,6 +11,8 @@ import nProgress from "nprogress";
 import { SessionProvider } from "next-auth/react";
 import { create } from "zustand";
 import { apiPageRouter } from "~/utils/api";
+import { NextIntlClientProvider } from "next-intl";
+import type { Locale } from "~/lib/utils";
 
 type Theme = "light" | "dark";
 
@@ -24,10 +26,13 @@ export const useAppStore = create<AppStore>()((set) => ({
 	setTheme: (theme: Theme) => set({ theme }),
 }));
 
-const MyApp: AppType<{ session: Session | null }> = ({
-	Component,
-	pageProps,
-}) => {
+type AppTypes = {
+	session: Session | null;
+	locale: Locale;
+	messages: any;
+};
+
+const MyApp: AppType<AppTypes> = ({ Component, pageProps }) => {
 	const router = useRouter();
 	const { theme, setTheme } = useAppStore();
 
@@ -68,12 +73,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
 	return (
 		<SessionProvider session={pageProps.session}>
-			<main data-theme={theme} className={GeistMono.className}>
-				<TooltipProvider delayDuration={300}>
-					<Toaster richColors className={GeistMono.className} />
-					<Component {...pageProps} />
-				</TooltipProvider>
-			</main>
+			<NextIntlClientProvider
+				locale={pageProps.locale ?? "en"}
+				messages={pageProps.messages}
+			>
+				<main data-theme={theme} className={GeistMono.className}>
+					<TooltipProvider delayDuration={300}>
+						<Toaster richColors className={GeistMono.className} />
+						<Component {...pageProps} />
+					</TooltipProvider>
+				</main>
+			</NextIntlClientProvider>
 		</SessionProvider>
 	);
 };

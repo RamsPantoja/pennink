@@ -3,6 +3,8 @@ import type { GetServerSideProps } from "next";
 import { type Session, getServerSession } from "next-auth";
 import Head from "next/head";
 import { authOptions } from "~/server/auth";
+import { getPreferredLocale, type Locale } from "~/lib/utils";
+import type { ParsedUrlQuery } from "node:querystring";
 
 type SignInProps = {
 	query: {
@@ -26,8 +28,16 @@ const SignIn = ({ query }: SignInProps) => {
 	);
 };
 
+type ServerSideProps = {
+	locale: Locale;
+	session: Session | null;
+	query: ParsedUrlQuery;
+	messages: any;
+};
+
 export const getServerSideProps = (async ({ req, res, query }) => {
 	const session = await getServerSession(req, res, authOptions);
+	const locale = getPreferredLocale(req.headers["accept-language"]);
 
 	if (session) {
 		return {
@@ -38,7 +48,16 @@ export const getServerSideProps = (async ({ req, res, query }) => {
 		};
 	}
 
-	return { props: { session, query } };
-}) satisfies GetServerSideProps<{ session: Session | null }>;
+	const messages = (await import(`../i18n/messages/${locale}.json`)).default;
+
+	return {
+		props: {
+			session,
+			query,
+			locale,
+			messages,
+		},
+	};
+}) satisfies GetServerSideProps<ServerSideProps>;
 
 export default SignIn;

@@ -29,32 +29,36 @@ import { toast } from "sonner";
 import { Separator } from "~/components/ui/separator";
 import Link from "next/link";
 import { UsageService } from "~/components/UsageService";
-
-const supportOptions = [
-	{
-		title: "Email Support",
-		description: "Get help via email",
-		icon: AtSymbolIcon,
-		link: "mailto:hola@pennink.xyz",
-	},
-	{
-		title: "Privacy Policy",
-		description: "Read our privacy policy",
-		icon: ShieldExclamationIcon,
-		link: "https://www.pennink.xyz/privacy-policy",
-	},
-	{
-		title: "Terms of Service",
-		description: "Read our terms of service",
-		icon: DocumentTextIcon,
-		link: "https://www.pennink.xyz/terms",
-	},
-];
+import { getPreferredLocale, type Locale } from "~/lib/utils";
+import { useTranslations } from "next-intl";
 
 const Settings = ({
 	session,
+	locale,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const t = useTranslations("Settings");
 	const router = useRouter();
+
+	const supportOptions = [
+		{
+			title: t("supportOptions.email.title"),
+			description: t("supportOptions.email.description"),
+			icon: AtSymbolIcon,
+			link: "mailto:hola@pennink.xyz",
+		},
+		{
+			title: t("supportOptions.privacy.title"),
+			description: t("supportOptions.privacy.description"),
+			icon: ShieldExclamationIcon,
+			link: "https://www.pennink.xyz/privacy-policy",
+		},
+		{
+			title: t("supportOptions.terms.title"),
+			description: t("supportOptions.terms.description"),
+			icon: DocumentTextIcon,
+			link: "https://www.pennink.xyz/terms",
+		},
+	];
 
 	const {
 		data: subscription,
@@ -73,18 +77,15 @@ const Settings = ({
 		},
 		onError: (error) => {
 			console.error("[CUSTOMER PORTAL LINK] Error:", error.message);
-			toast.error("Failed to open customer portal");
+			toast.error(t("toast.customerPortalError"));
 		},
 	});
 
 	return (
 		<div className="flex w-full justify-center p-4 bg-mocha-base h-screen">
 			<Head>
-				<title>Pennink - Settings</title>
-				<meta
-					name="description"
-					content="Manage your account settings and subscription."
-				/>
+				<title>{t("head.title")}</title>
+				<meta name="description" content={t("head.description")} />
 				<link rel="icon" href="/favicon.svg" />
 			</Head>
 			<div className="flex flex-col max-w-(--breakpoint-xl) w-full gap-10">
@@ -102,7 +103,7 @@ const Settings = ({
 						variant="ghost"
 						startIcon={<ArrowLongLeftIcon className="min-w-5 h-5" />}
 					>
-						Back
+						{t("buttons.back")}
 					</Button>
 					<Button
 						onClick={() => {
@@ -111,14 +112,14 @@ const Settings = ({
 						size="sm"
 						variant="ghost"
 					>
-						Sign out
+						{t("buttons.signOut")}
 					</Button>
 				</div>
 				<Card className="flex gap-4 w-full justify-between flex-wrap">
 					<div className="flex flex-row items-center gap-4 flex-wrap">
 						<Avatar className="h-20 w-20">
 							<AvatarImage src={session.user.image as string} />
-							<AvatarFallback>You</AvatarFallback>
+							<AvatarFallback>{t("avatar.fallback")}</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col overflow-hidden gap-1">
 							<p className="truncate font-bold text-mocha-text">
@@ -128,7 +129,7 @@ const Settings = ({
 								{session.user.email}
 							</p>
 							<Badge variant="secondary">
-								{session.user.subscription} plan
+								{session.user.subscription} {t("planLabel")}
 							</Badge>
 						</div>
 						{session.user.subscription === "FREE" && <UsageService />}
@@ -159,7 +160,7 @@ const Settings = ({
 							{!isSubscriptionLoading && isSubscriptionError && (
 								<FeedbackMessage
 									status="ERROR"
-									message="Failed to load subscription details."
+									message={t("errors.subscriptionLoad")}
 								/>
 							)}
 							{!isSubscriptionLoading &&
@@ -168,38 +169,46 @@ const Settings = ({
 									<Card className="flex flex-col p-0">
 										<div className="flex justify-between items-center mb-4 gap-4 flex-wrap">
 											<div>
-												<h3 className="font-semibold">Current Plan</h3>
+												<h3 className="font-semibold">
+													{t("subscription.currentPlan")}
+												</h3>
 												<p className="text-sm text-muted-foreground">
-													{session.user.subscription} Plan
+													{session.user.subscription} {t("planLabel")}
 												</p>
 												<Badge>{subscription.status}</Badge>
 											</div>
 											<div className="text-right">
 												{session.user.subscription === "PRO" && (
-													<p className="font-medium">$12/month</p>
+													<p className="font-medium">
+														$12 USD/{t("subscription.period")}
+													</p>
 												)}
 												{subscription.cancelAtPeriodEnd &&
 													subscription.status === "active" && (
 														<p className="font-semibold text-xs text-orange-400">
-															Ends on{" "}
+															{t("subscription.endsOn")}{" "}
 															{DateTime.fromSeconds(
 																Number.parseInt(subscription.currentPeriodEnd),
-															).toLocaleString(DateTime.DATE_FULL)}
+															)
+																.setLocale(locale)
+																.toLocaleString(DateTime.DATE_FULL)}
 														</p>
 													)}
 												{subscription.status === "active" &&
 													!subscription.cancelAtPeriodEnd && (
 														<p className="font-semibold text-muted-foreground text-xs">
-															Renews on{" "}
+															{t("subscription.renewsOn")}{" "}
 															{DateTime.fromSeconds(
 																Number.parseInt(subscription.currentPeriodEnd),
-															).toLocaleString(DateTime.DATE_FULL)}
+															)
+																.setLocale(locale)
+																.toLocaleString(DateTime.DATE_FULL)}
 														</p>
 													)}
 												{subscription.status === "past_due" &&
 													!subscription.cancelAtPeriodEnd && (
 														<p className="font-semibold text-muted-foreground text-xs">
-															Update payment method
+															{t("subscription.updatePayment")}
 														</p>
 													)}
 											</div>
@@ -212,7 +221,7 @@ const Settings = ({
 												getCustomerPortalLink();
 											}}
 										>
-											Manage Billing
+											{t("buttons.manageBilling")}
 										</Button>
 									</Card>
 								)}
@@ -221,7 +230,7 @@ const Settings = ({
 				</Card>
 				<Separator />
 				<Card className="flex flex-col gap-4">
-					<h2 className="font-semibold">Support and Resources</h2>
+					<h2 className="font-semibold">{t("support.title")}</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{supportOptions.map((option, index) => (
 							<Link
@@ -253,12 +262,14 @@ const Settings = ({
 };
 
 type ServerSideProps = {
+	locale: Locale;
 	session: Session | null;
+	messages: any;
 };
 
 export const getServerSideProps = (async ({ req, res }) => {
 	const session = await getServerSession(req, res, authOptions);
-
+	const locale = getPreferredLocale(req.headers["accept-language"]);
 	if (!session) {
 		return {
 			redirect: {
@@ -267,8 +278,8 @@ export const getServerSideProps = (async ({ req, res }) => {
 			},
 		};
 	}
-
-	return { props: { session } };
+	const messages = (await import(`../i18n/messages/${locale}.json`)).default;
+	return { props: { session, locale, messages } };
 }) satisfies GetServerSideProps<ServerSideProps>;
 
 export default Settings;

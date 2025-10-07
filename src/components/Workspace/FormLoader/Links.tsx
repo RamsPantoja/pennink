@@ -12,6 +12,7 @@ import { Loading } from "~/components/common/Loading";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { LinkItem } from "./LinkItem";
 import { useLinksLogic } from "./useLinksLogic";
+import { useTranslations } from "next-intl";
 
 type LinksProps = {
 	id: string;
@@ -19,6 +20,7 @@ type LinksProps = {
 };
 
 export const Links = ({ id, type }: LinksProps) => {
+	const t = useTranslations("Links");
 	const {
 		linksData,
 		linksIsPending,
@@ -35,7 +37,7 @@ export const Links = ({ id, type }: LinksProps) => {
 				<div className="flex items-center relative gap-2 w-full">
 					<Input
 						type="text"
-						placeholder="Search by keyword"
+						placeholder={t("placeholder.search")}
 						value={searchKey}
 						onChange={(e) => setSearchKey(e.target.value)}
 						onKeyDown={(e) => e.key === "Enter" && performSearch()}
@@ -52,7 +54,7 @@ export const Links = ({ id, type }: LinksProps) => {
 								<MagnifyingGlassIcon className="min-w-5 h-5" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent>Search</TooltipContent>
+						<TooltipContent>{t("tooltip.search")}</TooltipContent>
 					</Tooltip>
 					{searchKey && (
 						<Button
@@ -88,7 +90,6 @@ export const Links = ({ id, type }: LinksProps) => {
 										type={linksData.type}
 									/>
 								))}
-
 							{linksData.type === "EXAM" &&
 								linksData.links.map((link) => (
 									<LinkItem
@@ -108,7 +109,7 @@ export const Links = ({ id, type }: LinksProps) => {
 					linksData.links.length === 0 && (
 						<FeedbackMessage
 							status="INFORMATION"
-							message="Your links will appear here"
+							message={t("message.noLinks")}
 						/>
 					)}
 			</div>

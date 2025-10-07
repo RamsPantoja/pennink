@@ -75,6 +75,7 @@ export function DynamicForm({
 									max={question.max ?? undefined}
 									step={question.step ?? undefined}
 									className="focus:ring-mocha-sub-text"
+									value={field.value || ""}
 								/>
 								{question.description && (
 									<p className="text-sm text-mocha-sub-text">

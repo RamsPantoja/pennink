@@ -23,6 +23,7 @@ import {
 	ShareIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 type LinksManagerProps = {
 	id: string;
@@ -30,6 +31,7 @@ type LinksManagerProps = {
 };
 
 export const LinksManager = ({ id, type }: LinksManagerProps) => {
+	const t = useTranslations("LinksManager");
 	const {
 		openLinkMenu,
 		setLinkMenu,
@@ -64,7 +66,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 						e.stopPropagation();
 					}}
 				>
-					Share
+					{t("button.share")}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent
@@ -78,7 +80,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 						<div className="flex items-center relative gap-2">
 							<Input
 								type="text"
-								placeholder="Search by keyword"
+								placeholder={t("placeholder.search")}
 								value={searchKey}
 								onChange={(e) => setSearchKey(e.target.value)}
 								onKeyDown={(e) => e.key === "Enter" && performSearch()}
@@ -95,7 +97,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 										<MagnifyingGlassIcon className="min-w-5 h-5" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Search</TooltipContent>
+								<TooltipContent>{t("tooltip.search")}</TooltipContent>
 							</Tooltip>
 							{searchKey && (
 								<Button
@@ -131,7 +133,6 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 												type="BASIC"
 											/>
 										))}
-
 									{linksData.type === "EXAM" &&
 										linksData.links.map((link) => (
 											<LinkItem
@@ -151,15 +152,15 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 							linksData.links.length === 0 && (
 								<FeedbackMessage
 									status="INFORMATION"
-									message="Your links will appear here"
+									message={t("message.noLinks")}
 								/>
 							)}
 					</div>
 					<Separator />
 					<div className="flex flex-col w-full h-full gap-2">
-						<Label htmlFor="key">Keyword*</Label>
+						<Label htmlFor="key">{t("label.keyword")}</Label>
 						<Input
-							placeholder="Add a keyword to your link"
+							placeholder={t("placeholder.linkKeyword")}
 							className="resize-none"
 							{...register("key")}
 						/>
@@ -170,7 +171,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 							/>
 						)}
 						<p className="text-xs text-mocha-sub-text">
-							Anyone on the web with the link can answer your form
+							{t("message.linkAccess")}
 						</p>
 						<Button
 							size="sm"
@@ -178,7 +179,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 							isPending={createLinkFormIsPending}
 							onClick={handleSubmit(onCreateLinkForm)}
 						>
-							Generate link
+							{t("button.generateLink")}
 						</Button>
 					</div>
 				</div>

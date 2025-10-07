@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Button } from "~/components/common/Button";
 import {
 	Breadcrumb,
@@ -10,8 +10,10 @@ import { Links } from "./Links";
 import { Results } from "./Results";
 import { type BreadcrumbType, useFormLoaderStore } from "./useFormLoaderStore";
 import { ResultOverview } from "./Overview";
+import { useTranslations } from "next-intl";
 
 export const Manager = () => {
+	const t = useTranslations("FormLoader");
 	const { currentForm, currentLink, breadcrumbs, setBreadcrumbs, resultId } =
 		useFormLoaderStore();
 
@@ -33,8 +35,8 @@ export const Manager = () => {
 
 											if (breadcrumb === ("results" as BreadcrumbType)) {
 												setBreadcrumbs({
-													links: "Links",
-													results: "Results",
+													links: t("breadcrumbs.links"),
+													results: t("breadcrumbs.results"),
 												});
 											}
 										}}

@@ -22,6 +22,7 @@ import { Card } from "../../ui/card";
 import { FormCard } from "./FormCard";
 import { Manager } from "./Manager";
 import { useFormLoaderStore } from "./useFormLoaderStore";
+import { useTranslations } from "next-intl";
 
 type FormLoaderProps = {
 	onOpen: (doc: CurrentForm) => void;
@@ -30,6 +31,7 @@ type FormLoaderProps = {
 };
 
 export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
+	const t = useTranslations("FormLoader");
 	const [searchKey, setSearchKey] = useState<string>("");
 	const [searchParam, setSearchParam] = useState<string | undefined>();
 	const [type, setType] = useState<FormType>("BASIC");
@@ -59,10 +61,10 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 		<Sheet open={open} onOpenChange={onOpenChange}>
 			<SheetContent className="w-full flex flex-col max-w-7xl">
 				<SheetHeader>
-					<SheetTitle className="text-sm font-semibold">Your forms</SheetTitle>
-					<SheetDescription>
-						Manage your forms and exams, links, and responses
-					</SheetDescription>
+					<SheetTitle className="text-sm font-semibold">
+						{t("sheetTitle")}
+					</SheetTitle>
+					<SheetDescription>{t("sheetDescription")}</SheetDescription>
 				</SheetHeader>
 				<div className="h-full w-full grow flex gap-4 overflow-hidden">
 					<Card className="flex flex-col gap-4 border h-full min-w-96 max-w-96 p-0">
@@ -70,7 +72,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 							<div className="flex items-center relative gap-2">
 								<Input
 									type="text"
-									placeholder="Search by title"
+									placeholder={t("input.placeholder")}
 									value={searchKey}
 									onChange={(e) => setSearchKey(e.target.value)}
 									onKeyDown={(e) => e.key === "Enter" && performSearch()}
@@ -87,7 +89,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 											<MagnifyingGlassIcon className="min-w-5 h-5" />
 										</Button>
 									</TooltipTrigger>
-									<TooltipContent>Search</TooltipContent>
+									<TooltipContent>{t("tooltip.search")}</TooltipContent>
 								</Tooltip>
 								{searchKey && (
 									<Button
@@ -112,13 +114,13 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								<div className="flex items-center gap-3">
 									<RadioGroupItem value="BASIC" id="r1" />
 									<Label className="text-mocha-text" htmlFor="r1">
-										Basic
+										{t("formType.basic")}
 									</Label>
 								</div>
 								<div className="flex items-center gap-3">
 									<RadioGroupItem value="EXAM" id="r2" />
 									<Label className="text-mocha-text" htmlFor="r2">
-										Exam
+										{t("formType.exam")}
 									</Label>
 								</div>
 							</RadioGroup>
@@ -128,7 +130,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 							{!formsIsLoading && formsIsError && (
 								<FeedbackMessage
 									status="ERROR"
-									message="Failed to load forms"
+									message={t("error.loadForms")}
 								/>
 							)}
 							{!formsIsLoading &&
@@ -136,10 +138,9 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								forms &&
 								forms.data.length === 0 && (
 									<div className="flex items-center justify-center text-mocha-text">
-										Your forms will appear here.
+										{t("emptyState.forms")}
 									</div>
 								)}
-
 							{!formsIsLoading &&
 								!formsIsError &&
 								forms &&
@@ -159,7 +160,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 														id: doc.id,
 														type: forms.type,
 													});
-													setBreadcrumbs({ links: "Links" });
+													setBreadcrumbs({ links: t("breadcrumbs.links") });
 													setCurrentLink(null);
 													setResultId(null);
 												}}
@@ -174,7 +175,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 					{!currentForm && (
 						<FeedbackMessage
 							status="INFORMATION"
-							message="Click the form card to view links and results"
+							message={t("message.selectForm")}
 						/>
 					)}
 					{currentForm && <Manager />}

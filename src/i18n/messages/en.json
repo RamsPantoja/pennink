@@ -1,0 +1,394 @@
+{
+	"HomePage": {
+		"title": "Start with a new workspace!",
+		"toast": {
+			"success": {
+				"upload": "You can now ask to your document!"
+			},
+			"error": {
+				"signIn": "Please sign in to upload files",
+				"invalidFileType": "Invalid file type",
+				"noPages": "No pages found in the PDF",
+				"tooManyPages": "Too many pages in the PDF: {count} pages (max 50)",
+				"noFileUploaded": "No file uploaded"
+			},
+			"info": {
+				"processing": "Your file is processing, wait a moment, please..."
+			}
+		},
+		"cards": {
+			"upload": {
+				"title": "Upload",
+				"description": "Upload a PDF to start asking anything about the content"
+			},
+			"search": {
+				"title": "Search",
+				"description": "Search the saved documents to start asking anything about the content"
+			},
+			"write": {
+				"title": "Write",
+				"description": "Start writing articles, notes or whatever you want with smart assistance"
+			}
+		}
+	},
+
+	"Dashboard": {
+		"toast": {
+			"success": {
+				"upload": "You can now ask to your document!"
+			},
+			"error": {
+				"invalidFileType": "Invalid file type",
+				"noPages": "No pages found in the PDF",
+				"tooManyPages": "Too many pages in the PDF: {count} pages (max 50)",
+				"invalidWorkspaceId": "Invalid workspace ID"
+			},
+			"info": {
+				"processing": "Your file is processing, wait a moment, please..."
+			}
+		},
+		"sidebar": {
+			"toggle": "Toggle",
+			"shortcut": "Ctrl-B"
+		},
+		"tooltips": {
+			"searchForms": "Search from your forms",
+			"searchSources": "Search from your sources",
+			"newWorkspace": "New workspace"
+		},
+		"dropdown": {
+			"importPDF": "Import PDF",
+			"searchSources": "Search sources"
+		}
+	},
+
+	"AppSidebar": {
+		"signOutDialog": {
+			"title": "Sign out",
+			"description": "Warning! Are you sure you want to sign out?",
+			"cancel": "Cancel",
+			"confirm": "Sign out"
+		},
+		"user": {
+			"avatarFallback": "You"
+		},
+		"subscriptions": {
+			"free": "FREE",
+			"pro": "PRO",
+			"premium": "PREMIUM"
+		},
+		"menu": {
+			"settings": "Settings",
+			"signOut": "Sign out"
+		},
+		"workspaces": {
+			"title": "Workspaces",
+			"empty": "No workspaces to show",
+			"error": "Something went wrong!"
+		},
+		"tooltips": {
+			"newWorkspace": "New workspace"
+		}
+	},
+
+	"WorkspaceCard": {
+		"toast": {
+			"error": {
+				"deleteFailed": "Failed to delete workspace"
+			}
+		},
+		"deleteDialog": {
+			"title": "Delete workspace?",
+			"description": "Warning! Are you sure you want to delete this workspace?",
+			"cancel": "Cancel",
+			"confirm": "Delete"
+		},
+		"input": {
+			"placeholder": "Enter workspace name"
+		},
+		"aria": {
+			"workspaceLink": "Go to workspace: {name}",
+			"menuOptions": "Workspace options menu"
+		},
+		"menu": {
+			"rename": "Rename",
+			"delete": "Delete"
+		}
+	},
+
+	"Chat": {
+		"errors": {
+			"fetchMessages": "Error fetching messages"
+		},
+		"emptyState": {
+			"title": "Chat with AI",
+			"description": "Ask anything or use the tools available below"
+		},
+		"tooltips": {
+			"addContext": "Add context to chat",
+			"removeQuote": "Remove Quote",
+			"formGeneration": "Form generation tool"
+		},
+		"contextItems": {
+			"document": "Current document",
+			"editor": "Editor content",
+			"addPrompt": "Add context..."
+		},
+		"tools": {
+			"formGeneration": "Form"
+		},
+		"input": {
+			"placeholder": "Ask anything"
+		},
+		"aria": {
+			"addContext": "Add context to chat",
+			"removeContextItem": "Remove {item} from context",
+			"removeQuote": "Remove quote",
+			"chatInput": "Chat input field",
+			"formGenerationToggle": "Toggle form generation mode",
+			"stopStreaming": "Stop streaming response",
+			"sendMessage": "Send message"
+		}
+	},
+
+	"Workspace": {
+		"toast": {
+			"error": "Something went wrong, try again later.",
+			"invalidNoteId": "Invalid note ID"
+		},
+		"error": {
+			"workspaceLoad": "Something went wrong, try again later."
+		},
+		"tooltip": {
+			"collapseContent": "Collapse content",
+			"closeContent": "Close content",
+			"expandChat": "Expand chat",
+			"expandContent": "Expand content",
+			"collapseChat": "Collapse chat"
+		},
+		"button": {
+			"summarize": "Summarize",
+			"chat": "Chat",
+			"explain": "Explain"
+		}
+	},
+
+	"DocumentLoader": {
+		"sheetTitle": "Your sources",
+		"sheetDescription": "Select a document to read from all saved documents",
+		"input": {
+			"placeholder": "Search for document"
+		},
+		"tooltip": {
+			"search": "Search"
+		},
+		"error": {
+			"loadDocuments": "Failed to load documents"
+		},
+		"emptyState": {
+			"documents": "Your documents will appear here."
+		}
+	},
+
+	"PDFDocumentCard": {
+		"badge": {
+			"pdf": "PDF"
+		},
+		"tooltip": {
+			"download": "Download"
+		},
+		"error": {
+			"download": "Error downloading file:"
+		}
+	},
+
+	"FormLoader": {
+		"sheetTitle": "Your forms",
+		"sheetDescription": "Manage your forms and exams, links, and responses",
+		"input": {
+			"placeholder": "Search by title"
+		},
+		"tooltip": {
+			"search": "Search"
+		},
+		"formType": {
+			"basic": "Basic",
+			"exam": "Exam"
+		},
+		"error": {
+			"loadForms": "Failed to load forms"
+		},
+		"emptyState": {
+			"forms": "Your forms will appear here."
+		},
+		"breadcrumbs": {
+			"links": "Links",
+			"results": "Results",
+			"overview": "Overview"
+		},
+		"message": {
+			"selectForm": "Click the form card to view links and results"
+		}
+	},
+
+	"FormCard": {
+		"button": {
+			"open": "Open"
+		}
+	},
+
+	"LinksManager": {
+		"button": {
+			"share": "Share",
+			"generateLink": "Generate Link"
+		},
+		"placeholder": {
+			"search": "Search...",
+			"linkKeyword": "Enter a keyword for the link"
+		},
+		"tooltip": {
+			"search": "Search"
+		},
+		"message": {
+			"noLinks": "No links found",
+			"linkAccess": "Anyone with the link can access this form"
+		},
+		"label": {
+			"keyword": "Keyword"
+		}
+	},
+
+	"Links": {
+		"placeholder": {
+			"search": "Search by keyword"
+		},
+		"tooltip": {
+			"search": "Search"
+		},
+		"message": {
+			"noLinks": "Your links will appear here"
+		}
+	},
+
+	"FormReview": {
+		"descriptionLabel": "Description",
+		"detailedReview": "Detailed review of questions",
+		"answerLabel": "Answer",
+		"noAnswer": "No answer",
+		"noAnswerProvided": "No answer provided",
+		"trueValue": "True",
+		"falseValue": "False",
+		"availableOptions": "Available options"
+	},
+
+	"ExamReview": {
+		"instructions": "Instructions",
+		"performanceSummary": "Performance Summary",
+		"finalScore": "Final Score",
+		"answeredQuestions": "Answered questions",
+		"correctAnswers": "Correct answers",
+		"detailedQuestionReview": "Detailed question review",
+		"answer": "Answer",
+		"correctAnswer": "Correct Answer",
+		"availableOptions": "Available Options",
+		"correct": "Correct",
+		"incorrect": "Incorrect",
+		"unanswered": "Unanswered",
+		"noAnswer": "No answer",
+		"noAnswerProvided": "No answer provided",
+		"true": "True",
+		"false": "False",
+		"showFeedback": "Show Feedback",
+		"hideFeedback": "Hide Feedback"
+	},
+
+	"PomodoroTimer": {
+		"startSession": "Start session",
+		"pauseSession": "Pause session",
+		"resumeSession": "Resume session",
+		"stopSession": "Stop session",
+		"resetSession": "Reset session",
+		"pomodoroDetails": "Pomodoro details",
+		"pomodoroIconAlt": "Pomodoro icon",
+		"focusSession": "Focus session",
+		"restSession": "Rest session",
+		"completed": "completed",
+		"timeFor": "Time for",
+		"session": "session",
+		"timerSettings": "Timer settings",
+		"focusTime": "Focus time",
+		"restTime": "Rest time",
+		"minutes": "minutes",
+		"cancel": "Cancel",
+		"saveSettings": "Save settings",
+		"settingsSaved": "Settings saved",
+		"start": "Start",
+		"pause": "Pause",
+		"resume": "Resume",
+		"stop": "Stop",
+		"reset": "Reset",
+		"focus": "Focus",
+		"rest": "Rest",
+		"min": "min",
+		"todayProgress": "Today's progress",
+		"focusSessions": "Focus sessions",
+		"restBreaks": "Rest breaks",
+		"todaySessions": "Today's sessions",
+		"noSessionsCompleted": "No sessions completed yet. Start your first Pomodoro!",
+		"restBreak": "Rest break"
+	},
+
+	"SignIn": {
+		"tagline": "Work Smarter, Not Harder – AI‑Driven Workspaces That Adapt to You.",
+		"legalText": "By creating an account or signing in, you agree to the <terms>Terms</terms> y our <privacy>Privacy Policy</privacy>.",
+		"terms": "Terms",
+		"privacy": "Privacy Policy",
+		"googleSignIn": "Sign in with Google"
+	},
+
+	"Settings": {
+		"head": {
+			"title": "Pennink - Settings",
+			"description": "Manage your account settings and subscription."
+		},
+		"buttons": {
+			"back": "Back",
+			"signOut": "Sign out",
+			"manageBilling": "Manage Billing"
+		},
+		"avatar": {
+			"fallback": "You"
+		},
+		"planLabel": "plan",
+		"toast": {
+			"customerPortalError": "Failed to open customer portal"
+		},
+		"errors": {
+			"subscriptionLoad": "Failed to load subscription details."
+		},
+		"subscription": {
+			"currentPlan": "Current Plan",
+			"endsOn": "Ends on",
+			"renewsOn": "Renews on",
+			"updatePayment": "Update payment method",
+			"period": "month"
+		},
+		"support": {
+			"title": "Support and Resources"
+		},
+		"supportOptions": {
+			"email": {
+				"title": "Email Support",
+				"description": "Get help via email"
+			},
+			"privacy": {
+				"title": "Privacy Policy",
+				"description": "Read our privacy policy"
+			},
+			"terms": {
+				"title": "Terms of Service",
+				"description": "Read our terms of service"
+			}
+		}
+	}
+}

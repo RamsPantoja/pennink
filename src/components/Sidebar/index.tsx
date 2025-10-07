@@ -39,12 +39,14 @@ import SubscriptionPlansModal from "../SubscriptionPlanSelector";
 import { UsageService } from "../UsageService";
 import { useParams, useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type AppSidebarProps = {
 	session: Session | null;
 };
 
 export function AppSidebar({ session }: AppSidebarProps) {
+	const t = useTranslations("AppSidebar");
 	const router = useRouter();
 	const pathname = usePathname();
 	const params = useParams();
@@ -67,10 +69,10 @@ export function AppSidebar({ session }: AppSidebarProps) {
 		<Sidebar collapsible="offcanvas">
 			<SidebarHeader>
 				<CustomAlertDialog
-					cancelText="Cancel"
-					actionText="Sign out"
-					title="Sign out"
-					description={"Warning! Are you sure you want to sign out?"}
+					cancelText={t("signOutDialog.cancel")}
+					actionText={t("signOutDialog.confirm")}
+					title={t("signOutDialog.title")}
+					description={t("signOutDialog.description")}
 					onCancel={() => {
 						setDisplaySignOutAlert(false);
 					}}
@@ -85,14 +87,16 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								<div className="flex flex-row items-center gap-2 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
 									<Avatar className="h-7 w-7">
 										<AvatarImage src={session.user.image as string} />
-										<AvatarFallback>You</AvatarFallback>
+										<AvatarFallback>{t("user.avatarFallback")}</AvatarFallback>
 									</Avatar>
 									<div className="flex flex-col w-full overflow-hidden">
 										<p className="truncate text-sm font-bold">
 											{session.user.name}
 										</p>
 										<p className="truncate text-xs">
-											{session.user.subscription}
+											{t(
+												`subscriptions.${session.user.subscription.toLowerCase()}`,
+											)}
 										</p>
 									</div>
 								</div>
@@ -112,7 +116,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								}}
 							>
 								<Cog6ToothIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
-								Settings
+								{t("menu.settings")}
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								onSelect={() => {
@@ -120,7 +124,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								}}
 							>
 								<ArrowRightStartOnRectangleIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
-								Sign out
+								{t("menu.signOut")}
 							</DropdownMenuItem>
 							{session.user.subscription === "FREE" && (
 								<DropdownMenuItem asChild>
@@ -137,7 +141,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 				<SidebarGroup className="overflow-hidden">
 					<SidebarGroupLabel asChild>
 						<div className="flex items-center gap-4 justify-between mb-2">
-							<span>Workspaces</span>
+							<span>{t("workspaces.title")}</span>
 							{pathname !== "/" && (
 								<Tooltip>
 									<TooltipTrigger asChild>
@@ -145,7 +149,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 											<SquaresPlusIcon className="min-w-5 w-5 h-5" />
 										</Button>
 									</TooltipTrigger>
-									<TooltipContent>New workspace</TooltipContent>
+									<TooltipContent>{t("tooltips.newWorkspace")}</TooltipContent>
 								</Tooltip>
 							)}
 						</div>
@@ -176,7 +180,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 									<div className="p-4">
 										<FeedbackMessage
 											status="INFORMATION"
-											message="No workspaces to show"
+											message={t("workspaces.empty")}
 										/>
 									</div>
 								)}
@@ -184,7 +188,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 								<div className="p-4">
 									<FeedbackMessage
 										status="ERROR"
-										message="Something went wrong!"
+										message={t("workspaces.error")}
 									/>
 								</div>
 							)}

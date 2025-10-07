@@ -1,6 +1,7 @@
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
 import { CheckCircle, XCircle, AlertCircle, Target } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Response } from "~/components/ai-elements/response";
 import { Button } from "~/components/common/Button";
 import { Badge } from "~/components/ui/badge";
@@ -36,8 +37,8 @@ interface ExamReviewProps {
 }
 
 export function ExamReview({ data }: ExamReviewProps) {
+	const t = useTranslations("ExamReview");
 	const [showFeedback, setShowFeedback] = useState(false);
-
 	const questions = data.questions;
 	const totalQuestions = questions.length;
 	const answeredQuestions = Object.keys(data.answers).length;
@@ -84,11 +85,11 @@ export function ExamReview({ data }: ExamReviewProps) {
 	const getStatusBadge = (status: string) => {
 		switch (status) {
 			case "correct":
-				return <Badge variant="outline">Correct</Badge>;
+				return <Badge variant="outline">{t("correct")}</Badge>;
 			case "incorrect":
-				return <Badge variant="outline">Incorrect</Badge>;
+				return <Badge variant="outline">{t("incorrect")}</Badge>;
 			case "unanswered":
-				return <Badge variant="outline">Unanswered</Badge>;
+				return <Badge variant="outline">{t("unanswered")}</Badge>;
 			default:
 				return null;
 		}
@@ -109,26 +110,27 @@ export function ExamReview({ data }: ExamReviewProps) {
 					{data.exam.title}
 				</p>
 				<p className="text-sm text-mocha-sub-text">
-					Instructions: {data.exam.instructions}
+					{t("instructions")}: {data.exam.instructions}
 				</p>
 			</div>
+
 			{/* Performance Summary */}
 			<Card className="shadow-none border flex flex-col gap-4 rounded-2xl">
 				<div className="flex items-center gap-2">
 					<Target className="h-5 w-5" />
-					<p className="text-base font-semibold">Performance Summary</p>
+					<p className="text-base font-semibold">{t("performanceSummary")}</p>
 				</div>
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 					<div className="text-center">
 						<div className="text-xl font-bold mb-2">{data.score}/100</div>
-						<div className="text-sm">Final Score</div>
+						<div className="text-sm">{t("finalScore")}</div>
 						<Progress value={scorePercentage} className="mt-2" />
 					</div>
 					<div className="text-center">
 						<div className="text-xl font-bold text-accent mb-2">
 							{answeredQuestions}/{totalQuestions}
 						</div>
-						<div className="text-sm">Answered questions</div>
+						<div className="text-sm">{t("answeredQuestions")}</div>
 					</div>
 					<div className="text-center">
 						<div className="text-xl font-bold mb-2">
@@ -141,14 +143,14 @@ export function ExamReview({ data }: ExamReviewProps) {
 								).length
 							}
 						</div>
-						<div className="text-sm">Correct answers</div>
+						<div className="text-sm">{t("correctAnswers")}</div>
 					</div>
 				</div>
 			</Card>
 
 			{/* Questions Review */}
 			<div className="flex flex-col gap-4">
-				<p className="font-semibold">Detailed question review</p>
+				<p className="font-semibold">{t("detailedQuestionReview")}</p>
 				{questions.map((item) => {
 					// @ts-expect-error
 					const userAnswer = data.answers[item.key];
@@ -174,21 +176,21 @@ export function ExamReview({ data }: ExamReviewProps) {
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div className="space-y-2">
 									<h4 className="font-semibold text-sm text-mocha-sub-text">
-										Answer:
+										{t("answer")}:
 									</h4>
 									<div className="p-3 bg-muted rounded-lg">
 										{item.type === "select" && (
 											<p className="text-sm">
 												{item.questionOptions?.find(
 													(option) => option.value === userAnswer,
-												)?.label || "No answer"}
+												)?.label || t("noAnswer")}
 											</p>
 										)}
 										{item.type === "radio" && (
 											<p className="text-sm">
 												{item.questionOptions?.find(
 													(option) => option.value === userAnswer,
-												)?.label || "No answer"}
+												)?.label || t("noAnswer")}
 											</p>
 										)}
 										{item.type === "checkbox" && (
@@ -207,7 +209,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 										{item.type === "switch" &&
 											typeof userAnswer === "boolean" && (
 												<p className="text-sm">
-													{userAnswer ? "True" : "False"}
+													{userAnswer ? t("true") : t("false")}
 												</p>
 											)}
 										{item.type === "slider" && Array.isArray(userAnswer) && (
@@ -215,48 +217,48 @@ export function ExamReview({ data }: ExamReviewProps) {
 										)}
 										{item.type === "textarea" && (
 											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
+												{userAnswer ?? t("noAnswerProvided")}
 											</p>
 										)}
 										{item.type === "date" && (
 											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
+												{userAnswer ?? t("noAnswerProvided")}
 											</p>
 										)}
 										{item.type === "email" && (
 											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
+												{userAnswer ?? t("noAnswerProvided")}
 											</p>
 										)}
 										{item.type === "text" && (
 											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
+												{userAnswer ?? t("noAnswerProvided")}
 											</p>
 										)}
 										{item.type === "number" && (
 											<p className="text-sm">
-												{userAnswer ?? "No answer provided"}
+												{userAnswer ?? t("noAnswerProvided")}
 											</p>
 										)}
 									</div>
 								</div>
 								<div className="space-y-2">
 									<h4 className="font-semibold text-sm text-mocha-sub-text">
-										Correct Answer:
+										{t("correctAnswer")}:
 									</h4>
 									<div className="p-3 border border-mocha-mauve bg-mocha-base rounded-2xl">
 										{item.type === "select" && (
 											<p className="text-sm">
 												{item.questionOptions?.find(
 													(option) => option.value === item.answer,
-												)?.label || "No answer"}
+												)?.label || t("noAnswer")}
 											</p>
 										)}
 										{item.type === "radio" && (
 											<p className="text-sm">
 												{item.questionOptions?.find(
 													(option) => option.value === item.answer,
-												)?.label || "No answer"}
+												)?.label || t("noAnswer")}
 											</p>
 										)}
 										{item.type === "checkbox" && (
@@ -275,7 +277,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 										{item.type === "switch" &&
 											typeof item.answer === "boolean" && (
 												<p className="text-sm">
-													{item.answer ? "True" : "False"}
+													{item.answer ? t("true") : t("false")}
 												</p>
 											)}
 										{item.type === "slider" &&
@@ -300,11 +302,10 @@ export function ExamReview({ data }: ExamReviewProps) {
 									</div>
 								</div>
 							</div>
-
 							{item.questionOptions && item.questionOptions.length > 0 && (
 								<div className="space-y-2">
 									<h4 className="font-semibold text-sm text-mocha-sub-text">
-										Opciones Disponibles:
+										{t("availableOptions")}
 									</h4>
 									<div className="flex flex-wrap gap-2">
 										{item.questionOptions.map((option) => (
@@ -327,7 +328,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 					className="w-fit"
 					onClick={() => setShowFeedback(!showFeedback)}
 				>
-					{showFeedback ? "Hide" : "Show"} Feedback
+					{showFeedback ? t("hideFeedback") : t("showFeedback")}
 				</Button>
 				{showFeedback && (
 					<Card className="text-sm max-h-96 overflow-auto border bg-mocha-crust">

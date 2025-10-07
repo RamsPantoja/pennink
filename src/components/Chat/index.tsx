@@ -29,6 +29,7 @@ import {
 } from "../ui/dropdown-menu";
 import { BrainIcon } from "lucide-react";
 import { Fragment } from "react";
+import { useTranslations } from "next-intl";
 
 type ChatProps = {
 	id: string;
@@ -36,6 +37,8 @@ type ChatProps = {
 };
 
 export const Chat = ({ id, isNew }: ChatProps) => {
+	const t = useTranslations("Chat");
+
 	const {
 		onSentPrompt,
 		useChatForm,
@@ -72,7 +75,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 		>
 			{messagesIsLoading && <ChatSkeleton />}
 			{!messagesIsLoading && messagesIsError && (
-				<FeedbackMessage status="ERROR" message="Error fetching messages" />
+				<FeedbackMessage status="ERROR" message={t("errors.fetchMessages")} />
 			)}
 			<div className="flex flex-1 overflow-hidden relative">
 				<div
@@ -83,10 +86,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 					{messages.length === 0 && !isNew && (
 						<Card className="flex flex-col gap-2 items-center justify-center flex-1 bg-transparent">
 							<BrainIcon className="min-w-16 h-16 animate-pulse" />
-							<p className="font-bold">Chat with AI</p>
-							<p className="text-sm">
-								Ask anything or use the tools available below
-							</p>
+							<p className="font-bold">{t("emptyState.title")}</p>
+							<p className="text-sm">{t("emptyState.description")}</p>
 						</Card>
 					)}
 					{messages.length > 0 &&
@@ -95,7 +96,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						))}
 					{tempMessages.map((message) => {
 						const parsedMessage = parseUIMessage(message);
-
 						if (parsedMessage) {
 							return (
 								<div key={message.id} className="flex flex-1 min-h-96">
@@ -106,7 +106,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								</div>
 							);
 						}
-
 						return <Fragment key={message.id} />;
 					})}
 				</div>
@@ -132,14 +131,14 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 											onClick={stopStreaming}
 											size="icon"
 											disabled={false}
+											aria-label={t("aria.addContext")}
 										>
 											<PlusIcon className="min-w-5 w-5 h-5" />
 										</Button>
 									</DropdownMenuTrigger>
 								</TooltipTrigger>
-								<TooltipContent>Add context to chat</TooltipContent>
+								<TooltipContent>{t("tooltips.addContext")}</TooltipContent>
 							</Tooltip>
-
 							<DropdownMenuContent
 								side="right"
 								onCloseAutoFocus={(e) => {
@@ -155,7 +154,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 											setAiContextItems([
 												...aiContextItems,
 												{
-													label: "Document",
+													label: t("contextItems.document"),
 													type: "document",
 												},
 											]);
@@ -165,7 +164,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 									className="flex gap-2"
 								>
 									<DocumentTextIcon className="min-w-5 w-5 h-5" />
-									Current document
+									{t("contextItems.document")}
 								</DropdownMenuItem>
 								<DropdownMenuItem
 									onClick={(e) => {
@@ -175,7 +174,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 											setAiContextItems([
 												...aiContextItems,
 												{
-													label: "Editor",
+													label: t("contextItems.editor"),
 													type: "editor",
 												},
 											]);
@@ -184,13 +183,13 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 									className="flex gap-2"
 								>
 									<Bars3BottomLeftIcon className="min-w-5 w-5 h-5" />
-									Editor content
+									{t("contextItems.editor")}
 								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
 						{aiContextItems.length === 0 && (
 							<span className="text-xs text-mocha-sub-text">
-								Add context...
+								{t("contextItems.addPrompt")}
 							</span>
 						)}
 						{aiContextItems.length >= 1 &&
@@ -219,6 +218,9 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 												aiContextItems.filter((_, i) => i !== index),
 											);
 										}}
+										aria-label={t("aria.removeContextItem", {
+											item: item.label,
+										})}
 									>
 										<XCircleIcon className="min-w-5 h-5" />
 									</Button>
@@ -226,7 +228,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							))}
 					</div>
 				)}
-
 				<Card className="w-full bg-mocha-base border border-mocha-mauve rounded-2xl flex flex-col p-3 shadow-xs shadow-mocha-mauve">
 					{quote && (
 						<Card className="flex items-start gap-2 bg-mocha-mantle border">
@@ -234,11 +235,16 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 							<p className="text-mocha-text text-xs flex-1">{quote}</p>
 							<Tooltip>
 								<TooltipTrigger asChild>
-									<Button variant="ghost" size="icon" onClick={onRemoveQuote}>
+									<Button
+										variant="ghost"
+										size="icon"
+										onClick={onRemoveQuote}
+										aria-label={t("aria.removeQuote")}
+									>
 										<XCircleIcon className="min-w-5 h-5" />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Remove Quote</TooltipContent>
+								<TooltipContent>{t("tooltips.removeQuote")}</TooltipContent>
 							</Tooltip>
 						</Card>
 					)}
@@ -247,11 +253,12 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 						name="prompt"
 						render={({ field }) => (
 							<AutoResizeTextarea
-								placeholder="Ask anything"
+								placeholder={t("input.placeholder")}
 								className="border-none ring-0 text-mocha-text bg-mocha-base"
 								onChange={field.onChange}
 								value={field.value}
 								onKeyDown={handleKeyDown}
+								aria-label={t("aria.chatInput")}
 							/>
 						)}
 					/>
@@ -271,16 +278,18 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 												<ToggleGroupItem
 													value="form-generation"
 													variant="outline"
-													aria-label="Toggle form generation mode"
+													aria-label={t("aria.formGenerationToggle")}
 													className="rounded-full"
 													type="button"
 												>
 													<ListBulletIcon className="min-w-4 w-4 h-4 mr-2" />
-													Form
+													{t("tools.formGeneration")}
 												</ToggleGroupItem>
 											</span>
 										</TooltipTrigger>
-										<TooltipContent>Form generation tool</TooltipContent>
+										<TooltipContent>
+											{t("tooltips.formGeneration")}
+										</TooltipContent>
 									</Tooltip>
 								)}
 							</ToggleGroup>
@@ -294,6 +303,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 								onClick={stopStreaming}
 								size="icon"
 								disabled={false}
+								aria-label={t("aria.stopStreaming")}
 							>
 								<StopIcon className="min-w-5 w-5 h-5" />
 							</Button>
@@ -313,6 +323,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 									triggerChatMessagesRuleIsPending ||
 									!watch("prompt").trim()
 								}
+								aria-label={t("aria.sendMessage")}
 							>
 								<ArrowUpIcon className="min-w-5 w-5 h-5" />
 							</Button>

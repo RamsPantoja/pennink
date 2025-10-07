@@ -343,3 +343,33 @@ export function debounce<F extends (...args: any[]) => void>(
 		}, timeout);
 	};
 }
+
+export type Locale = "en" | "es";
+
+export const getPreferredLocale = (
+	acceptLanguageHeader: string | undefined,
+): Locale => {
+	// Default locale if nothing matches
+	const defaultLocale: Locale = "en";
+	const supportedLocales: Locale[] = ["en", "es"];
+
+	if (!acceptLanguageHeader) return defaultLocale;
+
+	// Parse Accept-Language header
+	// Example header: "fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5"
+	const languages = acceptLanguageHeader
+		.split(",")
+		.map((lang) => {
+			const [locale, weight = "q=1.0"] = lang.trim().split(";");
+			const q = Number(weight.split("=")[1]);
+			return { locale: locale?.split("-")[0], q }; // Take only the language code, not the region
+		})
+		.sort((a, b) => b.q - a.q); // Sort by quality value
+
+	// Find the first supported locale
+	const matchedLocale = languages.find((lang) =>
+		supportedLocales.includes(lang.locale as Locale),
+	);
+
+	return matchedLocale ? (matchedLocale.locale as Locale) : defaultLocale;
+};
