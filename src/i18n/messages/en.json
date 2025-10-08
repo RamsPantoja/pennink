@@ -646,5 +646,122 @@
 		"toast": {
 			"success": "Feedback sent successfully!"
 		}
+	},
+
+	"Identification": {
+		"form": {
+			"name": {
+				"label": "Name",
+				"required": "Name is required",
+				"minLength": "Name must be at least 2 characters long"
+			},
+			"email": {
+				"label": "Email",
+				"required": "Email is required",
+				"invalid": "Invalid email address",
+				"helperText": "Your email will be used to send you updates about this exam"
+			}
+		},
+		"dialog": {
+			"identify": {
+				"title": "Identify yourself",
+				"description": "Before you can proceed, please provide your name and email."
+			},
+			"start": {
+				"title": "Start the Exam",
+				"descriptionWithTime": "Once you start the exam, you will have {time} minutes to complete it.",
+				"descriptionWithoutTime": "Once you start the exam, you will have unlimited time to complete it."
+			}
+		},
+		"button": {
+			"submit": "Submit",
+			"start": "Start",
+			"googleSignIn": "Sign in with Google"
+		},
+		"legal": {
+			"text": "By Creating an account or Sign in, you agree to the <terms>Terms</terms> and our <privacy>Privacy Policy</privacy>.",
+			"terms": "Terms",
+			"privacy": "Privacy Policy"
+		},
+		"identification": {
+			"form": {
+				"email": {
+					"required": "Email is required",
+					"invalid": "Invalid email address"
+				},
+				"name": {
+					"required": "Name is required",
+					"minLength": "Name must be at least 2 characters long"
+				}
+			}
+		}
+	},
+
+	"ExamFeedback": {
+		"dialog": {
+			"title": "Exam results",
+			"description": "Here you can see your exam results and feedback."
+		},
+		"status": {
+			"ready": "Ready",
+			"streaming": "Processing results...",
+			"submitted": "Generating feedback..."
+		},
+		"loading": {
+			"message": "Your exam is being evaluated..."
+		}
+	},
+
+	"IdentificationForm": {
+		"dialog": {
+			"title": "Identify yourself",
+			"description": "Before you can proceed, please provide your name and email."
+		},
+		"form": {
+			"name": {
+				"label": "Name",
+				"required": "Name is required",
+				"minLength": "Name must be at least 2 characters long"
+			},
+			"email": {
+				"label": "Email",
+				"required": "Email is required",
+				"invalid": "Invalid email address",
+				"helperText": "Your email will be used to send you updates about your form."
+			}
+		},
+		"button": {
+			"submit": "Submit",
+			"googleSignIn": "Sign in with Google"
+		},
+		"legal": {
+			"text": "By creating an account or signing in, you agree to the <terms>Terms</terms> and our <privacy>Privacy Policy</privacy>.",
+			"terms": "Terms",
+			"privacy": "Privacy Policy"
+		},
+		"identification": {
+			"form": {
+				"email": {
+					"required": "Email is required",
+					"invalid": "Invalid email address"
+				},
+				"name": {
+					"required": "Name is required",
+					"minLength": "Name must be at least 2 characters long"
+				}
+			}
+		}
+	},
+
+	"PDFViewer": {
+		"searchPlaceholder": "Search for text...",
+		"of": "of",
+		"matches": "matches",
+		"caseSensitive": "Case sensitive",
+		"zoomOut": "Zoom out",
+		"resetZoom": "Reset zoom",
+		"zoomIn": "Zoom in",
+		"pageLabel": "Page",
+		"pageCounter": "Page {{current}} of {{total}}"
 	}
 }

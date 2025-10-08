@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Separator } from "../ui/separator";
 import { ClipboardIcon } from "@heroicons/react/24/outline";
 import { Button } from "./Button";
+import { Copy } from "lucide-react";
 
 type SelectionToolbarProps = {
 	children: React.ReactNode;
@@ -172,10 +173,10 @@ export function SelectionToolbar({
 							onClick={handleCopy}
 							size="icon"
 							variant="ghost"
-							className="hover:bg-mocha-mauve hover:text-mocha-base"
+							className="hover:bg-mocha-mauve"
 							title={"Copy"}
 						>
-							<ClipboardIcon className="min-w-5 h-5" />
+							<Copy className="min-w-5 h-5" />
 						</Button>
 					</div>
 				</div>

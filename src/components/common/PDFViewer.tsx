@@ -3,7 +3,6 @@ import { pdfjs, Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import type { PDFDocumentProxy } from "pdfjs-dist";
-// @ts-expect-error TS(7053): No type definitions for the following module.
 import workerSrc from "pdfjs-dist/build/pdf.worker.min.mjs";
 import { Card } from "../ui/card";
 import { Button } from "./Button";
@@ -25,6 +24,7 @@ import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { Virtuoso } from "react-virtuoso";
+import { useTranslations } from "next-intl";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 	workerSrc,
@@ -47,6 +47,7 @@ type DynamicPDFViewerProps = {
 };
 
 export default function PDFViewer({ src }: DynamicPDFViewerProps) {
+	const t = useTranslations("PDFViewer");
 	const [pageNumbers, setPageNumbers] = useState<number[]>([]);
 	const [numPages, setNumPages] = useState<number>();
 	const [containerWidth, setContainerWidth] = useState<number>();
@@ -68,9 +69,6 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 		}
 	}, []);
 
-	// useResizeObserver(containerRef, resizeObserverOptions, onResize);
-	//
-
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -89,7 +87,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 			{
 				root: null,
 				rootMargin: "0px",
-				threshold: 0.2, // Adjust threshold as needed
+				threshold: 0.2,
 			},
 		);
 
@@ -118,14 +116,11 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 
 	const onDocumentLoadSuccess = async (document: PDFDocumentProxy) => {
 		const pageData = await document.getPage(1);
-
 		setDefaultMinPageHeight(pageData.view[3] ?? 792);
-
 		const pageNumberList = Array.from(
 			{ length: document.numPages },
 			(_, i) => i,
 		);
-
 		setPageNumbers(pageNumberList);
 		setNumPages(document.numPages);
 	};
@@ -136,9 +131,6 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 			return;
 		}
 
-		// Reset to original content before searching
-		// contentRef.current.innerHTML = originalContent.current;
-
 		const content = contentRef.current;
 		const text = content.textContent || "";
 		const searchRegex = new RegExp(
@@ -146,7 +138,6 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 			caseSensitive ? "g" : "gi",
 		);
 
-		// Find all matches
 		const allMatches: number[] = [];
 		let match;
 		while ((match = searchRegex.exec(text)) !== null) {
@@ -155,8 +146,6 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 
 		setMatches(allMatches);
 		setCurrentMatch(allMatches.length > 0 ? 0 : -1);
-
-		// Highlight matches
 		highlightMatches(content, searchTerm, caseSensitive, allMatches[0]);
 	};
 
@@ -177,28 +166,23 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 			currentIndex: number,
 		) => {
 			if (node.nodeType === 3) {
-				// Text node
 				const text = node.nodeValue || "";
 				const searchRegex = new RegExp(
 					escapeRegExp(term),
 					caseSensitive ? "g" : "gi",
 				);
-
-				// @ts-expect-error TS(7053): No type definitions for the following module.
 				let match;
 				let lastIndex = 0;
 				const result = document.createDocumentFragment();
 				let currentPosition = 0;
 
 				while ((match = searchRegex.exec(text)) !== null) {
-					// Add text before the match
 					if (match.index > lastIndex) {
 						result.appendChild(
 							document.createTextNode(text.substring(lastIndex, match.index)),
 						);
 					}
 
-					// Create highlighted span for the match
 					const highlightSpan = document.createElement("span");
 					highlightSpan.className =
 						currentPosition === currentIndex
@@ -206,13 +190,10 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 							: "bg-black text-white rounded";
 					highlightSpan.appendChild(document.createTextNode(match[0]));
 					result.appendChild(highlightSpan);
-
 					lastIndex = match.index + match[0].length;
-					// @ts-expect-error TS(7053): No type definitions for the following module.
 					currentPosition = matches.findIndex((pos) => pos === match.index);
 				}
 
-				// Add remaining text
 				if (lastIndex < text.length) {
 					result.appendChild(
 						document.createTextNode(text.substring(lastIndex)),
@@ -224,8 +205,6 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					return true;
 				}
 			} else if (node.nodeType === 1) {
-				// Element node
-				// Skip script and style elements
 				if (
 					node.nodeName === "SCRIPT" ||
 					node.nodeName === "STYLE" ||
@@ -235,7 +214,6 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					return false;
 				}
 
-				// Process child nodes
 				const childNodes = Array.from(node.childNodes);
 				for (const child of childNodes) {
 					highlightText(child, term, caseSensitive, currentIndex);
@@ -252,6 +230,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 		if (matches.length === 0) return;
 
 		let newIndex;
+
 		if (direction === "next") {
 			newIndex = currentMatch < matches.length - 1 ? currentMatch + 1 : 0;
 		} else {
@@ -260,13 +239,10 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 
 		setCurrentMatch(newIndex);
 
-		// Rehighlight with new current match
 		if (contentRef.current) {
-			// contentRef.current.innerHTML = originalContent.current;
 			highlightMatches(contentRef.current, searchTerm, caseSensitive, newIndex);
-
-			// Scroll to the current match
 			const currentElement = contentRef.current.querySelector(".current-match");
+
 			if (currentElement) {
 				currentElement.scrollIntoView({ behavior: "smooth", block: "center" });
 			}
@@ -284,11 +260,12 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 	return (
 		<div className="flex w-full h-full flex-col bg-transparent">
 			<div className="flex gap-4 p-4 justify-around">
+				{/* Commented out search section */}
 				{/* <div className="flex flex-col gap-2">
 					<div className="flex items-center gap-2 relative">
 						<Input
 							type="text"
-							placeholder="Search for text..."
+							placeholder={t("searchPlaceholder")}
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
 							onKeyDown={(e) => e.key === "Enter" && performSearch()}
@@ -315,7 +292,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 						{matches.length > 0 && (
 							<div className="flex items-center gap-2">
 								<span className="text-sm">
-									{currentMatch + 1} of {matches.length} matches
+									{currentMatch + 1} {t("of")} {matches.length} {t("matches")}
 								</span>
 								<Button
 									variant="secondary"
@@ -341,10 +318,11 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 								checked={caseSensitive}
 								onCheckedChange={setCaseSensitive}
 							/>
-							<Label htmlFor="case-sensitive">Case sensitive</Label>
+							<Label htmlFor="case-sensitive">{t("caseSensitive")}</Label>
 						</div>
 					</div>
 				</div> */}
+
 				<div className="flex items-center gap-2 h-fit">
 					<span className="text-xs font-bold">{(zoom * 100).toFixed(0)}%</span>
 					<Tooltip>
@@ -358,7 +336,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 								<MagnifyingGlassMinusIcon className="min-w-5 h-5" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent>Zoom out</TooltipContent>
+						<TooltipContent>{t("zoomOut")}</TooltipContent>
 					</Tooltip>
 					<Tooltip>
 						<TooltipTrigger asChild>
@@ -371,7 +349,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 								<ArrowPathIcon className="min-w-5 h-5" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent>Reset zoom</TooltipContent>
+						<TooltipContent>{t("resetZoom")}</TooltipContent>
 					</Tooltip>
 					<Tooltip>
 						<TooltipTrigger asChild>
@@ -384,10 +362,11 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 								<MagnifyingGlassPlusIcon className="min-w-5 h-5" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent>Zoom in</TooltipContent>
+						<TooltipContent>{t("zoomIn")}</TooltipContent>
 					</Tooltip>
 				</div>
 			</div>
+
 			<Card className="flex flex-1 overflow-hidden pt-0 pb-0 rounded-none bg-transparent">
 				<Document
 					file={src}
@@ -413,7 +392,9 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 											minHeight: `${defaultPageMinHeight}px`,
 										}}
 									>
-										<span className="text-xs font-bold">Page {index + 1}</span>
+										<span className="text-xs font-bold">
+											{t("pageLabel")} {index + 1}
+										</span>
 										<Page
 											pageNumber={index + 1}
 											loading={<Loading />}
@@ -426,10 +407,12 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					/>
 				</Document>
 			</Card>
+
+			{/* Commented out page counter */}
 			{/* <div className="p-4">
 				{numPages && (
 					<p className="text-xs">
-						Page {pageNumber} of {numPages}
+						{t("pageCounter", { current: pageNumber, total: numPages })}
 					</p>
 				)}
 			</div> */}

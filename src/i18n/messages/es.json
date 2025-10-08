@@ -646,5 +646,122 @@
 		"toast": {
 			"success": "¡Comentarios enviados con éxito!"
 		}
+	},
+
+	"Identification": {
+		"form": {
+			"name": {
+				"label": "Nombre",
+				"required": "El nombre es obligatorio",
+				"minLength": "El nombre debe tener al menos 2 caracteres"
+			},
+			"email": {
+				"label": "Correo electrónico",
+				"required": "El correo electrónico es obligatorio",
+				"invalid": "Dirección de correo electrónico no válida",
+				"helperText": "Tu correo electrónico se utilizará para enviarte actualizaciones sobre este examen"
+			}
+		},
+		"dialog": {
+			"identify": {
+				"title": "Identifícate",
+				"description": "Antes de continuar, por favor proporciona tu nombre y correo electrónico."
+			},
+			"start": {
+				"title": "Comenzar el Examen",
+				"descriptionWithTime": "Una vez que comiences el examen, tendrás {time} minutos para completarlo.",
+				"descriptionWithoutTime": "Una vez que comiences el examen, tendrás tiempo ilimitado para completarlo."
+			}
+		},
+		"button": {
+			"submit": "Enviar",
+			"start": "Comenzar",
+			"googleSignIn": "Iniciar sesión con Google"
+		},
+		"legal": {
+			"text": "Al crear una cuenta o iniciar sesión, aceptas los <terms>Términos</terms> y nuestra <privacy>Política de Privacidad</privacy>.",
+			"terms": "Términos",
+			"privacy": "Política de Privacidad"
+		},
+		"identification": {
+			"form": {
+				"email": {
+					"required": "El correo electrónico es obligatorio",
+					"invalid": "Dirección de correo electrónico no válida"
+				},
+				"name": {
+					"required": "El nombre es obligatorio",
+					"minLength": "El nombre debe tener al menos 2 caracteres"
+				}
+			}
+		}
+	},
+
+	"ExamFeedback": {
+		"dialog": {
+			"title": "Resultados del examen",
+			"description": "Aquí puedes ver los resultados de tu examen y los comentarios."
+		},
+		"status": {
+			"ready": "Listo",
+			"streaming": "Procesando resultados...",
+			"submitted": "Generando comentarios..."
+		},
+		"loading": {
+			"message": "Tu examen está siendo evaluado..."
+		}
+	},
+
+	"IdentificationForm": {
+		"dialog": {
+			"title": "Identifícate",
+			"description": "Antes de continuar, por favor proporciona tu nombre y correo electrónico."
+		},
+		"form": {
+			"name": {
+				"label": "Nombre",
+				"required": "El nombre es obligatorio",
+				"minLength": "El nombre debe tener al menos 2 caracteres"
+			},
+			"email": {
+				"label": "Correo electrónico",
+				"required": "El correo electrónico es obligatorio",
+				"invalid": "Dirección de correo electrónico no válida",
+				"helperText": "Tu correo electrónico se utilizará para enviarte actualizaciones sobre tu formulario."
+			}
+		},
+		"button": {
+			"submit": "Enviar",
+			"googleSignIn": "Iniciar sesión con Google"
+		},
+		"legal": {
+			"text": "Al crear una cuenta o iniciar sesión, aceptas los <terms>Términos</terms> y nuestra <privacy>Política de Privacidad</privacy>.",
+			"terms": "Términos",
+			"privacy": "Política de Privacidad"
+		},
+		"identification": {
+			"form": {
+				"email": {
+					"required": "El correo electrónico es obligatorio",
+					"invalid": "Dirección de correo electrónico no válida"
+				},
+				"name": {
+					"required": "El nombre es obligatorio",
+					"minLength": "El nombre debe tener al menos 2 caracteres"
+				}
+			}
+		}
+	},
+
+	"PDFViewer": {
+		"searchPlaceholder": "Buscar texto...",
+		"of": "de",
+		"matches": "coincidencias",
+		"caseSensitive": "Distingue mayúsculas",
+		"zoomOut": "Alejar",
+		"resetZoom": "Restablecer zoom",
+		"zoomIn": "Acercar",
+		"pageLabel": "Página",
+		"pageCounter": "Página {{current}} de {{total}}"
 	}
 }

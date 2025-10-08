@@ -1,6 +1,7 @@
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import {
 	Dialog,
 	DialogContent,
@@ -18,10 +19,12 @@ import type { Session } from "next-auth";
 import InputFeedbackMessage from "./InputFeedbackMessage";
 
 const identificationValidationSchema = z.object({
-	email: z.string({ required_error: "Email is required" }).email(),
+	email: z
+		.string({ required_error: "identification.form.email.required" })
+		.email("identification.form.email.invalid"),
 	name: z
-		.string({ required_error: "Name is required" })
-		.min(2, "Name must be at least 2 characters long"),
+		.string({ required_error: "identification.form.name.required" })
+		.min(2, "identification.form.name.minLength"),
 });
 
 export type IdentificationValidationSchema = z.infer<
@@ -45,6 +48,7 @@ export const IdentificationDialogExam = ({
 	onStart,
 	duration,
 }: IdentificationDialogExamProps) => {
+	const t = useTranslations("Identification");
 	const {
 		handleSubmit,
 		formState: { errors },
@@ -72,33 +76,33 @@ export const IdentificationDialogExam = ({
 			{identificationData === null && session === null ? (
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Identify yourself</DialogTitle>
+						<DialogTitle>{t("dialog.identify.title")}</DialogTitle>
 						<DialogDescription>
-							Before you can proceed, please provide your name and email.
+							{t("dialog.identify.description")}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="grid gap-4">
 						<div className="grid gap-3">
-							<Label htmlFor="name">Name</Label>
+							<Label htmlFor="name">{t("form.name.label")}</Label>
 							<Input id="name" {...register("name")} />
 							{errors.name && (
 								<InputFeedbackMessage
 									status="ERROR"
-									message={errors.name.message}
+									message={t(errors.name.message as any)}
 								/>
 							)}
 						</div>
 						<div className="grid gap-3">
-							<Label htmlFor="email">Email</Label>
+							<Label htmlFor="email">{t("form.email.label")}</Label>
 							<Input id="email" {...register("email")} type="email" />
 							{errors.email && (
 								<InputFeedbackMessage
 									status="ERROR"
-									message={errors.email.message}
+									message={t(errors.email.message as any)}
 								/>
 							)}
 							<p className="text-xs text-mocha-sub-text">
-								Your email will be used to send you updates about this exam
+								{t("form.email.helperText")}
 							</p>
 						</div>
 					</div>
@@ -108,7 +112,7 @@ export const IdentificationDialogExam = ({
 							className="w-full"
 							type="button"
 						>
-							Submit
+							{t("button.submit")}
 						</Button>
 					</DialogFooter>
 					<Separator />
@@ -149,49 +153,46 @@ export const IdentificationDialogExam = ({
 							</svg>
 						}
 					>
-						Sign in with Google
+						{t("button.googleSignIn")}
 					</Button>
 					<p className="text-xs text-mocha-text text-center">
-						By Creating an account or Sign in, you agree to the{" "}
-						<a
-							className="text-blackLight underline"
-							target="_blank"
-							href="https://www.pennink.xyz/terms"
-						>
-							Terms
-						</a>{" "}
-						and our{" "}
-						<a
-							className="text-blackLight underline"
-							target="_blank"
-							href="https://www.pennink.xyz/privacy-policy"
-						>
-							Privacy Policy
-						</a>
-						.
+						{t.rich("legal.text", {
+							terms: (chunks) => (
+								<a
+									className="text-mocha-sub-text underline"
+									target="_blank"
+									href="https://www.pennink.xyz/terms"
+								>
+									{chunks}
+								</a>
+							),
+							privacy: (chunks) => (
+								<a
+									className="text-mocha-sub-text underline"
+									target="_blank"
+									href="https://www.pennink.xyz/privacy-policy"
+								>
+									{chunks}
+								</a>
+							),
+						})}
 					</p>
 				</DialogContent>
 			) : (
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Start the Exam</DialogTitle>
+						<DialogTitle>{t("dialog.start.title")}</DialogTitle>
 						<DialogDescription>
 							{duration ? (
-								<>
-									Once you start the exam, you will have {duration} minutes to
-									complete it.
-								</>
+								<>{t("dialog.start.descriptionWithTime", { time: duration })}</>
 							) : (
-								<>
-									Once you start the exam, you will have unlimited time to
-									complete it.
-								</>
+								<>{t("dialog.start.descriptionWithoutTime")}</>
 							)}
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
 						<Button onClick={onStart} className="w-full" type="button">
-							Start
+							{t("button.start")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

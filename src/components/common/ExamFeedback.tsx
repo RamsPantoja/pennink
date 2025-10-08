@@ -1,4 +1,5 @@
 import type { ChatStatus, UIDataTypes, UIMessage, UITools } from "ai-v5";
+import { useTranslations } from "next-intl";
 import {
 	Dialog,
 	DialogContent,
@@ -29,6 +30,8 @@ export const ExamFeedback = ({
 	status,
 	setOpen,
 }: ExamFeedbackProps) => {
+	const t = useTranslations("ExamFeedback");
+
 	return (
 		<Dialog
 			open={open}
@@ -40,10 +43,8 @@ export const ExamFeedback = ({
 		>
 			<DialogContent className="sm:max-w-3xl">
 				<DialogHeader>
-					<DialogTitle>Exam results</DialogTitle>
-					<DialogDescription>
-						Here you can see your exam results and feedback.
-					</DialogDescription>
+					<DialogTitle>{t("dialog.title")}</DialogTitle>
+					<DialogDescription>{t("dialog.description")}</DialogDescription>
 				</DialogHeader>
 				{status === "submitted" && (
 					<Card className="flex flex-col gap-2">

@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/outline";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import { Button } from "./Button";
-import { cn } from "~/lib/utils";
 import { Copy } from "lucide-react";
 
 type ClipBoardProps = {
