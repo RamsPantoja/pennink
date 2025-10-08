@@ -58,18 +58,18 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 
 	return (
 		<Card
-			className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors cursor-pointer h-full w-full p-0 flex"
+			className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors cursor-pointer h-fit w-full p-0 flex"
 			onClick={onSelectDocument}
 		>
 			<div className="flex flex-col w-full">
-				<div className="flex w-full h-32 relative">
+				<div className="flex w-full h-10 relative bg-red-400 rounded-t-2xl">
 					<div className="flex gap-2 text-xs absolute top-2 right-2 z-10">
 						{type === "application/pdf" && (
 							<Badge variant="secondary">{t("badge.pdf")}</Badge>
 						)}
 					</div>
 				</div>
-				<div className="flex gap-3 p-3 w-full flex-col backdrop-blur-xs bg-black-main/30">
+				<div className="flex gap-3 p-3 w-full flex-col">
 					<h3
 						className="font-medium text-sm text-mocha-text truncate w-full"
 						title={title}

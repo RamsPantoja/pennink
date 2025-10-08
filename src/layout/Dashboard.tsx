@@ -241,53 +241,44 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 									</Tooltip>
 								)}
 								{pathname !== "/" && (
-									<DropdownMenu modal={false}>
-										<Tooltip>
-											<TooltipTrigger asChild>
-												<DropdownMenuTrigger asChild>
-													<Button
-														variant="ghost"
-														size="icon"
-														isPending={
-															uploadingFile ||
-															createFileIsPending ||
-															triggerUploadFilesRuleIsPending ||
-															isReadingPDF
-														}
-													>
-														<CircleStackIcon className="min-w-5 w-5 h-5" />
-													</Button>
-												</DropdownMenuTrigger>
-											</TooltipTrigger>
-											<TooltipContent>
-												{t("tooltips.searchSources")}
-											</TooltipContent>
-										</Tooltip>
-										<DropdownMenuContent
-											side="right"
-											onCloseAutoFocus={(e) => {
-												e.preventDefault();
-												e.stopPropagation();
-											}}
-										>
-											<DropdownMenuItem
-												onClick={() => fileInputRef.current?.click()}
-												className="flex gap-2"
-											>
-												<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
-												{t("dropdown.importPDF")}
-											</DropdownMenuItem>
-											<DropdownMenuItem
-												onClick={() => {
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button
+												variant="ghost"
+												size="icon"
+												onClick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
 													setOpenDocumentLoader(true);
 												}}
-												className="flex gap-2"
 											>
-												<MagnifyingGlassIcon className="min-w-5 w-5 h-5" />
-												{t("dropdown.searchSources")}
-											</DropdownMenuItem>
-										</DropdownMenuContent>
-									</DropdownMenu>
+												<CircleStackIcon className="min-w-5 w-5 h-5" />
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>
+											{t("tooltips.searchSources")}
+										</TooltipContent>
+									</Tooltip>
+								)}
+								{pathname !== "/" && (
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Button
+												onClick={() => fileInputRef.current?.click()}
+												variant="ghost"
+												size="icon"
+												isPending={
+													uploadingFile ||
+													createFileIsPending ||
+													triggerUploadFilesRuleIsPending ||
+													isReadingPDF
+												}
+											>
+												<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
+											</Button>
+										</TooltipTrigger>
+										<TooltipContent>{t("dropdown.importPDF")}</TooltipContent>
+									</Tooltip>
 								)}
 								{pathname !== "/" && (
 									<Tooltip>
@@ -318,5 +309,35 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 		</SessionProvider>
 	);
 };
+
+// <DropdownMenu modal={false}>
+
+// 										<DropdownMenuContent
+// 											side="right"
+// 											onCloseAutoFocus={(e) => {
+// 												e.preventDefault();
+// 												e.stopPropagation();
+// 											}}
+// 										>
+// 											<DropdownMenuItem
+// 												onClick={() => fileInputRef.current?.click()}
+// 												className="flex gap-2"
+// 											>
+// 												<ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
+// 												{t("dropdown.importPDF")}
+// 											</DropdownMenuItem>
+// 											<DropdownMenuItem
+// 												onClick={(e) => {
+// 													e.preventDefault();
+// 													e.stopPropagation();
+// 													setOpenDocumentLoader(true);
+// 												}}
+// 												className="flex gap-2"
+// 											>
+// 												<MagnifyingGlassIcon className="min-w-5 w-5 h-5" />
+// 												{t("dropdown.searchSources")}
+// 											</DropdownMenuItem>
+// 										</DropdownMenuContent>
+// 									</DropdownMenu>
 
 export default Dashboard;

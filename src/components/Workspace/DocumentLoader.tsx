@@ -93,7 +93,7 @@ export const DocumentLoader = ({
 							)}
 						</div>
 					</SheetHeader>
-					<div className="flex gap-2 h-fit overflow-auto w-full">
+					<div className="flex gap-2 h-fit w-full overflow-y-auto">
 						{filesByUserLoading && <Loading />}
 						{!filesByUserLoading && filesByUserError && (
 							<FeedbackMessage
