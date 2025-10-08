@@ -160,6 +160,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					escapeRegExp(term),
 					caseSensitive ? "g" : "gi",
 				);
+				// @ts-expect-error TS(7053): No type definitions for the following module.
 				let match;
 				let lastIndex = 0;
 				const result = document.createDocumentFragment();
@@ -180,6 +181,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					highlightSpan.appendChild(document.createTextNode(match[0]));
 					result.appendChild(highlightSpan);
 					lastIndex = match.index + match[0].length;
+					// @ts-expect-error TS(7053): No type definitions for the following module.
 					currentPosition = matches.findIndex((pos) => pos === match.index);
 				}
 
