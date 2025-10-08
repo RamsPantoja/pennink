@@ -3,31 +3,20 @@ import { pdfjs, Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import type { PDFDocumentProxy } from "pdfjs-dist";
-import workerSrc from "pdfjs-dist/build/pdf.worker.min.mjs";
 import { Card } from "../ui/card";
 import { Button } from "./Button";
 import {
-	ArrowLongLeftIcon,
-	ArrowLongRightIcon,
 	MagnifyingGlassPlusIcon,
 	MagnifyingGlassMinusIcon,
 	ArrowPathIcon,
-	MagnifyingGlassIcon,
-	XMarkIcon,
-	ChevronUpIcon,
-	ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Loading } from "./Loading";
-import { ZoomableDiv } from "./ZoomableDiv";
-import { Input } from "../ui/input";
-import { Switch } from "../ui/switch";
-import { Label } from "../ui/label";
 import { Virtuoso } from "react-virtuoso";
 import { useTranslations } from "next-intl";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-	workerSrc,
+	"pdfjs-dist/build/pdf.worker.min.mjs",
 	import.meta.url,
 ).toString();
 
