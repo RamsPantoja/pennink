@@ -13,11 +13,8 @@ export async function POST(req: Request) {
 		throw new Error("Must be logged in to access");
 	}
 
-	console.log("POST request received");
-
 	const model = bedrock("openai.gpt-oss-120b-1:0");
 
-	console.log("===========");
 	const result = streamText({
 		model,
 		messages: convertToModelMessages(messages),
