@@ -22,9 +22,9 @@ import { env } from "~/env";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embeddingDocuments } from "~/server/db/turso-schema";
-import { embed, embedMany } from "ai-v5";
+import { embed, embedMany } from "ai";
 import { DateTime } from "luxon";
-import { bedrock as bedrockV3 } from "bedrock-v3";
+import { bedrock } from "@ai-sdk/amazon-bedrock";
 
 type WorkspaceServiceContructor = {
 	ctx: TRPCContext;
@@ -318,7 +318,7 @@ export class WorkspaceService {
 	}
 
 	public async createFile(input: CreateFileInput, userId: string) {
-		const model = bedrockV3.textEmbeddingModel("amazon.titan-embed-text-v2:0");
+		const model = bedrock.textEmbeddingModel("amazon.titan-embed-text-v2:0");
 		const textSplitter = new RecursiveCharacterTextSplitter({
 			chunkSize: 1000,
 			chunkOverlap: 200,
@@ -416,9 +416,7 @@ export class WorkspaceService {
 
 	public async documentVectorSearch(input: DocumentVectorSearchInput) {
 		try {
-			const model = bedrockV3.textEmbeddingModel(
-				"amazon.titan-embed-text-v2:0",
-			);
+			const model = bedrock.textEmbeddingModel("amazon.titan-embed-text-v2:0");
 
 			const embedding = await embed({
 				model,

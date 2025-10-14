@@ -1,4 +1,4 @@
-import { type InferUITool, tool } from "ai-v5";
+import { type InferUITool, tool } from "ai";
 import z from "zod";
 
 // First, define the schema for QuestionOption if needed

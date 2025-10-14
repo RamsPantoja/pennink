@@ -13,7 +13,7 @@ import {
 	type UIMessage,
 	type ModelMessage,
 	convertToModelMessages,
-} from "ai-v5";
+} from "ai";
 import { useChat } from "@ai-sdk/react";
 import type { AiForm } from "~/lib/aiTools/form";
 import { DateTime } from "luxon";

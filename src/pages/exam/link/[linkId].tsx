@@ -23,7 +23,7 @@ import { useTimer } from "~/hooks/use-timer";
 import { toast } from "sonner";
 import { ExamFeedback } from "~/components/common/ExamFeedback";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport, type ToolCallPart } from "ai-v5";
+import { DefaultChatTransport, type ToolCallPart } from "ai";
 import type { EvaluationDetailsTool } from "~/lib/aiTools/getEvaluationDetails";
 import { useTranslations } from "next-intl";
 import { getPreferredLocale, type Locale } from "~/lib/utils";

@@ -1,15 +1,11 @@
-import {
-	type ModelMessage,
-	stepCountIs,
-	streamText,
-	type ToolSet,
-} from "ai-v5";
-import { bedrock as bedrockV3 } from "bedrock-v3";
+import { type ModelMessage, stepCountIs, streamText, type ToolSet } from "ai";
+import { bedrock } from "@ai-sdk/amazon-bedrock";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { generateAndEditForm } from "~/lib/aiTools/form";
 import type { Tools } from "~/components/Chat/useChatLogic";
 import type { Message } from "~/server/api/services/chat";
+import { toolDefinitionsToToolSet } from "@blocknote/xl-ai";
 
 export type Context = {
 	messages: ModelMessage[];
@@ -56,7 +52,7 @@ export async function POST(req: Request) {
 			}
 		}
 
-		const model = bedrockV3("openai.gpt-oss-120b-1:0");
+		const model = bedrock("openai.gpt-oss-120b-1:0");
 		const systemTemplate = `
 		You are a friendly and professional agent designed to engage users in natural, open-ended conversations. Your responses should be warm, engaging, and thoughtful, ensuring the conversation flows smoothly. Ask follow-up questions to keep the discussion dynamic, show genuine curiosity about the user's thoughts, and adapt your tone to match the user's communication style. Avoid sounding robotic or overly formal—aim for a conversational and approachable style while maintaining professionalism.
 		Your goal is to make the user feel heard, understood, and comfortable sharing their thoughts.

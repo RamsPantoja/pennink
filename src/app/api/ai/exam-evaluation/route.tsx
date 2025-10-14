@@ -1,10 +1,5 @@
-import {
-	type ModelMessage,
-	stepCountIs,
-	streamText,
-	type ToolSet,
-} from "ai-v5";
-import { bedrock as bedrockV3 } from "bedrock-v3";
+import { type ModelMessage, stepCountIs, streamText, type ToolSet } from "ai";
+import { bedrock } from "@ai-sdk/amazon-bedrock";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { getEvaluationExamSystemPrompt } from "~/lib/prompts/evaluation-exam";
@@ -27,7 +22,7 @@ export async function POST(req: Request) {
 	try {
 		const { context, prompt } = (await req.json()) as AgentChatRequestData;
 
-		const model = bedrockV3("openai.gpt-oss-120b-1:0");
+		const model = bedrock("openai.gpt-oss-120b-1:0");
 
 		if (!prompt) {
 			throw new Error("Missing prompt");

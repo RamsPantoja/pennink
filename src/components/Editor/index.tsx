@@ -59,6 +59,7 @@ import type { EditPredictionData } from "~/app/api/ai/edit-prediction/route";
 import { ShareLinkEditor } from "./ShareLinkEditor";
 import type { RouterOutputs } from "~/utils/api";
 import type { Locale } from "~/lib/utils";
+import { DefaultChatTransport } from "ai";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -175,7 +176,9 @@ export const Editor = ({ onSave, data, locale }: EditorProps) => {
 		dictionary,
 		extensions: [
 			createAIExtension({
-				model,
+				transport: new DefaultChatTransport({
+					api: "/api/ai/editor",
+				}),
 				agentCursor: { name: "AI", color: "#f76f53" },
 			}),
 		],

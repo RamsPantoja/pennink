@@ -1,4 +1,4 @@
-import type { ChatStatus, UIDataTypes, UIMessage, UITools } from "ai-v5";
+import type { ChatStatus, UIDataTypes, UIMessage, UITools } from "ai";
 import { useTranslations } from "next-intl";
 import {
 	Dialog,
