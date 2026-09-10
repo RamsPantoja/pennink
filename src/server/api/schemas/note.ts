@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const updateNoteInputSchema = z.object({
 	noteId: z.string().uuid(),
-	content: z.any(),
+	content: z.array(z.any()),
 });
 
 export const noteByIdInputSchema = z.object({

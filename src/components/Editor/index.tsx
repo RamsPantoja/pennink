@@ -60,6 +60,7 @@ import { ShareLinkEditor } from "./ShareLinkEditor";
 import type { RouterOutputs } from "~/utils/api";
 import type { Locale } from "~/lib/utils";
 import { DefaultChatTransport } from "ai";
+import { normalizeBlockNoteContent } from "~/lib/blocknote";
 
 const allowedBlockTypesWithAIPrediction: Block["type"][] = [
 	"paragraph",
@@ -182,7 +183,7 @@ export const Editor = ({ onSave, data, locale }: EditorProps) => {
 				agentCursor: { name: "AI", color: "#f76f53" },
 			}),
 		],
-		initialContent: content ? content : undefined,
+		initialContent: normalizeBlockNoteContent(content),
 	});
 
 	useEffect(() => {

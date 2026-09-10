@@ -20,6 +20,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { getPreferredLocale, type Locale } from "~/lib/utils";
+import { normalizeBlockNoteContent } from "~/lib/blocknote";
 
 const SharedNotes = ({
 	linkId,
@@ -89,7 +90,7 @@ const ReadEditor = ({ content }: ReadEditorProps) => {
 	const t = useTranslations("SharedNotes");
 	const editor = useCreateBlockNote({
 		defaultStyles: false,
-		initialContent: content ? content : undefined,
+		initialContent: normalizeBlockNoteContent(content),
 	});
 
 	const { theme } = useAppStore();

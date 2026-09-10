@@ -385,12 +385,6 @@ export const summariesRelations = relations(summaries, ({ one }) => ({
 }));
 
 //#Notes
-const defaultJsonContent = {
-	time: new Date().getTime(),
-	blocks: [],
-	version: "2.30.8",
-};
-
 export const notes = createTable("note", {
 	id: customId.notNull().primaryKey(),
 	content: json().$type<Block[]>(),
