@@ -318,7 +318,7 @@ export class WorkspaceService {
 	}
 
 	public async createFile(input: CreateFileInput, userId: string) {
-		const model = bedrock.textEmbeddingModel("amazon.titan-embed-text-v2:0");
+		const model = bedrock.embeddingModel("amazon.titan-embed-text-v2:0");
 		const textSplitter = new RecursiveCharacterTextSplitter({
 			chunkSize: 1000,
 			chunkOverlap: 200,
@@ -416,7 +416,7 @@ export class WorkspaceService {
 
 	public async documentVectorSearch(input: DocumentVectorSearchInput) {
 		try {
-			const model = bedrock.textEmbeddingModel("amazon.titan-embed-text-v2:0");
+			const model = bedrock.embeddingModel("amazon.titan-embed-text-v2:0");
 
 			const embedding = await embed({
 				model,

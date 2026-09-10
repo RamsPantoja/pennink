@@ -483,7 +483,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			allMessages.push(currentAssistantMessage);
 		}
 
-		const convertedToModelMessages = convertToModelMessages(allMessages);
+		const convertedToModelMessages = await convertToModelMessages(allMessages);
 
 		await sendMessage(undefined, {
 			body: {

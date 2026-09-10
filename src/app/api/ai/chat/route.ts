@@ -5,7 +5,7 @@ import { authOptions } from "~/server/auth";
 import { generateAndEditForm } from "~/lib/aiTools/form";
 import type { Tools } from "~/components/Chat/useChatLogic";
 import type { Message } from "~/server/api/services/chat";
-import { toolDefinitionsToToolSet } from "@blocknote/xl-ai";
+import { toolDefinitionsToToolSet } from "@blocknote/xl-ai/server";
 
 export type Context = {
 	messages: ModelMessage[];

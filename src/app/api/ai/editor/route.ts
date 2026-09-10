@@ -1,5 +1,5 @@
 import { convertToModelMessages, streamText } from "ai";
-import { toolDefinitionsToToolSet } from "@blocknote/xl-ai";
+import { toolDefinitionsToToolSet } from "@blocknote/xl-ai/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
 	const result = streamText({
 		model,
-		messages: convertToModelMessages(messages),
+		messages: await convertToModelMessages(messages),
 		tools: toolDefinitionsToToolSet(toolDefinitions),
 		toolChoice: "required",
 	});

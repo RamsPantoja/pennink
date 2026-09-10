@@ -20,18 +20,18 @@ import {
 	useCreateBlockNote,
 } from "@blocknote/react";
 import { en, es } from "@blocknote/core/locales";
+import { filterSuggestionItems } from "@blocknote/core/extensions";
 import { en as aiEn, es as aiEs } from "@blocknote/xl-ai/locales";
 import {
 	AIMenuController,
 	AIToolbarButton,
-	createAIExtension,
+	AIExtension,
 	getAISlashMenuItems,
 } from "@blocknote/xl-ai";
 import "@blocknote/xl-ai/style.css";
 import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
 import {
 	type BlockNoteEditor,
-	filterSuggestionItems,
 	type Block,
 } from "@blocknote/core";
 import { env } from "~/env";
@@ -175,7 +175,7 @@ export const Editor = ({ onSave, data, locale }: EditorProps) => {
 		defaultStyles: false,
 		dictionary,
 		extensions: [
-			createAIExtension({
+			AIExtension({
 				transport: new DefaultChatTransport({
 					api: "/api/ai/editor",
 				}),
