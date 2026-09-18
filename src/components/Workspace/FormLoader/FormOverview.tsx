@@ -33,20 +33,20 @@ export function FormReview({ data }: FormReviewProps) {
 	const questions = data.questions;
 
 	return (
-		<div className="flex flex-col px-4 py-8 max-w-4xl text-mocha-text gap-8">
+		<div className="flex flex-col px-4 py-8 max-w-4xl text-foreground gap-8">
 			{/* Header */}
 			<div className="flex flex-col">
 				<div className="flex flex-col">
 					<p className="text-sm">{data.username}</p>
 					<div className="flex items-center gap-2">
 						<AtSymbolIcon className="min-w-4 h-4" />
-						<p className="text-sm text-mocha-sub-text">{data.email}</p>
+						<p className="text-sm text-muted-foreground">{data.email}</p>
 					</div>
 				</div>
 				<p className="tracking-wider font-semibold text-lg pt-4">
 					{data.form.title}
 				</p>
-				<p className="text-sm text-mocha-sub-text">
+				<p className="text-sm text-muted-foreground">
 					{t("descriptionLabel")}: {data.form.description}
 				</p>
 			</div>
@@ -60,7 +60,7 @@ export function FormReview({ data }: FormReviewProps) {
 					return (
 						<Card
 							key={item.key}
-							className="bg-mocha-mantle rounded-2xl shadow-none flex flex-col gap-4"
+							className="bg-muted rounded-2xl shadow-none flex flex-col gap-4"
 						>
 							<div className="text-lg flex items-start gap-2">
 								<span className="text-sm font-black">{item.key}.</span>
@@ -69,10 +69,10 @@ export function FormReview({ data }: FormReviewProps) {
 								</p>
 							</div>
 							<div className="space-y-2">
-								<h4 className="font-semibold text-sm text-mocha-sub-text">
+								<h4 className="font-semibold text-sm text-muted-foreground">
 									{t("answerLabel")}:
 								</h4>
-								<div className="p-3 bg-mocha-crust rounded-lg">
+								<div className="p-3 bg-card rounded-lg">
 									{item.type === "select" && (
 										<p className="text-sm">
 											{item.questionOptions?.find(
@@ -138,7 +138,7 @@ export function FormReview({ data }: FormReviewProps) {
 							</div>
 							{item.questionOptions && item.questionOptions.length > 0 && (
 								<div className="space-y-2">
-									<h4 className="font-semibold text-sm text-mocha-sub-text">
+									<h4 className="font-semibold text-sm text-muted-foreground">
 										{t("availableOptions")}:
 									</h4>
 									<div className="flex flex-wrap gap-2">

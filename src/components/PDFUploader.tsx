@@ -95,7 +95,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 			<CardContent className="flex flex-col gap-4 p-0">
 				<div
 					className={`border-2 border-dashed rounded-lg p-6 text-center ${
-						file ? "border-mocha-mauve" : "border-muted-foreground/25"
+						file ? "border-border" : "border-muted-foreground/25"
 					}`}
 					onDragOver={handleDragOver}
 					onDrop={handleDrop}
@@ -134,7 +134,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 							<div className="flex items-center justify-between gap-2">
 								<DocumentIcon className="h-8 w-8" />
 								<div className="text-left">
-									<p className="text-sm font-semibold text-mocha-mauve truncate max-w-[200px]">
+									<p className="text-sm font-semibold text-border truncate max-w-[200px]">
 										{file.name}
 									</p>
 									<p className="text-xs text-muted-foreground">

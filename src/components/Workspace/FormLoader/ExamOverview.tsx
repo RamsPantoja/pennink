@@ -96,20 +96,20 @@ export function ExamReview({ data }: ExamReviewProps) {
 	};
 
 	return (
-		<div className="flex flex-col px-4 py-8 max-w-4xl text-mocha-text gap-8">
+		<div className="flex flex-col px-4 py-8 max-w-4xl text-foreground gap-8">
 			{/* Header */}
 			<div className="flex flex-col">
 				<div className="flex flex-col">
 					<p className="text-sm">{data.username}</p>
 					<div className="flex items-center gap-2">
 						<AtSymbolIcon className="min-w-4 h-4" />
-						<p className="text-sm text-mocha-sub-text">{data.email}</p>
+						<p className="text-sm text-muted-foreground">{data.email}</p>
 					</div>
 				</div>
 				<p className="tracking-wider font-semibold text-lg pt-4">
 					{data.exam.title}
 				</p>
-				<p className="text-sm text-mocha-sub-text">
+				<p className="text-sm text-muted-foreground">
 					{t("instructions")}: {data.exam.instructions}
 				</p>
 			</div>
@@ -159,7 +159,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 					return (
 						<Card
 							key={item.key}
-							className="bg-mocha-mantle rounded-2xl shadow-none flex flex-col gap-4"
+							className="bg-muted rounded-2xl shadow-none flex flex-col gap-4"
 						>
 							<div className="flex items-start justify-between">
 								<div className="text-lg flex items-start gap-2">
@@ -175,7 +175,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 							</div>
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div className="space-y-2">
-									<h4 className="font-semibold text-sm text-mocha-sub-text">
+									<h4 className="font-semibold text-sm text-muted-foreground">
 										{t("answer")}:
 									</h4>
 									<div className="p-3 bg-muted rounded-lg">
@@ -243,10 +243,10 @@ export function ExamReview({ data }: ExamReviewProps) {
 									</div>
 								</div>
 								<div className="space-y-2">
-									<h4 className="font-semibold text-sm text-mocha-sub-text">
+									<h4 className="font-semibold text-sm text-muted-foreground">
 										{t("correctAnswer")}:
 									</h4>
-									<div className="p-3 border border-mocha-mauve bg-mocha-base rounded-2xl">
+									<div className="p-3 border border-border bg-background rounded-2xl">
 										{item.type === "select" && (
 											<p className="text-sm">
 												{item.questionOptions?.find(
@@ -304,7 +304,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 							</div>
 							{item.questionOptions && item.questionOptions.length > 0 && (
 								<div className="space-y-2">
-									<h4 className="font-semibold text-sm text-mocha-sub-text">
+									<h4 className="font-semibold text-sm text-muted-foreground">
 										{t("availableOptions")}
 									</h4>
 									<div className="flex flex-wrap gap-2">
@@ -331,7 +331,7 @@ export function ExamReview({ data }: ExamReviewProps) {
 					{showFeedback ? t("hideFeedback") : t("showFeedback")}
 				</Button>
 				{showFeedback && (
-					<Card className="text-sm max-h-96 overflow-auto border bg-mocha-crust">
+					<Card className="text-sm max-h-96 overflow-auto border bg-card">
 						<Response content={data.feedback} />
 					</Card>
 				)}

@@ -27,14 +27,14 @@ export const LinkItem = ({
 	}, [id, type]);
 
 	return (
-		<Card className="flex gap-1 flex-col bg-mocha-mantle">
+		<Card className="flex gap-1 flex-col bg-muted">
 			<div className="flex gap-4 justify-between">
 				<p className="text-sm font-semibold">{customKey}</p>
 				<Badge variant="outline">v{version}</Badge>
 			</div>
 			<div className="flex items-center">
 				<p
-					className="text-xs text-mocha-sub-text truncate"
+					className="text-xs text-muted-foreground truncate"
 					title={clipboardContent}
 				>
 					{clipboardContent}

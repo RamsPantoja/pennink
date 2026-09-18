@@ -15,10 +15,15 @@ import {
 	convertToModelMessages,
 } from "ai";
 import { useChat } from "@ai-sdk/react";
-import type { AiForm } from "~/lib/aiTools/form";
+import type { AiForm } from "~/app/agents/chat/schema";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
+import {
+	playAgentSpeech,
+	stopAgentSpeech,
+} from "~/lib/agentAudio";
+import { extractSpeechText } from "~/lib/speechText";
 
 export type MyUIMessage = UIMessage<{
 	id: Message["id"];
@@ -44,7 +49,7 @@ type UseChatLogicProps = {
 	isNew: boolean;
 };
 
-export type Tools = "form-generation" | "web-search";
+export type Tools = "form-generation" | "web-search" | "artifact-generation";
 
 export const parseUIMessage = (message?: MyUIMessage): Message | null => {
 	if (message) {
@@ -97,7 +102,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		readerEvent,
 		setReaderEvent,
 		document,
-		editor,
 		setDisplayFormEditor,
 		setAiFormData,
 		aiContextItems,
@@ -126,12 +130,15 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		},
 		onFinish: (data) => {
+			const message = parseUIMessage(data.message);
+			const speechText = extractSpeechText(data.message.parts);
+
+			if (speechText) void playAgentSpeech(speechText);
+
 			if (!session) {
 				toast("Please sign in to save your message");
 				return;
 			}
-
-			const message = parseUIMessage(data.message);
 
 			if (!message) {
 				toast("Assistant message not found");
@@ -184,9 +191,32 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	});
 
+	const setAgentActivity = useWorkspaceStore((state) => state.setAgentActivity);
+	const audioState = useWorkspaceStore((state) => state.audioState);
+	const speechMessageId = useRef<string | null>(null);
+	const streamingAssistantMessage = parseUIMessage(tempMessages[0]);
+	useEffect(() => {
+		if (streamingAssistantMessage?.role !== "assistant") return;
+
+		if (speechMessageId.current !== streamingAssistantMessage.id) {
+			stopAgentSpeech();
+			speechMessageId.current = streamingAssistantMessage.id;
+		}
+
+	}, [streamingAssistantMessage?.id]);
+
+	useEffect(() => {
+		if (status === "submitted" || status === "streaming") {
+			setAgentActivity("thinking");
+		} else if (status === "ready" && audioState === "idle") {
+			setAgentActivity("idle");
+		}
+	}, [audioState, setAgentActivity, status]);
+
 	const stopStreaming = async () => {
 		if (!isNew && pathname !== "/" && status === "streaming") {
 			await stop();
+			stopAgentSpeech();
 
 			const message = parseUIMessage(tempMessages[0]);
 
@@ -360,22 +390,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						text: `Document context information: ${documentContext.map((context) => context.content).join(", ")}`,
 					});
 				}
-			}
-		}
-
-		if (aiContextItems.find((item) => item.type === "editor")) {
-			if (!editor) {
-				toast.error("Editor instance not found");
-				return;
-			}
-
-			const markdown = editor.blocksToMarkdownLossy(editor.document);
-
-			if (Array.isArray(userMessage.content)) {
-				userMessage.content.push({
-					type: "text",
-					text: `Editor context information: ${markdown}`,
-				});
 			}
 		}
 

@@ -26,20 +26,20 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 		<Card className="max-w-96 bg-transparent p-0 z-10">
 			<CardHeader>
 				<CardTitle>
-					<div className="flex flex-col items-center justify-center gap-4 text-mocha-text">
+					<div className="flex flex-col items-center justify-center gap-4 text-foreground">
 						<Logo />
-						<p className="text-base text-mocha-text text-center">
+						<p className="text-base text-foreground text-center">
 							{t("tagline")}
 						</p>
 					</div>
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<p className="text-xs text-mocha-text text-center">
+				<p className="text-xs text-foreground text-center">
 					{t.rich("legalText", {
 						terms: (chunk) => (
 							<a
-								className="text-mocha-sub-text underline"
+								className="text-muted-foreground underline"
 								target="_blank"
 								rel="noreferrer"
 								href="https://www.pennink.xyz/terms"
@@ -49,7 +49,7 @@ const SignInForm = ({ callbackUrl }: SignInFormProps) => {
 						),
 						privacy: (chunk) => (
 							<a
-								className="text-mocha-sub-text underline"
+								className="text-muted-foreground underline"
 								target="_blank"
 								rel="noreferrer"
 								href="https://www.pennink.xyz/privacy-policy"

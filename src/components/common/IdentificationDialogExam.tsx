@@ -101,7 +101,7 @@ export const IdentificationDialogExam = ({
 									message={t(errors.email.message as any)}
 								/>
 							)}
-							<p className="text-xs text-mocha-sub-text">
+							<p className="text-xs text-muted-foreground">
 								{t("form.email.helperText")}
 							</p>
 						</div>
@@ -155,11 +155,11 @@ export const IdentificationDialogExam = ({
 					>
 						{t("button.googleSignIn")}
 					</Button>
-					<p className="text-xs text-mocha-text text-center">
+					<p className="text-xs text-foreground text-center">
 						{t.rich("legal.text", {
 							terms: (chunks) => (
 								<a
-									className="text-mocha-sub-text underline"
+									className="text-muted-foreground underline"
 									target="_blank"
 									href="https://www.pennink.xyz/terms"
 								>
@@ -168,7 +168,7 @@ export const IdentificationDialogExam = ({
 							),
 							privacy: (chunks) => (
 								<a
-									className="text-mocha-sub-text underline"
+									className="text-muted-foreground underline"
 									target="_blank"
 									href="https://www.pennink.xyz/privacy-policy"
 								>

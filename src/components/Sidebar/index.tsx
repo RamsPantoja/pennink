@@ -83,8 +83,8 @@ export function AppSidebar({ session }: AppSidebarProps) {
 				{session && (
 					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger asChild>
-							<div className="p-1 rounded-md flex w-full flex-row items-center justify-between gap-2 overflow-hidden cursor-pointer hover:bg-light-mocha-mantle dark:hover:bg-mocha-mantle">
-								<div className="flex flex-row items-center gap-2 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
+							<div className="p-1 rounded-md flex w-full flex-row items-center justify-between gap-2 overflow-hidden cursor-pointer hover:bg-muted dark:hover:bg-muted">
+								<div className="flex flex-row items-center gap-2 min-w-32 w-full text-foreground dark:text-foreground">
 									<Avatar className="h-7 w-7">
 										<AvatarImage src={session.user.image as string} />
 										<AvatarFallback>{t("user.avatarFallback")}</AvatarFallback>
@@ -115,7 +115,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 									router.push(`/settings?callbackUrl=${pathname}`);
 								}}
 							>
-								<Cog6ToothIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
+								<Cog6ToothIcon className="mr-2 h-5 min-w-5 text-foreground" />
 								{t("menu.settings")}
 							</DropdownMenuItem>
 							<DropdownMenuItem
@@ -123,7 +123,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
 									setDisplaySignOutAlert(true);
 								}}
 							>
-								<ArrowRightStartOnRectangleIcon className="mr-2 h-5 min-w-5 text-mocha-text" />
+								<ArrowRightStartOnRectangleIcon className="mr-2 h-5 min-w-5 text-foreground" />
 								{t("menu.signOut")}
 							</DropdownMenuItem>
 						</DropdownMenuContent>

@@ -27,14 +27,14 @@ export const FormResultCard = ({
 					overview: t("FormLoader.breadcrumbs.overview"),
 				});
 			}}
-			className="flex w-full gap-4 justify-between bg-mocha-mantle hover:bg-mocha-mantle/50"
+			className="flex w-full gap-4 justify-between bg-muted hover:bg-muted/50"
 		>
 			<div className="flex flex-col gap-1">
 				<p className="text-sm">{email}</p>
 				<p className="text-sm">{username}</p>
 			</div>
 			<div className="flex flex-col gap-2">
-				<p className="text-xs text-mocha-sub-text">
+				<p className="text-xs text-muted-foreground">
 					{createdAt.toLocaleString()}
 				</p>
 			</div>

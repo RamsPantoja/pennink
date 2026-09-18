@@ -105,7 +105,7 @@ export const DocumentLoader = ({
 							!filesByUserError &&
 							filesByUser &&
 							filesByUser.length === 0 && (
-								<div className="flex items-center justify-center text-mocha-text">
+								<div className="flex items-center justify-center text-foreground">
 									{t("emptyState.documents")}
 								</div>
 							)}

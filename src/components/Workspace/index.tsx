@@ -20,30 +20,25 @@ import { type PenninkDocument, useWorkspaceStore } from "./useWorkspaceStore";
 import { SelectionToolbar } from "../common/SelectionToolbar";
 import { Button } from "../common/Button";
 import { useEffect, useRef, useState } from "react";
-import { cn, type Locale } from "~/lib/utils";
-import { Editor } from "../Editor";
-import type { Block } from "@blocknote/core";
+import { cn } from "~/lib/utils";
+import { AgentVisual } from "../AgentVisual";
 import { FormEditor } from "../FormEditor";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import type { ImperativePanelHandle } from "react-resizable-panels";
-import { useRouter, useParams } from "next/navigation";
-import { useTranslations, useLocale } from "next-intl";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type PreviousDocOpened = PenninkDocument & { workspaceId: string };
-type TabValue = "notes" | "chat";
-
 const DynamicPDFViewer = dynamic(() => import("../common/PDFViewer"), {
 	ssr: false,
 	loading: () => <Loading />,
 });
 
 export const Workspace = () => {
-	const locale = useLocale();
 	const params = useParams();
 	const t = useTranslations("Workspace");
 	const chatPanelRef = useRef<ImperativePanelHandle>(null);
 	const contentPanelRef = useRef<ImperativePanelHandle>(null);
-	const utils = api.useUtils();
 	const {
 		document,
 		setReaderEvent,
@@ -64,7 +59,6 @@ export const Workspace = () => {
 		text: "",
 		range: null,
 	});
-	const [tab, setTab] = useState<TabValue>("chat");
 	const [chatPanelCollapsed, setChatPanelCollapsed] = useState(false);
 	const [contentPanelCollapsed, setContentPanelCollapsed] = useState(false);
 
@@ -98,29 +92,7 @@ export const Workspace = () => {
 		}
 	}, [params?.workspaceId, setDocument]);
 
-	const { mutate: updateWorkspace } = api.note.updateNote.useMutation({
-		onSuccess: async () => {
-			await utils.workspace.workspaceById.invalidate();
-		},
-		onError: (error) => {
-			toast(t("toast.error"));
-		},
-	});
-
-	const getNoteContent = async (data: Block[]) => {
-		if (!workspaceData?.noteId) {
-			toast(t("toast.invalidNoteId"));
-			return;
-		}
-
-		updateWorkspace({
-			noteId: workspaceData.noteId,
-			content: data,
-		});
-	};
-
 	const onSummarizeFromReader = () => {
-		setTab("chat");
 		setReaderEvent({
 			type: "reader-on-summarize",
 			data: selectionContent.text,
@@ -129,13 +101,11 @@ export const Workspace = () => {
 	};
 
 	const onChatFromReader = () => {
-		setTab("chat");
 		setReaderEvent({ type: "reader-on-chat", data: selectionContent.text });
 		setSelectionContent({ text: "", range: null });
 	};
 
 	const onExplainFromReader = () => {
-		setTab("chat");
 		setReaderEvent({ type: "reader-on-explain", data: selectionContent.text });
 		setSelectionContent({ text: "", range: null });
 	};
@@ -190,7 +160,7 @@ export const Workspace = () => {
 								<TooltipTrigger asChild>
 									<Button
 										variant="ghost"
-										className="rounded-full border border-mocha-mauve z-10"
+										className="rounded-full border border-border z-10"
 										size="icon"
 										onClick={() => {
 											const contentPanel = contentPanelRef.current;
@@ -199,7 +169,7 @@ export const Workspace = () => {
 											}
 										}}
 									>
-										<ArrowLeftIcon className="text-mocha-text min-w-4 h-4" />
+										<ArrowLeftIcon className="text-foreground min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>{t("tooltip.collapseContent")}</TooltipContent>
@@ -208,11 +178,11 @@ export const Workspace = () => {
 								<TooltipTrigger asChild>
 									<Button
 										variant="ghost"
-										className="rounded-full border border-mocha-mauve z-10"
+										className="rounded-full border border-border z-10"
 										size="icon"
 										onClick={onCloseContent}
 									>
-										<XMarkIcon className="text-mocha-text min-w-4 h-4" />
+										<XMarkIcon className="text-foreground min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>{t("tooltip.closeContent")}</TooltipContent>
@@ -269,7 +239,7 @@ export const Workspace = () => {
 									<TooltipTrigger asChild>
 										<Button
 											variant="ghost"
-											className="rounded-full border border-mocha-mauve z-10"
+											className="rounded-full border border-border z-10"
 											size="icon"
 											onClick={() => {
 												const chatPanel = chatPanelRef.current;
@@ -278,7 +248,7 @@ export const Workspace = () => {
 												}
 											}}
 										>
-											<ArrowLeftIcon className="text-mocha-text min-w-4 h-4" />
+											<ArrowLeftIcon className="text-foreground min-w-4 h-4" />
 										</Button>
 									</TooltipTrigger>
 									<TooltipContent>{t("tooltip.expandChat")}</TooltipContent>
@@ -292,7 +262,7 @@ export const Workspace = () => {
 										<Button
 											variant="ghost"
 											size="icon"
-											className="rounded-full border border-mocha-mauve z-10"
+											className="rounded-full border border-border z-10"
 											onClick={() => {
 												const contentPanel = contentPanelRef.current;
 												if (contentPanel) {
@@ -300,18 +270,14 @@ export const Workspace = () => {
 												}
 											}}
 										>
-											<ArrowRightIcon className="text-mocha-text min-w-4 h-4" />
+											<ArrowRightIcon className="text-foreground min-w-4 h-4" />
 										</Button>
 									</TooltipTrigger>
 									<TooltipContent>{t("tooltip.expandContent")}</TooltipContent>
 								</Tooltip>
 							</div>
 						)}
-						<Editor
-							locale={locale as Locale}
-							data={workspaceData.note}
-							onSave={getNoteContent}
-						/>
+						<AgentVisual />
 					</ResizablePanel>
 					<ResizableHandle withHandle />
 					<ResizablePanel
@@ -333,7 +299,7 @@ export const Workspace = () => {
 									<Button
 										variant="ghost"
 										size="icon"
-										className="rounded-full border border-mocha-mauve z-10"
+										className="rounded-full border border-border z-10"
 										onClick={() => {
 											const chatPanel = chatPanelRef.current;
 											if (chatPanel) {
@@ -341,13 +307,13 @@ export const Workspace = () => {
 											}
 										}}
 									>
-										<ArrowRightIcon className="text-mocha-text min-w-4 h-4" />
+										<ArrowRightIcon className="text-foreground min-w-4 h-4" />
 									</Button>
 								</TooltipTrigger>
 								<TooltipContent>{t("tooltip.collapseChat")}</TooltipContent>
 							</Tooltip>
 						</div>
-						<div className="w-full h-full flex bg-mocha-crust">
+						<div className="w-full h-full flex bg-card">
 							<Chat id={workspaceData.chatId} isNew={false} />
 						</div>
 					</ResizablePanel>

@@ -229,7 +229,7 @@ export const HomeComponent = () => {
 				onOpenChange={setOpenDocumentLoader}
 			/>
 			<Card className="max-w-(--breakpoint-lg) gap-4 flex flex-col w-full justify-center h-full bg-transparent">
-				<p className="text-center text-3xl font-bold text-mocha-text tracking-wider">
+				<p className="text-center text-3xl font-bold text-foreground tracking-wider">
 					{t("title")}
 				</p>
 				<Chat id={memoChatId} isNew={true} />
@@ -238,11 +238,11 @@ export const HomeComponent = () => {
 						onClick={
 							pedeningRequest ? undefined : () => fileInputRef.current?.click()
 						}
-						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
+						className="border cursor-pointer bg-card flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mocha-text">{t("cards.upload.title")}</p>
-							<p className="text-xs text-mocha-sub-text">
+							<p className="text-foreground">{t("cards.upload.title")}</p>
+							<p className="text-xs text-muted-foreground">
 								{t("cards.upload.description")}
 							</p>
 						</div>
@@ -260,11 +260,11 @@ export const HomeComponent = () => {
 										setOpenDocumentLoader(true);
 									}
 						}
-						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
+						className="border cursor-pointer bg-card flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mocha-text">{t("cards.search.title")}</p>
-							<p className="text-xs text-mocha-sub-text">
+							<p className="text-foreground">{t("cards.search.title")}</p>
+							<p className="text-xs text-muted-foreground">
 								{t("cards.search.description")}
 							</p>
 						</div>
@@ -276,11 +276,11 @@ export const HomeComponent = () => {
 					</Card>
 					<Card
 						onClick={pedeningRequest ? undefined : onStartWriting}
-						className="border cursor-pointer bg-mocha-crust flex items-center justify-between gap-4 hover:shadow-xs"
+						className="border cursor-pointer bg-card flex items-center justify-between gap-4 hover:shadow-xs"
 					>
 						<div className="flex flex-col">
-							<p className="text-mocha-text">{t("cards.write.title")}</p>
-							<p className="text-xs text-mocha-sub-text">
+							<p className="text-foreground">{t("cards.write.title")}</p>
+							<p className="text-xs text-muted-foreground">
 								{t("cards.write.description")}
 							</p>
 						</div>

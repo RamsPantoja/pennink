@@ -170,7 +170,7 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 								message={formState.errors.key.message}
 							/>
 						)}
-						<p className="text-xs text-mocha-sub-text">
+						<p className="text-xs text-muted-foreground">
 							{t("message.linkAccess")}
 						</p>
 						<Button

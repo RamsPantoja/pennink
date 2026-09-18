@@ -34,9 +34,9 @@ export const FormCard: FC<FormCardProps> = ({
 		<Card
 			onClick={onResults}
 			className={cn(
-				"bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors border h-fit w-full",
+				"bg-muted hover:bg-muted/50 transition-colors border h-fit w-full",
 				{
-					"border-mocha-teal": selectedFormId === id,
+					"border-primary": selectedFormId === id,
 				},
 			)}
 		>
@@ -44,7 +44,7 @@ export const FormCard: FC<FormCardProps> = ({
 				<div className="flex gap-2 flex-col justify-between">
 					<div className="flex items-center gap-4 justify-between">
 						<p
-							className="font-medium text-sm line-clamp-1 text-mocha-text truncate max-w-60"
+							className="font-medium text-sm line-clamp-1 text-foreground truncate max-w-60"
 							title={title}
 						>
 							{title}

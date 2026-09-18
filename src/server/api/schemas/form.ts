@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { aiFormSchema } from "~/lib/aiTools/form";
+import { aiFormSchema } from "~/app/agents/chat/schema";
 
 export const createFormSchema = z.object({
 	formData: aiFormSchema,

@@ -43,7 +43,7 @@ const SharedNotes = ({
 				{!isPending && !isError && data && (
 					<Fragment>
 						<div className="flex px-14 flex-col">
-							<div className="flex flex-row items-center gap-4 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
+							<div className="flex flex-row items-center gap-4 min-w-32 w-full text-foreground dark:text-foreground">
 								<Avatar className="h-7 w-7">
 									<AvatarImage src={data.note.user.image} />
 									<AvatarFallback>{data.note.user.name}</AvatarFallback>

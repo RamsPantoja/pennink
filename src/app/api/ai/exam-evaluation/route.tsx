@@ -1,9 +1,7 @@
-import { type ModelMessage, stepCountIs, streamText, type ToolSet } from "ai";
-import { bedrock } from "@ai-sdk/amazon-bedrock";
+import { type ModelMessage } from "ai";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
-import { getEvaluationExamSystemPrompt } from "~/lib/prompts/evaluation-exam";
-import { evaluationDetails } from "~/lib/aiTools/getEvaluationDetails";
+import { examEvaluationAgent } from "~/app/agents/exam-evaluation/agent";
 
 export type Context = {
 	messages: ModelMessage[];
@@ -14,15 +12,9 @@ export type AgentChatRequestData = {
 	context: Context;
 };
 
-const tools: ToolSet = {
-	getEvaluationDetails: evaluationDetails,
-};
-
 export async function POST(req: Request) {
 	try {
 		const { context, prompt } = (await req.json()) as AgentChatRequestData;
-
-		const model = bedrock("openai.gpt-oss-120b-1:0");
 
 		if (!prompt) {
 			throw new Error("Missing prompt");
@@ -32,18 +24,7 @@ export async function POST(req: Request) {
 			throw new Error("Missing context messages");
 		}
 
-		const result = streamText({
-			model,
-			system: getEvaluationExamSystemPrompt(),
-			temperature: 0.1,
-			tools,
-			toolChoice: { type: "tool", toolName: "getEvaluationDetails" },
-			prompt: prompt,
-			stopWhen: stepCountIs(5), // Stop at step 5 if tools were called
-			onError({ error }) {
-				console.log(error); // your error logging logic here
-			},
-		});
+		const result = await examEvaluationAgent.stream({ prompt });
 
 		return result.toUIMessageStreamResponse();
 	} catch (error) {

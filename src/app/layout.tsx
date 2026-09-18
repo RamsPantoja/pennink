@@ -9,52 +9,55 @@ import { ThemeProvider } from "~/components/ThemeProvider";
 import { getServerAuthSession } from "~/server/auth";
 import ClientSessionProvider from "~/components/ClientSessionProvider";
 import { NextIntlClientProvider } from "next-intl";
+import { Inter } from "next/font/google";
+import { cn } from "~/lib/utils";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 const getUserSession = async () => {
-	const session = await getServerAuthSession();
+  const session = await getServerAuthSession();
 
-	if (session === null) {
-		redirect("/sign-in");
-	}
+  if (session === null) {
+    redirect("/sign-in");
+  }
 
-	return session;
+  return session;
 };
 
 export const metadata: Metadata = {
-	title: "Pennink",
-	description: "Work Smarter, Not Harder",
+  title: "Pennink",
+  description: "Work Smarter, Not Harder",
 };
 
 export default async function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	const session = await getUserSession();
+  const session = await getUserSession();
 
-	return (
-		<html
-			data-theme="dark"
-			lang="en"
-			suppressHydrationWarning
-			className={GeistMono.className}
-		>
-			<body className="flex w-full h-screen">
-				<NextIntlClientProvider>
-					<ThemeProvider
-						attribute="data-theme"
-						defaultTheme="system"
-						enableSystem
-					>
-						<TRPCReactProvider>
-							<Toaster richColors className={GeistMono.className} />
-							<ClientSessionProvider session={session}>
-								<Dashboard session={session}>{children}</Dashboard>
-							</ClientSessionProvider>
-						</TRPCReactProvider>
-					</ThemeProvider>
-				</NextIntlClientProvider>
-			</body>
-		</html>
-	);
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn(GeistMono.className, "font-sans", inter.variable)}
+    >
+      <body className="flex w-full h-screen">
+        <NextIntlClientProvider>
+          <ThemeProvider
+            attribute="data-theme"
+            defaultTheme="light"
+            enableSystem
+          >
+            <TRPCReactProvider>
+              <Toaster richColors className={GeistMono.className} />
+              <ClientSessionProvider session={session}>
+                <Dashboard session={session}>{children}</Dashboard>
+              </ClientSessionProvider>
+            </TRPCReactProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
 }

@@ -35,7 +35,7 @@ const MemoizedMarkdownBlock = memo(
           },
           table(props) {
             return (
-              <div className="flex w-full overflow-auto rounded-md mb-4 border border-mocha-mauve">
+              <div className="flex w-full overflow-auto rounded-md mb-4 border border-border">
                 <table>{props.children}</table>
               </div>
             );
@@ -70,7 +70,7 @@ type PreTagProps = {
 
 const Codeblock = ({ children }: PreTagProps) => {
   return (
-    <div className="prismjs-theme bg-mocha-mantle p-2 rounded-md overflow-auto text-sm mb-4 w-full">
+    <div className="prismjs-theme bg-muted p-2 rounded-md overflow-auto text-sm mb-4 w-full">
       {children}
     </div>
   );

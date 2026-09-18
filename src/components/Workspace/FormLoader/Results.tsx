@@ -18,9 +18,9 @@ export const Results = ({ link, type }: ResultsProps) => {
 	return (
 		<div className="flex flex-col gap-4">
 			<div className="flex flex-col w-full">
-				<p className="text-mocha-text">{link.key}</p>
+				<p className="text-foreground">{link.key}</p>
 				<div className="flex items-center gap-2">
-					<p className="text-xs text-mocha-sub-text truncate" title={link.link}>
+					<p className="text-xs text-muted-foreground truncate" title={link.link}>
 						{link.link}
 					</p>
 					<ClipBoard className="rounded-[4px]" content={link.link} />

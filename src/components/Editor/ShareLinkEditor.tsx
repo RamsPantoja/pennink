@@ -48,9 +48,9 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 				{!linkIsPending && !linkError && linkData && (
 					<div className="flex gap-2 w-full flex-col">
 						<p>{t("message.copyAndShare")}</p>
-						<div className="flex items-center border-mocha-mauve border rounded-[5px] gap-4">
+						<div className="flex items-center border-border border rounded-[5px] gap-4">
 							<p
-								className="text-xs text-mocha-sub-text truncate ml-2"
+								className="text-xs text-muted-foreground truncate ml-2"
 								title={clipboardContent}
 							>
 								{clipboardContent}
@@ -61,10 +61,10 @@ export const ShareLinkEditor = ({ noteId }: ShareLinkEditorProps) => {
 				)}
 				{!linkIsPending && !linkError && !linkData && (
 					<div className="flex gap-4 flex-col items-end w-full">
-						<p className="text-sm text-mocha-text">
+						<p className="text-sm text-foreground">
 							{t("message.createShareableLink")}
 						</p>
-						<p className="text-xs text-mocha-sub-text">
+						<p className="text-xs text-muted-foreground">
 							{t("message.anyoneCanView")}
 						</p>
 						<Button

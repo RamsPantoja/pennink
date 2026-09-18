@@ -172,7 +172,7 @@ function PricingCard({
 				<ul className="space-y-2">
 					{features.map((feature, index) => (
 						<li key={index} className="flex items-center">
-							<Check className="h-4 min-w-4 mr-2 text-mocha-text" />
+							<Check className="h-4 min-w-4 mr-2 text-foreground" />
 							<span className="text-sm">{feature}</span>
 						</li>
 					))}

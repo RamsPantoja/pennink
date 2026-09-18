@@ -58,7 +58,7 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 
 	return (
 		<Card
-			className="bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors cursor-pointer h-fit w-full p-0 flex"
+			className="bg-muted hover:bg-muted/50 transition-colors cursor-pointer h-fit w-full p-0 flex"
 			onClick={onSelectDocument}
 		>
 			<div className="flex flex-col w-full">
@@ -71,13 +71,13 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 				</div>
 				<div className="flex gap-3 p-3 w-full flex-col">
 					<h3
-						className="font-medium text-sm text-mocha-text truncate w-full"
+						className="font-medium text-sm text-foreground truncate w-full"
 						title={title}
 					>
 						{title}
 					</h3>
 					<div className="flex items-center gap-2">
-						<span className="text-xs text-mocha-sub-text">{date}</span>
+						<span className="text-xs text-muted-foreground">{date}</span>
 						<Tooltip>
 							<TooltipTrigger asChild>
 								<Button

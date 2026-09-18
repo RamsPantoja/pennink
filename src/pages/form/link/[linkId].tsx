@@ -115,7 +115,7 @@ const ShareForm = ({
 				/>
 				{!isPending && !isError && formData && (
 					<div className="flex flex-col pl-4 pb-8 gap-4">
-						<div className="flex flex-row items-center gap-4 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
+						<div className="flex flex-row items-center gap-4 min-w-32 w-full text-foreground dark:text-foreground">
 							<Avatar className="h-7 w-7">
 								<AvatarImage src={formData.formVersion.form.user.image} />
 								<AvatarFallback>

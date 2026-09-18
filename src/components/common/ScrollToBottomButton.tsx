@@ -53,7 +53,7 @@ export const ScrollToBottomButton = ({
 						<TooltipTrigger asChild>
 							<Button
 								size="icon"
-								className="rounded-full animate-bounce border border-mocha-text"
+								className="rounded-full animate-bounce border border-foreground"
 								onClick={handleScrollToBottom}
 							>
 								<ChevronDownIcon className="min-w-5 h-5" />

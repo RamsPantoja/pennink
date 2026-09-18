@@ -1,5 +1,4 @@
-import { streamText } from "ai";
-import { bedrock } from "@ai-sdk/amazon-bedrock";
+import { workspaceTitleAgent } from "~/app/agents/workspace-title/agent";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 
@@ -11,34 +10,17 @@ export async function POST(req: Request) {
 			throw new Error("Must be logged in to access");
 		}
 
-		const model = bedrock("us.meta.llama4-scout-17b-instruct-v1:0");
-		const systemTemplate = `
-		Generate a title for the user's input that is concise.
-		Consider the context of the input and the user's needs, if exist context, if not, then generate a friendly title.
-
-		Rules:
-		1. Use clear and descriptive language.
-		2. Avoid overly technical terms.
-		3. Keep the title within a reasonable length.
-		4. Only response with the title.`;
-
 		const { context } = await req.json();
 
 		if (!context.messages) {
 			throw new Error("Missing context messages");
 		}
 
-		const result = streamText({
-			model,
+		const result = await workspaceTitleAgent.stream({
 			messages: [
-				{ role: "system", content: systemTemplate },
 				...context.messages,
-				{
-					role: "user",
-					content: "Generate the title",
-				},
+				{ role: "user", content: "Generate the title" },
 			],
-			temperature: 0.5,
 		});
 
 		return result.toTextStreamResponse();

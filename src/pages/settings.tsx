@@ -82,7 +82,7 @@ const Settings = ({
 	});
 
 	return (
-		<div className="flex w-full justify-center p-4 bg-mocha-base h-screen">
+		<div className="flex w-full justify-center p-4 bg-background h-screen">
 			<Head>
 				<title>{t("head.title")}</title>
 				<meta name="description" content={t("head.description")} />
@@ -122,10 +122,10 @@ const Settings = ({
 							<AvatarFallback>{t("avatar.fallback")}</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col overflow-hidden gap-1">
-							<p className="truncate font-bold text-mocha-text">
+							<p className="truncate font-bold text-foreground">
 								{session.user.name}
 							</p>
-							<p className="truncate text-xs text-mocha-text">
+							<p className="truncate text-xs text-foreground">
 								{session.user.email}
 							</p>
 							<Badge variant="secondary">
@@ -242,12 +242,12 @@ const Settings = ({
 								<Card className="shadow-none transition-colors border">
 									<CardHeader className="pb-2">
 										<div className="flex items-center gap-3 mb-2">
-											<option.icon className="h-5 w-5 text-mocha-text" />
-											<CardTitle className="text-base font-medium text-mocha-text">
+											<option.icon className="h-5 w-5 text-foreground" />
+											<CardTitle className="text-base font-medium text-foreground">
 												{option.title}
 											</CardTitle>
 										</div>
-										<CardDescription className="text-sm text-mocha-sub-text">
+										<CardDescription className="text-sm text-muted-foreground">
 											{option.description}
 										</CardDescription>
 									</CardHeader>

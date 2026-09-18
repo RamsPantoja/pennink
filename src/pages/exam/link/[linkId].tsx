@@ -24,7 +24,7 @@ import { toast } from "sonner";
 import { ExamFeedback } from "~/components/common/ExamFeedback";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type ToolCallPart } from "ai";
-import type { EvaluationDetailsTool } from "~/lib/aiTools/getEvaluationDetails";
+import type { EvaluationDetailsTool } from "~/app/agents/exam-evaluation/tools";
 import { useTranslations } from "next-intl";
 import { getPreferredLocale, type Locale } from "~/lib/utils";
 
@@ -219,7 +219,7 @@ const ShareExam = ({
 							onStart={handleOnStartExam}
 							duration={examData.examVersion.exam.duration}
 						/>
-						<div className="flex flex-row items-center gap-4 min-w-32 w-full text-light-mocha-text dark:text-mocha-text">
+						<div className="flex flex-row items-center gap-4 min-w-32 w-full text-foreground dark:text-foreground">
 							<Avatar className="h-7 w-7">
 								<AvatarImage src={examData.examVersion.exam.user.image} />
 								<AvatarFallback>
@@ -241,7 +241,7 @@ const ShareExam = ({
 								</p>
 							</div>
 						</div>
-						<div className="sticky top-0 z-10 bg-mocha-base/70 p-4 flex items-center clip backdrop-blur-xs rounded-b-xl gap-4 justify-between">
+						<div className="sticky top-0 z-10 bg-background/70 p-4 flex items-center clip backdrop-blur-xs rounded-b-xl gap-4 justify-between">
 							<Badge>{t("badge.exam")}</Badge>
 							{examData?.examVersion.exam.duration && (
 								<div

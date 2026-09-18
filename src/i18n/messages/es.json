@@ -127,7 +127,8 @@
 		"tooltips": {
 			"addContext": "Agregar contexto al chat",
 			"removeQuote": "Eliminar cita",
-			"formGeneration": "Herramienta de generación de formularios"
+			"formGeneration": "Herramienta de generación de formularios",
+			"artifactGeneration": "Crear material educativo descargable"
 		},
 		"contextItems": {
 			"document": "Documento actual",
@@ -135,7 +136,8 @@
 			"addPrompt": "Agregar contexto..."
 		},
 		"tools": {
-			"formGeneration": "Formulario"
+			"formGeneration": "Formulario",
+			"artifactGeneration": "Material"
 		},
 		"input": {
 			"placeholder": "Pregunta lo que quieras"
@@ -146,6 +148,7 @@
 			"removeQuote": "Eliminar cita",
 			"chatInput": "Campo de entrada de chat",
 			"formGenerationToggle": "Alternar modo de generación de formularios",
+			"artifactGenerationToggle": "Alternar modo de material descargable",
 			"stopStreaming": "Detener la transmisión de la respuesta",
 			"sendMessage": "Enviar mensaje"
 		}

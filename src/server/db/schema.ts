@@ -438,6 +438,37 @@ export const filesRelations = relations(files, ({ one }) => ({
 	}),
 }));
 
+export const artifacts = createTable("artifact", {
+	id: customId.notNull().primaryKey(),
+	filename: text().notNull(),
+	type: text().notNull(),
+	key: text().notNull().unique(),
+	bucket: text().notNull(),
+	size: integer().notNull(),
+	userId: uuid()
+		.notNull()
+		.references(() => users.id),
+	workspaceId: uuid().references(() => workspaces.id),
+	chatId: uuid().references(() => chats.id),
+	createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+	updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+});
+
+export const artifactsRelations = relations(artifacts, ({ one }) => ({
+	user: one(users, {
+		fields: [artifacts.userId],
+		references: [users.id],
+	}),
+	workspace: one(workspaces, {
+		fields: [artifacts.workspaceId],
+		references: [workspaces.id],
+	}),
+	chat: one(chats, {
+		fields: [artifacts.chatId],
+		references: [chats.id],
+	}),
+}));
+
 export const filesToWorkspaces = createTable(
 	"file_to_workspace",
 	{

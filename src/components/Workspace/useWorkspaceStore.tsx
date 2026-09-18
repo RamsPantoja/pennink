@@ -1,8 +1,7 @@
 import { create } from "zustand";
-import type { BlockNoteEditor } from "@blocknote/core";
 import type { FormType } from "~/lib/enum";
 import type { RouterOutputs } from "~/utils/api";
-import type { AiForm } from "~/lib/aiTools/form";
+import type { AiForm } from "~/app/agents/chat/schema";
 
 export type PenninkDocument = {
 	id: string;
@@ -27,11 +26,6 @@ export type FormContext = {
 	type: "form";
 };
 
-export type EditorContext = {
-	label: string;
-	type: "editor";
-};
-
 type ReaderEventType =
 	| "reader-on-summarize"
 	| "reader-on-explain"
@@ -45,8 +39,10 @@ type ReaderEvent = {
 export type ContextEntity =
 	| ThreadContext
 	| DocumentContext
-	| EditorContext
 	| FormContext;
+
+export type AgentActivity = "idle" | "thinking" | "speaking" | "error";
+export type AudioState = "idle" | "loading" | "playing" | "error";
 
 export type CurrentForm = {
 	id: string;
@@ -60,8 +56,10 @@ type WorkspaceStore = {
 	readerEvent: ReaderEvent | null;
 	setReaderEvent: (event: ReaderEvent | null) => void;
 	setWorkspaceTitle: (title: string) => void;
-	editor: BlockNoteEditor | null;
-	setEditor: (editor: BlockNoteEditor | null) => void;
+	agentActivity: AgentActivity;
+	setAgentActivity: (activity: AgentActivity) => void;
+	audioState: AudioState;
+	setAudioState: (state: AudioState) => void;
 	displayFormEditor: boolean;
 	setDisplayFormEditor: (displayFormEditor: boolean) => void;
 	aiFormData: AiForm | null;
@@ -80,23 +78,21 @@ const initialStore = {};
 export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	workspaceTitle: "",
 	aiContextItems: [
-		{
-			label: "Editor",
-			type: "editor",
-		},
 	],
 	queryFormData: null,
 	document: null,
 	aiFormData: null,
 	currentForm: null,
 	readerEvent: null,
-	editor: null,
+	agentActivity: "idle",
+	audioState: "idle",
 	displayFormEditor: false,
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
 	setDocument: (document) => set(() => ({ document })),
 	setReaderEvent: (event) => set(() => ({ readerEvent: event })),
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
-	setEditor: (editor) => set(() => ({ editor })),
+	setAgentActivity: (agentActivity) => set(() => ({ agentActivity })),
+	setAudioState: (audioState) => set(() => ({ audioState })),
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() => ({ displayFormEditor })),
 	setAiFormData: (data) => set(() => ({ aiFormData: data })),
@@ -105,18 +101,14 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	resetWorkspaceStore: () =>
 		set(() => ({
 			workspaceTitle: "",
-			aiContextItems: [
-				{
-					label: "Editor",
-					type: "editor",
-				},
-			],
+			aiContextItems: [],
 			queryFormData: null,
 			document: null,
 			aiFormData: null,
 			currentForm: null,
 			readerEvent: null,
-			editor: null,
+			agentActivity: "idle",
+			audioState: "idle",
 			displayFormEditor: false,
 		})),
 }));

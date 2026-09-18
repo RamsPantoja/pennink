@@ -211,7 +211,7 @@ export default function PomodoroTimer() {
 
 	return (
 		<Popover open={openTimer} onOpenChange={setOpenTimer}>
-			<div className="flex items-center border border-mocha-mantle rounded-md bg-mocha-crust">
+			<div className="flex items-center border border-muted rounded-md bg-card">
 				<div className="flex items-center">
 					{status === "idle" && (
 						<Tooltip>
@@ -264,7 +264,7 @@ export default function PomodoroTimer() {
 						</Tooltip>
 					)}
 				</div>
-				<p className="text-xs text-mocha-text px-2 tracking-wider font-semibold">
+				<p className="text-xs text-foreground px-2 tracking-wider font-semibold">
 					{formatTime(timeLeft)}
 				</p>
 				<Tooltip>
@@ -313,7 +313,7 @@ export default function PomodoroTimer() {
 									</DialogHeader>
 									<div className="space-y-4">
 										<div className="flex flex-col gap-2">
-											<Label htmlFor="focus-time" className="text-mocha-text">
+											<Label htmlFor="focus-time" className="text-foreground">
 												{t("focusTime")}
 											</Label>
 											<div className="flex items-center gap-4">
@@ -330,13 +330,13 @@ export default function PomodoroTimer() {
 														}))
 													}
 												/>
-												<span className="text-xs text-mocha-sub-text">
+												<span className="text-xs text-muted-foreground">
 													{t("minutes")}
 												</span>
 											</div>
 										</div>
 										<div className="flex flex-col gap-2">
-											<Label htmlFor="rest-time" className="text-mocha-text">
+											<Label htmlFor="rest-time" className="text-foreground">
 												{t("restTime")}
 											</Label>
 											<div className="flex items-center gap-4">
@@ -353,7 +353,7 @@ export default function PomodoroTimer() {
 														}))
 													}
 												/>
-												<span className="text-xs text-mocha-sub-text">
+												<span className="text-xs text-muted-foreground">
 													{t("minutes")}
 												</span>
 											</div>
@@ -442,7 +442,7 @@ export default function PomodoroTimer() {
 					</div>
 					{/* Today's Stats */}
 					<Card className="border flex gap-4 flex-col">
-						<p className="text-mocha-text text-sm">{t("todayProgress")}</p>
+						<p className="text-foreground text-sm">{t("todayProgress")}</p>
 						<div className="grid grid-cols-2 gap-4 text-center">
 							<div>
 								<div className="font-bold text-primary">
@@ -464,7 +464,7 @@ export default function PomodoroTimer() {
 					</Card>
 					{/* Session History */}
 					<Card className="border flex gap-4 flex-col">
-						<p className="text-mocha-text text-sm">{t("todaySessions")}</p>
+						<p className="text-foreground text-sm">{t("todaySessions")}</p>
 						<div>
 							{sessions.length === 0 ? (
 								<p className="text-center text-muted-foreground py-4 text-xs">

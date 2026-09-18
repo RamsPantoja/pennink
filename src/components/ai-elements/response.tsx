@@ -14,7 +14,7 @@ export const Response = ({ content, reasoning }: ResponseProps) => {
 			className={cn([
 				"flex flex-col overflow-auto w-full",
 				{
-					"markdown-styles-for-reasoning text-xs text-mocha-sub-text":
+					"markdown-styles-for-reasoning text-xs text-muted-foreground":
 						reasoning,
 					"markdown-styles": !reasoning,
 				},

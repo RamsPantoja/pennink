@@ -39,7 +39,7 @@ export const LinkItem = ({
 				setCurrentLink({ id, key: customKey, link: clipboardContent });
 				setBreadcrumbs({ ...breadcrumbs, results: t("breadcrumbs.results") });
 			}}
-			className="flex gap-2 flex-col bg-mocha-mantle hover:bg-mocha-mantle/50 transition-colors h-fit"
+			className="flex gap-2 flex-col bg-muted hover:bg-muted/50 transition-colors h-fit"
 		>
 			<div className="flex gap-4 justify-between">
 				<p className="text-sm font-semibold">{customKey}</p>
@@ -47,7 +47,7 @@ export const LinkItem = ({
 			</div>
 			<div className="flex items-center">
 				<p
-					className="text-xs text-mocha-sub-text truncate ml-2"
+					className="text-xs text-muted-foreground truncate ml-2"
 					title={clipboardContent}
 				>
 					{clipboardContent}

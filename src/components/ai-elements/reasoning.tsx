@@ -126,7 +126,7 @@ export const ReasoningTrigger = memo(
 		return (
 			<CollapsibleTrigger
 				className={cn(
-					"flex items-center gap-2 text-mocha-sub-text text-sm",
+					"flex items-center gap-2 text-muted-foreground text-sm",
 					className,
 				)}
 				{...props}
@@ -143,7 +143,7 @@ export const ReasoningTrigger = memo(
 						)}
 						<ChevronDownIcon
 							className={cn(
-								"size-4 text-mocha-sub-text transition-transform",
+								"size-4 text-muted-foreground transition-transform",
 								isOpen ? "rotate-180" : "rotate-0",
 							)}
 						/>
@@ -165,7 +165,7 @@ export const ReasoningContent = memo(
 		<CollapsibleContent
 			className={cn(
 				"mt-4",
-				"data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-mocha-sub-text outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in dark:text-slate-50",
+				"data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-muted-foreground outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in dark:text-slate-50",
 				className,
 			)}
 			{...props}

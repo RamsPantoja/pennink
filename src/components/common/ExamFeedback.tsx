@@ -60,7 +60,7 @@ export const ExamFeedback = ({
 					</Card>
 				)}
 				{status !== "submitted" && (
-					<div className="flex flex-col gap-4 text-mocha-text max-h-[720px] overflow-auto">
+					<div className="flex flex-col gap-4 text-foreground max-h-[720px] overflow-auto">
 						{messages.map((message, index) => {
 							return (
 								<div key={message.id}>

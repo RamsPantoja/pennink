@@ -127,7 +127,8 @@
 		"tooltips": {
 			"addContext": "Add context to chat",
 			"removeQuote": "Remove Quote",
-			"formGeneration": "Form generation tool"
+			"formGeneration": "Form generation tool",
+			"artifactGeneration": "Create a downloadable classroom material"
 		},
 		"contextItems": {
 			"document": "Current document",
@@ -135,7 +136,8 @@
 			"addPrompt": "Add context..."
 		},
 		"tools": {
-			"formGeneration": "Form"
+			"formGeneration": "Form",
+			"artifactGeneration": "Material"
 		},
 		"input": {
 			"placeholder": "Ask anything"
@@ -146,6 +148,7 @@
 			"removeQuote": "Remove quote",
 			"chatInput": "Chat input field",
 			"formGenerationToggle": "Toggle form generation mode",
+			"artifactGenerationToggle": "Toggle downloadable material mode",
 			"stopStreaming": "Stop streaming response",
 			"sendMessage": "Send message"
 		}

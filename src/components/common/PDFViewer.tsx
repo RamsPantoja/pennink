@@ -176,7 +176,7 @@ export default function PDFViewer({ src }: DynamicPDFViewerProps) {
 					const highlightSpan = document.createElement("span");
 					highlightSpan.className =
 						currentPosition === currentIndex
-							? "bg-mocha-teal text-black rounded current-match"
+							? "bg-primary text-black rounded current-match"
 							: "bg-black text-white rounded";
 					highlightSpan.appendChild(document.createTextNode(match[0]));
 					result.appendChild(highlightSpan);

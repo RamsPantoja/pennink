@@ -94,7 +94,7 @@ export const IdentificationDialogForm = ({
 									message={t(errors.email.message as any)}
 								/>
 							)}
-							<p className="text-xs text-mocha-sub-text">
+							<p className="text-xs text-muted-foreground">
 								{t("form.email.helperText")}
 							</p>
 						</div>
@@ -148,7 +148,7 @@ export const IdentificationDialogForm = ({
 					>
 						{t("button.googleSignIn")}
 					</Button>
-					<p className="text-xs text-mocha-text text-center">
+					<p className="text-xs text-foreground text-center">
 						{t.rich("legal.text", {
 							terms: (chunks) => (
 								<a

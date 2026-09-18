@@ -160,12 +160,12 @@ export function SelectionToolbar({
 					}}
 				>
 					{/* Main toolbar */}
-					<div className="bg-mocha-base border border-mocha-mauve rounded-lg flex items-center p-1.5 gap-1 w-fit h-full">
+					<div className="bg-background border border-border rounded-lg flex items-center p-1.5 gap-1 w-fit h-full">
 						{tools.map((tool) => {
 							return tool;
 						})}
 						<Separator
-							className="bg-mocha-mauve min-h-8"
+							className="bg-border min-h-8"
 							orientation="vertical"
 						/>
 						<Button
@@ -173,7 +173,7 @@ export function SelectionToolbar({
 							onClick={handleCopy}
 							size="icon"
 							variant="ghost"
-							className="hover:bg-mocha-mauve"
+							className="hover:bg-border"
 							title={"Copy"}
 						>
 							<Copy className="min-w-5 h-5" />

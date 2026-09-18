@@ -113,13 +113,13 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 							>
 								<div className="flex items-center gap-3">
 									<RadioGroupItem value="BASIC" id="r1" />
-									<Label className="text-mocha-text" htmlFor="r1">
+									<Label className="text-foreground" htmlFor="r1">
 										{t("formType.basic")}
 									</Label>
 								</div>
 								<div className="flex items-center gap-3">
 									<RadioGroupItem value="EXAM" id="r2" />
-									<Label className="text-mocha-text" htmlFor="r2">
+									<Label className="text-foreground" htmlFor="r2">
 										{t("formType.exam")}
 									</Label>
 								</div>
@@ -137,7 +137,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
 								!formsIsError &&
 								forms &&
 								forms.data.length === 0 && (
-									<div className="flex items-center justify-center text-mocha-text">
+									<div className="flex items-center justify-center text-foreground">
 										{t("emptyState.forms")}
 									</div>
 								)}
