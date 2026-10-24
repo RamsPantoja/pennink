@@ -7,14 +7,17 @@ import {
 	documentVectorSearchInputSchema,
 	deleteWorkspaceInputSchema,
 	getFilesByUserInputSchema,
+	workspacesByClassroomInputSchema,
 } from "../schemas/workspace";
 
 export const workspaceRouter = createTRPCRouter({
-	workspaces: protectedProcedure.query(async ({ ctx }) => {
-		return await ctx
-			.services({ ctx })
-			.workspaceService.getWorkspaces(ctx.session.user.id);
-	}),
+	workspaces: protectedProcedure
+		.input(workspacesByClassroomInputSchema)
+		.query(async ({ input, ctx }) => {
+			return await ctx
+				.services({ ctx })
+				.workspaceService.getWorkspaces(input.classroomId, ctx.session.user.id);
+		}),
 	filesByUserId: protectedProcedure
 		.input(getFilesByUserInputSchema)
 		.query(async ({ input, ctx }) => {
@@ -27,7 +30,7 @@ export const workspaceRouter = createTRPCRouter({
 		.query(async ({ input, ctx }) => {
 			return await ctx
 				.services({ ctx })
-				.workspaceService.getWorkspaceById(input.id);
+				.workspaceService.getWorkspaceById(input.id, ctx.session.user.id);
 		}),
 	create: protectedProcedure
 		.input(createWorkspaceInputSchema)
@@ -41,7 +44,7 @@ export const workspaceRouter = createTRPCRouter({
 		.mutation(async ({ input, ctx }) => {
 			return await ctx
 				.services({ ctx })
-				.workspaceService.updateWorkspaceName(input);
+				.workspaceService.updateWorkspaceName(input, ctx.session.user.id);
 		}),
 	createFile: protectedProcedure
 		.input(createFileInputSchema)

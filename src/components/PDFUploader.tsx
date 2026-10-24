@@ -1,6 +1,7 @@
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { FileIcon, UploadIcon, XIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
 	Card,
@@ -28,6 +29,7 @@ type PDFUploaderProps = {
 };
 
 export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
+	const t = useTranslations("PDFUploader");
 	const [file, setFile] = useState<File | null>(null);
 	const [progress, setProgress] = useState(0);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -55,7 +57,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 		if (!selectedFile) return;
 
 		if (selectedFile.type !== "application/pdf") {
-			toast("Invalid file type");
+			toast(t("errors.invalidFileType"));
 			return;
 		}
 
@@ -76,7 +78,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 		if (!droppedFile) return;
 
 		if (droppedFile.type !== "application/pdf") {
-			toast("Invalid file type");
+			toast(t("errors.invalidFileType"));
 			return;
 		}
 
@@ -107,10 +109,10 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 							</div>
 							<div>
 								<p className="text-sm font-medium">
-									Drag and drop your PDF here or click to browse
+									{t("dropzone")}
 								</p>
 								<p className="text-xs text-muted-foreground mt-1">
-									Only PDF files are accepted
+									{t("onlyPdf")}
 								</p>
 							</div>
 							<Button
@@ -118,7 +120,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 								onClick={() => fileInputRef.current?.click()}
 								className="mt-2"
 							>
-								Browse Files
+								{t("browse")}
 							</Button>
 							<Input
 								ref={fileInputRef}
@@ -153,7 +155,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 											<XMarkIcon className="h-5 min-w-5" />
 										</Button>
 									</TooltipTrigger>
-									<TooltipContent>Remove file</TooltipContent>
+									<TooltipContent>{t("removeFile")}</TooltipContent>
 								</Tooltip>
 							</div>
 							{previewUrl && (
@@ -161,7 +163,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 									<iframe
 										src={previewUrl}
 										className="w-full h-full"
-										title={`Preview of ${file?.name}`}
+										title={t("preview", { name: file?.name ?? "" })}
 									/>
 								</div>
 							)}
@@ -174,7 +176,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 					disabled={!file || isPending}
 					onClick={() => {
 						if (!file) {
-							toast("Please select a file");
+							toast(t("errors.noFile"));
 							return;
 						}
 
@@ -183,7 +185,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 					isPending={isPending}
 					endIcon={<SparklesIcon className="min-w-5 h-5" />}
 				>
-					Upload and Ask
+					{t("uploadAndAsk")}
 				</Button>
 			</CardContent>
 		</Card>

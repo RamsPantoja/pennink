@@ -37,7 +37,7 @@ export const ExamResultCard = ({
 				<p className="text-sm">{username}</p>
 			</div>
 			<div className="flex flex-col gap-2">
-				<p className="text-sm">Score: {score}</p>
+				<p className="text-sm">{t("ExamResultCard.score", { score })}</p>
 				<Progress value={score} />
 				<p className="text-xs text-muted-foreground">
 					{createdAt.toLocaleString()}

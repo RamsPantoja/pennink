@@ -6,9 +6,11 @@ import type {
 	updateWorkspaceNameInputSchema,
 } from "../schemas/workspace";
 import type { TRPCContext } from "../../trpc";
+import { userHasClassroom } from "./classroom";
 import {
 	chats,
 	workspaces,
+	classroomTeachers,
 	notes,
 	summaries,
 	messages as messagesSchema,
@@ -45,7 +47,16 @@ export class WorkspaceService {
 	}
 
 	public async create(data: createWorkspaceInput, userId: string) {
-		const { name, messages, chatId } = data;
+		const { name, messages, chatId, classroomId } = data;
+
+		if (!(await userHasClassroom(this.ctx.db, userId))) {
+			throw new TRPCError({
+				code: "PRECONDITION_FAILED",
+				message: "Create a classroom before creating a workspace",
+			});
+		}
+
+		await this.assertClassroomTeacher(classroomId, userId);
 
 		const ruleRes = await this.workspaceCreationRule(userId);
 
@@ -95,6 +106,7 @@ export class WorkspaceService {
 				.values({
 					name,
 					userId,
+					classroomId,
 					chatId: chat.id,
 					noteId: note.id,
 					summaryId: summary.id,
@@ -118,10 +130,14 @@ export class WorkspaceService {
 		return result;
 	}
 
-	public async getWorkspaces(userId: string) {
+	public async getWorkspaces(classroomId: string, userId: string) {
+		await this.assertClassroomTeacher(classroomId, userId);
 		const workspaces = await this.ctx.db.query.workspaces.findMany({
 			where: (workspaces, { eq, and }) => {
-				return and(eq(workspaces.userId, userId), isNull(workspaces.deletedAt));
+				return and(
+					eq(workspaces.classroomId, classroomId),
+					isNull(workspaces.deletedAt),
+				);
 			},
 			orderBy: (workspaces, { desc }) => {
 				return desc(workspaces.updatedAt);
@@ -200,7 +216,7 @@ export class WorkspaceService {
 		}
 	}
 
-	public async getWorkspaceById(id: string) {
+	public async getWorkspaceById(id: string, userId: string) {
 		const workspace = await this.ctx.db.query.workspaces.findFirst({
 			where: (workspaces, { eq }) => {
 				return eq(workspaces.id, id);
@@ -216,11 +232,28 @@ export class WorkspaceService {
 				message: "Workspace not found",
 			});
 		}
+		await this.assertClassroomTeacher(workspace.classroomId, userId);
 
 		return workspace;
 	}
 
-	public async updateWorkspaceName(input: updateWorkspaceNameInput) {
+	private async assertClassroomTeacher(classroomId: string, userId: string) {
+		const teacher = await this.ctx.db.query.classroomTeachers.findFirst({
+			where: (table, { eq, and }) =>
+				and(eq(table.classroomId, classroomId), eq(table.userId, userId)),
+		});
+		if (!teacher) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Classroom not found",
+			});
+		}
+	}
+
+	public async updateWorkspaceName(
+		input: updateWorkspaceNameInput,
+		userId: string,
+	) {
 		const workspace = await this.ctx.db.query.workspaces.findFirst({
 			where: (workspaces, { eq }) => {
 				return eq(workspaces.id, input.id);
@@ -233,6 +266,7 @@ export class WorkspaceService {
 				message: "Workspace not found",
 			});
 		}
+		await this.assertClassroomTeacher(workspace.classroomId, userId);
 
 		const [updatedWorkspace] = await this.ctx.db
 			.update(workspaces)
@@ -448,10 +482,15 @@ export class WorkspaceService {
 
 	public async delete(id: string, userId: string) {
 		try {
+			const existingWorkspace = await this.ctx.db.query.workspaces.findFirst({
+				where: (table, { eq }) => eq(table.id, id),
+			});
+			if (!existingWorkspace) throw new TRPCError({ code: "NOT_FOUND" });
+			await this.assertClassroomTeacher(existingWorkspace.classroomId, userId);
 			const [workspace] = await this.ctx.db
 				.update(workspaces)
 				.set({ deletedAt: new Date() })
-				.where(and(eq(workspaces.id, id), eq(workspaces.userId, userId)))
+				.where(eq(workspaces.id, id))
 				.returning();
 
 			if (!workspace) {

@@ -10,7 +10,7 @@ const bedrock = createAmazonBedrock({
 
 export const createChatAgent = (tools: ToolSet) =>
   new ToolLoopAgent({
-    model: bedrock("us.openai.gpt-5.6-luna"),
+    model: bedrock("us.openai.gpt-6-luna"),
     instructions: chatSystemPrompt,
     tools,
   });

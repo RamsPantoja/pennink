@@ -10,10 +10,10 @@ const useSidebarLogic = () => {
 	const { resetWorkspaceStore } = useWorkspaceStore();
 
 	const {
-		data: workspacesData,
-		isLoading: workspacesIsLoading,
-		isError: workspacesIsError,
-	} = api.workspace.workspaces.useQuery();
+		data: classroomsData,
+		isLoading: classroomsIsLoading,
+		isError: classroomsIsError,
+	} = api.classroom.classrooms.useQuery();
 
 	const onNewWorkspace = () => {
 		router.push("/");
@@ -23,9 +23,9 @@ const useSidebarLogic = () => {
 	return {
 		displaySignOutAlert,
 		setDisplaySignOutAlert,
-		workspacesData,
-		workspacesIsLoading,
-		workspacesIsError,
+		classroomsData,
+		classroomsIsLoading,
+		classroomsIsError,
 		onNewWorkspace,
 	};
 };

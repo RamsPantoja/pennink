@@ -1,5 +1,6 @@
 import { BellIcon } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
+import { useTranslations } from "next-intl";
 import FeedbackMessage from "../common/FeedbackMessage";
 import NotificationSkeletonCard from "./NotificationSkeletonCard";
 import { mapSkeletons } from "~/lib/utils";
@@ -12,6 +13,7 @@ type NotificationsProps = {
 };
 
 const Notifications = ({ session }: NotificationsProps) => {
+	const t = useTranslations("Notifications");
 	// const {
 	//   notificationsData,
 	//   notificationsIsLoading,
@@ -69,7 +71,7 @@ const Notifications = ({ session }: NotificationsProps) => {
           </div>
         } */}
 				<div className="p-4">
-					<FeedbackMessage status="INFORMATION" message="No notifications" />
+					<FeedbackMessage status="INFORMATION" message={t("empty")} />
 				</div>
 			</PopoverContent>
 		</Popover>

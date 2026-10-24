@@ -19,11 +19,10 @@ import type { AiForm } from "~/app/agents/chat/schema";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
-import {
-	playAgentSpeech,
-	stopAgentSpeech,
-} from "~/lib/agentAudio";
+import { useTranslations } from "next-intl";
+import { playAgentSpeech, stopAgentSpeech } from "~/lib/agentAudio";
 import { extractSpeechText } from "~/lib/speechText";
+import { useActiveClassroom } from "../Classroom/useActiveClassroom";
 
 export type MyUIMessage = UIMessage<{
 	id: Message["id"];
@@ -48,8 +47,6 @@ type UseChatLogicProps = {
 	chatId: string;
 	isNew: boolean;
 };
-
-export type Tools = "form-generation" | "web-search" | "artifact-generation";
 
 export const parseUIMessage = (message?: MyUIMessage): Message | null => {
 	if (message) {
@@ -92,6 +89,7 @@ const createAssistantMessageMetadata = (chatId: string, session: Session) => {
 };
 
 export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
+	const t = useTranslations("Chat");
 	const router = useRouter();
 	const pathname = usePathname();
 	const utils = api.useUtils();
@@ -107,10 +105,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		aiContextItems,
 		setAiContextItems,
 		queryFormData,
-		currentForm,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
-	const [tools, setTools] = useState<Tools[]>([]);
+	const newWorkspaceId = useRef<string | null>(null);
+	const newWorkspaceUserMessage = useRef<Message | null>(null);
 
 	const {
 		messages: tempMessages,
@@ -136,12 +134,31 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			if (speechText) void playAgentSpeech(speechText);
 
 			if (!session) {
-				toast("Please sign in to save your message");
+				toast(t("toast.signInToSave"));
 				return;
 			}
 
 			if (!message) {
-				toast("Assistant message not found");
+				toast(t("toast.assistantMessageNotFound"));
+				return;
+			}
+
+			if (pathname === "/" && isNew) {
+				const workspaceId = newWorkspaceId.current;
+				const firstUserMessage = newWorkspaceUserMessage.current;
+
+				if (!workspaceId || !firstUserMessage) return;
+
+				localStorage.setItem(
+					"buuddy.new-workspace-messages",
+					JSON.stringify([firstUserMessage, message]),
+				);
+
+				void createMessageAsync({
+					chatId,
+					message,
+				}).then(() => router.push(`/workspace/${workspaceId}`));
+
 				return;
 			}
 
@@ -150,40 +167,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					chatId,
 					message,
 				});
-			}
-
-			if (pathname === "/" && isNew) {
-				const firstUserMessageString = localStorage.getItem(
-					"pennink-user-message",
-				);
-
-				if (firstUserMessageString) {
-					const firstUserMessage = JSON.parse(
-						firstUserMessageString,
-					) as Message;
-
-					localStorage.setItem(
-						"buuddy.new-workspace-messages",
-						JSON.stringify([firstUserMessage, message]),
-					);
-
-					createWorkspace({
-						name: "...",
-						messages: [
-							{
-								...firstUserMessage,
-								createdAt: DateTime.fromMillis(
-									firstUserMessage.createdAt as unknown as number,
-								).toJSDate(),
-								updatedAt: DateTime.fromMillis(
-									firstUserMessage.updatedAt as unknown as number,
-								).toJSDate(),
-							},
-							message,
-						],
-						chatId,
-					});
-				}
 			}
 		},
 		onError: (error) => {
@@ -202,7 +185,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			stopAgentSpeech();
 			speechMessageId.current = streamingAssistantMessage.id;
 		}
-
 	}, [streamingAssistantMessage?.id]);
 
 	useEffect(() => {
@@ -235,7 +217,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	} = api.workspace.documentVectorSearch.useMutation({
 		onError: (error) => {
 			console.error("Mutation failed:", error);
-			toast.error("An error occurred while sending your message.");
+			toast.error(t("toast.sendError"));
 		},
 	});
 
@@ -266,18 +248,26 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	});
 
-	const { mutate: createWorkspace, isPending: createWorkspaceIsPending } =
-		api.workspace.create.useMutation({
-			onSuccess: async (data) => {
-				router.push(`/workspace/${data.id}`);
-				await utils.workspace.workspaces.invalidate();
-			},
-			onError: (error) => {
-				console.error(error.message);
-			},
-		});
+	const { data: classrooms } = api.classroom.classrooms.useQuery(undefined, {
+		enabled: !!session,
+	});
+	const { activeId: activeClassroomId } = useActiveClassroom(classrooms);
+	const hasClassroom = !classrooms || classrooms.length > 0;
 
-	const { mutate: createMessage } = api.chat.createMessage.useMutation({
+	const {
+		mutateAsync: createWorkspaceAsync,
+		isPending: createWorkspaceIsPending,
+	} = api.workspace.create.useMutation({
+		onSuccess: async () => {
+			await utils.workspace.workspaces.invalidate();
+		},
+		onError: (error) => {
+			console.error(error.message);
+		},
+	});
+
+	const { mutate: createMessage, mutateAsync: createMessageAsync } =
+		api.chat.createMessage.useMutation({
 		onSuccess: async (data) => {
 			if (data.role === "assistant") {
 				await utils.user.statics.invalidate();
@@ -298,6 +288,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	});
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
+		if (!hasClassroom) {
+			toast(t("toast.createClassroomFirst"));
+			return;
+		}
+
 		const userMessage: ModelMessage = {
 			role: "user",
 			content: [{ type: "text", text: data.prompt }],
@@ -305,7 +300,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		useChatForm.setValue("prompt", "");
 
 		if (!session) {
-			toast("User is not authenticated");
+			toast(t("toast.notAuthenticated"));
 			return;
 		}
 
@@ -344,21 +339,27 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 
 		if (isNew || pathname === "/") {
-			localStorage.setItem(
-				"pennink-user-message",
-				JSON.stringify({
-					...message,
-					createdAt: Date.now(),
-					updatedAt: Date.now(),
-				}),
-			);
+			try {
+				const workspace = await createWorkspaceAsync({
+					name: "...",
+					messages: [message],
+					chatId,
+					classroomId: activeClassroomId ?? "",
+				});
+
+				newWorkspaceId.current = workspace.id;
+				newWorkspaceUserMessage.current = message;
+			} catch (error) {
+				console.error(error);
+				toast(t("toast.sendError"));
+				return;
+			}
 
 			await sendMessage(undefined, {
 				body: {
 					context: {
 						messages: [],
 					},
-					tools,
 					prompt: data.prompt,
 					metadata: createAssistantMessageMetadata(chatId, session),
 				},
@@ -374,7 +375,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 		if (aiContextItems.find((item) => item.type === "document")) {
 			if (!document) {
-				toast("Select a document before asking");
+				toast(t("toast.selectDocument"));
 				return;
 			}
 
@@ -395,7 +396,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 		if (aiContextItems.find((item) => item.type === "form")) {
 			if (!queryFormData) {
-				toast.error("Form instance not found");
+				toast.error(t("toast.formNotFound"));
 				return;
 			}
 
@@ -504,7 +505,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				context: {
 					messages: [...convertedToModelMessages, userMessage],
 				},
-				tools,
 				prompt: data.prompt,
 				metadata: createAssistantMessageMetadata(chatId, session),
 			},
@@ -550,7 +550,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			setReaderEvent(null);
 
 			if (!session) {
-				toast("User is not authenticated");
+				toast(t("toast.notAuthenticated"));
 				return;
 			}
 
@@ -600,7 +600,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						context: {
 							messages: fullContextMessages,
 						},
-						tools,
 						prompt,
 						metadata: createAssistantMessageMetadata(chatId, session),
 					},
@@ -637,7 +636,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						context: {
 							messages: fullContextMessages,
 						},
-						tools,
 						prompt,
 						metadata: createAssistantMessageMetadata(chatId, session),
 					},
@@ -660,10 +658,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 	const onRemoveQuote = () => {
 		setQuote(null);
-	};
-
-	const onToggleTools = (tools: Tools[]) => {
-		setTools(tools);
 	};
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -693,20 +687,9 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 	}, [document]);
 
-	useEffect(() => {
-		if (currentForm) {
-			setTools((prv) => {
-				if (prv.includes("form-generation")) {
-					return prv;
-				}
-
-				return [...prv, "form-generation"];
-			});
-		}
-	}, [currentForm]);
-
 	return {
 		onSentPrompt,
+		hasClassroom,
 		useChatForm,
 		tempMessages,
 		messages,
@@ -717,8 +700,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		chatContainer,
 		quote,
 		onRemoveQuote,
-		onToggleTools,
-		tools,
 		documentVectorSearchMutationIsPending,
 		document,
 		stopStreaming,

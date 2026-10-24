@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./Button";
 import { ArrowDownIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type ScrollToBottomButtonProps = {
@@ -11,6 +12,7 @@ type ScrollToBottomButtonProps = {
 export const ScrollToBottomButton = ({
 	scrollableElementId,
 }: ScrollToBottomButtonProps) => {
+	const t = useTranslations("ScrollToBottomButton");
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
@@ -59,7 +61,7 @@ export const ScrollToBottomButton = ({
 								<ChevronDownIcon className="min-w-5 h-5" />
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent>Scroll to bottom</TooltipContent>
+						<TooltipContent>{t("tooltip")}</TooltipContent>
 					</Tooltip>
 				</div>
 			)}

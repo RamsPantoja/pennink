@@ -3,6 +3,7 @@
 import type React from "react";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "./Button";
 import { cn } from "~/lib/utils";
 import {
@@ -30,6 +31,7 @@ export function ZoomableDiv({
 	zoomStep = 0.1,
 	initialZoom = 1,
 }: ZoomableDivProps) {
+	const t = useTranslations("ZoomableDiv");
 	const [zoom, setZoom] = useState(initialZoom);
 
 	const handleZoomIn = () => {
@@ -53,7 +55,7 @@ export function ZoomableDiv({
 					size="icon"
 					onClick={handleZoomOut}
 					disabled={zoom <= minZoom}
-					aria-label="Zoom out"
+					aria-label={t("zoomOut")}
 				>
 					<MagnifyingGlassMinusIcon className="h-4 w-4" />
 				</Button>
@@ -62,7 +64,7 @@ export function ZoomableDiv({
 					size="icon"
 					onClick={handleReset}
 					disabled={zoom === initialZoom}
-					aria-label="Reset zoom"
+					aria-label={t("resetZoom")}
 				>
 					<ArrowPathIcon className="h-4 w-4" />
 				</Button>
@@ -71,7 +73,7 @@ export function ZoomableDiv({
 					size="icon"
 					onClick={handleZoomIn}
 					disabled={zoom >= maxZoom}
-					aria-label="Zoom in"
+					aria-label={t("zoomIn")}
 				>
 					<MagnifyingGlassPlusIcon className="h-4 w-4" />
 				</Button>

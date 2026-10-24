@@ -4,13 +4,13 @@ import Dashboard from "~/layout/Dashboard";
 import { redirect } from "next/navigation";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Toaster } from "sonner";
-import { GeistMono } from "geist/font/mono";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import { getServerAuthSession } from "~/server/auth";
 import ClientSessionProvider from "~/components/ClientSessionProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { Inter } from "next/font/google";
 import { cn } from "~/lib/utils";
+import { GeistSans } from "geist/font/sans";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -40,17 +40,13 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(GeistMono.className, "font-sans", inter.variable)}
+      className={cn(GeistSans.className, "font-sans", inter.variable)}
     >
       <body className="flex w-full h-screen">
         <NextIntlClientProvider>
-          <ThemeProvider
-            attribute="data-theme"
-            defaultTheme="light"
-            enableSystem
-          >
+          <ThemeProvider attribute="data-theme" enableSystem>
             <TRPCReactProvider>
-              <Toaster richColors className={GeistMono.className} />
+              <Toaster richColors className={GeistSans.className} />
               <ClientSessionProvider session={session}>
                 <Dashboard session={session}>{children}</Dashboard>
               </ClientSessionProvider>

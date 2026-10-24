@@ -14,6 +14,7 @@ import { subscriptionRouter } from "./api/routers/subscription";
 import { feedbackRouter } from "./api/routers/feedback";
 import { formRouter } from "./api/routers/form";
 import { linkRouter } from "./api/routers/link";
+import { classroomRouter } from "./api/routers/classroom";
 
 /**
  * This is the primary router for your server.
@@ -31,6 +32,7 @@ export const appRouter = createTRPCRouter({
 	feedback: feedbackRouter,
 	form: formRouter,
 	link: linkRouter,
+	classroom: classroomRouter,
 });
 
 export const createCaller = (ctx: TRPCContext) => {

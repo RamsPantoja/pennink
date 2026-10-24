@@ -1,6 +1,10 @@
 {
 	"HomePage": {
 		"title": "¡Comienza con un nuevo espacio de trabajo!",
+		"createClassroom": {
+			"title": "Crea tu primera aula",
+			"description": "Crea un aula para empezar a chatear y crear espacios de trabajo."
+		},
 		"toast": {
 			"success": {
 				"upload": "¡Ahora puedes hacer preguntas sobre tu documento!"
@@ -88,6 +92,10 @@
 		},
 		"tooltips": {
 			"newWorkspace": "Nuevo espacio de trabajo"
+		},
+		"classrooms": {
+			"title": "Aulas",
+			"empty": "Crea un aula para comenzar"
 		}
 	},
 
@@ -122,22 +130,16 @@
 		},
 		"emptyState": {
 			"title": "Chatea con la IA",
-			"description": "Pregunta lo que quieras o usa las herramientas disponibles abajo"
+			"description": "Pregunta lo que quieras para empezar"
 		},
 		"tooltips": {
 			"addContext": "Agregar contexto al chat",
-			"removeQuote": "Eliminar cita",
-			"formGeneration": "Herramienta de generación de formularios",
-			"artifactGeneration": "Crear material educativo descargable"
+			"removeQuote": "Eliminar cita"
 		},
 		"contextItems": {
 			"document": "Documento actual",
 			"editor": "Contenido del editor",
 			"addPrompt": "Agregar contexto..."
-		},
-		"tools": {
-			"formGeneration": "Formulario",
-			"artifactGeneration": "Material"
 		},
 		"input": {
 			"placeholder": "Pregunta lo que quieras"
@@ -147,10 +149,17 @@
 			"removeContextItem": "Eliminar {item} del contexto",
 			"removeQuote": "Eliminar cita",
 			"chatInput": "Campo de entrada de chat",
-			"formGenerationToggle": "Alternar modo de generación de formularios",
-			"artifactGenerationToggle": "Alternar modo de material descargable",
 			"stopStreaming": "Detener la transmisión de la respuesta",
 			"sendMessage": "Enviar mensaje"
+		},
+		"toast": {
+			"signInToSave": "Inicia sesión para guardar tu mensaje",
+			"assistantMessageNotFound": "No se encontró el mensaje del asistente",
+			"sendError": "Ocurrió un error al enviar tu mensaje.",
+			"notAuthenticated": "El usuario no está autenticado",
+			"selectDocument": "Selecciona un documento antes de preguntar",
+			"formNotFound": "No se encontró la instancia del formulario",
+			"createClassroomFirst": "Crea un aula antes de chatear"
 		}
 	},
 
@@ -222,7 +231,9 @@
 			"loadForms": "Error al cargar los formularios"
 		},
 		"emptyState": {
-			"forms": "Tus formularios aparecerán aquí."
+			"forms": "Tus formularios aparecerán aquí.",
+			"examResults": "Tus resultados de examen aparecerán aquí",
+			"formResults": "Tus resultados de formulario aparecerán aquí"
 		},
 		"breadcrumbs": {
 			"links": "Enlaces",
@@ -343,10 +354,14 @@
 
 	"SignIn": {
 		"tagline": "Trabaja inteligente, no duro – Espacios de trabajo impulsados por IA que se adaptan a ti.",
-		"legalText": "Al crear una cuenta o iniciar sesión, aceptas los <terms>Terminos</terms> y nuestra <privacy>Política de privacidad</privacy>.",
+		"legalText": "Al crear una cuenta o iniciar sesión, aceptas los <terms>Términos</terms> y nuestra <privacy>Política de privacidad</privacy>.",
 		"terms": "Términos",
 		"privacy": "Política de Privacidad",
-		"googleSignIn": "Iniciar sesión con Google"
+		"googleSignIn": "Iniciar sesión con Google",
+		"head": {
+			"title": "Iniciar sesión",
+			"description": "Inicia sesión en tu cuenta."
+		}
 	},
 
 	"Settings": {
@@ -765,6 +780,136 @@
 		"resetZoom": "Restablecer zoom",
 		"zoomIn": "Acercar",
 		"pageLabel": "Página",
-		"pageCounter": "Página {{current}} de {{total}}"
+		"pageCounter": "Página {current} de {total}"
+	},
+
+	"ClassroomPicker": {
+		"section": "Aulas",
+		"search": {
+			"placeholder": "Buscar aulas..."
+		},
+		"input": {
+			"placeholder": "Nombre del nuevo aula"
+		},
+		"button": {
+			"new": "Nueva aula",
+			"create": "Crear",
+			"cancel": "Cancelar"
+		},
+		"empty": {
+			"none": "Todavía no hay aulas.",
+			"search": "Ningún aula coincide con tu búsqueda."
+		},
+		"dialog": {
+			"title": "Crear aula",
+			"description": "Ponle nombre a tu nueva aula. Pasará a ser tu aula activa."
+		},
+		"loading": "Cargando aulas..."
+	},
+
+	"ClassroomSection": {
+		"manage": "Administrar aula"
+	},
+
+	"ClassroomDetails": {
+		"loading":"Cargando aula...",
+		"description": "Gestiona tu aula.",
+		"button": {
+			"newWorkspace": "Nuevo espacio de trabajo",
+			"delete": "Eliminar aula",
+			"rename": "Renombrar",
+			"addStudent": "Agregar estudiante",
+			"addTeacher": "Agregar profesor",
+			"remove": "Quitar"
+		},
+		"name": {
+			"label": "Nombre del aula"
+		},
+		"students": {
+			"title": "Estudiantes",
+			"description": "Agrega estudiantes con su nombre y correo.",
+			"namePlaceholder": "Nombre del estudiante",
+			"emailPlaceholder": "Correo del estudiante"
+		},
+		"teachers": {
+			"title": "Profesores",
+			"description": "Todos los profesores tienen los mismos permisos.",
+			"emailPlaceholder": "Correo del profesor"
+		},
+		"workspaces": {
+			"title": "Espacios de trabajo"
+		}
+	},
+
+	"Common": {
+		"close": "Cerrar",
+		"more": "Más",
+		"toggleSidebar": "Alternar barra lateral",
+		"breadcrumb": "Ruta de navegación",
+		"sidebar": {
+			"title": "Barra lateral",
+			"description": "Muestra la barra lateral móvil."
+		}
+	},
+
+	"ExamResultCard": {
+		"score": "Puntaje: {score}"
+	},
+
+	"Notifications": {
+		"empty": "Sin notificaciones"
+	},
+
+	"PDFUploader": {
+		"errors": {
+			"invalidFileType": "Tipo de archivo no válido",
+			"noFile": "Selecciona un archivo"
+		},
+		"dropzone": "Arrastra y suelta tu PDF aquí o haz clic para buscarlo",
+		"onlyPdf": "Solo se aceptan archivos PDF",
+		"browse": "Buscar archivos",
+		"removeFile": "Quitar archivo",
+		"preview": "Vista previa de {name}",
+		"uploadAndAsk": "Subir y preguntar"
+	},
+
+	"Reasoning": {
+		"thinking": "Pensando...",
+		"thoughtFor": "Pensó durante {duration} segundos",
+		"thoughtAMoment": "Pensó durante unos segundos"
+	},
+
+	"AgentVisual": {
+		"ariaLabel": "Visualización del agente de IA"
+	},
+
+	"FeedbackMessage": {
+		"reportError": "Reportar error"
+	},
+
+	"ScrollToBottomButton": {
+		"tooltip": "Desplazarse al final"
+	},
+
+	"ZoomableDiv": {
+		"zoomOut": "Alejar",
+		"resetZoom": "Restablecer zoom",
+		"zoomIn": "Acercar"
+	},
+
+	"Logo": {
+		"alt": "Logotipo de Pennink"
+	},
+
+	"ArtifactCard": {
+		"download": "Descargar"
+	},
+
+	"SharedContent": {
+		"poweredBy": "Desarrollado con Pennink"
+	},
+
+	"UploadObjectToStorage": {
+		"error": "Error al subir el archivo"
 	}
 }

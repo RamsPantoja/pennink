@@ -4,6 +4,7 @@ import {
 	ExclamationTriangleIcon,
 	ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 import { Button } from "./Button";
 
 type FeedbackMessageProps = {
@@ -12,6 +13,7 @@ type FeedbackMessageProps = {
 };
 
 const FeedbackMessage = ({ message, status }: FeedbackMessageProps) => {
+	const t = useTranslations("FeedbackMessage");
 	return (
 		<div className="flex h-full w-full items-center justify-center">
 			{status === "ERROR" && (
@@ -21,7 +23,7 @@ const FeedbackMessage = ({ message, status }: FeedbackMessageProps) => {
 						<span className=" text-muted-foreground text-sm">{message}</span>
 					</div>
 					<Button size="sm" variant="link">
-						Report error
+						{t("reportError")}
 					</Button>
 				</div>
 			)}

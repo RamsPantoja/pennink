@@ -14,6 +14,7 @@ import {
 	jsonb,
 	numeric,
 	real,
+	unique,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { typeid } from "typeid-js";
@@ -83,6 +84,8 @@ export const users = createTable("user", {
 export const usersRelations = relations(users, ({ many, one }) => ({
 	accounts: many(accounts),
 	notifications: many(notifications),
+	classroomTeachers: many(classroomTeachers),
+	workspaces: many(workspaces),
 }));
 
 export const accounts = createTable(
@@ -250,9 +253,96 @@ export const subscriptionsRelations = relations(subscriptions, ({ one }) => ({
 	}),
 }));
 
+export const classrooms = createTable("classroom", {
+	id: customId.notNull().primaryKey(),
+	name: text().notNull(),
+	createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+	updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+	deletedAt: timestamp({ mode: "date" }),
+});
+
+export const students = createTable("student", {
+	id: customId.notNull().primaryKey(),
+	name: text().notNull(),
+	email: text().notNull(),
+	createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+	updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+});
+
+export const classroomTeachers = createTable(
+	"classroom_teacher",
+	{
+		classroomId: uuid()
+			.notNull()
+			.references(() => classrooms.id, { onDelete: "cascade" }),
+		userId: uuid()
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+	},
+	(table) => [primaryKey({ columns: [table.classroomId, table.userId] })],
+);
+
+export const classroomStudents = createTable(
+	"classroom_student",
+	{
+		classroomId: uuid()
+			.notNull()
+			.references(() => classrooms.id, { onDelete: "cascade" }),
+		studentId: uuid()
+			.notNull()
+			.references(() => students.id, { onDelete: "cascade" }),
+		email: text().notNull(),
+	},
+	(table) => [
+		primaryKey({ columns: [table.classroomId, table.studentId] }),
+		unique("classroom_student_email_unique").on(table.classroomId, table.email),
+	],
+);
+
+export const classroomsRelations = relations(classrooms, ({ many }) => ({
+	teachers: many(classroomTeachers),
+	students: many(classroomStudents),
+	workspaces: many(workspaces),
+}));
+
+export const studentsRelations = relations(students, ({ many }) => ({
+	classrooms: many(classroomStudents),
+}));
+
+export const classroomTeachersRelations = relations(
+	classroomTeachers,
+	({ one }) => ({
+		classroom: one(classrooms, {
+			fields: [classroomTeachers.classroomId],
+			references: [classrooms.id],
+		}),
+		user: one(users, {
+			fields: [classroomTeachers.userId],
+			references: [users.id],
+		}),
+	}),
+);
+
+export const classroomStudentsRelations = relations(
+	classroomStudents,
+	({ one }) => ({
+		classroom: one(classrooms, {
+			fields: [classroomStudents.classroomId],
+			references: [classrooms.id],
+		}),
+		student: one(students, {
+			fields: [classroomStudents.studentId],
+			references: [students.id],
+		}),
+	}),
+);
+
 export const workspaces = createTable("workspace", {
 	id: customId.notNull().primaryKey(),
 	name: text().notNull(),
+	classroomId: uuid()
+		.notNull()
+		.references(() => classrooms.id),
 	userId: uuid()
 		.notNull()
 		.references(() => users.id),
@@ -281,6 +371,10 @@ export const workspaces = createTable("workspace", {
 });
 
 export const workspacesRelations = relations(workspaces, ({ one }) => ({
+	classroom: one(classrooms, {
+		fields: [workspaces.classroomId],
+		references: [classrooms.id],
+	}),
 	user: one(users, {
 		fields: [workspaces.userId],
 		references: [users.id],

@@ -1,7 +1,6 @@
 import {
   ArrowTurnDownRightIcon,
   DocumentTextIcon,
-  ListBulletIcon,
   PlusIcon,
   StopIcon,
   XCircleIcon,
@@ -10,7 +9,7 @@ import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { ArrowUpIcon } from "lucide-react";
-import { parseUIMessage, type Tools, useChatLogic } from "./useChatLogic";
+import { parseUIMessage, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
@@ -18,7 +17,6 @@ import { cn } from "~/lib/utils";
 import { ScrollToBottomButton } from "../common/ScrollToBottomButton";
 import { AutoResizeTextarea } from "../common/AutoSizeTextarea";
 import { Controller } from "react-hook-form";
-import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { Separator } from "../ui/separator";
 import {
   DropdownMenu,
@@ -41,6 +39,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 
   const {
     onSentPrompt,
+    hasClassroom,
     useChatForm,
     tempMessages,
     messages,
@@ -50,8 +49,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
     chatContainer,
     quote,
     onRemoveQuote,
-    onToggleTools,
-    tools,
     document,
     documentVectorSearchMutationIsPending,
     stopStreaming,
@@ -69,7 +66,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
   return (
     <Card
       className={cn([
-        "flex flex-col gap-4 overflow-hidden p-0 relative w-full rounded-none bg-transparent",
+        "flex flex-col gap-4 overflow-hidden p-0 relative w-full rounded-none bg-transparent ring-0",
         {
           "flex-1": messages.length > 0,
         },
@@ -113,7 +110,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
         </div>
         <ScrollToBottomButton scrollableElementId="chat-container" />
       </div>
-      {!isNew && <Separator />}
       <div className="flex flex-col gap-2 p-3">
         {!isNew && (
           <div className="flex items-center gap-2 w-full flex-wrap">
@@ -249,56 +245,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
                   onSentPrompt({ prompt: transcript })
                 }
               />
-              <ToggleGroup
-                type="multiple"
-                onValueChange={(value: Tools[]) => {
-                  onToggleTools(value);
-                }}
-                value={tools}
-              >
-                {!isNew && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span>
-                        <ToggleGroupItem
-                          value="form-generation"
-                          variant="outline"
-                          aria-label={t("aria.formGenerationToggle")}
-                          className="rounded-full"
-                          type="button"
-                        >
-                          <ListBulletIcon className="min-w-4 w-4 h-4 mr-2" />
-                          {t("tools.formGeneration")}
-                        </ToggleGroupItem>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {t("tooltips.formGeneration")}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
-                {!isNew && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span>
-                        <ToggleGroupItem
-                          value="artifact-generation"
-                          variant="outline"
-                          aria-label={t("aria.artifactGenerationToggle")}
-                          className="rounded-full"
-                          type="button"
-                        >
-                          <DocumentTextIcon className="mr-2 h-4 w-4" />
-                          {t("tools.artifactGeneration")}
-                        </ToggleGroupItem>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {t("tooltips.artifactGeneration")}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
-              </ToggleGroup>
             </div>
             {(status === "submitted" ||
               documentVectorSearchMutationIsPending ||
@@ -325,6 +271,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
                 size="icon"
                 variant="teal"
                 disabled={
+                  !hasClassroom ||
                   createWorkspaceIsPending ||
                   triggerChatMessagesRuleIsPending ||
                   !watch("prompt").trim()

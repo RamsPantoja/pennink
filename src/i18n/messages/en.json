@@ -1,6 +1,10 @@
 {
 	"HomePage": {
 		"title": "Start with a new workspace!",
+		"createClassroom": {
+			"title": "Create your first classroom",
+			"description": "Create a classroom to start chatting and creating workspaces."
+		},
 		"toast": {
 			"success": {
 				"upload": "You can now ask to your document!"
@@ -88,6 +92,10 @@
 		},
 		"tooltips": {
 			"newWorkspace": "New workspace"
+		},
+		"classrooms": {
+			"title": "Classrooms",
+			"empty": "Create a classroom to get started"
 		}
 	},
 
@@ -122,22 +130,16 @@
 		},
 		"emptyState": {
 			"title": "Chat with AI",
-			"description": "Ask anything or use the tools available below"
+			"description": "Ask anything to get started"
 		},
 		"tooltips": {
 			"addContext": "Add context to chat",
-			"removeQuote": "Remove Quote",
-			"formGeneration": "Form generation tool",
-			"artifactGeneration": "Create a downloadable classroom material"
+			"removeQuote": "Remove Quote"
 		},
 		"contextItems": {
 			"document": "Current document",
 			"editor": "Editor content",
 			"addPrompt": "Add context..."
-		},
-		"tools": {
-			"formGeneration": "Form",
-			"artifactGeneration": "Material"
 		},
 		"input": {
 			"placeholder": "Ask anything"
@@ -147,10 +149,17 @@
 			"removeContextItem": "Remove {item} from context",
 			"removeQuote": "Remove quote",
 			"chatInput": "Chat input field",
-			"formGenerationToggle": "Toggle form generation mode",
-			"artifactGenerationToggle": "Toggle downloadable material mode",
 			"stopStreaming": "Stop streaming response",
 			"sendMessage": "Send message"
+		},
+		"toast": {
+			"signInToSave": "Please sign in to save your message",
+			"assistantMessageNotFound": "Assistant message not found",
+			"sendError": "An error occurred while sending your message.",
+			"notAuthenticated": "User is not authenticated",
+			"selectDocument": "Select a document before asking",
+			"formNotFound": "Form instance not found",
+			"createClassroomFirst": "Create a classroom before chatting"
 		}
 	},
 
@@ -222,7 +231,9 @@
 			"loadForms": "Failed to load forms"
 		},
 		"emptyState": {
-			"forms": "Your forms will appear here."
+			"forms": "Your forms will appear here.",
+			"examResults": "Your exam results will appear here",
+			"formResults": "Your form results will appear here"
 		},
 		"breadcrumbs": {
 			"links": "Links",
@@ -343,10 +354,14 @@
 
 	"SignIn": {
 		"tagline": "Work Smarter, Not Harder – AI‑Driven Workspaces That Adapt to You.",
-		"legalText": "By creating an account or signing in, you agree to the <terms>Terms</terms> y our <privacy>Privacy Policy</privacy>.",
+		"legalText": "By creating an account or signing in, you agree to the <terms>Terms</terms> and our <privacy>Privacy Policy</privacy>.",
 		"terms": "Terms",
 		"privacy": "Privacy Policy",
-		"googleSignIn": "Sign in with Google"
+		"googleSignIn": "Sign in with Google",
+		"head": {
+			"title": "Sign in",
+			"description": "Sign in to your account."
+		}
 	},
 
 	"Settings": {
@@ -765,6 +780,136 @@
 		"resetZoom": "Reset zoom",
 		"zoomIn": "Zoom in",
 		"pageLabel": "Page",
-		"pageCounter": "Page {{current}} of {{total}}"
+		"pageCounter": "Page {current} of {total}"
+	},
+
+	"ClassroomPicker": {
+		"section": "Classrooms",
+		"search": {
+			"placeholder": "Search classrooms..."
+		},
+		"input": {
+			"placeholder": "New classroom name"
+		},
+		"button": {
+			"new": "New classroom",
+			"create": "Create",
+			"cancel": "Cancel"
+		},
+		"empty": {
+			"none": "No classrooms yet.",
+			"search": "No classrooms match your search."
+		},
+		"dialog": {
+			"title": "Create classroom",
+			"description": "Give your new classroom a name. It will become your active classroom."
+		},
+		"loading": "Loading classrooms..."
+	},
+
+	"ClassroomSection": {
+		"manage": "Manage classroom"
+	},
+
+	"ClassroomDetails": {
+		"loading": "Loading classroom...",
+		"description": "Manage your classroom.",
+		"button": {
+			"newWorkspace": "New workspace",
+			"delete": "Delete classroom",
+			"rename": "Rename",
+			"addStudent": "Add student",
+			"addTeacher": "Add teacher",
+			"remove": "Remove"
+		},
+		"name": {
+			"label": "Classroom name"
+		},
+		"students": {
+			"title": "Students",
+			"description": "Add students by name and email.",
+			"namePlaceholder": "Student name",
+			"emailPlaceholder": "Student email"
+		},
+		"teachers": {
+			"title": "Teachers",
+			"description": "All teachers have the same permissions.",
+			"emailPlaceholder": "Teacher email"
+		},
+		"workspaces": {
+			"title": "Workspaces"
+		}
+	},
+
+	"Common": {
+		"close": "Close",
+		"more": "More",
+		"toggleSidebar": "Toggle Sidebar",
+		"breadcrumb": "Breadcrumb",
+		"sidebar": {
+			"title": "Sidebar",
+			"description": "Displays the mobile sidebar."
+		}
+	},
+
+	"ExamResultCard": {
+		"score": "Score: {score}"
+	},
+
+	"Notifications": {
+		"empty": "No notifications"
+	},
+
+	"PDFUploader": {
+		"errors": {
+			"invalidFileType": "Invalid file type",
+			"noFile": "Please select a file"
+		},
+		"dropzone": "Drag and drop your PDF here or click to browse",
+		"onlyPdf": "Only PDF files are accepted",
+		"browse": "Browse Files",
+		"removeFile": "Remove file",
+		"preview": "Preview of {name}",
+		"uploadAndAsk": "Upload and Ask"
+	},
+
+	"Reasoning": {
+		"thinking": "Thinking...",
+		"thoughtFor": "Thought for {duration} seconds",
+		"thoughtAMoment": "Thought for a couple of seconds"
+	},
+
+	"AgentVisual": {
+		"ariaLabel": "AI agent visualization"
+	},
+
+	"FeedbackMessage": {
+		"reportError": "Report error"
+	},
+
+	"ScrollToBottomButton": {
+		"tooltip": "Scroll to bottom"
+	},
+
+	"ZoomableDiv": {
+		"zoomOut": "Zoom out",
+		"resetZoom": "Reset zoom",
+		"zoomIn": "Zoom in"
+	},
+
+	"Logo": {
+		"alt": "Pennink logo"
+	},
+
+	"ArtifactCard": {
+		"download": "Download"
+	},
+
+	"SharedContent": {
+		"poweredBy": "Powered by Pennink"
+	},
+
+	"UploadObjectToStorage": {
+		"error": "Failed to upload file"
 	}
 }

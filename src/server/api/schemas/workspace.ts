@@ -5,10 +5,15 @@ export const createWorkspaceInputSchema = z.object({
 	name: z.string().min(2).max(100),
 	messages: z.array(messageSchema),
 	chatId: z.string().uuid(),
+	classroomId: z.string().uuid(),
 });
 
 export const workspaceByIdInputSchema = z.object({
 	id: z.string(),
+});
+
+export const workspacesByClassroomInputSchema = z.object({
+	classroomId: z.string().uuid(),
 });
 
 export const updateWorkspaceNameInputSchema = z.object({

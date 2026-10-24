@@ -5,6 +5,7 @@ import type { createMessageInputSchema } from "../schemas/chat";
 import { TRPCError } from "@trpc/server";
 import { DateTime } from "luxon";
 import { eq } from "drizzle-orm";
+import { userHasClassroom } from "./classroom";
 
 export type Message = typeof messages.$inferSelect;
 
@@ -33,6 +34,13 @@ export class Chat {
 	}
 
 	private async createMessageRule(userId: string) {
+		if (!(await userHasClassroom(this.ctx.db, userId))) {
+			throw new TRPCError({
+				code: "PRECONDITION_FAILED",
+				message: "Create a classroom before chatting",
+			});
+		}
+
 		const limitMessages = 20;
 		const limitedChatMessagesMessageFreeSub = `You have reached the maximum number of chat messages/day (${limitMessages}). Upgrade to Pennink Pro to get more!.`;
 		const userStatics = await this.ctx.db.query.statics.findFirst({

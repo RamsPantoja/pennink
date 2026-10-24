@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
@@ -98,6 +99,7 @@ const fragmentShader = /* glsl */ `
 `;
 
 export const AgentVisual = () => {
+  const t = useTranslations("AgentVisual");
   const activity = useWorkspaceStore((state) => state.agentActivity);
   const canvasContainer = useRef<HTMLDivElement>(null);
   const activityRef = useRef(activity);
@@ -237,7 +239,7 @@ export const AgentVisual = () => {
 
   return (
     <section
-      aria-label="AI agent visualization"
+      aria-label={t("ariaLabel")}
       className={cn(
         "relative flex h-full min-h-[360px] w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(0,0,0,.14),transparent_52%)]",
         isSpeaking && "agent-visual-speaking",

@@ -6,6 +6,7 @@ import {
 } from "~/components/ui/collapsible";
 import { cn } from "~/lib/utils";
 import { BrainIcon, ChevronDownIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { ComponentProps } from "react";
 import { createContext, memo, useContext, useEffect, useState } from "react";
 import { Response } from "./response";
@@ -122,6 +123,7 @@ export const ReasoningTrigger = memo(
 		...props
 	}: ReasoningTriggerProps) => {
 		const { isStreaming, isOpen, duration } = useReasoning();
+			const t = useTranslations("Reasoning");
 
 		return (
 			<CollapsibleTrigger
@@ -134,12 +136,14 @@ export const ReasoningTrigger = memo(
 				{children ?? (
 					<>
 						<BrainIcon className="size-4" />
-						{isStreaming && <p className="animate-pulse">Thinking...</p>}
+						{isStreaming && (
+							<p className="animate-pulse">{t("thinking")}</p>
+						)}
 						{!isStreaming && duration !== 0 && (
-							<p>Thought for {duration} seconds</p>
+							<p>{t("thoughtFor", { duration })}</p>
 						)}
 						{!isStreaming && duration === 0 && (
-							<p>Thought for a couple of seconds</p>
+							<p>{t("thoughtAMoment")}</p>
 						)}
 						<ChevronDownIcon
 							className={cn(

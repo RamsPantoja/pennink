@@ -36,7 +36,7 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
       )}
       <Card
         className={cn([
-          "flex flex-col w-full",
+          "flex flex-col w-full p-3",
           {
             "bg-transparent": message.role === "assistant",
             "bg-border text-foreground relative": message.role === "user",

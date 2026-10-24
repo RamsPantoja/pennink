@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { typeid } from "typeid-js";
 import { api } from "~/trpc/react";
@@ -14,6 +15,7 @@ export type UploadObjectToStorageResponse = {
 };
 
 const useUploadObjectToStorage = () => {
+	const t = useTranslations("UploadObjectToStorage");
 	const { data: session } = useSession();
 	const [uploadingToStorage, setUploadingToStorage] = useState<boolean>(false);
 	const customId = typeid().toUUID();
@@ -55,7 +57,7 @@ const useUploadObjectToStorage = () => {
 		} catch (error) {
 			setUploadingToStorage(false);
 			console.error(error);
-			toast.error("Failed to upload file");
+			toast.error(t("error"));
 		}
 	};
 

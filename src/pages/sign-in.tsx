@@ -5,6 +5,7 @@ import Head from "next/head";
 import { authOptions } from "~/server/auth";
 import { getPreferredLocale, type Locale } from "~/lib/utils";
 import type { ParsedUrlQuery } from "node:querystring";
+import { useTranslations } from "next-intl";
 
 type SignInProps = {
 	query: {
@@ -13,11 +14,12 @@ type SignInProps = {
 };
 
 const SignIn = ({ query }: SignInProps) => {
+	const t = useTranslations("SignIn");
 	return (
 		<div className="absolute flex h-full w-full">
 			<Head>
-				<title>Pennink - Sign in</title>
-				<meta name="description" content="Sign in to your account." />
+				<title>Pennink - {t("head.title")}</title>
+				<meta name="description" content={t("head.description")} />
 				<link rel="icon" href="/favicon.svg" />
 			</Head>
 			<div className="relative flex h-full w-full items-center justify-center">

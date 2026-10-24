@@ -1,9 +1,9 @@
 import type { ModelMessage, ToolSet } from "ai";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
-import type { Tools } from "~/components/Chat/useChatLogic";
 import type { Message } from "~/server/api/services/chat";
 import { db } from "~/server/db";
+import { userHasClassroom } from "~/server/api/services/classroom";
 import { and, eq } from "drizzle-orm";
 import { createChatAgent } from "~/app/agents/chat/agent";
 import { createArtifactTool } from "~/app/agents/chat/artifact";
@@ -16,7 +16,6 @@ export type Context = {
 export type AgentChatRequestData = {
   prompt: string;
   context: Context;
-  tools: Tools[];
   trigger: "submit-message";
   id: string;
   metadata: Message;
@@ -30,12 +29,18 @@ export async function POST(req: Request) {
       throw new Error("Must be logged in to access");
     }
 
+    if (!(await userHasClassroom(db, session.user.id))) {
+      return Response.json(
+        { message: "Create a classroom before chatting" },
+        { status: 403 },
+      );
+    }
+
     const tools: ToolSet = {};
 
     const {
       context,
       prompt,
-      tools: toolsAllowed,
       metadata,
     } = (await req.json()) as AgentChatRequestData;
 

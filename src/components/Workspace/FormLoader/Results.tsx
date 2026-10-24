@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useTranslations } from "next-intl";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
 import { Loading } from "~/components/common/Loading";
 import type { FormType } from "~/lib/enum";
@@ -34,6 +35,7 @@ export const Results = ({ link, type }: ResultsProps) => {
 };
 
 const ExamResults = ({ linkId }: { linkId: string }) => {
+	const t = useTranslations("FormLoader");
 	const {
 		data: results,
 		isPending: resultsIsPending,
@@ -68,7 +70,7 @@ const ExamResults = ({ linkId }: { linkId: string }) => {
 				results.length === 0 && (
 					<FeedbackMessage
 						status="INFORMATION"
-						message="Your exam results will appear here"
+						message={t("emptyState.examResults")}
 					/>
 				)}
 		</div>
@@ -76,6 +78,7 @@ const ExamResults = ({ linkId }: { linkId: string }) => {
 };
 
 const FormResults = ({ linkId }: { linkId: string }) => {
+	const t = useTranslations("FormLoader");
 	const {
 		data: results,
 		isPending: resultsIsPending,
@@ -109,7 +112,7 @@ const FormResults = ({ linkId }: { linkId: string }) => {
 				results.length === 0 && (
 					<FeedbackMessage
 						status="INFORMATION"
-						message="Your form results will appear here"
+						message={t("emptyState.formResults")}
 					/>
 				)}
 		</div>

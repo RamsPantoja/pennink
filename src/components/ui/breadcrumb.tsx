@@ -2,11 +2,13 @@ import * as React from "react"
 import { cn } from "cn"
 import { Slot } from "radix-ui"
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
+  const t = useTranslations("Common")
   return (
     <nav
-      aria-label="breadcrumb"
+      aria-label={t("breadcrumb")}
       data-slot="breadcrumb"
       className={cn(className)}
       {...props}
@@ -92,6 +94,7 @@ function BreadcrumbEllipsis({
   className,
   ...props
 }: React.ComponentProps<"span">) {
+  const t = useTranslations("Common")
   return (
     <span
       data-slot="breadcrumb-ellipsis"
@@ -105,7 +108,7 @@ function BreadcrumbEllipsis({
     >
       <MoreHorizontalIcon
       />
-      <span className="sr-only">More</span>
+      <span className="sr-only">{t("more")}</span>
     </span>
   )
 }
