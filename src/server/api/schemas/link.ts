@@ -14,13 +14,13 @@ export const getLinkByNoteIdInputSchema = z.object({
 
 export const getLinksForFormsInputSchema = z.object({
 	type: z.enum(["BASIC", "EXAM"]),
-	key: z.string().optional(),
+	classroomId: z.string().uuid(),
 	id: z.string().uuid(),
 });
 
 export const createLinkFormInputSchema = z.object({
 	type: z.enum(["BASIC", "EXAM"]),
-	key: z.string(),
+	classroomId: z.string().uuid(),
 	id: z.string().uuid(),
 });
 

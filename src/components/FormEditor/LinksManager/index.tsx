@@ -7,22 +7,10 @@ import {
 import { Button } from "~/components/common/Button";
 import { Loading } from "~/components/common/Loading";
 import FeedbackMessage from "~/components/common/FeedbackMessage";
-import { Label } from "~/components/ui/label";
-import { Input } from "~/components/ui/input";
-import InputFeedbackMessage from "~/components/common/InputFeedbackMessage";
 import type { FormType } from "~/lib/enum";
 import { Separator } from "~/components/ui/separator";
 import { LinkItem } from "./LinkItem";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from "~/components/ui/tooltip";
-import {
-	MagnifyingGlassIcon,
-	ShareIcon,
-	XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { ShareIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
 
 type LinksManagerProps = {
@@ -35,19 +23,13 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 	const {
 		openLinkMenu,
 		setLinkMenu,
-		onCreateLinkForm,
+		onCreateLink,
 		createLinkFormIsPending,
-		useFormLinkForm,
+		canCreateLink,
 		linksData,
 		linksIsPending,
 		linksError,
-		searchKey,
-		setSearchKey,
-		setSearchParam,
-		performSearch,
 	} = useLinksManagerLogic({ id, type });
-
-	const { register, formState, handleSubmit } = useFormLinkForm;
 
 	return (
 		<Popover
@@ -77,42 +59,6 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 			>
 				<div className="flex gap-8 flex-col w-full">
 					<div className="flex flex-col gap-4">
-						<div className="flex items-center relative gap-2">
-							<Input
-								type="text"
-								placeholder={t("placeholder.search")}
-								value={searchKey}
-								onChange={(e) => setSearchKey(e.target.value)}
-								onKeyDown={(e) => e.key === "Enter" && performSearch()}
-								className="pr-10"
-							/>
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<Button
-										disabled={searchKey === ""}
-										variant="ghost"
-										size="icon"
-										onClick={performSearch}
-									>
-										<MagnifyingGlassIcon className="min-w-5 h-5" />
-									</Button>
-								</TooltipTrigger>
-								<TooltipContent>{t("tooltip.search")}</TooltipContent>
-							</Tooltip>
-							{searchKey && (
-								<Button
-									className="absolute right-11"
-									variant="ghost"
-									size="icon"
-									onClick={() => {
-										setSearchKey("");
-										setSearchParam(undefined);
-									}}
-								>
-									<XMarkIcon className="min-w-5 h-5" />
-								</Button>
-							)}
-						</div>
 						{linksIsPending && <Loading />}
 						{!linksIsPending && linksError && (
 							<FeedbackMessage status="ERROR" message={linksError.message} />
@@ -128,8 +74,8 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 												key={link.id}
 												id={link.id}
 												version={link.formVersion.version}
-												customKey={link.key}
 												createdAt={link.createdAt}
+												classroomName={link.classroom.name}
 												type="BASIC"
 											/>
 										))}
@@ -139,8 +85,8 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 												key={link.id}
 												id={link.id}
 												version={link.examVersion.version}
-												customKey={link.key}
 												createdAt={link.createdAt}
+												classroomName={link.classroom.name}
 												type="EXAM"
 											/>
 										))}
@@ -158,18 +104,6 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 					</div>
 					<Separator />
 					<div className="flex flex-col w-full h-full gap-2">
-						<Label htmlFor="key">{t("label.keyword")}</Label>
-						<Input
-							placeholder={t("placeholder.linkKeyword")}
-							className="resize-none"
-							{...register("key")}
-						/>
-						{formState.errors.key && (
-							<InputFeedbackMessage
-								status="ERROR"
-								message={formState.errors.key.message}
-							/>
-						)}
 						<p className="text-xs text-muted-foreground">
 							{t("message.linkAccess")}
 						</p>
@@ -177,7 +111,8 @@ export const LinksManager = ({ id, type }: LinksManagerProps) => {
 							size="sm"
 							variant="default"
 							isPending={createLinkFormIsPending}
-							onClick={handleSubmit(onCreateLinkForm)}
+							disabled={!canCreateLink}
+							onClick={onCreateLink}
 						>
 							{t("button.generateLink")}
 						</Button>

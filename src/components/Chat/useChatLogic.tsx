@@ -6,7 +6,7 @@ import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import type { Message } from "~/server/api/services/chat";
 import { typeid } from "typeid-js";
 import { useSession } from "next-auth/react";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import {
 	DefaultChatTransport,
@@ -18,7 +18,7 @@ import { useChat } from "@ai-sdk/react";
 import type { AiForm } from "~/app/agents/chat/schema";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { playAgentSpeech, stopAgentSpeech } from "~/lib/agentAudio";
 import { extractSpeechText } from "~/lib/speechText";
@@ -54,9 +54,10 @@ export const parseUIMessage = (message?: MyUIMessage): Message | null => {
 		const textParts = parts.filter((part) => part.type === "text");
 
 		if (!metadata) {
-			toast(
-				"Metadata is missing in the assistant message, but is required for parsing.",
-			);
+			sileo.show({
+				title:
+					"Metadata is missing in the assistant message, but is required for parsing.",
+			});
 			return null;
 		}
 
@@ -97,18 +98,21 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 	const chatContainer = useRef<HTMLDivElement | null>(null);
 	const {
-		readerEvent,
-		setReaderEvent,
-		document,
 		setDisplayFormEditor,
 		setAiFormData,
-		aiContextItems,
-		setAiContextItems,
+		currentForm,
 		queryFormData,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
 	const newWorkspaceId = useRef<string | null>(null);
 	const newWorkspaceUserMessage = useRef<Message | null>(null);
+	const params = useParams();
+	const workspaceId =
+		typeof params?.workspaceId === "string" ? params.workspaceId : undefined;
+	const { data: sources = [] } = api.workspace.sourcesByWorkspace.useQuery(
+		{ workspaceId: workspaceId ?? "" },
+		{ enabled: !!workspaceId },
+	);
 
 	const {
 		messages: tempMessages,
@@ -133,13 +137,17 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 			if (speechText) void playAgentSpeech(speechText);
 
+			if (data.message.parts.some((part) => part.type === "tool-manageStudyPlan")) {
+				void utils.studyPlan.listForClassroom.invalidate();
+			}
+
 			if (!session) {
-				toast(t("toast.signInToSave"));
+				sileo.show({ title: t("toast.signInToSave") });
 				return;
 			}
 
 			if (!message) {
-				toast(t("toast.assistantMessageNotFound"));
+				sileo.show({ title: t("toast.assistantMessageNotFound") });
 				return;
 			}
 
@@ -217,7 +225,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	} = api.workspace.documentVectorSearch.useMutation({
 		onError: (error) => {
 			console.error("Mutation failed:", error);
-			toast.error(t("toast.sendError"));
+			sileo.error({ title: t("toast.sendError") });
 		},
 	});
 
@@ -240,6 +248,14 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			setMessages(messagesData);
 		}
 	}, [messagesData]);
+
+	const getActiveForm = () => {
+		if (!currentForm || !queryFormData) {
+			return null;
+		}
+
+		return { id: currentForm.id, type: currentForm.type };
+	};
 
 	const useChatForm = useForm<ChatValidationSchema>({
 		resolver: zodResolver(chatValidationSchema),
@@ -283,13 +299,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		isPending: triggerChatMessagesRuleIsPending,
 	} = api.chat.triggerChatMessagesRule.useMutation({
 		onError: (error) => {
-			toast(error.message);
+			sileo.show({ title: error.message });
 		},
 	});
 
 	const onSentPrompt = async (data: ChatValidationSchema) => {
 		if (!hasClassroom) {
-			toast(t("toast.createClassroomFirst"));
+			sileo.show({ title: t("toast.createClassroomFirst") });
 			return;
 		}
 
@@ -300,7 +316,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		useChatForm.setValue("prompt", "");
 
 		if (!session) {
-			toast(t("toast.notAuthenticated"));
+			sileo.show({ title: t("toast.notAuthenticated") });
 			return;
 		}
 
@@ -351,7 +367,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				newWorkspaceUserMessage.current = message;
 			} catch (error) {
 				console.error(error);
-				toast(t("toast.sendError"));
+				sileo.show({ title: t("toast.sendError") });
 				return;
 			}
 
@@ -362,6 +378,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 					},
 					prompt: data.prompt,
 					metadata: createAssistantMessageMetadata(chatId, session),
+					activeForm: getActiveForm(),
+					activeClassroomId: activeClassroomId ?? null,
 				},
 			});
 
@@ -373,15 +391,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			message,
 		});
 
-		if (aiContextItems.find((item) => item.type === "document")) {
-			if (!document) {
-				toast(t("toast.selectDocument"));
-				return;
-			}
-
+		if (sources.length > 0) {
 			const documentContext = await documentVectorSearchMutation({
 				query: data.prompt,
-				fileId: document.id,
+				fileIds: sources.map((source) => source.id),
 			});
 
 			if (documentContext.length > 0) {
@@ -394,81 +407,74 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		}
 
-		if (aiContextItems.find((item) => item.type === "form")) {
-			if (!queryFormData) {
-				toast.error(t("toast.formNotFound"));
-				return;
+		if (queryFormData) {
+			let data = "";
+
+			if (queryFormData.type === "BASIC") {
+				data = JSON.stringify({
+					title: queryFormData.data.form.title,
+					description: queryFormData.data.form.description,
+					type: queryFormData.type,
+					questions: queryFormData.data.questionsToFormVersions.map(
+						(item) => {
+							return {
+								key: item.question.key,
+								type: item.question.type,
+								description: item.question.description,
+								label: item.question.label,
+								placeholder: item.question.placeholder,
+								required: item.question.required,
+								min: item.question.min,
+								max: item.question.max,
+								step: item.question.step,
+								answer: item.question.answer,
+								options: item.question.questionOptions.map((option) => {
+									return {
+										value: option.value,
+										label: option.label,
+									};
+								}),
+							};
+						},
+					),
+				});
 			}
 
-			if (queryFormData) {
-				let data = "";
+			if (queryFormData.type === "EXAM") {
+				data = JSON.stringify({
+					title: queryFormData.data.exam.title,
+					description: queryFormData.data.exam.instructions,
+					type: queryFormData.type,
+					questions: queryFormData.data.questionsToExamVersions.map(
+						(item) => {
+							return {
+								key: item.question.key,
+								type: item.question.type,
+								description: item.question.description,
+								label: item.question.label,
+								placeholder: item.question.placeholder,
+								required: item.question.required,
+								min: item.question.min,
+								max: item.question.max,
+								step: item.question.step,
+								answer: item.question.answer,
+								options: item.question.questionOptions.map((option) => {
+									return {
+										value: option.value,
+										label: option.label,
+									};
+								}),
+							};
+						},
+					),
+				});
+			}
 
-				if (queryFormData.type === "BASIC") {
-					data = JSON.stringify({
-						title: queryFormData.data.form.title,
-						description: queryFormData.data.form.description,
-						type: queryFormData.type,
-						questions: queryFormData.data.questionsToFormVersions.map(
-							(item) => {
-								return {
-									key: item.question.key,
-									type: item.question.type,
-									description: item.question.description,
-									label: item.question.label,
-									placeholder: item.question.placeholder,
-									required: item.question.required,
-									min: item.question.min,
-									max: item.question.max,
-									step: item.question.step,
-									answer: item.question.answer,
-									options: item.question.questionOptions.map((option) => {
-										return {
-											value: option.value,
-											label: option.label,
-										};
-									}),
-								};
-							},
-						),
-					});
-				}
-
-				if (queryFormData.type === "EXAM") {
-					data = JSON.stringify({
-						title: queryFormData.data.exam.title,
-						description: queryFormData.data.exam.instructions,
-						type: queryFormData.type,
-						questions: queryFormData.data.questionsToExamVersions.map(
-							(item) => {
-								return {
-									key: item.question.key,
-									type: item.question.type,
-									description: item.question.description,
-									label: item.question.label,
-									placeholder: item.question.placeholder,
-									required: item.question.required,
-									min: item.question.min,
-									max: item.question.max,
-									step: item.question.step,
-									answer: item.question.answer,
-									options: item.question.questionOptions.map((option) => {
-										return {
-											value: option.value,
-											label: option.label,
-										};
-									}),
-								};
-							},
-						),
-					});
-				}
-
-				if (Array.isArray(userMessage.content)) {
-					userMessage.content.push({
-						type: "text",
-						text: `Current form to work with: ${data}`,
-					});
-				}
+			if (Array.isArray(userMessage.content)) {
+				userMessage.content.push({
+					type: "text",
+					text: `Current form to work with: ${data}`,
+				});
 			}
 		}
 
@@ -507,6 +513,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				},
 				prompt: data.prompt,
 				metadata: createAssistantMessageMetadata(chatId, session),
+				activeForm: getActiveForm(),
+				activeClassroomId: activeClassroomId ?? null,
 			},
 		});
 	};
@@ -542,120 +550,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 	}, [messagesIsLoading, messages]);
 
-	//ReaderEvent listener
-	useEffect(() => {
-		if (readerEvent) {
-			//Warning! It's very important set to null the event before executing any process or method.
-			//This is for avoid unnecesary rerenders or duplicated executions
-			setReaderEvent(null);
-
-			if (!session) {
-				toast(t("toast.notAuthenticated"));
-				return;
-			}
-
-			const fullContextMessages = [
-				...messages.map((message) => ({
-					content: message.content,
-					role: message.role,
-				})),
-			];
-
-			const currentAssistantMessage = parseUIMessage(tempMessages[0]);
-
-			if (currentAssistantMessage) {
-				fullContextMessages.push({
-					content: currentAssistantMessage.content,
-					role: currentAssistantMessage.role,
-				});
-			}
-
-			const readerOnSummarize = async () => {
-				const prompt = `Summarize: ${readerEvent.data}`;
-
-				const message: Message = {
-					id: typeid().toUUID(),
-					chatId,
-					userId: session.user.id,
-					createdAt: new Date(),
-					updatedAt: new Date(),
-					content: prompt,
-					role: "user",
-					quote: null,
-					parts: [],
-					metadata: null,
-				};
-
-				createMessage({
-					chatId,
-					message,
-				});
-
-				setMessages((prev) => {
-					return [...prev, message];
-				});
-
-				await sendMessage(undefined, {
-					body: {
-						context: {
-							messages: fullContextMessages,
-						},
-						prompt,
-						metadata: createAssistantMessageMetadata(chatId, session),
-					},
-				});
-			};
-
-			const readerOnExplain = async () => {
-				const prompt = `Explain: ${readerEvent.data}`;
-
-				const message: Message = {
-					id: typeid().toUUID(),
-					chatId,
-					userId: session.user.id,
-					createdAt: new Date(),
-					updatedAt: new Date(),
-					content: prompt,
-					role: "user",
-					quote: null,
-					metadata: null,
-					parts: [],
-				};
-
-				createMessage({
-					chatId,
-					message,
-				});
-
-				setMessages((prev) => {
-					return [...prev, message];
-				});
-
-				await sendMessage(undefined, {
-					body: {
-						context: {
-							messages: fullContextMessages,
-						},
-						prompt,
-						metadata: createAssistantMessageMetadata(chatId, session),
-					},
-				});
-			};
-
-			if (readerEvent.type === "reader-on-summarize") {
-				readerOnSummarize();
-			}
-
-			if (readerEvent.type === "reader-on-explain") {
-				readerOnExplain();
-			}
-
-			if (readerEvent.type === "reader-on-chat") {
-				setQuote(readerEvent.data);
-			}
-		}
-	}, [readerEvent, session, chatId]);
-
 	const onRemoveQuote = () => {
 		setQuote(null);
 	};
@@ -671,22 +565,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		}
 	};
 
-	useEffect(() => {
-		if (document) {
-			setAiContextItems([
-				...aiContextItems.filter((item) => item.type !== "document"),
-				{
-					label: document.filename,
-					type: "document",
-				},
-			]);
-		} else {
-			setAiContextItems([
-				...aiContextItems.filter((item) => item.type !== "document"),
-			]);
-		}
-	}, [document]);
-
 	return {
 		onSentPrompt,
 		hasClassroom,
@@ -701,12 +579,9 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		quote,
 		onRemoveQuote,
 		documentVectorSearchMutationIsPending,
-		document,
 		stopStreaming,
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,
-		aiContextItems,
-		setAiContextItems,
 		status,
 	};
 };

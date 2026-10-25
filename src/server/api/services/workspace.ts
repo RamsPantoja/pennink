@@ -4,6 +4,7 @@ import type {
 	createWorkspaceInputSchema,
 	documentVectorSearchInputSchema,
 	updateWorkspaceNameInputSchema,
+	workspaceSourceInputSchema,
 } from "../schemas/workspace";
 import type { TRPCContext } from "../../trpc";
 import { userHasClassroom } from "./classroom";
@@ -17,13 +18,22 @@ import {
 	files,
 	filesToWorkspaces,
 	statics,
+	embeddingDocuments,
 } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
-import { and, asc, eq, getTableColumns, isNull, sql } from "drizzle-orm";
+import {
+	and,
+	asc,
+	eq,
+	getTableColumns,
+	inArray,
+	isNull,
+	sql,
+} from "drizzle-orm";
 import { env } from "~/env";
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+import { loadSourceDocuments } from "~/server/lib/loadSourceDocuments";
+import { isSourceDocumentType } from "~/lib/documentTypes";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { embeddingDocuments } from "~/server/db/turso-schema";
 import { embed, embedMany } from "ai";
 import { DateTime } from "luxon";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
@@ -38,6 +48,7 @@ type CreateFileInput = z.infer<typeof createFileInputSchema>;
 type DocumentVectorSearchInput = z.infer<
 	typeof documentVectorSearchInputSchema
 >;
+type WorkspaceSourceInput = z.infer<typeof workspaceSourceInputSchema>;
 
 export class WorkspaceService {
 	ctx: TRPCContext;
@@ -352,6 +363,13 @@ export class WorkspaceService {
 	}
 
 	public async createFile(input: CreateFileInput, userId: string) {
+		if (!isSourceDocumentType(input.type)) {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "Unsupported file type",
+			});
+		}
+
 		const model = bedrock.embeddingModel("amazon.titan-embed-text-v2:0");
 		const textSplitter = new RecursiveCharacterTextSplitter({
 			chunkSize: 1000,
@@ -392,8 +410,7 @@ export class WorkspaceService {
 				`${env.BUCKET_PUBLIC_DOMAIN}/${file.key}`,
 			);
 			const blob = await docFromCloudStorage.blob();
-			const loader = new PDFLoader(blob);
-			const docs = await loader.load();
+			const docs = await loadSourceDocuments(blob, input.type, file.filename);
 			const allSplits = await textSplitter.splitDocuments(docs);
 
 			const { embeddings, values } = await embedMany({
@@ -402,22 +419,20 @@ export class WorkspaceService {
 				maxRetries: 5,
 			});
 
-			//Create a vector index for the embedding column from the embedding_documents table
-			await this.ctx.tursoDb.run(
-				sql`CREATE INDEX IF NOT EXISTS embedding_index ON embedding_document(libsql_vector_idx(embedding))`,
-			);
+			const embeddingRows = embeddings.map((embedding, index) => ({
+				embedding,
+				fileId: file.id,
+				name: file.filename,
+				userId,
+				content: values[index] ?? "",
+			}));
 
-			await this.ctx.tursoDb.insert(embeddingDocuments).values(
-				embeddings.map((embedding, index) => {
-					return {
-						embedding: sql`vector32(${JSON.stringify(embedding)})`,
-						fileId: file.id,
-						name: file.filename,
-						userId,
-						content: values[index] ?? "",
-					};
-				}),
-			);
+			// Insert in batches to stay under Postgres' bind-parameter limit
+			for (let i = 0; i < embeddingRows.length; i += 500) {
+				await tx
+					.insert(embeddingDocuments)
+					.values(embeddingRows.slice(i, i + 500));
+			}
 
 			await tx
 				.update(statics)
@@ -448,6 +463,71 @@ export class WorkspaceService {
 		return files;
 	}
 
+	private async assertWorkspaceTeacher(workspaceId: string, userId: string) {
+		const workspace = await this.ctx.db.query.workspaces.findFirst({
+			where: (table, { eq }) => eq(table.id, workspaceId),
+		});
+
+		if (!workspace) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Workspace not found",
+			});
+		}
+
+		await this.assertClassroomTeacher(workspace.classroomId, userId);
+	}
+
+	public async getSourcesByWorkspace(workspaceId: string, userId: string) {
+		await this.assertWorkspaceTeacher(workspaceId, userId);
+
+		const rows = await this.ctx.db.query.filesToWorkspaces.findMany({
+			where: (table, { eq }) => eq(table.workspaceId, workspaceId),
+			with: {
+				file: true,
+			},
+		});
+
+		return rows.map((row) => row.file);
+	}
+
+	public async attachSource(input: WorkspaceSourceInput, userId: string) {
+		await this.assertWorkspaceTeacher(input.workspaceId, userId);
+
+		const file = await this.ctx.db.query.files.findFirst({
+			where: (table, { eq, and }) =>
+				and(eq(table.id, input.fileId), eq(table.userId, userId)),
+		});
+
+		if (!file) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "File not found",
+			});
+		}
+
+		await this.ctx.db
+			.insert(filesToWorkspaces)
+			.values({
+				fileId: input.fileId,
+				workspaceId: input.workspaceId,
+			})
+			.onConflictDoNothing();
+	}
+
+	public async detachSource(input: WorkspaceSourceInput, userId: string) {
+		await this.assertWorkspaceTeacher(input.workspaceId, userId);
+
+		await this.ctx.db
+			.delete(filesToWorkspaces)
+			.where(
+				and(
+					eq(filesToWorkspaces.fileId, input.fileId),
+					eq(filesToWorkspaces.workspaceId, input.workspaceId),
+				),
+			);
+	}
+
 	public async documentVectorSearch(input: DocumentVectorSearchInput) {
 		try {
 			const model = bedrock.embeddingModel("amazon.titan-embed-text-v2:0");
@@ -457,17 +537,16 @@ export class WorkspaceService {
 				value: input.query,
 			});
 
-			const topK = await this.ctx.tursoDb
+			const distance = sql<number>`${embeddingDocuments.embedding} <=> ${JSON.stringify(embedding.embedding)}::vector`;
+
+			const topK = await this.ctx.db
 				.select({
 					...getTableColumns(embeddingDocuments),
-					distance:
-						sql<number>`vector_distance_cos(${embeddingDocuments.embedding}, vector32(${JSON.stringify(embedding.embedding)}))`.as(
-							"distance",
-						),
+					distance: distance.as("distance"),
 				})
 				.from(embeddingDocuments)
-				.where(eq(embeddingDocuments.fileId, input.fileId))
-				.orderBy(asc(sql`distance`))
+				.where(inArray(embeddingDocuments.fileId, input.fileIds))
+				.orderBy(asc(distance))
 				.limit(5);
 
 			return topK;

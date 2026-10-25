@@ -30,8 +30,6 @@ export const env = createEnv({
 		CF_PUBLIC_R2_KEY: z.string(),
 		CF_SECRET_R2_KEY: z.string(),
 		BUCKET: z.string(),
-		TURSO_TOKEN: z.string(),
-		TURSO_URL: z.string(),
 		BUCKET_PUBLIC_DOMAIN: z.string(),
 		STRIPE_ENDPOINT_SECRET: z.string(),
 		AWS_ACCESS_KEY_ID: z.string(),
@@ -70,8 +68,6 @@ export const env = createEnv({
 		CF_PUBLIC_R2_KEY: process.env.CF_PUBLIC_R2_KEY,
 		CF_SECRET_R2_KEY: process.env.CF_SECRET_R2_KEY,
 		BUCKET: process.env.BUCKET,
-		TURSO_TOKEN: process.env.TURSO_TOKEN,
-		TURSO_URL: process.env.TURSO_URL,
 		BUCKET_PUBLIC_DOMAIN: process.env.BUCKET_PUBLIC_DOMAIN,
 		NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN:
 			process.env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN,

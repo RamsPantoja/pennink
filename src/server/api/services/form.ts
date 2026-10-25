@@ -13,6 +13,11 @@ import {
 	questionsToFormVersions,
 	formResponses,
 	examResults,
+	formLinks,
+	examLinks,
+	classroomStudents,
+	classroomTeachers,
+	users,
 } from "~/server/db/schema";
 import type {
 	createFormSchema,
@@ -25,7 +30,7 @@ import type {
 	saveFormResponsesSchema,
 } from "../schemas/form";
 import type { FormType } from "~/lib/enum";
-import { eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 type FormServiceContructor = {
 	ctx: TRPCContext;
@@ -481,6 +486,42 @@ export class FormService {
 		}
 	}
 
+	private async assertLinkClassroomMember(classroomId: string, email: string) {
+		const normalizedEmail = email.trim().toLowerCase();
+
+		const [student] = await this.ctx.db
+			.select({ studentId: classroomStudents.studentId })
+			.from(classroomStudents)
+			.where(
+				and(
+					eq(classroomStudents.classroomId, classroomId),
+					sql`lower(${classroomStudents.email}) = ${normalizedEmail}`,
+				),
+			)
+			.limit(1);
+
+		if (student) return;
+
+		const [teacher] = await this.ctx.db
+			.select({ userId: classroomTeachers.userId })
+			.from(classroomTeachers)
+			.innerJoin(users, eq(users.id, classroomTeachers.userId))
+			.where(
+				and(
+					eq(classroomTeachers.classroomId, classroomId),
+					sql`lower(${users.email}) = ${normalizedEmail}`,
+				),
+			)
+			.limit(1);
+
+		if (!teacher) {
+			throw new TRPCError({
+				code: "FORBIDDEN",
+				message: "This email is not part of the classroom for this link",
+			});
+		}
+	}
+
 	public async saveFormResponses(input: SaveFormResponsesInput) {
 		const {
 			email,
@@ -491,6 +532,20 @@ export class FormService {
 			formLinkId,
 			formVersionId,
 		} = input;
+
+		const formLink = await this.ctx.db.query.formLinks.findFirst({
+			where: (formLinks, { eq }) => eq(formLinks.id, formLinkId),
+			columns: { classroomId: true },
+		});
+
+		if (!formLink) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Link not found",
+			});
+		}
+
+		await this.assertLinkClassroomMember(formLink.classroomId, email);
 
 		const userResponsesExists = await this.ctx.db.query.formResponses.findFirst(
 			{
@@ -546,6 +601,20 @@ export class FormService {
 			score,
 			feedback,
 		} = input;
+
+		const examLink = await this.ctx.db.query.examLinks.findFirst({
+			where: (examLinks, { eq }) => eq(examLinks.id, examLinkId),
+			columns: { classroomId: true },
+		});
+
+		if (!examLink) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Link not found",
+			});
+		}
+
+		await this.assertLinkClassroomMember(examLink.classroomId, email);
 
 		const examResultsExists = await this.ctx.db.query.examResults.findFirst({
 			where: (examResults, { eq, and }) =>

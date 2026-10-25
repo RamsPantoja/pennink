@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import { useSharedTheme } from "~/hooks/useSharedTheme";
 
 type SharedContentLayoutProps = {
 	children: ReactNode;
@@ -7,6 +8,7 @@ type SharedContentLayoutProps = {
 
 export const SharedContentLayout = ({ children }: SharedContentLayoutProps) => {
 	const t = useTranslations("SharedContent");
+	useSharedTheme();
 	return (
 		<div className="bg-background relative dark:bg-background flex h-screen w-full flex-col overflow-hidden items-center">
 			<div className="flex w-full border-b border-border dark:border-border justify-center">

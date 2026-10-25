@@ -1,6 +1,14 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/trpc";
+import { updateLocaleInputSchema } from "../schemas/user";
 
 export const userRouter = createTRPCRouter({
+	updateLocale: protectedProcedure
+		.input(updateLocaleInputSchema)
+		.mutation(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.userService.updateLocale(ctx.session.user.id, input.locale);
+		}),
 	initStatics: protectedProcedure.mutation(async ({ ctx }) => {
 		return await ctx
 			.services({ ctx })

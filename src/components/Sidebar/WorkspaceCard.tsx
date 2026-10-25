@@ -16,8 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import CustomAlertDialog from "../common/AlertDialog";
 import { Input } from "../ui/input";
 import { z } from "zod";
@@ -48,7 +47,6 @@ export const WorkspaceCard = ({
   const router = useRouter();
   const { data: session } = useSession();
   const [workspaceName, setWorkspaceName] = useState<string>(name);
-  const { setDocument } = useWorkspaceStore();
   const isActive = selectedWorkspaceId === id;
   const [displayDeleteWorkspaceAlert, setDisplayDeleteWorkspaceAlert] =
     useState<boolean>(false);
@@ -86,7 +84,6 @@ export const WorkspaceCard = ({
         setDisplayDeleteWorkspaceAlert(false);
 
         if (data.id === selectedWorkspaceId) {
-          setDocument(null);
           router.push("/");
         }
 
@@ -94,7 +91,7 @@ export const WorkspaceCard = ({
       },
       onError: (error) => {
         console.error(error.message);
-        toast.error(t("toast.error.deleteFailed"));
+        sileo.error({ title: t("toast.error.deleteFailed") });
       },
     });
 
@@ -233,9 +230,6 @@ export const WorkspaceCard = ({
       )}
       {!isWorkspaceNameEditable && (
         <Link
-          onClick={() => {
-            setDocument(null);
-          }}
           prefetch={false}
           href={`/workspace/${id}`}
           data-active={isActive}

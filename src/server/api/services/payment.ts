@@ -12,7 +12,11 @@ import type {
 } from "../schemas/payment";
 import type { Subscription } from "~/lib/enum";
 import EmailService from "./email";
-import { paymentFailedTemplate } from "../templates/payment-failed";
+import {
+	getPaymentFailedSubject,
+	renderPaymentFailedEmail,
+} from "~/emails/payment-failed";
+import { isLocale } from "~/lib/utils";
 
 export type StripeProductKey = "PENNINK_PRO" | "PENNINK_PREMIUM";
 type Customer = typeof customers.$inferSelect;
@@ -229,11 +233,16 @@ class PaymentService {
 			});
 		}
 
+		const locale = isLocale(customer.user.locale) ? customer.user.locale : "es";
+
 		await this.emailService.send({
 			to: [customer.user.email],
 			from: "Pennink <no-reply@pennink.xyz>",
-			subject: "Payment Subscription Failed",
-			html: paymentFailedTemplate({ linkTo: `${env.NEXTAUTH_URL}/settings` }),
+			subject: getPaymentFailedSubject(locale),
+			html: await renderPaymentFailedEmail({
+				locale,
+				settingsUrl: `${env.NEXTAUTH_URL}/settings`,
+			}),
 		});
 	}
 

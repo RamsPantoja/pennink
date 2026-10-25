@@ -6,13 +6,9 @@ import { Fragment } from "react";
 import { useSession } from "next-auth/react";
 import { DateTime } from "luxon";
 import { Response } from "../ai-elements/response";
-import {
-  Reasoning,
-  ReasoningContent,
-  ReasoningTrigger,
-} from "../ai-elements/reasoning";
 import { ArtifactCard, type ChatArtifact } from "./ArtifactCard";
 import { VoiceOutputButton } from "./VoiceOutputButton";
+import { AgentTrace } from "./AgentTrace";
 import { extractSpeechText } from "~/lib/speechText";
 
 type MessageCardProps = {
@@ -20,7 +16,7 @@ type MessageCardProps = {
   isStreaming?: boolean;
 };
 
-export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
+export const MessageCard = ({ message }: MessageCardProps) => {
   const { data } = useSession();
   const speechText = extractSpeechText(message.parts) ?? message.content;
 
@@ -36,13 +32,17 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
       )}
       <Card
         className={cn([
-          "flex flex-col w-full p-3",
+          "flex flex-col w-full p-3 ring-0 overflow-visible",
           {
             "bg-transparent": message.role === "assistant",
             "bg-border text-foreground relative": message.role === "user",
           },
         ])}
       >
+        {message.role === "assistant" && (
+          <AgentTrace parts={message.parts} />
+        )}
+
         {message.parts.length > 0 ? (
           <Fragment>
             {message.parts.map((part, i) => {
@@ -52,16 +52,7 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
                     <Response key={`${message.id}-${i}`} content={part.text} />
                   );
                 case "reasoning":
-                  return (
-                    <Reasoning
-                      key={`${message.id}-${i}`}
-                      className="w-full"
-                      isStreaming={isStreaming}
-                    >
-                      <ReasoningTrigger />
-                      <ReasoningContent content={part.text} />
-                    </Reasoning>
-                  );
+                  return null;
                 default: {
                   const toolPart = part as unknown as {
                     type?: string;

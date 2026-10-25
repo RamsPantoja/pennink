@@ -11,7 +11,7 @@ import {
 } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import type { Block } from "@blocknote/core";
-import { useAppStore } from "~/pages/_app";
+import { useSharedTheme } from "~/hooks/useSharedTheme";
 import { useRouter } from "next/router";
 import { DateTime } from "luxon";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -19,7 +19,11 @@ import { Fragment } from "react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { getPreferredLocale, type Locale } from "~/lib/utils";
+import {
+	LOCALE_COOKIE_NAME,
+	getRequestLocale,
+	type Locale,
+} from "~/lib/utils";
 import { normalizeBlockNoteContent } from "~/lib/blocknote";
 
 const SharedNotes = ({
@@ -93,7 +97,7 @@ const ReadEditor = ({ content }: ReadEditorProps) => {
 		initialContent: normalizeBlockNoteContent(content),
 	});
 
-	const { theme } = useAppStore();
+	const theme = useSharedTheme();
 
 	const defaultColors =
 		theme === "light" ? lightDefaultTheme.colors : darkDefaultTheme.colors;
@@ -125,7 +129,10 @@ type ServerSideProps = {
 };
 
 export const getServerSideProps = (async ({ req, res, query }) => {
-	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const locale = getRequestLocale(
+		req.cookies[LOCALE_COOKIE_NAME],
+		req.headers["accept-language"],
+	);
 	const messages = (await import(`../../i18n/messages/${locale}.json`)).default;
 	const { linkId } = query;
 

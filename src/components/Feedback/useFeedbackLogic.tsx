@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { z } from "zod";
 import { api } from "~/trpc/react";
 import { type createTranslator, useTranslations } from "next-intl";
@@ -46,10 +46,10 @@ const useFeedbackLogic = () => {
 			onSuccess: async () => {
 				useFormFeedback.reset();
 				setOpenCommentsBox(false);
-				toast.success(t("toast.success"));
+				sileo.success({ title: t("toast.success") });
 			},
 			onError: (error) => {
-				toast.error(error.message);
+				sileo.error({ title: error.message });
 			},
 		});
 

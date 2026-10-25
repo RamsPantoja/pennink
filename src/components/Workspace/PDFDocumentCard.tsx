@@ -7,6 +7,17 @@ import type { PenninkDocument } from "./useWorkspaceStore";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Badge } from "../ui/badge";
 import { useTranslations } from "next-intl";
+import {
+	SOURCE_DOCUMENT_TYPES,
+	isSourceDocumentType,
+	type SourceDocumentKind,
+} from "~/lib/documentTypes";
+
+const HEADER_CLASSNAMES: Record<SourceDocumentKind, string> = {
+	pdf: "bg-red-400",
+	docx: "bg-blue-400",
+	text: "bg-gray-400",
+};
 
 type PDFDocumentCardProps = {
 	id: string;
@@ -26,6 +37,9 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 	storageKey,
 }) => {
 	const t = useTranslations("PDFDocumentCard");
+	const badgeKey = SOURCE_DOCUMENT_TYPES[
+		isSourceDocumentType(type) ? type : "application/pdf"
+	].kind;
 
 	const handleDownload = async (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -62,11 +76,11 @@ const PDFDocumentCard: FC<PDFDocumentCardProps> = ({
 			onClick={onSelectDocument}
 		>
 			<div className="flex flex-col w-full">
-				<div className="flex w-full h-10 relative bg-red-400 rounded-t-2xl">
+				<div
+					className={`flex w-full h-10 relative rounded-t-2xl ${HEADER_CLASSNAMES[badgeKey]}`}
+				>
 					<div className="flex gap-2 text-xs absolute top-2 right-2 z-10">
-						{type === "application/pdf" && (
-							<Badge variant="secondary">{t("badge.pdf")}</Badge>
-						)}
+						<Badge variant="secondary">{t(`badge.${badgeKey}`)}</Badge>
 					</div>
 				</div>
 				<div className="flex gap-3 p-3 w-full flex-col">

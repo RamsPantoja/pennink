@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { typeid } from "typeid-js";
 import { api } from "~/trpc/react";
 
@@ -57,7 +57,7 @@ const useUploadObjectToStorage = () => {
 		} catch (error) {
 			setUploadingToStorage(false);
 			console.error(error);
-			toast.error(t("error"));
+			sileo.error({ title: t("error") });
 		}
 	};
 

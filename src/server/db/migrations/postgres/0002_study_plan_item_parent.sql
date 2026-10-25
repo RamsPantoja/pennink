@@ -1,0 +1,1 @@
+ALTER TABLE "study_plan_item" ADD COLUMN "parent_position" integer;

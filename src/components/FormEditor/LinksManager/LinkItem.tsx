@@ -8,17 +8,17 @@ import type { FormType } from "~/lib/enum";
 
 type LinkItemProps = {
 	id: string;
-	customKey: string;
 	version: number;
 	createdAt: Date;
+	classroomName: string;
 	type: FormType;
 };
 
 export const LinkItem = ({
 	id,
-	customKey,
 	version,
 	createdAt,
+	classroomName,
 	type,
 }: LinkItemProps) => {
 	const clipboardContent = useMemo(() => {
@@ -28,10 +28,6 @@ export const LinkItem = ({
 
 	return (
 		<Card className="flex gap-1 flex-col bg-muted">
-			<div className="flex gap-4 justify-between">
-				<p className="text-sm font-semibold">{customKey}</p>
-				<Badge variant="outline">v{version}</Badge>
-			</div>
 			<div className="flex items-center">
 				<p
 					className="text-xs text-muted-foreground truncate"
@@ -43,9 +39,13 @@ export const LinkItem = ({
 					<ClipBoard className="rounded-[4px]" content={clipboardContent} />
 				)}
 			</div>
-			<p className="text-xs">
-				{DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED)}
-			</p>
+			<div className="flex gap-4 justify-between items-center">
+				<p className="text-xs">
+					{classroomName} ·{" "}
+					{DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED)}
+				</p>
+				<Badge variant="outline">v{version}</Badge>
+			</div>
 		</Card>
 	);
 };

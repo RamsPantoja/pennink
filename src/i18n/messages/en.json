@@ -96,6 +96,10 @@
 		"classrooms": {
 			"title": "Classrooms",
 			"empty": "Create a classroom to get started"
+		},
+		"studyPlans": {
+			"title": "Study plans",
+			"manage": "Study plans"
 		}
 	},
 
@@ -125,6 +129,18 @@
 	},
 
 	"Chat": {
+		"trace": {
+			"summary": "Used {count, plural, one {# step} other {# steps}}",
+			"thinking": "Thinking",
+			"input": "Input",
+			"output": "Output",
+			"tools": {
+				"generateAndEditForm": "Generating form",
+				"shareClassroomLink": "Sharing classroom link",
+				"manageStudyPlan": "Managing study plan",
+				"unknown": "Running tool"
+			}
+		},
 		"errors": {
 			"fetchMessages": "Error fetching messages"
 		},
@@ -133,20 +149,12 @@
 			"description": "Ask anything to get started"
 		},
 		"tooltips": {
-			"addContext": "Add context to chat",
 			"removeQuote": "Remove Quote"
-		},
-		"contextItems": {
-			"document": "Current document",
-			"editor": "Editor content",
-			"addPrompt": "Add context..."
 		},
 		"input": {
 			"placeholder": "Ask anything"
 		},
 		"aria": {
-			"addContext": "Add context to chat",
-			"removeContextItem": "Remove {item} from context",
 			"removeQuote": "Remove quote",
 			"chatInput": "Chat input field",
 			"stopStreaming": "Stop streaming response",
@@ -174,20 +182,26 @@
 		"tooltip": {
 			"collapseContent": "Collapse content",
 			"closeContent": "Close content",
-			"expandChat": "Expand chat",
 			"expandContent": "Expand content",
-			"collapseChat": "Collapse chat"
+			"collapseSidePanel": "Collapse panel",
+			"expandSidePanel": "Expand panel"
 		},
-		"button": {
-			"summarize": "Summarize",
-			"chat": "Chat",
-			"explain": "Explain"
+		"sidePanel": {
+			"classroom": "Classroom",
+			"noClassroom": "No classroom found",
+			"studyPlans": "Study plans",
+			"noStudyPlans": "No study plans attached to this classroom",
+			"planProgress": "{completed} of {total} done",
+			"sources": "Sources",
+			"noSources": "No sources attached to this workspace",
+			"removeSource": "Remove source",
+			"neuralInterface": "Neural interface"
 		}
 	},
 
 	"DocumentLoader": {
 		"sheetTitle": "Your sources",
-		"sheetDescription": "Select a document to read from all saved documents",
+		"sheetDescription": "Attach a saved document to this workspace",
 		"input": {
 			"placeholder": "Search for document"
 		},
@@ -204,7 +218,9 @@
 
 	"PDFDocumentCard": {
 		"badge": {
-			"pdf": "PDF"
+			"pdf": "PDF",
+			"docx": "DOCX",
+			"text": "Text"
 		},
 		"tooltip": {
 			"download": "Download"
@@ -256,29 +272,13 @@
 			"share": "Share",
 			"generateLink": "Generate Link"
 		},
-		"placeholder": {
-			"search": "Search...",
-			"linkKeyword": "Enter a keyword for the link"
-		},
-		"tooltip": {
-			"search": "Search"
-		},
 		"message": {
 			"noLinks": "No links found",
 			"linkAccess": "Anyone with the link can access this form"
-		},
-		"label": {
-			"keyword": "Keyword"
 		}
 	},
 
 	"Links": {
-		"placeholder": {
-			"search": "Search by keyword"
-		},
-		"tooltip": {
-			"search": "Search"
-		},
 		"message": {
 			"noLinks": "Your links will appear here"
 		}
@@ -353,6 +353,7 @@
 	},
 
 	"SignIn": {
+		"headline": "Your AI teaching partner, ready when you are.",
 		"tagline": "Work Smarter, Not Harder – AI‑Driven Workspaces That Adapt to You.",
 		"legalText": "By creating an account or signing in, you agree to the <terms>Terms</terms> and our <privacy>Privacy Policy</privacy>.",
 		"terms": "Terms",
@@ -365,6 +366,7 @@
 	},
 
 	"Settings": {
+		"dialogTitle": "Settings",
 		"head": {
 			"title": "Pennink - Settings",
 			"description": "Manage your account settings and subscription."
@@ -407,6 +409,17 @@
 				"title": "Terms of Service",
 				"description": "Read our terms of service"
 			}
+		},
+		"nav": {
+			"preferences": "Preferences",
+			"account": "Account",
+			"billing": "Billing",
+			"help": "Help",
+			"support": "Support",
+			"language": "Language"
+		},
+		"language": {
+			"description": "Choose the language for the interface. The page reloads when you change it."
 		}
 	},
 
@@ -417,9 +430,6 @@
 		},
 		"error": {
 			"loadError": "Something went wrong"
-		},
-		"context": {
-			"formLabel": "Form"
 		},
 		"button": {
 			"hideAnswers": "Hide answers",
@@ -771,18 +781,6 @@
 		}
 	},
 
-	"PDFViewer": {
-		"searchPlaceholder": "Search for text...",
-		"of": "of",
-		"matches": "matches",
-		"caseSensitive": "Case sensitive",
-		"zoomOut": "Zoom out",
-		"resetZoom": "Reset zoom",
-		"zoomIn": "Zoom in",
-		"pageLabel": "Page",
-		"pageCounter": "Page {current} of {total}"
-	},
-
 	"ClassroomPicker": {
 		"section": "Classrooms",
 		"search": {
@@ -815,7 +813,6 @@
 		"loading": "Loading classroom...",
 		"description": "Manage your classroom.",
 		"button": {
-			"newWorkspace": "New workspace",
 			"delete": "Delete classroom",
 			"rename": "Rename",
 			"addStudent": "Add student",
@@ -838,6 +835,23 @@
 		},
 		"workspaces": {
 			"title": "Workspaces"
+		},
+		"deleteDialog": {
+			"title": "Delete classroom?",
+			"description": "This will permanently delete the classroom and its students. This action cannot be undone.",
+			"cancel": "Cancel",
+			"confirm": "Delete"
+		},
+		"removeDialog": {
+			"student": {
+				"title": "Remove student?",
+				"description": "{name} will be removed from this classroom."
+			},
+			"teacher": {
+				"title": "Remove teacher?",
+				"description": "{name} will lose access to this classroom."
+			},
+			"confirm": "Remove"
 		}
 	},
 
@@ -911,5 +925,83 @@
 
 	"UploadObjectToStorage": {
 		"error": "Failed to upload file"
+	},
+	"StudyPlan": {
+		"title": "Study plans",
+		"description": "Dated plans with checkboxes, attached to this classroom.",
+		"empty": "No study plans yet. Create one, import a .md file, or ask the assistant.",
+		"progress": "{completed} of {total} done",
+		"nextDue": "Next: {title} ({date})",
+		"loading": "Loading…",
+		"button": {
+			"import": "Import .md",
+			"save": "Save",
+			"cancel": "Cancel",
+			"edit": "Edit",
+			"export": "Export .md",
+			"classrooms": "Classrooms",
+			"open": "Open"
+		},
+		"editor": {
+			"titleLabel": "Title",
+			"descriptionLabel": "Description",
+			"bodyLabel": "Plan (markdown)",
+			"bodyHint": "One item per line, with an ISO date: - [ ] 2026-11-03 Read chapter 3"
+		},
+		"timeline": {
+			"empty": "This plan has no checkbox items yet.",
+			"noDate": "No date"
+		},
+		"completedBy": {
+			"teacher": "Ticked by teacher",
+			"agent": "Ticked by assistant"
+		},
+		"classrooms": {
+			"title": "Attached classrooms",
+			"empty": "Create a classroom to attach plans to it."
+		},
+		"page": {
+			"title": "Study plans",
+			"description": "Create, import and attach study plans to your classrooms.",
+			"empty": "No study plans yet",
+			"error": "Could not load study plans.",
+			"shared": "Shared with you",
+			"notAttached": "Not attached",
+			"emptyDescription": "Import a markdown file with dated checkboxes to start tracking a plan.",
+			"count": "{count, plural, =0 {No plans} one {# plan} other {# plans}}",
+			"noProgress": "Progress not visible"
+		},
+		"attach": {
+			"title": "Attach “{title}”",
+			"description": "Choose the classrooms this plan belongs to."
+		},
+		"classroomPicker": {
+			"label": "Classroom",
+			"noClassroom": "Choose a classroom you teach to tick items for it."
+		}
+	},
+	"Emails": {
+		"layout": {
+			"contact": "If you have any questions or comments, please do not hesitate to contact us.",
+			"thanks": "Thank you!"
+		},
+		"kinds": {
+			"form": "form",
+			"exam": "exam"
+		},
+		"paymentFailed": {
+			"subject": "Payment Subscription Failed",
+			"title": "Payment method failed",
+			"description": "The payment to renew your subscription was not completed correctly.",
+			"recommendation": "We recommend you verify and update your billing details.",
+			"cta": "Go to settings"
+		},
+		"sharedLink": {
+			"subject": "{classroomName}: a new {kind} is ready for you",
+			"title": "A new {kind} is ready for you",
+			"description": "Your teacher shared a new {kind} for <strong>{classroomName}</strong>.",
+			"cta": "Open the {kind}",
+			"expiry": "This link is personal to you and expires in 14 days."
+		}
 	}
 }

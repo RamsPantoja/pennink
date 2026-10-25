@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { Feedback } from "~/components/Feedback";
 import { AppSidebar } from "~/components/Sidebar";
 import { useWorkspaceStore } from "~/components/Workspace/useWorkspaceStore";
@@ -27,9 +27,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
-import { env } from "~/env";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { fileSizeRule } from "~/lib/utils";
+import {
+  SOURCE_ACCEPT,
+  getSourceDocumentType,
+} from "~/lib/documentTypes";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import PomodoroTimer from "~/components/Pomodoro";
 import { FormLoader } from "~/components/Workspace/FormLoader";
@@ -54,42 +57,33 @@ const Dashboard = ({ children, session }: DashboardProps) => {
   const workspaceId = params?.workspaceId;
   const { loading: uploadingFile, onUploadFile } = useUploadObjectToStorage();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const {
-    setDocument,
-    setCurrentForm,
-    setDisplayFormEditor,
-    resetWorkspaceStore,
-  } = useWorkspaceStore();
+  const { setCurrentForm, setDisplayFormEditor, resetWorkspaceStore } =
+    useWorkspaceStore();
   const [isReadingPDF, setIsReadingPDF] = useState<boolean>(false);
   const [openFormLoader, setOpenFormLoader] = useState<boolean>(false);
 
   const { mutate: createFile, isPending: createFileIsPending } =
     api.workspace.createFile.useMutation({
       onSuccess: async (data) => {
-        toast(t("toast.success.upload"));
-        const doc = {
-          id: data.id,
-          filename: data.filename,
-          type: data.type,
-          src: `${env.NEXT_PUBLIC_BUCKET_PUBLIC_DOMAIN}/${data.key}`,
-        };
-
-        localStorage.setItem(
-          "pennink-doc",
-          JSON.stringify({
-            ...doc,
-            workspaceId,
-          }),
-        );
-
-        setDocument(doc);
+        sileo.show({ title: t("toast.success.upload") });
         await utils.user.statics.invalidate();
         await utils.workspace.filesByUserId.invalidate();
+        await utils.workspace.sourcesByWorkspace.invalidate();
       },
       onError: (error) => {
-        toast(error.message);
+        sileo.show({ title: error.message });
       },
     });
+
+  const { mutate: attachSource } = api.workspace.attachSource.useMutation({
+    onSuccess: async () => {
+      setOpenDocumentLoader(false);
+      await utils.workspace.sourcesByWorkspace.invalidate();
+    },
+    onError: (error) => {
+      sileo.show({ title: error.message });
+    },
+  });
 
   const { mutate: initStaticsMutation } = api.user.initStatics.useMutation();
 
@@ -102,51 +96,61 @@ const Dashboard = ({ children, session }: DashboardProps) => {
     isPending: triggerUploadFilesRuleIsPending,
   } = api.workspace.triggerUploadFilesRule.useMutation({
     onError: (error) => {
-      toast(error.message);
+      sileo.show({ title: error.message });
     },
   });
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
+    const pickedFile = e.target.files?.[0];
 
-    if (!selectedFile) return;
+    if (!pickedFile) return;
 
     const ruleRes = fileSizeRule({
-      file: selectedFile,
+      file: pickedFile,
       session,
     });
 
     if (!ruleRes.isValid) return;
 
-    if (selectedFile.type !== "application/pdf") {
-      toast(t("toast.error.invalidFileType"));
+    const documentType = getSourceDocumentType(pickedFile);
+
+    if (!documentType) {
+      sileo.show({ title: t("toast.error.invalidFileType") });
       return;
     }
 
-    setIsReadingPDF(true);
-    const loader = new WebPDFLoader(selectedFile);
-    const docs = await loader.load();
-    setIsReadingPDF(false);
+    // Browsers report an empty MIME type for some files (e.g. .md); store the resolved one
+    const selectedFile =
+      documentType === pickedFile.type
+        ? pickedFile
+        : new File([pickedFile], pickedFile.name, { type: documentType });
 
-    if (docs.length === 0) {
-      toast(t("toast.error.noPages"));
-      return;
-    }
+    if (documentType === "application/pdf") {
+      setIsReadingPDF(true);
+      const loader = new WebPDFLoader(selectedFile);
+      const docs = await loader.load();
+      setIsReadingPDF(false);
 
-    if (docs.length > 50) {
-      toast(t("toast.error.tooManyPages", { count: docs.length }));
-      return;
+      if (docs.length === 0) {
+        sileo.show({ title: t("toast.error.noPages") });
+        return;
+      }
+
+      if (docs.length > 50) {
+        sileo.show({ title: t("toast.error.tooManyPages", { count: docs.length }) });
+        return;
+      }
     }
 
     try {
       await triggerUploadFilesRuleMutation();
 
       if (typeof workspaceId !== "string") {
-        toast(t("toast.error.invalidWorkspaceId"));
+        sileo.show({ title: t("toast.error.invalidWorkspaceId") });
         return;
       }
 
-      toast(t("toast.info.processing"));
+      sileo.show({ title: t("toast.info.processing") });
 
       const res = await onUploadFile({
         file: selectedFile,
@@ -158,7 +162,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
       }
 
       createFile({
-        type: selectedFile.type,
+        type: documentType,
         filename: selectedFile.name,
         key: res.key,
         workspaceId,
@@ -180,7 +184,7 @@ const Dashboard = ({ children, session }: DashboardProps) => {
           <Input
             ref={fileInputRef}
             type="file"
-            accept="application/pdf"
+            accept={SOURCE_ACCEPT}
             className="hidden"
             onChange={handleFileChange}
             data-testid="file-input"
@@ -191,24 +195,18 @@ const Dashboard = ({ children, session }: DashboardProps) => {
               setDisplayFormEditor(true);
               setCurrentForm(form);
               setOpenFormLoader(false);
-              setDocument(null);
             }}
             open={openFormLoader}
             onOpenChange={setOpenFormLoader}
           />
           <DocumentLoader
             onSelect={(doc) => {
-              setDocument(doc);
-              setOpenDocumentLoader(false);
-              setDisplayFormEditor(false);
-              setCurrentForm(null);
-              localStorage.setItem(
-                "pennink-doc",
-                JSON.stringify({
-                  ...doc,
-                  workspaceId,
-                }),
-              );
+              if (typeof workspaceId !== "string") {
+                sileo.show({ title: t("toast.error.invalidWorkspaceId") });
+                return;
+              }
+
+              attachSource({ workspaceId, fileId: doc.id });
             }}
             open={openDocumentLoader}
             onOpenChange={setOpenDocumentLoader}

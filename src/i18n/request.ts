@@ -1,12 +1,13 @@
 import { getRequestConfig } from "next-intl/server";
-import { headers } from "next/headers";
-import { getPreferredLocale } from "~/lib/utils";
+import { cookies, headers } from "next/headers";
+import { LOCALE_COOKIE_NAME, getRequestLocale } from "~/lib/utils";
 
 export default getRequestConfig(async () => {
+	const cookieStore = await cookies();
 	const values = await headers();
-	const acceptLanguage = values.get("accept-language");
-	const locale = getPreferredLocale(
-		acceptLanguage ? acceptLanguage : undefined,
+	const locale = getRequestLocale(
+		cookieStore.get(LOCALE_COOKIE_NAME)?.value,
+		values.get("accept-language") ?? undefined,
 	);
 
 	return {

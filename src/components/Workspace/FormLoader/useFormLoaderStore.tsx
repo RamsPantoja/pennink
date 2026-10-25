@@ -8,7 +8,6 @@ type CurrentForm = {
 
 export type SelectedLink = {
 	id: string;
-	key: string;
 	link: string;
 };
 

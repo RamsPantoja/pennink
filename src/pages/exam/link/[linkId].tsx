@@ -15,18 +15,23 @@ import { getServerSession, type Session } from "next-auth";
 import { notFound } from "next/navigation";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { authOptions } from "~/server/auth";
+import { verifyLinkToken } from "~/server/api/services/link-token";
 import {
 	IdentificationDialogExam,
 	type IdentificationValidationSchema,
 } from "~/components/common/IdentificationDialogExam";
 import { useTimer } from "~/hooks/use-timer";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { ExamFeedback } from "~/components/common/ExamFeedback";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type ToolCallPart } from "ai";
 import type { EvaluationDetailsTool } from "~/app/agents/exam-evaluation/tools";
 import { useTranslations } from "next-intl";
-import { getPreferredLocale, type Locale } from "~/lib/utils";
+import {
+	LOCALE_COOKIE_NAME,
+	getRequestLocale,
+	type Locale,
+} from "~/lib/utils";
 
 const ShareExam = ({
 	session,
@@ -63,7 +68,7 @@ const ShareExam = ({
 			}
 		},
 		onError: (error) => {
-			toast.error(t("toast.errorOccurred"));
+			sileo.error({ title: t("toast.errorOccurred") });
 			console.error("An error occurred:", error);
 		},
 	});
@@ -71,12 +76,13 @@ const ShareExam = ({
 	const { mutate: saveExamResultsMutation, isPending: saveExamResultsPending } =
 		api.form.saveExamResults.useMutation({
 			onSuccess: async () => {
-				toast.success(t("toast.submitSuccess"), {
+				sileo.success({
+					title: t("toast.submitSuccess"),
 					description: t("toast.submitSuccessDescription"),
 				});
 			},
 			onError: (error) => {
-				toast.error(error.message);
+				sileo.error({ title: error.message });
 			},
 		});
 
@@ -124,12 +130,13 @@ const ShareExam = ({
 				},
 			});
 		} else {
-			toast.error(t("toast.formDataMissing"));
+			sileo.error({ title: t("toast.formDataMissing") });
 		}
 	};
 
 	const onInvalid = () => {
-		toast(t("toast.invalidFieldsTitle"), {
+		sileo.show({
+			title: t("toast.invalidFieldsTitle"),
 			description: t("toast.invalidFieldsDescription"),
 		});
 	};
@@ -166,7 +173,7 @@ const ShareExam = ({
 						feedback: input.feedback,
 					});
 				} else {
-					toast.error(t("toast.identificationDataMissing"));
+					sileo.error({ title: t("toast.identificationDataMissing") });
 				}
 			})();
 		}
@@ -234,6 +241,7 @@ const ShareExam = ({
 										),
 									})}
 								</p>
+								<p className="text-xs">{examData.classroom.name}</p>
 								<p className="text-xs">
 									{DateTime.fromJSDate(examData.createdAt)
 										.setLocale(locale)
@@ -321,11 +329,20 @@ type ServerSideProps = {
 export const getServerSideProps = (async ({ req, res, query }) => {
 	const session = await getServerSession(req, res, authOptions);
 	const { linkId } = query;
-	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const locale = getRequestLocale(
+		req.cookies[LOCALE_COOKIE_NAME],
+		req.headers["accept-language"],
+	);
 	const messages = (await import(`../../../i18n/messages/${locale}.json`))
 		.default;
 
 	if (typeof linkId !== "string") {
+		return notFound();
+	}
+
+	const { t } = query;
+
+	if (typeof t === "string" && !verifyLinkToken(t, linkId)) {
 		return notFound();
 	}
 

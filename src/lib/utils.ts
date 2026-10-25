@@ -4,7 +4,7 @@ import markdownit from "markdown-it";
 import digitalMarkdownPlugin from "@digitalocean/do-markdownit";
 import type { ReactNode } from "react";
 import type { Session } from "next-auth";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -31,11 +31,12 @@ export const fileSizeRule = ({ session, file }: FileSizeRuleParams) => {
 	const isValid = !file || file.size <= maxSizeMB * 1024 * 1024;
 
 	if (!isValid) {
-		toast(
-			session.user.subscription === "PRO"
-				? "You can not upload files up to 50MB of size"
-				: "You need to upgrade to Pennink Pro to upload files up to 6MB of size",
-		);
+		sileo.show({
+			title:
+				session.user.subscription === "PRO"
+					? "You can not upload files up to 50MB of size"
+					: "You need to upgrade to Pennink Pro to upload files up to 6MB of size",
+		});
 	}
 
 	return {
@@ -45,6 +46,20 @@ export const fileSizeRule = ({ session, file }: FileSizeRuleParams) => {
 };
 
 export type Locale = "en" | "es";
+
+export const LOCALE_COOKIE_NAME = "locale";
+
+export const isLocale = (value: unknown): value is Locale =>
+	value === "en" || value === "es";
+
+// An explicit choice saved in the locale cookie wins over the browser language.
+export const getRequestLocale = (
+	cookieLocale: string | undefined,
+	acceptLanguageHeader: string | undefined,
+): Locale =>
+	isLocale(cookieLocale)
+		? cookieLocale
+		: getPreferredLocale(acceptLanguageHeader);
 
 export const getPreferredLocale = (
 	acceptLanguageHeader: string | undefined,

@@ -11,6 +11,7 @@ import { FeedbackService } from "./feedback";
 import { FormService } from "./form";
 import { LinkService } from "./link";
 import { ClassroomService } from "./classroom";
+import { StudyPlanService } from "./study-plan";
 
 export type ServicesContext = {
 	userService: UserService;
@@ -25,6 +26,7 @@ export type ServicesContext = {
 	formService: FormService;
 	linkService: LinkService;
 	classroomService: ClassroomService;
+	studyPlanService: StudyPlanService;
 };
 
 export type ServicesConfig = {
@@ -45,6 +47,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		formService: new FormService({ ctx }),
 		linkService: new LinkService({ ctx }),
 		classroomService: new ClassroomService(ctx),
+		studyPlanService: new StudyPlanService(ctx),
 	};
 };
 

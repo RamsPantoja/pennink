@@ -50,7 +50,9 @@ export const linkRouter = createTRPCRouter({
 	linksByForm: protectedProcedure
 		.input(getLinksForFormsInputSchema)
 		.query(async ({ ctx, input }) => {
-			return await ctx.services({ ctx }).linkService.getLinksForForm(input);
+			return await ctx
+				.services({ ctx })
+				.linkService.getLinksForForm(input, ctx.session.user.id);
 		}),
 	createLinkForForm: protectedProcedure
 		.input(createLinkFormInputSchema)

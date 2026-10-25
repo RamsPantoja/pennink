@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { useTranslations } from "next-intl";
 import {
 	Dialog,
@@ -97,12 +97,12 @@ export default function InsertContentLinkDialog({
 					}
 				} catch (error) {
 					console.error("Mutation failed:", error);
-					toast.error(t("toast.error"));
+					sileo.error({ title: t("toast.error") });
 				}
 			},
 			onError: (error) => {
 				console.error("Mutation failed:", error);
-				toast.error(t("toast.error"));
+				sileo.error({ title: t("toast.error") });
 			},
 		});
 

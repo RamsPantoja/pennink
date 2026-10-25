@@ -96,6 +96,10 @@
 		"classrooms": {
 			"title": "Aulas",
 			"empty": "Crea un aula para comenzar"
+		},
+		"studyPlans": {
+			"title": "Planes de estudio",
+			"manage": "Planes de estudio"
 		}
 	},
 
@@ -125,6 +129,18 @@
 	},
 
 	"Chat": {
+		"trace": {
+			"summary": "Usó {count, plural, one {# paso} other {# pasos}}",
+			"thinking": "Pensando",
+			"input": "Entrada",
+			"output": "Salida",
+			"tools": {
+				"generateAndEditForm": "Generando formulario",
+				"shareClassroomLink": "Compartiendo enlace de la clase",
+				"manageStudyPlan": "Gestionando plan de estudio",
+				"unknown": "Ejecutando herramienta"
+			}
+		},
 		"errors": {
 			"fetchMessages": "Error al cargar los mensajes"
 		},
@@ -133,20 +149,12 @@
 			"description": "Pregunta lo que quieras para empezar"
 		},
 		"tooltips": {
-			"addContext": "Agregar contexto al chat",
 			"removeQuote": "Eliminar cita"
-		},
-		"contextItems": {
-			"document": "Documento actual",
-			"editor": "Contenido del editor",
-			"addPrompt": "Agregar contexto..."
 		},
 		"input": {
 			"placeholder": "Pregunta lo que quieras"
 		},
 		"aria": {
-			"addContext": "Agregar contexto al chat",
-			"removeContextItem": "Eliminar {item} del contexto",
 			"removeQuote": "Eliminar cita",
 			"chatInput": "Campo de entrada de chat",
 			"stopStreaming": "Detener la transmisión de la respuesta",
@@ -174,20 +182,26 @@
 		"tooltip": {
 			"collapseContent": "Contraer contenido",
 			"closeContent": "Cerrar contenido",
-			"expandChat": "Expandir chat",
 			"expandContent": "Expandir contenido",
-			"collapseChat": "Contraer chat"
+			"collapseSidePanel": "Contraer panel",
+			"expandSidePanel": "Expandir panel"
 		},
-		"button": {
-			"summarize": "Resumir",
-			"chat": "Chatear",
-			"explain": "Explicar"
+		"sidePanel": {
+			"classroom": "Aula",
+			"noClassroom": "No se encontró el aula",
+			"studyPlans": "Planes de estudio",
+			"noStudyPlans": "No hay planes de estudio asociados a este aula",
+			"planProgress": "{completed} de {total} completados",
+			"sources": "Fuentes",
+			"noSources": "No hay fuentes asociadas a este espacio de trabajo",
+			"removeSource": "Quitar fuente",
+			"neuralInterface": "Interfaz neuronal"
 		}
 	},
 
 	"DocumentLoader": {
 		"sheetTitle": "Tus fuentes",
-		"sheetDescription": "Selecciona un documento para leer de todos los documentos guardados",
+		"sheetDescription": "Asocia un documento guardado a este espacio de trabajo",
 		"input": {
 			"placeholder": "Buscar documento"
 		},
@@ -204,7 +218,9 @@
 
 	"PDFDocumentCard": {
 		"badge": {
-			"pdf": "PDF"
+			"pdf": "PDF",
+			"docx": "DOCX",
+			"text": "Texto"
 		},
 		"tooltip": {
 			"download": "Descargar"
@@ -256,29 +272,13 @@
 			"share": "Compartir",
 			"generateLink": "Generar Enlace"
 		},
-		"placeholder": {
-			"search": "Buscar...",
-			"linkKeyword": "Ingresa una palabra clave para el enlace"
-		},
-		"tooltip": {
-			"search": "Buscar"
-		},
 		"message": {
 			"noLinks": "No se encontraron enlaces",
 			"linkAccess": "Cualquiera con el enlace puede acceder a este formulario"
-		},
-		"label": {
-			"keyword": "Palabra clave"
 		}
 	},
 
 	"Links": {
-		"placeholder": {
-			"search": "Buscar por palabra clave"
-		},
-		"tooltip": {
-			"search": "Buscar"
-		},
 		"message": {
 			"noLinks": "Tus enlaces aparecerán aquí"
 		}
@@ -353,6 +353,7 @@
 	},
 
 	"SignIn": {
+		"headline": "Tu asistente de enseñanza con IA, listo cuando tú lo estés.",
 		"tagline": "Trabaja inteligente, no duro – Espacios de trabajo impulsados por IA que se adaptan a ti.",
 		"legalText": "Al crear una cuenta o iniciar sesión, aceptas los <terms>Términos</terms> y nuestra <privacy>Política de privacidad</privacy>.",
 		"terms": "Términos",
@@ -365,6 +366,7 @@
 	},
 
 	"Settings": {
+		"dialogTitle": "Configuración",
 		"head": {
 			"title": "Pennink - Configuración",
 			"description": "Administra la configuración de tu cuenta y suscripción."
@@ -407,6 +409,17 @@
 				"title": "Términos del servicio",
 				"description": "Lee nuestros términos del servicio"
 			}
+		},
+		"nav": {
+			"preferences": "Preferencias",
+			"account": "Cuenta",
+			"billing": "Facturación",
+			"help": "Ayuda",
+			"support": "Soporte",
+			"language": "Idioma"
+		},
+		"language": {
+			"description": "Elige el idioma de la interfaz. La página se recargará al cambiarlo."
 		}
 	},
 
@@ -417,9 +430,6 @@
 		},
 		"error": {
 			"loadError": "Algo salió mal"
-		},
-		"context": {
-			"formLabel": "Formulario"
 		},
 		"button": {
 			"hideAnswers": "Ocultar respuestas",
@@ -771,18 +781,6 @@
 		}
 	},
 
-	"PDFViewer": {
-		"searchPlaceholder": "Buscar texto...",
-		"of": "de",
-		"matches": "coincidencias",
-		"caseSensitive": "Distingue mayúsculas",
-		"zoomOut": "Alejar",
-		"resetZoom": "Restablecer zoom",
-		"zoomIn": "Acercar",
-		"pageLabel": "Página",
-		"pageCounter": "Página {current} de {total}"
-	},
-
 	"ClassroomPicker": {
 		"section": "Aulas",
 		"search": {
@@ -812,10 +810,9 @@
 	},
 
 	"ClassroomDetails": {
-		"loading":"Cargando aula...",
+		"loading": "Cargando aula...",
 		"description": "Gestiona tu aula.",
 		"button": {
-			"newWorkspace": "Nuevo espacio de trabajo",
 			"delete": "Eliminar aula",
 			"rename": "Renombrar",
 			"addStudent": "Agregar estudiante",
@@ -838,6 +835,23 @@
 		},
 		"workspaces": {
 			"title": "Espacios de trabajo"
+		},
+		"deleteDialog": {
+			"title": "¿Eliminar aula?",
+			"description": "Esto eliminará permanentemente el aula y sus estudiantes. Esta acción no se puede deshacer.",
+			"cancel": "Cancelar",
+			"confirm": "Eliminar"
+		},
+		"removeDialog": {
+			"student": {
+				"title": "¿Quitar estudiante?",
+				"description": "{name} será quitado de este aula."
+			},
+			"teacher": {
+				"title": "¿Quitar profesor?",
+				"description": "{name} perderá el acceso a este aula."
+			},
+			"confirm": "Quitar"
 		}
 	},
 
@@ -911,5 +925,83 @@
 
 	"UploadObjectToStorage": {
 		"error": "Error al subir el archivo"
+	},
+	"StudyPlan": {
+		"title": "Planes de estudio",
+		"description": "Planes con fechas y casillas, asociados a esta clase.",
+		"empty": "Aún no hay planes de estudio. Crea uno, importa un archivo .md o pídeselo al asistente.",
+		"progress": "{completed} de {total} completados",
+		"nextDue": "Próximo: {title} ({date})",
+		"loading": "Cargando…",
+		"button": {
+			"import": "Importar .md",
+			"save": "Guardar",
+			"cancel": "Cancelar",
+			"edit": "Editar",
+			"export": "Exportar .md",
+			"classrooms": "Clases",
+			"open": "Abrir"
+		},
+		"editor": {
+			"titleLabel": "Título",
+			"descriptionLabel": "Descripción",
+			"bodyLabel": "Plan (markdown)",
+			"bodyHint": "Un elemento por línea, con fecha ISO: - [ ] 2026-11-03 Leer capítulo 3"
+		},
+		"timeline": {
+			"empty": "Este plan aún no tiene elementos con casilla.",
+			"noDate": "Sin fecha"
+		},
+		"completedBy": {
+			"teacher": "Marcado por el docente",
+			"agent": "Marcado por el asistente"
+		},
+		"classrooms": {
+			"title": "Clases asociadas",
+			"empty": "Crea una clase para asociarle planes."
+		},
+		"page": {
+			"title": "Planes de estudio",
+			"description": "Crea, importa y asocia planes de estudio a tus clases.",
+			"empty": "Aún no hay planes de estudio",
+			"error": "No se pudieron cargar los planes de estudio.",
+			"shared": "Compartido contigo",
+			"notAttached": "Sin asociar",
+			"emptyDescription": "Importa un archivo markdown con casillas con fecha para empezar a seguir un plan.",
+			"count": "{count, plural, =0 {Sin planes} one {# plan} other {# planes}}",
+			"noProgress": "Progreso no visible"
+		},
+		"attach": {
+			"title": "Asociar «{title}»",
+			"description": "Elige las clases a las que pertenece este plan."
+		},
+		"classroomPicker": {
+			"label": "Clase",
+			"noClassroom": "Elige una clase que impartas para marcar los elementos."
+		}
+	},
+	"Emails": {
+		"layout": {
+			"contact": "Si tienes preguntas o comentarios, no dudes en contactarnos.",
+			"thanks": "¡Gracias!"
+		},
+		"kinds": {
+			"form": "formulario",
+			"exam": "examen"
+		},
+		"paymentFailed": {
+			"subject": "Falló el pago de tu suscripción",
+			"title": "Falló el método de pago",
+			"description": "El pago para renovar tu suscripción no se completó correctamente.",
+			"recommendation": "Te recomendamos verificar y actualizar tus datos de facturación.",
+			"cta": "Ir a configuración"
+		},
+		"sharedLink": {
+			"subject": "{classroomName}: un nuevo {kind} está listo para ti",
+			"title": "Un nuevo {kind} está listo para ti",
+			"description": "Tu profesor compartió un nuevo {kind} para <strong>{classroomName}</strong>.",
+			"cta": "Abrir el {kind}",
+			"expiry": "Este enlace es personal para ti y expira en 14 días."
+		}
 	}
 }

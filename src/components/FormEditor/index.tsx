@@ -7,7 +7,7 @@ import {
 import { Button } from "../common/Button";
 import { DynamicForm } from "../DynamicForm";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { useWorkspaceStore } from "../Workspace/useWorkspaceStore";
 import { useState, useEffect, Fragment } from "react";
 import { api } from "~/trpc/react";
@@ -25,8 +25,6 @@ export const FormEditor = () => {
 		currentForm,
 		setCurrentForm,
 		setQueryFormData,
-		setAiContextItems,
-		aiContextItems,
 	} = useWorkspaceStore();
 
 	const {
@@ -45,7 +43,7 @@ export const FormEditor = () => {
 				});
 			},
 			onError: (error) => {
-				toast(t("toast.error"));
+				sileo.show({ title: t("toast.error") });
 			},
 		});
 
@@ -72,7 +70,7 @@ export const FormEditor = () => {
 				refetch();
 			},
 			onError: (error) => {
-				toast(t("toast.error"));
+				sileo.show({ title: t("toast.error") });
 			},
 		});
 
@@ -111,25 +109,12 @@ export const FormEditor = () => {
 		if (data) {
 			reset();
 			setQueryFormData(data);
-
-			const hasFormContextItem = aiContextItems.some(
-				(item) => item.type === "form",
-			);
-
-			if (!hasFormContextItem) {
-				setAiContextItems([
-					...aiContextItems,
-					{
-						label: t("context.formLabel"),
-						type: "form",
-					},
-				]);
-			}
 		}
 	}, [data]);
 
+
 	const onTestForm = () => {
-		toast.success(t("toast.submitSuccess"), { position: "bottom-left" });
+		sileo.success({ title: t("toast.submitSuccess"), position: "bottom-left" });
 	};
 
 	if (!currentForm) {

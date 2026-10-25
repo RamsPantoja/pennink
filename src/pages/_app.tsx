@@ -1,10 +1,10 @@
-import { GeistMono } from "geist/font/mono";
 import type { Session } from "next-auth";
 import type { AppType } from "next/app";
 import "~/styles/globals.css";
+import "sileo/styles.css";
 import "~/styles/nprogress.css";
 import { TooltipProvider } from "~/components/ui/tooltip";
-import { Toaster } from "sonner";
+import { Toaster } from "sileo";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import nProgress from "nprogress";
@@ -13,6 +13,7 @@ import { create } from "zustand";
 import { apiPageRouter } from "~/utils/api";
 import { NextIntlClientProvider } from "next-intl";
 import type { Locale } from "~/lib/utils";
+import { GeistSans } from "geist/font/sans";
 
 type Theme = "light" | "dark";
 
@@ -22,7 +23,7 @@ type AppStore = {
 };
 
 export const useAppStore = create<AppStore>()((set) => ({
-  theme: "light",
+  theme: "dark",
   setTheme: (theme: Theme) => set({ theme }),
 }));
 
@@ -77,9 +78,9 @@ const MyApp: AppType<AppTypes> = ({ Component, pageProps }) => {
         locale={pageProps.locale ?? "en"}
         messages={pageProps.messages}
       >
-        <main data-theme={theme} className={GeistMono.className}>
+        <main data-theme={theme} className={GeistSans.className}>
           <TooltipProvider delayDuration={300}>
-            <Toaster richColors className={GeistMono.className} />
+            <Toaster position="bottom-right" />
             <Component {...pageProps} />
           </TooltipProvider>
         </main>

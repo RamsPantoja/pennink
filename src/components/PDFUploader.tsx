@@ -2,7 +2,7 @@ import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { FileIcon, UploadIcon, XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import {
 	Card,
 	CardContent,
@@ -57,7 +57,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 		if (!selectedFile) return;
 
 		if (selectedFile.type !== "application/pdf") {
-			toast(t("errors.invalidFileType"));
+			sileo.show({ title: t("errors.invalidFileType") });
 			return;
 		}
 
@@ -78,7 +78,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 		if (!droppedFile) return;
 
 		if (droppedFile.type !== "application/pdf") {
-			toast(t("errors.invalidFileType"));
+			sileo.show({ title: t("errors.invalidFileType") });
 			return;
 		}
 
@@ -176,7 +176,7 @@ export default function PDFUploader({ onUpload, isPending }: PDFUploaderProps) {
 					disabled={!file || isPending}
 					onClick={() => {
 						if (!file) {
-							toast(t("errors.noFile"));
+							sileo.show({ title: t("errors.noFile") });
 							return;
 						}
 

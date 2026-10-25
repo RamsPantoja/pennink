@@ -7,7 +7,14 @@ import { userHasClassroom } from "~/server/api/services/classroom";
 import { and, eq } from "drizzle-orm";
 import { createChatAgent } from "~/app/agents/chat/agent";
 import { createArtifactTool } from "~/app/agents/chat/artifact";
+import {
+  createSharedLinkTool,
+  type ActiveForm,
+} from "~/app/agents/chat/shared-link";
 import { createChatTools, prepareSpeechText } from "~/app/agents/chat/tools";
+import { createStudyPlanTool } from "~/app/agents/chat/study-plan";
+import { cookies } from "next/headers";
+import { LOCALE_COOKIE_NAME, getRequestLocale } from "~/lib/utils";
 
 export type Context = {
   messages: ModelMessage[];
@@ -19,7 +26,10 @@ export type AgentChatRequestData = {
   trigger: "submit-message";
   id: string;
   metadata: Message;
+  activeForm?: ActiveForm | null;
+  activeClassroomId?: string | null;
 };
+
 
 export async function POST(req: Request) {
   try {
@@ -42,6 +52,8 @@ export async function POST(req: Request) {
       context,
       prompt,
       metadata,
+      activeForm,
+      activeClassroomId,
     } = (await req.json()) as AgentChatRequestData;
 
     tools.prepareSpeechText = prepareSpeechText;
@@ -58,6 +70,20 @@ export async function POST(req: Request) {
       chatId: metadata.chatId,
     });
     tools.generateAndEditForm = createChatTools({}).generateAndEditForm;
+    tools.shareClassroomLink = createSharedLinkTool({
+      userId: session.user.id,
+      locale: getRequestLocale(
+        (await cookies()).get(LOCALE_COOKIE_NAME)?.value,
+        req.headers.get("accept-language") ?? undefined,
+      ),
+      activeClassroomId,
+      activeForm,
+    });
+
+    tools.manageStudyPlan = createStudyPlanTool({
+      userId: session.user.id,
+      activeClassroomId,
+    });
 
     if (!prompt) {
       throw new Error("Missing prompt");

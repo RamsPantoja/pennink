@@ -3,7 +3,11 @@ import type { GetServerSideProps } from "next";
 import { type Session, getServerSession } from "next-auth";
 import Head from "next/head";
 import { authOptions } from "~/server/auth";
-import { getPreferredLocale, type Locale } from "~/lib/utils";
+import {
+	LOCALE_COOKIE_NAME,
+	getRequestLocale,
+	type Locale,
+} from "~/lib/utils";
 import type { ParsedUrlQuery } from "node:querystring";
 import { useTranslations } from "next-intl";
 
@@ -39,7 +43,10 @@ type ServerSideProps = {
 
 export const getServerSideProps = (async ({ req, res, query }) => {
 	const session = await getServerSession(req, res, authOptions);
-	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const locale = getRequestLocale(
+		req.cookies[LOCALE_COOKIE_NAME],
+		req.headers["accept-language"],
+	);
 
 	if (session) {
 		return {

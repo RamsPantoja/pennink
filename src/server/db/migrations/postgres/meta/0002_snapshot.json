@@ -1,6 +1,6 @@
 {
-  "id": "5c0bea78-870e-4dfd-86c7-76148fc16988",
-  "prevId": "da39ada0-3e8e-4d64-8377-3959804514c0",
+  "id": "fa326e12-cffb-4269-98b0-c0505ae9fa3a",
+  "prevId": "8dd8e3db-ed8f-4dff-a54a-cc08d72cfdb9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -317,6 +317,186 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.classroom_student": {
+      "name": "classroom_student",
+      "schema": "",
+      "columns": {
+        "classroom_id": {
+          "name": "classroom_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "classroom_student_classroom_id_classroom_id_fk": {
+          "name": "classroom_student_classroom_id_classroom_id_fk",
+          "tableFrom": "classroom_student",
+          "tableTo": "classroom",
+          "columnsFrom": [
+            "classroom_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "classroom_student_student_id_student_id_fk": {
+          "name": "classroom_student_student_id_student_id_fk",
+          "tableFrom": "classroom_student",
+          "tableTo": "student",
+          "columnsFrom": [
+            "student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "classroom_student_classroom_id_student_id_pk": {
+          "name": "classroom_student_classroom_id_student_id_pk",
+          "columns": [
+            "classroom_id",
+            "student_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "classroom_student_email_unique": {
+          "name": "classroom_student_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "classroom_id",
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.classroom_teacher": {
+      "name": "classroom_teacher",
+      "schema": "",
+      "columns": {
+        "classroom_id": {
+          "name": "classroom_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "classroom_teacher_classroom_id_classroom_id_fk": {
+          "name": "classroom_teacher_classroom_id_classroom_id_fk",
+          "tableFrom": "classroom_teacher",
+          "tableTo": "classroom",
+          "columnsFrom": [
+            "classroom_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "classroom_teacher_user_id_user_id_fk": {
+          "name": "classroom_teacher_user_id_user_id_fk",
+          "tableFrom": "classroom_teacher",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "classroom_teacher_classroom_id_user_id_pk": {
+          "name": "classroom_teacher_classroom_id_user_id_pk",
+          "columns": [
+            "classroom_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.classroom": {
+      "name": "classroom",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.customer": {
       "name": "customer",
       "schema": "",
@@ -376,6 +556,114 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.embedding_document": {
+      "name": "embedding_document",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "file_id": {
+          "name": "file_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "embedding": {
+          "name": "embedding",
+          "type": "vector(1024)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "embedding_document_file_id_idx": {
+          "name": "embedding_document_file_id_idx",
+          "columns": [
+            {
+              "expression": "file_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "embedding_document_embedding_idx": {
+          "name": "embedding_document_embedding_idx",
+          "columns": [
+            {
+              "expression": "embedding",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last",
+              "opclass": "vector_cosine_ops"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "hnsw",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "embedding_document_file_id_file_id_fk": {
+          "name": "embedding_document_file_id_file_id_fk",
+          "tableFrom": "embedding_document",
+          "tableTo": "file",
+          "columnsFrom": [
+            "file_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "embedding_document_user_id_user_id_fk": {
+          "name": "embedding_document_user_id_user_id_fk",
+          "tableFrom": "embedding_document",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.exam_link": {
       "name": "exam_link",
       "schema": "",
@@ -386,14 +674,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "key": {
-          "name": "key",
-          "type": "text",
+        "exam_version_id": {
+          "name": "exam_version_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "exam_version_id": {
-          "name": "exam_version_id",
+        "classroom_id": {
+          "name": "classroom_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -433,6 +721,19 @@
           "tableTo": "exam_versions",
           "columnsFrom": [
             "exam_version_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "exam_link_classroom_id_classroom_id_fk": {
+          "name": "exam_link_classroom_id_classroom_id_fk",
+          "tableFrom": "exam_link",
+          "tableTo": "classroom",
+          "columnsFrom": [
+            "classroom_id"
           ],
           "columnsTo": [
             "id"
@@ -936,14 +1237,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "key": {
-          "name": "key",
-          "type": "text",
+        "form_version_id": {
+          "name": "form_version_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "form_version_id": {
-          "name": "form_version_id",
+        "classroom_id": {
+          "name": "classroom_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -983,6 +1284,19 @@
           "tableTo": "form_versions",
           "columnsFrom": [
             "form_version_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "form_link_classroom_id_classroom_id_fk": {
+          "name": "form_link_classroom_id_classroom_id_fk",
+          "tableFrom": "form_link",
+          "tableTo": "classroom",
+          "columnsFrom": [
+            "classroom_id"
           ],
           "columnsTo": [
             "id"
@@ -2057,6 +2371,358 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.student": {
+      "name": "student",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.study_plan_classroom": {
+      "name": "study_plan_classroom",
+      "schema": "",
+      "columns": {
+        "study_plan_id": {
+          "name": "study_plan_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "classroom_id": {
+          "name": "classroom_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "study_plan_classroom_study_plan_id_study_plan_id_fk": {
+          "name": "study_plan_classroom_study_plan_id_study_plan_id_fk",
+          "tableFrom": "study_plan_classroom",
+          "tableTo": "study_plan",
+          "columnsFrom": [
+            "study_plan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "study_plan_classroom_classroom_id_classroom_id_fk": {
+          "name": "study_plan_classroom_classroom_id_classroom_id_fk",
+          "tableFrom": "study_plan_classroom",
+          "tableTo": "classroom",
+          "columnsFrom": [
+            "classroom_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "study_plan_classroom_study_plan_id_classroom_id_pk": {
+          "name": "study_plan_classroom_study_plan_id_classroom_id_pk",
+          "columns": [
+            "study_plan_id",
+            "classroom_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.study_plan_item": {
+      "name": "study_plan_item",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "study_plan_id": {
+          "name": "study_plan_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "position": {
+          "name": "position",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_position": {
+          "name": "parent_position",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "due_date": {
+          "name": "due_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "study_plan_item_plan_idx": {
+          "name": "study_plan_item_plan_idx",
+          "columns": [
+            {
+              "expression": "study_plan_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "study_plan_item_study_plan_id_study_plan_id_fk": {
+          "name": "study_plan_item_study_plan_id_study_plan_id_fk",
+          "tableFrom": "study_plan_item",
+          "tableTo": "study_plan",
+          "columnsFrom": [
+            "study_plan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.study_plan_progress": {
+      "name": "study_plan_progress",
+      "schema": "",
+      "columns": {
+        "study_plan_id": {
+          "name": "study_plan_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "classroom_id": {
+          "name": "classroom_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "position": {
+          "name": "position",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "completed": {
+          "name": "completed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_by": {
+          "name": "completed_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "study_plan_progress_study_plan_id_classroom_id_study_plan_classroom_study_plan_id_classroom_id_fk": {
+          "name": "study_plan_progress_study_plan_id_classroom_id_study_plan_classroom_study_plan_id_classroom_id_fk",
+          "tableFrom": "study_plan_progress",
+          "tableTo": "study_plan_classroom",
+          "columnsFrom": [
+            "study_plan_id",
+            "classroom_id"
+          ],
+          "columnsTo": [
+            "study_plan_id",
+            "classroom_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "study_plan_progress_study_plan_id_classroom_id_position_pk": {
+          "name": "study_plan_progress_study_plan_id_classroom_id_position_pk",
+          "columns": [
+            "study_plan_id",
+            "classroom_id",
+            "position"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.study_plan": {
+      "name": "study_plan",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "study_plan_user_id_user_id_fk": {
+          "name": "study_plan_user_id_user_id_fk",
+          "tableFrom": "study_plan",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.subscription": {
       "name": "subscription",
       "schema": "",
@@ -2340,6 +3006,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "classroom_id": {
+          "name": "classroom_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "user_id": {
           "name": "user_id",
           "type": "uuid",
@@ -2387,6 +3059,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "workspace_classroom_id_classroom_id_fk": {
+          "name": "workspace_classroom_id_classroom_id_fk",
+          "tableFrom": "workspace",
+          "tableTo": "classroom",
+          "columnsFrom": [
+            "classroom_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "workspace_user_id_user_id_fk": {
           "name": "workspace_user_id_user_id_fk",
           "tableFrom": "workspace",

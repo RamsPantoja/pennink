@@ -4,7 +4,7 @@ import { Resend } from "resend";
 import { TRPCError } from "@trpc/server";
 
 type EmailServiceContructor = {
-	ctx: TRPCContext;
+	ctx?: TRPCContext;
 };
 
 type SendPayload = {
@@ -15,7 +15,7 @@ type SendPayload = {
 };
 
 class EmailService {
-	ctx: TRPCContext;
+	ctx?: TRPCContext;
 	service: Resend;
 
 	constructor({ ctx }: EmailServiceContructor) {

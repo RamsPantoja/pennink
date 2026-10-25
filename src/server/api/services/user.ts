@@ -1,8 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import type { TRPCContext } from "../../trpc";
-import { statics } from "~/server/db/schema";
+import { statics, users } from "~/server/db/schema";
 import { DateTime } from "luxon";
 import { eq } from "drizzle-orm";
+import type { Locale } from "~/lib/utils";
 
 type UserServiceContructor = {
 	ctx: TRPCContext;
@@ -106,5 +107,12 @@ export class UserService {
 				message: "Error on reset user statics",
 			});
 		}
+	}
+
+	public async updateLocale(userId: string, locale: Locale) {
+		await this.ctx.db
+			.update(users)
+			.set({ locale })
+			.where(eq(users.id, userId));
 	}
 }

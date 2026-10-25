@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
+import "sileo/styles.css";
 import Dashboard from "~/layout/Dashboard";
 import { redirect } from "next/navigation";
 import { TRPCReactProvider } from "~/trpc/react";
-import { Toaster } from "sonner";
+import { Toaster } from "sileo";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import { getServerAuthSession } from "~/server/auth";
 import ClientSessionProvider from "~/components/ClientSessionProvider";
@@ -46,7 +47,7 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <ThemeProvider attribute="data-theme" enableSystem>
             <TRPCReactProvider>
-              <Toaster richColors className={GeistSans.className} />
+              <Toaster position="bottom-right" theme="dark" />
               <ClientSessionProvider session={session}>
                 <Dashboard session={session}>{children}</Dashboard>
               </ClientSessionProvider>

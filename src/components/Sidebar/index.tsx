@@ -14,7 +14,10 @@ import {
 import {
   ArrowRightStartOnRectangleIcon,
   ChevronUpDownIcon,
+  ClipboardDocumentListIcon,
   Cog6ToothIcon,
+  DocumentIcon,
+  SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Session } from "next-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -30,13 +33,17 @@ import { signOut } from "next-auth/react";
 import { mapSkeletons } from "~/lib/utils";
 import { Skeleton } from "../ui/skeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { ClassroomSection } from "./ClassroomSection";
 import SubscriptionPlansModal from "../SubscriptionPlanSelector";
 import { UsageService } from "../UsageService";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { GitBranch } from "lucide-react";
+import { SettingsDialog } from "../Settings/SettingsDialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Button } from "../ui/button";
 
 type AppSidebarProps = {
   session: Session | null;
@@ -46,6 +53,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
   const t = useTranslations("AppSidebar");
   const router = useRouter();
   const pathname = usePathname();
+  const [displaySettings, setDisplaySettings] = useState(false);
 
   const {
     displaySignOutAlert,
@@ -53,6 +61,7 @@ export function AppSidebar({ session }: AppSidebarProps) {
     classroomsData,
     classroomsIsLoading,
     classroomsIsError,
+    onNewWorkspace,
   } = useSidebarLogic();
 
   const skeletons = mapSkeletons({
@@ -75,6 +84,13 @@ export function AppSidebar({ session }: AppSidebarProps) {
           isPending={false}
           open={displaySignOutAlert}
         />
+        {session && (
+          <SettingsDialog
+            open={displaySettings}
+            onOpenChange={setDisplaySettings}
+            session={session}
+          />
+        )}
         {session && (
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
@@ -106,8 +122,8 @@ export function AppSidebar({ session }: AppSidebarProps) {
               }}
             >
               <DropdownMenuItem
-                onSelect={async () => {
-                  router.push(`/settings?callbackUrl=${pathname}`);
+                onSelect={() => {
+                  setDisplaySettings(true);
                 }}
               >
                 <Cog6ToothIcon className="mr-2 h-5 min-w-5 text-foreground" />
@@ -126,10 +142,33 @@ export function AppSidebar({ session }: AppSidebarProps) {
         )}
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent className="p-1">
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={pathname === "/study-plans"}
+                  onClick={() => router.push("/study-plans")}
+                >
+                  <GitBranch className="h-5 min-w-5 text-foreground" />
+                  <span>{t("studyPlans.manage")}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup className="overflow-hidden">
           <SidebarGroupLabel asChild>
             <div className="flex items-center gap-4 justify-between mb-2">
               <span>{t("classrooms.title")}</span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={onNewWorkspace} variant="ghost" size="icon">
+                    <SquaresPlusIcon className="min-w-5 w-5 h-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>{t("tooltips.newWorkspace")}</TooltipContent>
+              </Tooltip>
             </div>
           </SidebarGroupLabel>
           <SidebarGroupContent className="overflow-auto p-1">

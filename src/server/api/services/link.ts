@@ -100,8 +100,27 @@ export class LinkService {
 		return link;
 	}
 
-	public async getLinksForForm(input: GetLinksForFormsInputSchema) {
-		const { type, key, id } = input;
+	private async assertClassroomTeacher(classroomId: string, userId: string) {
+		const teacher = await this.ctx.db.query.classroomTeachers.findFirst({
+			where: (table, { eq, and }) =>
+				and(eq(table.classroomId, classroomId), eq(table.userId, userId)),
+		});
+
+		if (!teacher) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Classroom not found",
+			});
+		}
+	}
+
+	public async getLinksForForm(
+		input: GetLinksForFormsInputSchema,
+		userId: string,
+	) {
+		const { type, classroomId, id } = input;
+
+		await this.assertClassroomTeacher(classroomId, userId);
 
 		switch (type) {
 			case "BASIC": {
@@ -120,17 +139,17 @@ export class LinkService {
 				}
 
 				const links = await this.ctx.db.query.formLinks.findMany({
-					where: (formLinks, { eq, and, ilike }) => {
-						const conditions = [eq(formLinks.formVersionId, formVersion.id)];
-
-						if (key) {
-							conditions.push(ilike(formLinks.key, `%${key}%`));
-						}
-
-						return and(...conditions);
+					where: (formLinks, { eq, and }) => {
+						return and(
+							eq(formLinks.formVersionId, formVersion.id),
+							eq(formLinks.classroomId, classroomId),
+						);
 					},
 					with: {
 						formVersion: true,
+						classroom: {
+							columns: { name: true },
+						},
 					},
 					orderBy: (formLinks, { desc }) => [desc(formLinks.id)],
 				});
@@ -153,17 +172,17 @@ export class LinkService {
 				}
 
 				const links = await this.ctx.db.query.examLinks.findMany({
-					where: (examLinks, { eq, and, ilike }) => {
-						const conditions = [eq(examLinks.examVersionId, examVersion.id)];
-
-						if (key) {
-							conditions.push(ilike(examLinks.key, `%${key}%`));
-						}
-
-						return and(...conditions);
+					where: (examLinks, { eq, and }) => {
+						return and(
+							eq(examLinks.examVersionId, examVersion.id),
+							eq(examLinks.classroomId, classroomId),
+						);
 					},
 					with: {
 						examVersion: true,
+						classroom: {
+							columns: { name: true },
+						},
 					},
 					orderBy: (examLinks, { desc }) => [desc(examLinks.id)],
 				});
@@ -177,7 +196,9 @@ export class LinkService {
 		input: CreateLinkFormInputSchema,
 		userId: string,
 	) {
-		const { type, key, id } = input;
+		const { type, classroomId, id } = input;
+
+		await this.assertClassroomTeacher(classroomId, userId);
 
 		switch (type) {
 			case "BASIC": {
@@ -199,7 +220,7 @@ export class LinkService {
 					.insert(formLinks)
 					.values({
 						formVersionId: formVersion.id,
-						key,
+						classroomId,
 						userId,
 					})
 					.returning();
@@ -232,7 +253,7 @@ export class LinkService {
 					.insert(examLinks)
 					.values({
 						examVersionId: examVersion.id,
-						key,
+						classroomId,
 						userId,
 					})
 					.returning();
@@ -255,6 +276,9 @@ export class LinkService {
 				return eq(formLinks.id, linkId);
 			},
 			with: {
+				classroom: {
+					columns: { name: true },
+				},
 				formVersion: {
 					with: {
 						form: {
@@ -297,6 +321,9 @@ export class LinkService {
 				return eq(examLinks.id, linkId);
 			},
 			with: {
+				classroom: {
+					columns: { name: true },
+				},
 				examVersion: {
 					with: {
 						exam: {

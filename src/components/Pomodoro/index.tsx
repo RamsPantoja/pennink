@@ -26,7 +26,7 @@ import { Separator } from "../ui/separator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 
 type TimerMode = "focus" | "rest";
 type TimerStatus = "idle" | "running" | "paused";
@@ -174,7 +174,7 @@ export default function PomodoroTimer() {
 	const handleSaveSettings = () => {
 		setSettings(tempSettings);
 		setIsSettingsOpen(false);
-		toast(t("settingsSaved"));
+		sileo.show({ title: t("settingsSaved") });
 		// Reset timer with new settings if idle
 		if (status === "idle") {
 			setTimeLeft(

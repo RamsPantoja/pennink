@@ -241,22 +241,15 @@ export const AgentVisual = () => {
     <section
       aria-label={t("ariaLabel")}
       className={cn(
-        "relative flex h-full min-h-[360px] w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(0,0,0,.14),transparent_52%)]",
+        "relative flex h-full min-h-[200px] w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,rgba(0,0,0,.14),transparent_52%)]",
         isSpeaking && "agent-visual-speaking",
       )}
     >
       <div className="agent-visual-grid absolute inset-0 opacity-40" />
       <div
         ref={canvasContainer}
-        className="relative z-10 h-full min-h-[360px] w-full"
+        className="relative z-10 h-full min-h-[200px] w-full"
       />
-      <p className="absolute bottom-8 text-xs uppercase tracking-[0.3em] text-muted-foreground">
-        {isSpeaking
-          ? "Listening to the voice"
-          : isActive
-            ? "Processing"
-            : "Neural interface"}
-      </p>
     </section>
   );
 };

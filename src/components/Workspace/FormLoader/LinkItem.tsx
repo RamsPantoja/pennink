@@ -11,54 +11,54 @@ import { useFormLoaderStore } from "./useFormLoaderStore";
 import { useTranslations } from "next-intl";
 
 type LinkItemProps = {
-	id: string;
-	customKey: string;
-	version: number;
-	createdAt: Date;
-	type: FormType;
+  id: string;
+  version: number;
+  createdAt: Date;
+  classroomName: string;
+  type: FormType;
 };
 
 export const LinkItem = ({
-	id,
-	customKey,
-	version,
-	createdAt,
-	type,
+  id,
+  version,
+  createdAt,
+  classroomName,
+  type,
 }: LinkItemProps) => {
-	const t = useTranslations("FormLoader");
-	const { setCurrentLink, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
-	const clipboardContent = useMemo(() => {
-		if (type === "BASIC") return `${env.NEXT_PUBLIC_BASE_URL}/form/link/${id}`;
-		if (type === "EXAM") return `${env.NEXT_PUBLIC_BASE_URL}/exam/link/${id}`;
-		return `${env.NEXT_PUBLIC_BASE_URL}/`;
-	}, [id, type]);
+  const t = useTranslations("FormLoader");
+  const { setCurrentLink, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
+  const clipboardContent = useMemo(() => {
+    if (type === "BASIC") return `${env.NEXT_PUBLIC_BASE_URL}/form/link/${id}`;
+    if (type === "EXAM") return `${env.NEXT_PUBLIC_BASE_URL}/exam/link/${id}`;
+    return `${env.NEXT_PUBLIC_BASE_URL}/`;
+  }, [id, type]);
 
-	return (
-		<Card
-			onClick={() => {
-				setCurrentLink({ id, key: customKey, link: clipboardContent });
-				setBreadcrumbs({ ...breadcrumbs, results: t("breadcrumbs.results") });
-			}}
-			className="flex gap-2 flex-col bg-muted hover:bg-muted/50 transition-colors h-fit"
-		>
-			<div className="flex gap-4 justify-between">
-				<p className="text-sm font-semibold">{customKey}</p>
-				<Badge variant="outline">v{version}</Badge>
-			</div>
-			<div className="flex items-center">
-				<p
-					className="text-xs text-muted-foreground truncate ml-2"
-					title={clipboardContent}
-				>
-					{clipboardContent}
-				</p>
-				{clipboardContent && (
-					<ClipBoard className="rounded-[4px]" content={clipboardContent} />
-				)}
-			</div>
-			<p className="text-xs">
-				{DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED)}
-			</p>
-		</Card>
-	);
+  return (
+    <Card
+      onClick={() => {
+        setCurrentLink({ id, link: clipboardContent });
+        setBreadcrumbs({ ...breadcrumbs, results: t("breadcrumbs.results") });
+      }}
+      className="flex gap-2 flex-col bg-muted hover:bg-muted/50 transition-colors h-fit p-3"
+    >
+      <div className="flex items-center">
+        <p
+          className="text-xs text-muted-foreground truncate ml-2"
+          title={clipboardContent}
+        >
+          {clipboardContent}
+        </p>
+        {clipboardContent && (
+          <ClipBoard className="rounded-[4px]" content={clipboardContent} />
+        )}
+      </div>
+      <div className="flex gap-4 justify-between items-center">
+        <p className="text-xs">
+          {classroomName} ·{" "}
+          {DateTime.fromJSDate(createdAt).toLocaleString(DateTime.DATETIME_MED)}
+        </p>
+        <Badge variant="outline">v{version}</Badge>
+      </div>
+    </Card>
+  );
 };

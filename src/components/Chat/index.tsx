@@ -1,10 +1,9 @@
 import {
   ArrowTurnDownRightIcon,
-  DocumentTextIcon,
-  PlusIcon,
   StopIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -18,12 +17,6 @@ import { ScrollToBottomButton } from "../common/ScrollToBottomButton";
 import { AutoResizeTextarea } from "../common/AutoSizeTextarea";
 import { Controller } from "react-hook-form";
 import { Separator } from "../ui/separator";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { BrainIcon } from "lucide-react";
 import { Fragment } from "react";
 import { useTranslations } from "next-intl";
@@ -49,13 +42,10 @@ export const Chat = ({ id, isNew }: ChatProps) => {
     chatContainer,
     quote,
     onRemoveQuote,
-    document,
     documentVectorSearchMutationIsPending,
     stopStreaming,
     handleKeyDown,
     triggerChatMessagesRuleIsPending,
-    aiContextItems,
-    setAiContextItems,
     status,
   } = useChatLogic({ chatId: id, isNew });
 
@@ -111,99 +101,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
         <ScrollToBottomButton scrollableElementId="chat-container" />
       </div>
       <div className="flex flex-col gap-2 p-3">
-        {!isNew && (
-          <div className="flex items-center gap-2 w-full flex-wrap">
-            <DropdownMenu>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DropdownMenuTrigger
-                    asChild
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                    className="h-8 min-w-8 w-fit inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md"
-                  >
-                    <Button
-                      variant="outline"
-                      onClick={stopStreaming}
-                      size="icon"
-                      disabled={false}
-                      aria-label={t("aria.addContext")}
-                    >
-                      <PlusIcon className="min-w-5 w-5 h-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                </TooltipTrigger>
-                <TooltipContent>{t("tooltips.addContext")}</TooltipContent>
-              </Tooltip>
-              <DropdownMenuContent
-                side="right"
-                onCloseAutoFocus={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    if (
-                      !aiContextItems.find((item) => item.type === "document")
-                    ) {
-                      setAiContextItems([
-                        ...aiContextItems,
-                        {
-                          label: t("contextItems.document"),
-                          type: "document",
-                        },
-                      ]);
-                    }
-                  }}
-                  disabled={!document}
-                  className="flex gap-2"
-                >
-                  <DocumentTextIcon className="min-w-5 w-5 h-5" />
-                  {t("contextItems.document")}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            {aiContextItems.length === 0 && (
-              <span className="text-xs text-muted-foreground">
-                {t("contextItems.addPrompt")}
-              </span>
-            )}
-            {aiContextItems.length >= 1 &&
-              aiContextItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-1 border border-border rounded-md pl-2 max-w-40"
-                >
-                  {item.type === "document" && (
-                    <DocumentTextIcon className="min-w-5 w-5 h-5" />
-                  )}
-                  <p
-                    className="text-muted-foreground text-xs truncate"
-                    title={item.label}
-                  >
-                    {item.label}
-                  </p>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      setAiContextItems(
-                        aiContextItems.filter((_, i) => i !== index),
-                      );
-                    }}
-                    aria-label={t("aria.removeContextItem", {
-                      item: item.label,
-                    })}
-                  >
-                    <XCircleIcon className="min-w-5 h-5" />
-                  </Button>
-                </div>
-              ))}
-          </div>
-        )}
         <Card className="w-full bg-background border border-border rounded-2xl flex flex-col p-3 shadow-xs shadow-border">
           {quote && (
             <Card className="flex items-start gap-2 bg-muted border">

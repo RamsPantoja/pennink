@@ -6,15 +6,21 @@ import {
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
+import { ClassroomDetails } from "../Classroom/ClassroomDetails";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "../ui/dialog";
 import {
   SidebarMenuAction,
   SidebarMenuButton,
@@ -29,6 +35,7 @@ export function ClassroomSection({ id, name }: { id: string; name: string }) {
   const t = useTranslations("ClassroomSection");
   const params = useParams();
   const [open, setOpen] = useState(false);
+  const [managerOpen, setManagerOpen] = useState(false);
   const { data: workspaces, isLoading } = api.workspace.workspaces.useQuery({
     classroomId: id,
   });
@@ -43,21 +50,20 @@ export function ClassroomSection({ id, name }: { id: string; name: string }) {
     <SidebarMenuItem>
       <Collapsible open={open} onOpenChange={setOpen}>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton isActive={params?.classroomId === id}>
+          <SidebarMenuButton>
             <p className="truncate font-semibold text-muted-foreground">
               {name}
             </p>
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </SidebarMenuButton>
         </CollapsibleTrigger>
-        <SidebarMenuAction asChild showOnHover>
-          <Link
-            href={`/classroom/${id}`}
-            aria-label={t("manage")}
-            title={t("manage")}
-          >
-            <Cog6ToothIcon />
-          </Link>
+        <SidebarMenuAction
+          showOnHover
+          aria-label={t("manage")}
+          title={t("manage")}
+          onClick={() => setManagerOpen(true)}
+        >
+          <Cog6ToothIcon />
         </SidebarMenuAction>
         <CollapsibleContent>
           {isLoading && (
@@ -75,6 +81,17 @@ export function ClassroomSection({ id, name }: { id: string; name: string }) {
           ))}
         </CollapsibleContent>
       </Collapsible>
+
+      <Dialog open={managerOpen} onOpenChange={setManagerOpen}>
+        <DialogContent className="max-h-[90vh] w-full overflow-y-auto sm:max-w-5xl">
+          <DialogTitle className="sr-only">{name}</DialogTitle>
+          <DialogDescription className="sr-only">{t("manage")}</DialogDescription>
+          <ClassroomDetails
+            classroomId={id}
+            onDeleted={() => setManagerOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </SidebarMenuItem>
   );
 }

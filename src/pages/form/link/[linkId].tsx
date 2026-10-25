@@ -10,16 +10,21 @@ import { DynamicForm } from "~/components/DynamicForm";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Button } from "~/components/common/Button";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { getServerSession, type Session } from "next-auth";
 import { authOptions } from "~/server/auth";
+import { verifyLinkToken } from "~/server/api/services/link-token";
 import { notFound } from "next/navigation";
 import {
 	IdentificationDialogForm,
 	type IdentificationValidationSchema,
 } from "~/components/common/IdentificationDialogForm";
-import { getPreferredLocale, type Locale } from "~/lib/utils";
+import {
+	LOCALE_COOKIE_NAME,
+	getRequestLocale,
+	type Locale,
+} from "~/lib/utils";
 import { useTranslations } from "next-intl";
 
 const ShareForm = ({
@@ -42,12 +47,13 @@ const ShareForm = ({
 		isPending: saveFormResponsesPending,
 	} = api.form.saveFormResponses.useMutation({
 		onSuccess: async () => {
-			toast.success(t("toast.success"), {
+			sileo.success({
+				title: t("toast.success"),
 				description: t("toast.successDescription"),
 			});
 		},
 		onError: (error) => {
-			toast.error(error.message);
+			sileo.error({ title: error.message });
 		},
 	});
 
@@ -84,15 +90,16 @@ const ShareForm = ({
 					answers: data,
 				});
 			} else {
-				toast.error(t("toast.identificationMissing"));
+				sileo.error({ title: t("toast.identificationMissing") });
 			}
 		} else {
-			toast.error(t("toast.formDataMissing"));
+			sileo.error({ title: t("toast.formDataMissing") });
 		}
 	};
 
 	const onInvalid = () => {
-		toast(t("toast.invalidFields"), {
+		sileo.show({
+			title: t("toast.invalidFields"),
 			description: t("toast.invalidFieldsDescription"),
 		});
 	};
@@ -135,6 +142,7 @@ const ShareForm = ({
 										.setLocale(locale)
 										.toLocaleString(DateTime.DATETIME_MED)}
 								</p>
+								<p className="text-xs">{formData.classroom.name}</p>
 							</div>
 						</div>
 						<DynamicForm
@@ -185,11 +193,20 @@ type ServerSideProps = {
 export const getServerSideProps = (async ({ req, res, query }) => {
 	const session = await getServerSession(req, res, authOptions);
 	const { linkId } = query;
-	const locale = getPreferredLocale(req.headers["accept-language"]);
+	const locale = getRequestLocale(
+		req.cookies[LOCALE_COOKIE_NAME],
+		req.headers["accept-language"],
+	);
 	const messages = (await import(`../../../i18n/messages/${locale}.json`))
 		.default;
 
 	if (typeof linkId !== "string") {
+		return notFound();
+	}
+
+	const { t } = query;
+
+	if (typeof t === "string" && !verifyLinkToken(t, linkId)) {
 		return notFound();
 	}
 

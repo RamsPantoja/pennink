@@ -21,7 +21,7 @@ import {
 } from "./ui/card";
 import type { Subscription } from "~/lib/enum";
 import { api } from "~/trpc/react";
-import { toast } from "sonner";
+import { sileo } from "sileo";
 import { env } from "~/env";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -144,7 +144,7 @@ function PricingCard({
 		},
 		onError: (error) => {
 			console.error("Mutation failed:", error.message);
-			toast.error(t("toast.error"));
+			sileo.error({ title: t("toast.error") });
 		},
 	});
 
