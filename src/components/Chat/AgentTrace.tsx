@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import type { MyUIMessage } from "./useChatLogic";
 import { Response } from "../ai-elements/response";
@@ -29,6 +30,7 @@ type ReasoningPart = {
 
 type AgentTraceProps = {
   parts: MessagePart[];
+  isStreaming?: boolean;
 };
 
 const HIDDEN_TOOLS = ["tool-prepareSpeechText", "tool-createArtifact"];
@@ -37,6 +39,7 @@ const LABELED_TOOLS = [
   "generateAndEditForm",
   "shareClassroomLink",
   "manageStudyPlan",
+  "createMindMap",
 ];
 
 const isReasoningPart = (
@@ -60,8 +63,12 @@ const formatJson = (value: unknown) => {
   return json.length > 1500 ? `${json.slice(0, 1500)}…` : json;
 };
 
-export const AgentTrace = ({ parts }: AgentTraceProps) => {
+export const AgentTrace = ({ parts, isStreaming = false }: AgentTraceProps) => {
   const t = useTranslations("Chat.trace");
+  // Open while streaming so steps are visible as they happen; the user's own
+  // toggle wins once they touch it. After streaming it defaults to collapsed.
+  const [userOpen, setUserOpen] = useState<boolean | null>(null);
+  const open = userOpen ?? isStreaming;
   const steps = parts.filter(
     (part) => isReasoningPart(part) || isToolPart(part),
   );
@@ -69,7 +76,11 @@ export const AgentTrace = ({ parts }: AgentTraceProps) => {
   if (steps.length === 0) return null;
 
   return (
-    <TraceCollapsible className="mb-2">
+    <TraceCollapsible
+      className="mb-2"
+      open={open}
+      onOpenChange={setUserOpen}
+    >
       <TraceCollapsibleTrigger>
         <span className="text-xs">{t("summary", { count: steps.length })}</span>
       </TraceCollapsibleTrigger>

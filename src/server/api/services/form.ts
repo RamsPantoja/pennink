@@ -26,11 +26,16 @@ import type {
 	getExamResultsSchema,
 	getFormResponsesSchema,
 	getFormsSchema,
-	saveExamResultsSchema,
+	deleteFormSchema,
+	submitExamSchema,
 	saveFormResponsesSchema,
 } from "../schemas/form";
+import {
+	calculateExamScore,
+	gradeQuestion,
+} from "~/app/agents/exam-evaluation/grade";
 import type { FormType } from "~/lib/enum";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 
 type FormServiceContructor = {
 	ctx: TRPCContext;
@@ -47,11 +52,13 @@ export type CreateFormInput = {
 export type EditFormInput = z.infer<typeof editFormSchema>;
 export type GetFormsInput = z.infer<typeof getFormsSchema>;
 export type SaveFormResponsesInput = z.infer<typeof saveFormResponsesSchema>;
-export type SaveExamResultsInput = z.infer<typeof saveExamResultsSchema>;
+export type SubmitExamInput = z.infer<typeof submitExamSchema>;
 export type GetExamResultsInput = z.infer<typeof getExamResultsSchema>;
 export type GetFormResponsesInput = z.infer<typeof getFormResponsesSchema>;
 
 export type GetDataInput = z.infer<typeof getDataSchema>;
+export type DeleteFormInput = z.infer<typeof deleteFormSchema>;
+type Transaction = Parameters<Parameters<TRPCContext["db"]["transaction"]>[0]>[0];
 export type Questions = typeof questionsSchema.$inferSelect & {
 	questionOptions: (typeof questionOptions.$inferSelect)[];
 };
@@ -486,6 +493,118 @@ export class FormService {
 		}
 	}
 
+	// No foreign key cascades exist on these tables, so dependents are removed child first.
+	public async delete(input: DeleteFormInput, userId: string) {
+		const { id, type } = input;
+
+		await this.ctx.db.transaction(async (tx) => {
+			if (type === "BASIC") {
+				await this.deleteForm(tx, id, userId);
+			} else {
+				await this.deleteExam(tx, id, userId);
+			}
+		});
+
+		return { id, type };
+	}
+
+	private async deleteForm(tx: Transaction, id: string, userId: string) {
+		const form = await tx.query.forms.findFirst({
+			columns: { id: true },
+			where: (forms, { and, eq }) =>
+				and(eq(forms.id, id), eq(forms.userId, userId)),
+		});
+
+		if (!form) {
+			throw new TRPCError({ code: "NOT_FOUND", message: "Form not found" });
+		}
+
+		const versions = await tx
+			.select({ id: formVersions.id })
+			.from(formVersions)
+			.where(eq(formVersions.formId, id));
+		const versionIds = versions.map((version) => version.id);
+
+		const usedQuestions = await tx
+			.select({ questionId: questionsToFormVersions.questionId })
+			.from(questionsToFormVersions)
+			.where(inArray(questionsToFormVersions.formVersionId, versionIds));
+		const questionIds = [...new Set(usedQuestions.map((q) => q.questionId))];
+
+		await tx.delete(formResponses).where(eq(formResponses.formId, id));
+		await tx
+			.delete(formLinks)
+			.where(inArray(formLinks.formVersionId, versionIds));
+		await tx
+			.delete(questionsToFormVersions)
+			.where(inArray(questionsToFormVersions.formVersionId, versionIds));
+		await tx.delete(formVersions).where(eq(formVersions.formId, id));
+		await this.deleteUnusedQuestions(tx, questionIds);
+		await tx.delete(forms).where(eq(forms.id, id));
+	}
+
+	private async deleteExam(tx: Transaction, id: string, userId: string) {
+		const exam = await tx.query.exams.findFirst({
+			columns: { id: true },
+			where: (exams, { and, eq }) =>
+				and(eq(exams.id, id), eq(exams.userId, userId)),
+		});
+
+		if (!exam) {
+			throw new TRPCError({ code: "NOT_FOUND", message: "Exam not found" });
+		}
+
+		const versions = await tx
+			.select({ id: examVersions.id })
+			.from(examVersions)
+			.where(eq(examVersions.examId, id));
+		const versionIds = versions.map((version) => version.id);
+
+		const usedQuestions = await tx
+			.select({ questionId: questionsToExamVersions.questionId })
+			.from(questionsToExamVersions)
+			.where(inArray(questionsToExamVersions.examVersionId, versionIds));
+		const questionIds = [...new Set(usedQuestions.map((q) => q.questionId))];
+
+		await tx.delete(examResults).where(eq(examResults.examId, id));
+		await tx
+			.delete(examLinks)
+			.where(inArray(examLinks.examVersionId, versionIds));
+		await tx
+			.delete(questionsToExamVersions)
+			.where(inArray(questionsToExamVersions.examVersionId, versionIds));
+		await tx.delete(examVersions).where(eq(examVersions.examId, id));
+		await this.deleteUnusedQuestions(tx, questionIds);
+		await tx.delete(exams).where(eq(exams.id, id));
+	}
+
+	// A question can be shared by several versions, so only remove the ones nothing else references.
+	private async deleteUnusedQuestions(tx: Transaction, questionIds: string[]) {
+		if (questionIds.length === 0) return;
+
+		const inFormVersions = await tx
+			.select({ questionId: questionsToFormVersions.questionId })
+			.from(questionsToFormVersions)
+			.where(inArray(questionsToFormVersions.questionId, questionIds));
+		const inExamVersions = await tx
+			.select({ questionId: questionsToExamVersions.questionId })
+			.from(questionsToExamVersions)
+			.where(inArray(questionsToExamVersions.questionId, questionIds));
+
+		const stillUsed = new Set([
+			...inFormVersions.map((row) => row.questionId),
+			...inExamVersions.map((row) => row.questionId),
+		]);
+		const unused = questionIds.filter((questionId) => !stillUsed.has(questionId));
+
+		if (unused.length === 0) return;
+
+		await tx
+			.delete(questionOptions)
+			.where(inArray(questionOptions.questionId, unused));
+		await tx.delete(questionsSchema).where(inArray(questionsSchema.id, unused));
+	}
+
 	private async assertLinkClassroomMember(classroomId: string, email: string) {
 		const normalizedEmail = email.trim().toLowerCase();
 
@@ -589,22 +708,20 @@ export class FormService {
 		return item;
 	}
 
-	public async saveExamResults(input: SaveExamResultsInput) {
-		const {
-			email,
-			userId,
-			answers,
-			username,
-			examId,
-			examLinkId,
-			examVersionId,
-			score,
-			feedback,
-		} = input;
+	public async submitExam(input: SubmitExamInput) {
+		const { email, userId, username, examLinkId, answers } = input;
 
 		const examLink = await this.ctx.db.query.examLinks.findFirst({
 			where: (examLinks, { eq }) => eq(examLinks.id, examLinkId),
-			columns: { classroomId: true },
+			with: {
+				examVersion: {
+					with: {
+						questionsToExamVersions: {
+							with: { question: true },
+						},
+					},
+				},
+			},
 		});
 
 		if (!examLink) {
@@ -616,37 +733,90 @@ export class FormService {
 
 		await this.assertLinkClassroomMember(examLink.classroomId, email);
 
-		const examResultsExists = await this.ctx.db.query.examResults.findFirst({
-			where: (examResults, { eq, and }) =>
-				and(
-					eq(examResults.email, email),
-					eq(examResults.examId, examId),
-					eq(examResults.examVersionId, examVersionId),
-					eq(examResults.examLinkId, examLinkId),
-				),
-		});
-
-		if (examResultsExists) {
-			throw new TRPCError({
-				code: "BAD_REQUEST",
-				message: "User has already submitted responses",
-			});
-		}
+		// Objective questions are graded here; open questions stay "pending" for the AI.
+		const questionResults =
+			examLink.examVersion.questionsToExamVersions.map(({ question }) =>
+				gradeQuestion(question, answers[question.key]),
+			);
 
 		const [examResult] = await this.ctx.db
 			.insert(examResults)
 			.values({
 				email,
 				userId,
-				answers,
 				username,
-				examId,
+				answers,
+				examId: examLink.examVersion.examId,
 				examLinkId,
-				examVersionId,
-				score,
-				feedback,
+				examVersionId: examLink.examVersionId,
+				score: calculateExamScore(questionResults),
+				feedback: "",
+				questionResults,
 			})
-			.returning();
+			.onConflictDoNothing({
+				target: [
+					examResults.examLinkId,
+					examResults.email,
+					examResults.examVersionId,
+				],
+			})
+			.returning({ id: examResults.id });
+
+		if (!examResult) {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "User has already submitted responses",
+			});
+		}
+
+		return {
+			examResultId: examResult.id,
+			hasPendingQuestions: questionResults.some(
+				(item) => item.status === "pending",
+			),
+		};
+	}
+
+	// Public review shown to the student after submitting. It omits the email.
+	public async getExamReview(examResultId: string) {
+		const examResult = await this.ctx.db.query.examResults.findFirst({
+			where: (examResults, { eq }) => eq(examResults.id, examResultId),
+			columns: {
+				id: true,
+				score: true,
+				feedback: true,
+				answers: true,
+				questionResults: true,
+			},
+			with: {
+				exam: {
+					columns: {
+						title: true,
+						instructions: true,
+					},
+				},
+				examVersion: {
+					with: {
+						questionsToExamVersions: {
+							with: {
+								question: {
+									with: {
+										questionOptions: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!examResult) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Exam result not found",
+			});
+		}
 
 		return examResult;
 	}

@@ -3,6 +3,7 @@
 import { MicrophoneIcon, StopIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import { Button } from "../common/Button";
+import { VoiceWaveform } from "./VoiceWaveform";
 
 export const VoiceInputButton = ({
   onTranscript,
@@ -11,6 +12,7 @@ export const VoiceInputButton = ({
 }) => {
   const [recording, setRecording] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
   const mediaStream = useRef<MediaStream | null>(null);
   const source = useRef<MediaStreamAudioSourceNode | null>(null);
@@ -88,6 +90,7 @@ export const VoiceInputButton = ({
   const toggle = async () => {
     if (recording) {
       setRecording(false);
+      setAnalyser(null);
       await stop();
       return;
     }
@@ -104,18 +107,22 @@ export const VoiceInputButton = ({
       await context.resume();
       const input = context.createMediaStreamSource(stream);
       const recorder = context.createScriptProcessor(4096, 1, 1);
+      const levelAnalyser = context.createAnalyser();
+      levelAnalyser.fftSize = 512;
       recorder.onaudioprocess = (event) => {
         samples.current.push(
           new Float32Array(event.inputBuffer.getChannelData(0)),
         );
       };
       input.connect(recorder);
+      input.connect(levelAnalyser);
       recorder.connect(context.destination);
       audioContext.current = context;
       mediaStream.current = stream;
       source.current = input;
       processor.current = recorder;
       samples.current = [];
+      setAnalyser(levelAnalyser);
       setRecording(true);
     } catch (error) {
       console.error("[MICROPHONE ERROR]", error);
@@ -123,18 +130,21 @@ export const VoiceInputButton = ({
   };
 
   return (
-    <Button
-      variant={recording || processing ? "teal" : "outline"}
-      size="icon"
-      type="button"
-      onClick={() => void toggle()}
-      aria-label={recording ? "Stop voice input" : "Speak to teacher copilot"}
-    >
-      {recording ? (
-        <StopIcon className="h-4 w-4" />
-      ) : (
-        <MicrophoneIcon className="h-4 w-4" />
-      )}
-    </Button>
+    <div className="flex min-w-0 flex-1 items-center gap-4">
+      <Button
+        variant={recording || processing ? "teal" : "outline"}
+        size="icon"
+        type="button"
+        onClick={() => void toggle()}
+        aria-label={recording ? "Stop voice input" : "Speak to teacher copilot"}
+      >
+        {recording ? (
+          <StopIcon className="h-4 w-4" />
+        ) : (
+          <MicrophoneIcon className="h-4 w-4" />
+        )}
+      </Button>
+      {recording && <VoiceWaveform analyser={analyser} className="flex-1" />}
+    </div>
   );
 };

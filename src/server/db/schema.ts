@@ -22,6 +22,7 @@ import {
 import type { AdapterAccount } from "next-auth/adapters";
 import { typeid } from "typeid-js";
 import type { UIMessage } from "ai";
+import type { QuestionResult } from "../../app/agents/exam-evaluation/grade";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -675,8 +676,10 @@ export const embeddingDocuments = createTable(
   },
   (table) => [
     index("embedding_document_file_id_idx").on(table.fileId),
-    index("embedding_document_embedding_idx")
-      .using("hnsw", table.embedding.op("vector_cosine_ops")),
+    index("embedding_document_embedding_idx").using(
+      "hnsw",
+      table.embedding.op("vector_cosine_ops"),
+    ),
   ],
 );
 
@@ -1077,6 +1080,7 @@ export const examResults = createTable("exam_result", {
   answers: jsonb().notNull(),
   feedback: text().notNull(),
   score: integer().notNull(),
+  questionResults: jsonb().$type<QuestionResult[]>(),
   examVersionId: uuid()
     .references(() => examVersions.id)
     .notNull(),
@@ -1093,7 +1097,13 @@ export const examResults = createTable("exam_result", {
   })
     .notNull()
     .defaultNow(),
-});
+}, (table) => [
+  unique("exam_result_submission_unique").on(
+    table.examLinkId,
+    table.email,
+    table.examVersionId,
+  ),
+]);
 
 export const examResultsRelations = relations(examResults, ({ one }) => ({
   user: one(users, {

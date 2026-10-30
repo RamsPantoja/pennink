@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { FormType } from "~/lib/enum";
 import type { RouterOutputs } from "~/utils/api";
 import type { AiForm } from "~/app/agents/chat/schema";
+import type { MindMap } from "~/app/agents/chat/mind-map";
 
 export type PenninkDocument = {
 	id: string;
@@ -29,6 +30,10 @@ type WorkspaceStore = {
 	setDisplayFormEditor: (displayFormEditor: boolean) => void;
 	aiFormData: AiForm | null;
 	setAiFormData: (data: AiForm | null) => void;
+	displayMindMap: boolean;
+	setDisplayMindMap: (displayMindMap: boolean) => void;
+	mindMapData: MindMap | null;
+	setMindMapData: (data: MindMap | null) => void;
 	currentForm: CurrentForm | null;
 	setCurrentForm: (form: CurrentForm | null) => void;
 	queryFormData: RouterOutputs["form"]["getData"] | null;
@@ -46,6 +51,10 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	agentActivity: "idle",
 	audioState: "idle",
 	displayFormEditor: false,
+	displayMindMap: false,
+	mindMapData: null,
+	setDisplayMindMap: (displayMindMap) => set(() => ({ displayMindMap })),
+	setMindMapData: (data) => set(() => ({ mindMapData: data })),
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
 	setAgentActivity: (agentActivity) => set(() => ({ agentActivity })),
@@ -63,5 +72,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 			agentActivity: "idle",
 			audioState: "idle",
 			displayFormEditor: false,
+			displayMindMap: false,
+			mindMapData: null,
 		})),
 }));

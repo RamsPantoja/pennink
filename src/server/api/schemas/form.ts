@@ -20,6 +20,11 @@ export const getFormsSchema = z.object({
 	search: z.string().optional(),
 });
 
+export const deleteFormSchema = z.object({
+	id: z.string().uuid(),
+	type: z.enum(["BASIC", "EXAM"]),
+});
+
 export const saveFormResponsesSchema = z.object({
 	formId: z.string().uuid(),
 	answers: z.any(),
@@ -30,16 +35,13 @@ export const saveFormResponsesSchema = z.object({
 	formVersionId: z.string().uuid(),
 });
 
-export const saveExamResultsSchema = z.object({
-	examId: z.string().uuid(),
-	answers: z.any(),
+// The score and feedback are computed on the server, so the client only sends answers.
+export const submitExamSchema = z.object({
+	examLinkId: z.string().uuid(),
+	answers: z.record(z.string(), z.any()),
 	email: z.string(),
 	username: z.string(),
 	userId: z.string().uuid().optional(),
-	examLinkId: z.string().uuid(),
-	examVersionId: z.string().uuid(),
-	score: z.number().min(0).max(100),
-	feedback: z.string(),
 });
 
 export const getExamResultsSchema = z.object({

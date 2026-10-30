@@ -4,45 +4,45 @@ import { useFormLoaderStore } from "./useFormLoaderStore";
 import { useTranslations } from "next-intl";
 
 type ExamResultCardProps = {
-	email: string;
-	username: string;
-	createdAt: Date;
-	score: number;
-	id: string;
+  email: string;
+  username: string;
+  createdAt: Date;
+  score: number;
+  id: string;
 };
 
 export const ExamResultCard = ({
-	email,
-	username,
-	createdAt,
-	score,
-	id,
+  email,
+  username,
+  createdAt,
+  score,
+  id,
 }: ExamResultCardProps) => {
-	const t = useTranslations();
-	const { setResultId, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
+  const t = useTranslations();
+  const { setResultId, setBreadcrumbs, breadcrumbs } = useFormLoaderStore();
 
-	return (
-		<Card
-			onClick={() => {
-				setResultId(id);
-				setBreadcrumbs({
-					...breadcrumbs,
-					overview: t("FormLoader.breadcrumbs.overview"),
-				});
-			}}
-			className="flex w-full gap-4 justify-between bg-muted hover:bg-muted/50"
-		>
-			<div className="flex flex-col gap-1">
-				<p className="text-sm">{email}</p>
-				<p className="text-sm">{username}</p>
-			</div>
-			<div className="flex flex-col gap-2">
-				<p className="text-sm">{t("ExamResultCard.score", { score })}</p>
-				<Progress value={score} />
-				<p className="text-xs text-muted-foreground">
-					{createdAt.toLocaleString()}
-				</p>
-			</div>
-		</Card>
-	);
+  return (
+    <Card
+      onClick={() => {
+        setResultId(id);
+        setBreadcrumbs({
+          ...breadcrumbs,
+          overview: t("FormLoader.breadcrumbs.overview"),
+        });
+      }}
+      className="flex w-full gap-4 justify-between bg-muted hover:bg-muted/50 p-3"
+    >
+      <div className="flex flex-col gap-1">
+        <p className="text-sm">{email}</p>
+        <p className="text-sm">{username}</p>
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="text-sm">{t("ExamResultCard.score", { score })}</p>
+        <Progress value={score} />
+        <p className="text-xs text-muted-foreground">
+          {createdAt.toLocaleString()}
+        </p>
+      </div>
+    </Card>
+  );
 };

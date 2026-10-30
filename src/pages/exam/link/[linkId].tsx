@@ -8,7 +8,7 @@ import { DateTime } from "luxon";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { DynamicForm } from "~/components/DynamicForm";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "~/components/common/Button";
 import { Badge } from "~/components/ui/badge";
 import { getServerSession, type Session } from "next-auth";
@@ -23,9 +23,6 @@ import {
 import { useTimer } from "~/hooks/use-timer";
 import { sileo } from "sileo";
 import { ExamFeedback } from "~/components/common/ExamFeedback";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport, type ToolCallPart } from "ai";
-import type { EvaluationDetailsTool } from "~/app/agents/exam-evaluation/tools";
 import { useTranslations } from "next-intl";
 import {
 	LOCALE_COOKIE_NAME,
@@ -42,8 +39,7 @@ const ShareExam = ({
 	const [identificationData, setIdentificationData] =
 		useState<IdentificationValidationSchema | null>(null);
 	const [displayResults, setDisplayResults] = useState<boolean>(false);
-	const [toolCallEvaluationDetails, setToolCallEvaluationDetails] =
-		useState<ToolCallPart | null>(null);
+	const [examResultId, setExamResultId] = useState<string | null>(null);
 	const [isExamStarted, setIsExamStarted] = useState<boolean>(false);
 
 	const {
@@ -52,39 +48,20 @@ const ShareExam = ({
 		formState: { errors, isSubmitSuccessful },
 	} = useForm();
 
-	const { messages, sendMessage, status } = useChat({
-		experimental_throttle: 100,
-		transport: new DefaultChatTransport({
-			api: "/api/ai/exam-evaluation",
-		}),
-		onToolCall: ({ toolCall }) => {
-			// Check if it's a dynamic tool first for proper type narrowing
-			if (toolCall.dynamic) {
-				return;
-			}
+	const [isGrading, setIsGrading] = useState<boolean>(false);
 
-			if (toolCall.toolName === "getEvaluationDetails") {
-				setToolCallEvaluationDetails({ ...toolCall, type: "tool-call" });
-			}
-		},
-		onError: (error) => {
-			sileo.error({ title: t("toast.errorOccurred") });
-			console.error("An error occurred:", error);
-		},
-	});
-
-	const { mutate: saveExamResultsMutation, isPending: saveExamResultsPending } =
-		api.form.saveExamResults.useMutation({
-			onSuccess: async () => {
-				sileo.success({
-					title: t("toast.submitSuccess"),
-					description: t("toast.submitSuccessDescription"),
-				});
-			},
+	const { mutateAsync: submitExam, isPending: submitExamPending } =
+		api.form.submitExam.useMutation({
 			onError: (error) => {
 				sileo.error({ title: error.message });
 			},
 		});
+
+	// Scores come from the server. The review is refetched once the AI has graded the open questions.
+	const { data: review, refetch: refetchReview } = api.form.examReview.useQuery(
+		{ examResultId: examResultId ?? "" },
+		{ enabled: examResultId !== null },
+	);
 
 	const {
 		data: examData,
@@ -103,34 +80,69 @@ const ShareExam = ({
 		});
 
 	const onSubmit = async (data: any) => {
-		if (examData) {
-			setDisplayResults(true);
-
-			const questionsWithCorrectAnswers =
-				examData.examVersion.questionsToExamVersions.map((item) => ({
-					key: item.question.key,
-					answer: item.question.answer,
-					type: item.question.type,
-					label: item.question.label,
-					description: item.question.description,
-					options: item.question.questionOptions.map((option) => ({
-						label: option.label,
-						value: option.value,
-					})),
-				}));
-
-			await sendMessage(undefined, {
-				body: {
-					context: {
-						messages: [],
-					},
-					prompt: `Evaluate the following exam and extract the score and feedback: Questions: ${JSON.stringify(
-						questionsWithCorrectAnswers,
-					)} and User Answers: ${JSON.stringify(data)}`,
-				},
-			});
-		} else {
+		if (!examData) {
 			sileo.error({ title: t("toast.formDataMissing") });
+			return;
+		}
+
+		const identity = session
+			? {
+					username: session.user.name,
+					email: session.user.email,
+					userId: session.user.id,
+				}
+			: identificationData
+				? {
+						username: identificationData.name,
+						email: identificationData.email,
+					}
+				: null;
+
+		if (!identity) {
+			sileo.error({ title: t("toast.identificationDataMissing") });
+			return;
+		}
+
+		setDisplayResults(true);
+
+		try {
+			const submission = await submitExam({
+				examLinkId: linkId,
+				answers: data,
+				...identity,
+			});
+
+			setExamResultId(submission.examResultId);
+
+			sileo.success({
+				title: t("toast.submitSuccess"),
+				description: t("toast.submitSuccessDescription"),
+			});
+
+			if (submission.hasPendingQuestions) {
+				setIsGrading(true);
+
+				try {
+					const response = await fetch("/api/ai/exam-evaluation", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ examResultId: submission.examResultId }),
+					});
+
+					if (!response.ok) {
+						throw new Error(`Grading failed with status ${response.status}`);
+					}
+				} catch (error) {
+					sileo.error({ title: t("toast.errorOccurred") });
+					console.error("An error occurred:", error);
+				} finally {
+					setIsGrading(false);
+				}
+
+				await refetchReview();
+			}
+		} catch {
+			setDisplayResults(false);
 		}
 	};
 
@@ -140,52 +152,6 @@ const ShareExam = ({
 			description: t("toast.invalidFieldsDescription"),
 		});
 	};
-
-	useEffect(() => {
-		if (toolCallEvaluationDetails && examData) {
-			const input =
-				toolCallEvaluationDetails.input as EvaluationDetailsTool["input"];
-			handleSubmit((data) => {
-				if (session) {
-					saveExamResultsMutation({
-						examId: examData.examVersion.examId,
-						examLinkId: linkId,
-						examVersionId: examData.examVersionId,
-						username: session.user.name,
-						email: session.user.email,
-						userId: session.user.id,
-						answers: data,
-						score: input.score,
-						feedback: input.feedback,
-					});
-					return;
-				}
-
-				if (identificationData) {
-					saveExamResultsMutation({
-						examId: examData.examVersion.examId,
-						examLinkId: linkId,
-						examVersionId: examData.examVersionId,
-						username: identificationData.name,
-						email: identificationData.email,
-						answers: data,
-						score: input.score,
-						feedback: input.feedback,
-					});
-				} else {
-					sileo.error({ title: t("toast.identificationDataMissing") });
-				}
-			})();
-		}
-	}, [
-		toolCallEvaluationDetails,
-		examData,
-		handleSubmit,
-		identificationData,
-		linkId,
-		saveExamResultsMutation,
-		session,
-	]);
 
 	const handleOnStartExam = () => {
 		if (
@@ -208,10 +174,10 @@ const ShareExam = ({
 					<link rel="icon" href="/favicon.svg" />
 				</Head>
 				<ExamFeedback
-					messages={messages}
 					open={displayResults}
-					status={status}
+					isGrading={isGrading}
 					setOpen={setDisplayResults}
+					review={review}
 				/>
 				{isPending && <Loading />}
 				{!isPending && !isError && examData && (
@@ -275,7 +241,7 @@ const ShareExam = ({
 							errors={errors}
 						/>
 						<div className="flex justify-end gap-4">
-							{isSubmitSuccessful && messages.length > 0 && (
+							{examResultId !== null && (
 								<Button
 									className="w-fit"
 									variant="outline"
@@ -289,7 +255,7 @@ const ShareExam = ({
 							<Button
 								className="w-fit"
 								disabled={isSubmitSuccessful}
-								isPending={saveExamResultsPending}
+								isPending={submitExamPending}
 								onClick={() => {
 									if (isRunning) {
 										onPause();

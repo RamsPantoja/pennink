@@ -80,7 +80,11 @@ const MyApp: AppType<AppTypes> = ({ Component, pageProps }) => {
       >
         <main data-theme={theme} className={GeistSans.className}>
           <TooltipProvider delayDuration={300}>
-            <Toaster position="bottom-right" />
+            {/* Sileo's theme names the text tone, not the surface: "light" gives a dark fill */}
+            <Toaster
+              position="bottom-right"
+              theme={theme === "dark" ? "light" : "dark"}
+            />
             <Component {...pageProps} />
           </TooltipProvider>
         </main>

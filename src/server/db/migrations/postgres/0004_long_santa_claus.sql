@@ -1,0 +1,2 @@
+ALTER TABLE "exam_result" ADD COLUMN "question_results" jsonb;--> statement-breakpoint
+ALTER TABLE "exam_result" ADD CONSTRAINT "exam_result_submission_unique" UNIQUE("exam_link_id","email","exam_version_id");

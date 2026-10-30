@@ -7,11 +7,11 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { Toaster } from "sileo";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import { getServerAuthSession } from "~/server/auth";
-import ClientSessionProvider from "~/components/ClientSessionProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { Inter } from "next/font/google";
 import { cn } from "~/lib/utils";
 import { GeistSans } from "geist/font/sans";
+import ClientSessionProvider from "~/components/Workspace/ClientSessionProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 

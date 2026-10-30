@@ -5,9 +5,14 @@ import { LinksManager } from "../../FormEditor/LinksManager";
 import type { CurrentForm } from "../useWorkspaceStore";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../common/Button";
-import { LinkIcon } from "@heroicons/react/24/outline";
+import { LinkIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { cn } from "~/lib/utils";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { sileo } from "sileo";
+import { api } from "~/trpc/react";
+import CustomAlertDialog from "../../common/AlertDialog";
+import { useFormLoaderStore } from "./useFormLoaderStore";
 
 type FormCardProps = {
   id: string;
@@ -29,6 +34,34 @@ export const FormCard: FC<FormCardProps> = ({
   selectedFormId,
 }) => {
   const t = useTranslations("FormCard");
+  const [displayDeleteAlert, setDisplayDeleteAlert] = useState<boolean>(false);
+  const utils = api.useUtils();
+  const {
+    currentForm,
+    setCurrentForm,
+    setCurrentLink,
+    setResultId,
+  } = useFormLoaderStore();
+
+  const { mutate: deleteForm, isPending: deleteFormIsPending } =
+    api.form.delete.useMutation({
+      onSuccess: async () => {
+        setDisplayDeleteAlert(false);
+
+        if (currentForm?.id === id) {
+          setCurrentForm(null);
+          setCurrentLink(null);
+          setResultId(null);
+        }
+
+        await utils.form.forms.invalidate();
+        sileo.success({ title: t("toast.deleteSuccess") });
+      },
+      onError: (error) => {
+        console.error(error.message);
+        sileo.error({ title: t("toast.deleteFailed") });
+      },
+    });
 
   return (
     <Card
@@ -64,6 +97,34 @@ export const FormCard: FC<FormCardProps> = ({
             {t("button.open")}
           </Button>
           <LinksManager id={id} type={type} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="ml-auto text-red-500"
+            onClick={(e) => {
+              e.stopPropagation();
+              setDisplayDeleteAlert(true);
+            }}
+          >
+            <TrashIcon className="min-w-5 w-5 h-5" />
+          </Button>
+        </div>
+        {/* Stops clicks inside the confirm dialog from reaching the card's onClick. */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <CustomAlertDialog
+            cancelText={t("deleteDialog.cancel")}
+            actionText={t("deleteDialog.confirm")}
+            title={t("deleteDialog.title")}
+            description={t("deleteDialog.description")}
+            onCancel={() => {
+              setDisplayDeleteAlert(false);
+            }}
+            onAction={() => {
+              deleteForm({ id, type });
+            }}
+            isPending={deleteFormIsPending}
+            open={displayDeleteAlert}
+          />
         </div>
       </div>
     </Card>

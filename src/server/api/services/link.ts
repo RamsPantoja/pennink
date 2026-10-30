@@ -339,6 +339,8 @@ export class LinkService {
 						questionsToExamVersions: {
 							with: {
 								question: {
+									// The answer key stays on the server until the exam is graded.
+									columns: { answer: false },
 									with: {
 										questionOptions: true,
 									},

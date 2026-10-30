@@ -138,6 +138,7 @@
 				"generateAndEditForm": "Generating form",
 				"shareClassroomLink": "Sharing classroom link",
 				"manageStudyPlan": "Managing study plan",
+				"createMindMap": "Creating mind map",
 				"unknown": "Running tool"
 			}
 		},
@@ -264,6 +265,16 @@
 	"FormCard": {
 		"button": {
 			"open": "Open"
+		},
+		"deleteDialog": {
+			"title": "Delete this form or exam?",
+			"description": "This will permanently delete the form or exam, its links, all responses and exam results. This action cannot be undone.",
+			"cancel": "Cancel",
+			"confirm": "Delete"
+		},
+		"toast": {
+			"deleteSuccess": "Deleted successfully",
+			"deleteFailed": "Failed to delete"
 		}
 	},
 
@@ -313,7 +324,11 @@
 		"true": "True",
 		"false": "False",
 		"showFeedback": "Show Feedback",
-		"hideFeedback": "Hide Feedback"
+		"hideFeedback": "Hide Feedback",
+		"partial": "Partially correct",
+		"pending": "Being graded",
+		"questionScore": "{score}/100",
+		"noReferenceAnswer": "No reference answer"
 	},
 
 	"PomodoroTimer": {
@@ -737,6 +752,9 @@
 		},
 		"loading": {
 			"message": "Your exam is being evaluated..."
+		},
+		"score": {
+			"title": "Your score"
 		}
 	},
 
@@ -919,6 +937,12 @@
 		"download": "Download"
 	},
 
+	"MindMap": {
+		"canvasLabel": "Mind map canvas",
+		"open": "Open mind map",
+		"nodes": "{count} ideas"
+	},
+
 	"SharedContent": {
 		"poweredBy": "Powered by Pennink"
 	},
@@ -926,6 +950,7 @@
 	"UploadObjectToStorage": {
 		"error": "Failed to upload file"
 	},
+
 	"StudyPlan": {
 		"title": "Study plans",
 		"description": "Dated plans with checkboxes, attached to this classroom.",
@@ -980,6 +1005,7 @@
 			"noClassroom": "Choose a classroom you teach to tick items for it."
 		}
 	},
+
 	"Emails": {
 		"layout": {
 			"contact": "If you have any questions or comments, please do not hesitate to contact us.",

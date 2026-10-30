@@ -41,35 +41,7 @@ const ExamResultOverview = ({ examResultId }: { examResultId: string }) => {
 				<FeedbackMessage status="ERROR" message={resultError.message} />
 			)}
 			{!resultIsPending && !resultError && result && (
-				<ExamReview
-					data={{
-						id: result.id,
-						username: result.username,
-						email: result.email,
-						answers: result.answers as JSON,
-						feedback: result.feedback,
-						score: result.score,
-						exam: {
-							title: result.exam.title,
-							instructions: result.exam.instructions,
-						},
-						questions: result.examVersion.questionsToExamVersions.map(
-							(questionToExamVersion) => ({
-								key: questionToExamVersion.question.key,
-								type: questionToExamVersion.question.type,
-								label: questionToExamVersion.question.label,
-								answer: questionToExamVersion.question.answer,
-								questionOptions:
-									questionToExamVersion.question.questionOptions.map(
-										(option) => ({
-											label: option.label,
-											value: option.value,
-										}),
-									),
-							}),
-						),
-					}}
-				/>
+				<ExamReview data={result} />
 			)}
 		</div>
 	);

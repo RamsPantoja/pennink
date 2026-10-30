@@ -12,12 +12,12 @@ import type { FormType } from "~/lib/enum";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { Label } from "../../ui/label";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "../../ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../../ui/dialog";
 import { Card } from "../../ui/card";
 import { FormCard } from "./FormCard";
 import { Manager } from "./Manager";
@@ -58,15 +58,15 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full flex flex-col min-w-7xl">
-        <SheetHeader>
-          <SheetTitle className="text-sm font-semibold">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-(--breakpoint-xl) w-[calc(100%-2rem)] h-[85vh] flex flex-col overflow-hidden">
+        <DialogHeader>
+          <DialogTitle className="text-sm font-semibold">
             {t("sheetTitle")}
-          </SheetTitle>
-          <SheetDescription>{t("sheetDescription")}</SheetDescription>
-        </SheetHeader>
-        <div className="h-full w-full grow flex gap-4 overflow-hidden">
+          </DialogTitle>
+          <DialogDescription>{t("sheetDescription")}</DialogDescription>
+        </DialogHeader>
+        <div className="h-full w-full grow min-h-0 flex gap-4 overflow-hidden">
           <Card className="flex flex-col gap-4 h-full min-w-96 max-w-96 p-0">
             <div className="flex items-center gap-4 p-4">
               <div className="flex items-center relative gap-2">
@@ -180,7 +180,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
           )}
           {currentForm && <Manager />}
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 };

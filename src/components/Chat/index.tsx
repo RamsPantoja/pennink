@@ -136,7 +136,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
             )}
           />
           <div className="flex w-full gap-4 justify-between items-end">
-            <div className="flex items-center gap-4">
+            <div className="flex min-w-0 flex-1 items-center gap-4">
               <VoiceInputButton
                 onTranscript={(transcript) =>
                   onSentPrompt({ prompt: transcript })

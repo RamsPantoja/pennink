@@ -10,22 +10,14 @@ const withNextIntl = createNextIntlPlugin();
 const config = {
 	reactStrictMode: true,
 	/**
-	 * If you are using `appDir` then you must comment the below `i18n` config out.
-	 *
-	 * @see https://github.com/vercel/next.js/issues/41980
+	 * Turbopack is the default bundler in Next 16. `canvas` and `fs` are swapped for an empty
+	 * module, and `fs` only on the client (don't polyfill it there).
 	 */
-	webpack: (config, { isServer }) => {
-		config.resolve.alias.canvas = false;
-
-		// If client-side, don't polyfill `fs`
-		if (!isServer) {
-			config.resolve.fallback = {
-				...config.resolve.fallback,
-				fs: false,
-			};
-		}
-
-		return config;
+	turbopack: {
+		resolveAlias: {
+			canvas: "./src/lib/empty-module.js",
+			fs: { browser: "./src/lib/empty-module.js" },
+		},
 	},
 };
 

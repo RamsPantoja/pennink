@@ -19,6 +19,7 @@ import { Button } from "../common/Button";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 import { FormEditor } from "../FormEditor";
+import { MindMap } from "../MindMap";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import type { ImperativePanelHandle } from "react-resizable-panels";
 import { useParams } from "next/navigation";
@@ -37,6 +38,9 @@ export const Workspace = () => {
     setAiFormData,
     setCurrentForm,
     setQueryFormData,
+    displayMindMap,
+    setDisplayMindMap,
+    setMindMapData,
   } = useWorkspaceStore();
   const [sidePanelCollapsed, setSidePanelCollapsed] = useState(false);
   const [contentPanelCollapsed, setContentPanelCollapsed] = useState(false);
@@ -59,6 +63,8 @@ export const Workspace = () => {
     setAiFormData(null);
     setCurrentForm(null);
     setQueryFormData(null);
+    setDisplayMindMap(false);
+    setMindMapData(null);
   };
 
   return (
@@ -89,7 +95,7 @@ export const Workspace = () => {
             className={cn([
               "hidden relative",
               {
-                flex: displayFormEditor,
+                flex: displayFormEditor || displayMindMap,
               },
             ])}
           >
@@ -127,12 +133,13 @@ export const Workspace = () => {
               </Tooltip>
             </div>
             {displayFormEditor && <FormEditor />}
+            {displayMindMap && <MindMap />}
           </ResizablePanel>
           <ResizableHandle
             className={cn([
               "hidden",
               {
-                flex: displayFormEditor,
+                flex: displayFormEditor || displayMindMap,
               },
             ])}
             withHandle

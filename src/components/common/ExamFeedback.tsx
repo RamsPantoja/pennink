@@ -1,4 +1,3 @@
-import type { ChatStatus, UIDataTypes, UIMessage, UITools } from "ai";
 import { useTranslations } from "next-intl";
 import {
 	Dialog,
@@ -8,27 +7,27 @@ import {
 	DialogTitle,
 } from "../ui/dialog";
 import { Response } from "../ai-elements/response";
-import { Fragment } from "react";
-import {
-	Reasoning,
-	ReasoningContent,
-	ReasoningTrigger,
-} from "../ai-elements/reasoning";
 import { Card } from "../ui/card";
+import { Progress } from "../ui/progress";
 import { Skeleton } from "../ui/skeleton";
+import {
+	type ExamReviewData,
+	ExamQuestionReview,
+	toReviewQuestions,
+} from "./ExamQuestionReview";
 
 type ExamFeedbackProps = {
 	open: boolean;
-	messages: UIMessage<unknown, UIDataTypes, UITools>[];
-	status: ChatStatus;
+	isGrading: boolean;
 	setOpen: (open: boolean) => void;
+	review?: ExamReviewData | null;
 };
 
 export const ExamFeedback = ({
 	open,
-	messages,
-	status,
+	isGrading,
 	setOpen,
+	review,
 }: ExamFeedbackProps) => {
 	const t = useTranslations("ExamFeedback");
 
@@ -36,17 +35,17 @@ export const ExamFeedback = ({
 		<Dialog
 			open={open}
 			onOpenChange={(value) => {
-				if (status === "ready") {
+				if (!isGrading) {
 					setOpen(value);
 				}
 			}}
 		>
-			<DialogContent className="sm:max-w-3xl">
+			<DialogContent className="sm:max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
 				<DialogHeader>
 					<DialogTitle>{t("dialog.title")}</DialogTitle>
 					<DialogDescription>{t("dialog.description")}</DialogDescription>
 				</DialogHeader>
-				{status === "submitted" && (
+				{isGrading && (
 					<Card className="flex flex-col gap-2">
 						<Skeleton className="w-full h-10" />
 						<Skeleton className="w-full max-w-3xs h-6" />
@@ -59,40 +58,15 @@ export const ExamFeedback = ({
 						<Skeleton className="w-full max-w-3xs h-6" />
 					</Card>
 				)}
-				{status !== "submitted" && (
-					<div className="flex flex-col gap-4 text-foreground max-h-[720px] overflow-auto">
-						{messages.map((message, index) => {
-							return (
-								<div key={message.id}>
-									{message.parts.length > 0 && (
-										<Fragment>
-											{message.parts.map((part, i) => {
-												switch (part.type) {
-													case "text":
-														return (
-															<Response
-																key={`${message.id}-${i}`}
-																content={part.text}
-															/>
-														);
-													case "reasoning":
-														return (
-															<Reasoning
-																key={`${message.id}-${i}`}
-																className="w-full"
-																isStreaming={status === "streaming"}
-															>
-																<ReasoningTrigger />
-																<ReasoningContent content={part.text} />
-															</Reasoning>
-														);
-												}
-											})}
-										</Fragment>
-									)}
-								</div>
-							);
-						})}
+				{!isGrading && review && (
+					<div className="flex flex-col gap-4 min-h-0 flex-1 overflow-auto text-foreground">
+						<Card className="flex flex-col gap-2">
+							<p className="text-sm">{t("score.title")}</p>
+							<p className="text-xl font-bold">{review.score}/100</p>
+							<Progress value={review.score} />
+						</Card>
+						<ExamQuestionReview questions={toReviewQuestions(review)} />
+						{review.feedback && <Response content={review.feedback} />}
 					</div>
 				)}
 			</DialogContent>

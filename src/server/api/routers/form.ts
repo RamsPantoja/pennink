@@ -7,7 +7,8 @@ import {
 	getFormResponseSchema,
 	getFormResponsesSchema,
 	getFormsSchema,
-	saveExamResultsSchema,
+	deleteFormSchema,
+	submitExamSchema,
 	saveFormResponsesSchema,
 } from "../schemas/form";
 import {
@@ -42,15 +43,29 @@ export const formRouter = createTRPCRouter({
 				.services({ ctx })
 				.formService.getForms(input, ctx.session.user.id);
 		}),
+	delete: protectedProcedure
+		.input(deleteFormSchema)
+		.mutation(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.formService.delete(input, ctx.session.user.id);
+		}),
 	saveFormResponses: publicProcedure
 		.input(saveFormResponsesSchema)
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.services({ ctx }).formService.saveFormResponses(input);
 		}),
-	saveExamResults: publicProcedure
-		.input(saveExamResultsSchema)
+	submitExam: publicProcedure
+		.input(submitExamSchema)
 		.mutation(async ({ ctx, input }) => {
-			return await ctx.services({ ctx }).formService.saveExamResults(input);
+			return await ctx.services({ ctx }).formService.submitExam(input);
+		}),
+	examReview: publicProcedure
+		.input(getExamResultSchema)
+		.query(async ({ ctx, input }) => {
+			return await ctx
+				.services({ ctx })
+				.formService.getExamReview(input.examResultId);
 		}),
 	examResults: protectedProcedure
 		.input(getExamResultsSchema)

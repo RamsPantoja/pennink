@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import { DateTime } from "luxon";
 import { Response } from "../ai-elements/response";
 import { ArtifactCard, type ChatArtifact } from "./ArtifactCard";
+import { MindMapCard } from "./MindMapCard";
+import type { MindMap } from "~/app/agents/chat/mind-map";
 import { VoiceOutputButton } from "./VoiceOutputButton";
 import { AgentTrace } from "./AgentTrace";
 import { extractSpeechText } from "~/lib/speechText";
@@ -16,7 +18,7 @@ type MessageCardProps = {
   isStreaming?: boolean;
 };
 
-export const MessageCard = ({ message }: MessageCardProps) => {
+export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
   const { data } = useSession();
   const speechText = extractSpeechText(message.parts) ?? message.content;
 
@@ -40,7 +42,7 @@ export const MessageCard = ({ message }: MessageCardProps) => {
         ])}
       >
         {message.role === "assistant" && (
-          <AgentTrace parts={message.parts} />
+          <AgentTrace parts={message.parts} isStreaming={isStreaming} />
         )}
 
         {message.parts.length > 0 ? (
@@ -56,8 +58,19 @@ export const MessageCard = ({ message }: MessageCardProps) => {
                 default: {
                   const toolPart = part as unknown as {
                     type?: string;
-                    output?: { artifact?: ChatArtifact };
+                    output?: { artifact?: ChatArtifact; mindMap?: MindMap };
                   };
+                  if (
+                    toolPart.type === "tool-createMindMap" &&
+                    toolPart.output?.mindMap
+                  ) {
+                    return (
+                      <MindMapCard
+                        key={`${message.id}-${i}`}
+                        mindMap={toolPart.output.mindMap}
+                      />
+                    );
+                  }
                   if (
                     toolPart.type === "tool-createArtifact" &&
                     toolPart.output?.artifact

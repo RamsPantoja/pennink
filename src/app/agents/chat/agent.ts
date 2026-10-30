@@ -1,5 +1,5 @@
 import { createAmazonBedrock } from "@ai-sdk/amazon-bedrock";
-import { stepCountIs, ToolLoopAgent, type ToolSet } from "ai";
+import { ToolLoopAgent, type ToolSet } from "ai";
 import { chatSystemPrompt } from "./prompt";
 
 const bedrock = createAmazonBedrock({

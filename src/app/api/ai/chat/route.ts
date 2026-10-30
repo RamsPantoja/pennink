@@ -13,6 +13,7 @@ import {
 } from "~/app/agents/chat/shared-link";
 import { createChatTools, prepareSpeechText } from "~/app/agents/chat/tools";
 import { createStudyPlanTool } from "~/app/agents/chat/study-plan";
+import { createMindMapTool } from "~/app/agents/chat/mind-map";
 import { cookies } from "next/headers";
 import { LOCALE_COOKIE_NAME, getRequestLocale } from "~/lib/utils";
 
@@ -70,6 +71,7 @@ export async function POST(req: Request) {
       chatId: metadata.chatId,
     });
     tools.generateAndEditForm = createChatTools({}).generateAndEditForm;
+    tools.createMindMap = createMindMapTool;
     tools.shareClassroomLink = createSharedLinkTool({
       userId: session.user.id,
       locale: getRequestLocale(

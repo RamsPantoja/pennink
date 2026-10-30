@@ -138,6 +138,7 @@
 				"generateAndEditForm": "Generando formulario",
 				"shareClassroomLink": "Compartiendo enlace de la clase",
 				"manageStudyPlan": "Gestionando plan de estudio",
+				"createMindMap": "Creando mapa mental",
 				"unknown": "Ejecutando herramienta"
 			}
 		},
@@ -264,6 +265,16 @@
 	"FormCard": {
 		"button": {
 			"open": "Abrir"
+		},
+		"deleteDialog": {
+			"title": "¿Eliminar este formulario o examen?",
+			"description": "Esto eliminará de forma permanente el formulario o examen, sus enlaces, todas las respuestas y resultados. Esta acción no se puede deshacer.",
+			"cancel": "Cancelar",
+			"confirm": "Eliminar"
+		},
+		"toast": {
+			"deleteSuccess": "Eliminado correctamente",
+			"deleteFailed": "No se pudo eliminar"
 		}
 	},
 
@@ -313,7 +324,11 @@
 		"true": "Verdadero",
 		"false": "Falso",
 		"showFeedback": "Mostrar retroalimentación",
-		"hideFeedback": "Ocultar retroalimentación"
+		"hideFeedback": "Ocultar retroalimentación",
+		"partial": "Parcialmente correcto",
+		"pending": "En evaluación",
+		"questionScore": "{score}/100",
+		"noReferenceAnswer": "Sin respuesta de referencia"
 	},
 
 	"PomodoroTimer": {
@@ -737,6 +752,9 @@
 		},
 		"loading": {
 			"message": "Tu examen está siendo evaluado..."
+		},
+		"score": {
+			"title": "Tu puntuación"
 		}
 	},
 
@@ -919,6 +937,12 @@
 		"download": "Descargar"
 	},
 
+	"MindMap": {
+		"canvasLabel": "Lienzo del mapa mental",
+		"open": "Abrir mapa mental",
+		"nodes": "{count} ideas"
+	},
+
 	"SharedContent": {
 		"poweredBy": "Desarrollado con Pennink"
 	},
@@ -926,6 +950,7 @@
 	"UploadObjectToStorage": {
 		"error": "Error al subir el archivo"
 	},
+
 	"StudyPlan": {
 		"title": "Planes de estudio",
 		"description": "Planes con fechas y casillas, asociados a esta clase.",
@@ -980,6 +1005,7 @@
 			"noClassroom": "Elige una clase que impartas para marcar los elementos."
 		}
 	},
+
 	"Emails": {
 		"layout": {
 			"contact": "Si tienes preguntas o comentarios, no dudes en contactarnos.",

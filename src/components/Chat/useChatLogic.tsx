@@ -16,6 +16,7 @@ import {
 } from "ai";
 import { useChat } from "@ai-sdk/react";
 import type { AiForm } from "~/app/agents/chat/schema";
+import type { MindMap } from "~/app/agents/chat/mind-map";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -100,6 +101,8 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const {
 		setDisplayFormEditor,
 		setAiFormData,
+		setDisplayMindMap,
+		setMindMapData,
 		currentForm,
 		queryFormData,
 	} = useWorkspaceStore();
@@ -128,7 +131,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		onToolCall: (data) => {
 			if (data.toolCall.toolName === "generateAndEditForm") {
 				setDisplayFormEditor(true);
+				setDisplayMindMap(false);
 				setAiFormData(data.toolCall.input as AiForm);
+			}
+			if (data.toolCall.toolName === "createMindMap") {
+				setDisplayFormEditor(false);
+				setMindMapData(data.toolCall.input as MindMap);
+				setDisplayMindMap(true);
 			}
 		},
 		onFinish: (data) => {
