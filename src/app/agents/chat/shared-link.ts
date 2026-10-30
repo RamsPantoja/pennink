@@ -22,11 +22,11 @@ export type ActiveForm = {
 };
 
 const sharedLinkInputSchema = z.object({
-	emails: z
-		.array(z.string().email())
+	recipients: z
+		.union([z.literal("all"), z.array(z.string().email())])
 		.optional()
 		.describe(
-			"Optional subset of the active classroom's student emails. Omit to send to every student in the classroom.",
+			'Who receives the link: "all" for every student in the active classroom, or an array of specific student emails from that classroom. Defaults to "all".',
 		),
 	mode: z
 		.enum(["reuse_latest", "create_new"])
@@ -147,9 +147,9 @@ export const createSharedLinkTool = ({
 }) =>
 	tool({
 		description:
-			"Create a shared link for the form or exam the teacher has open and email it to students in the active classroom. It always shares the open form or exam, so never ask for an id. If no form or exam is open, it sends nothing: ask the teacher to open the one they want to send. Each student gets their own link with a signed token that validates it was opened by them. If a shared link already exists for this form or exam in the classroom, this tool does NOT send anything. It returns status needs_confirmation: ask the teacher whether to re-send the latest link or create a new one, then call again with mode reuse_latest or create_new. Do not set mode before asking.",
+			"Create a shared link for the form or exam the teacher has open and email it to students in the active classroom. Set recipients to 'all' (default) to email every student, or to a list of emails to email only those students. It always shares the open form or exam, so never ask for an id. If no form or exam is open, it sends nothing: ask the teacher to open the one they want to send. Each student gets their own link with a signed token that validates it was opened by them. If a shared link already exists for this form or exam in the classroom, this tool does NOT send anything. It returns status needs_confirmation: ask the teacher whether to re-send the latest link or create a new one, then call again with mode reuse_latest or create_new. Do not set mode before asking.",
 		inputSchema: sharedLinkInputSchema,
-		execute: async ({ emails, mode }) => {
+		execute: async ({ recipients = "all", mode }) => {
 			if (!activeForm) {
 				return {
 					status: "no_active_form",
@@ -217,15 +217,18 @@ export const createSharedLinkTool = ({
 			const classroomEmails = new Set(
 				classroomStudentsList.map((student) => student.email.toLowerCase()),
 			);
-			const requested = emails?.map((email) => email.toLowerCase());
-			const recipients = requested
+			const requested =
+				recipients === "all"
+					? null
+					: [...new Set(recipients.map((email) => email.toLowerCase()))];
+			const targetEmails = requested
 				? requested.filter((email) => classroomEmails.has(email))
 				: [...classroomEmails];
 			const unknownEmails = requested?.filter(
 				(email) => !classroomEmails.has(email),
 			);
 
-			if (recipients.length === 0) {
+			if (targetEmails.length === 0) {
 				return {
 					status: "error",
 					message: "No students in the active classroom match the request",
@@ -242,7 +245,7 @@ export const createSharedLinkTool = ({
 			const emailService = new EmailService({});
 
 			const results = await Promise.allSettled(
-				recipients.map(async (email) => {
+				targetEmails.map(async (email) => {
 					const token = createLinkToken({ linkId: link.id, email });
 					const url = `${env.NEXTAUTH_URL}/${kind}/link/${link.id}?t=${token}`;
 
@@ -255,6 +258,7 @@ export const createSharedLinkTool = ({
 							classroomName,
 							kind,
 							linkTo: url,
+							recipientEmail: email,
 						}),
 					});
 				}),
@@ -268,6 +272,7 @@ export const createSharedLinkTool = ({
 				linkId: link.id,
 				sent: sent.length,
 				failed: results.length - sent.length,
+				recipients: targetEmails.length,
 				unknownEmails: unknownEmails?.length ? unknownEmails : undefined,
 			};
 		},

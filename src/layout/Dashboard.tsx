@@ -29,10 +29,7 @@ import {
 } from "~/components/ui/tooltip";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { fileSizeRule } from "~/lib/utils";
-import {
-  SOURCE_ACCEPT,
-  getSourceDocumentType,
-} from "~/lib/documentTypes";
+import { SOURCE_ACCEPT, getSourceDocumentType } from "~/lib/documentTypes";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import PomodoroTimer from "~/components/Pomodoro";
 import { FormLoader } from "~/components/Workspace/FormLoader";
@@ -137,7 +134,9 @@ const Dashboard = ({ children, session }: DashboardProps) => {
       }
 
       if (docs.length > 50) {
-        sileo.show({ title: t("toast.error.tooManyPages", { count: docs.length }) });
+        sileo.show({
+          title: t("toast.error.tooManyPages", { count: docs.length }),
+        });
         return;
       }
     }
@@ -222,62 +221,54 @@ const Dashboard = ({ children, session }: DashboardProps) => {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                {pathname !== "/" && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
-                          setOpenFormLoader(true);
-                        }}
-                      >
-                        <ListBulletIcon className="min-w-5 w-5 h-5" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>{t("tooltips.searchForms")}</TooltipContent>
-                  </Tooltip>
-                )}
-                {pathname !== "/" && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setOpenDocumentLoader(true);
-                        }}
-                      >
-                        <CircleStackIcon className="min-w-5 w-5 h-5" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {t("tooltips.searchSources")}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
-                {pathname !== "/" && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        onClick={() => fileInputRef.current?.click()}
-                        variant="ghost"
-                        size="icon"
-                        isPending={
-                          uploadingFile ||
-                          createFileIsPending ||
-                          triggerUploadFilesRuleIsPending ||
-                          isReadingPDF
-                        }
-                      >
-                        <ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>{t("dropdown.importPDF")}</TooltipContent>
-                  </Tooltip>
-                )}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setOpenFormLoader(true);
+                      }}
+                    >
+                      <ListBulletIcon className="min-w-5 w-5 h-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("tooltips.searchForms")}</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setOpenDocumentLoader(true);
+                      }}
+                    >
+                      <CircleStackIcon className="min-w-5 w-5 h-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("tooltips.searchSources")}</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={() => fileInputRef.current?.click()}
+                      variant="ghost"
+                      size="icon"
+                      isPending={
+                        uploadingFile ||
+                        createFileIsPending ||
+                        triggerUploadFilesRuleIsPending ||
+                        isReadingPDF
+                      }
+                    >
+                      <ArrowDownTrayIcon className="min-w-5 w-5 h-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>{t("dropdown.importPDF")}</TooltipContent>
+                </Tooltip>
                 {pathname !== "/" && (
                   <Tooltip>
                     <TooltipTrigger asChild>

@@ -242,6 +242,7 @@ class PaymentService {
 			html: await renderPaymentFailedEmail({
 				locale,
 				settingsUrl: `${env.NEXTAUTH_URL}/settings`,
+				recipientEmail: customer.user.email,
 			}),
 		});
 	}

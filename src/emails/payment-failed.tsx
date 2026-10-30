@@ -1,12 +1,19 @@
-import { Button, Heading, Text } from "@react-email/components";
+import { Button, Heading, Link, Section, Text } from "@react-email/components";
 import { render } from "@react-email/render";
 import type { Locale } from "~/lib/utils";
 import { getEmailTranslator } from "./i18n";
-import { EmailLayout, colors } from "./layout";
+import {
+	EmailLayout,
+	buttonClassName,
+	headingClassName,
+	linkClassName,
+	paragraphClassName,
+} from "./layout";
 
 type PaymentFailedEmailProps = {
 	locale: Locale;
 	settingsUrl: string;
+	recipientEmail: string;
 };
 
 export const getPaymentFailedSubject = (locale: Locale) =>
@@ -15,34 +22,36 @@ export const getPaymentFailedSubject = (locale: Locale) =>
 export const PaymentFailedEmail = ({
 	locale,
 	settingsUrl,
+	recipientEmail,
 }: PaymentFailedEmailProps) => {
 	const t = getEmailTranslator(locale);
+	const title = t("paymentFailed.title");
 
 	return (
-		<EmailLayout locale={locale} title={t("paymentFailed.title")}>
-			<Heading style={{ color: colors.text, fontSize: "24px" }}>
-				{t("paymentFailed.title")}
-			</Heading>
-			<Text style={{ color: colors.text, fontSize: "14px" }}>
+		<EmailLayout
+			locale={locale}
+			title={title}
+			preview={t("paymentFailed.subject")}
+			recipientEmail={recipientEmail}
+		>
+			<Heading className={headingClassName}>{title}</Heading>
+			<Text className={paragraphClassName}>
 				{t("paymentFailed.description")}
 			</Text>
-			<Text style={{ color: colors.text, fontSize: "14px" }}>
+			<Text className={paragraphClassName}>
 				{t("paymentFailed.recommendation")}
 			</Text>
-			<Button
-				href={settingsUrl}
-				style={{
-					display: "inline-block",
-					color: colors.black,
-					backgroundColor: colors.accent,
-					padding: "14px",
-					borderRadius: "5px",
-					fontWeight: 600,
-					margin: "20px 0",
-				}}
-			>
-				{t("paymentFailed.cta")}
-			</Button>
+			<Section className="mt-[32px] mb-[32px] text-center">
+				<Button href={settingsUrl} className={buttonClassName}>
+					{t("paymentFailed.cta")}
+				</Button>
+			</Section>
+			<Text className={paragraphClassName}>
+				{t("layout.copyPaste")}{" "}
+				<Link href={settingsUrl} className={linkClassName}>
+					{settingsUrl}
+				</Link>
+			</Text>
 		</EmailLayout>
 	);
 };
@@ -50,6 +59,7 @@ export const PaymentFailedEmail = ({
 PaymentFailedEmail.PreviewProps = {
 	locale: "es",
 	settingsUrl: "https://pennink.xyz/settings",
+	recipientEmail: "alumno@example.com",
 } satisfies PaymentFailedEmailProps;
 
 export const renderPaymentFailedEmail = (props: PaymentFailedEmailProps) =>

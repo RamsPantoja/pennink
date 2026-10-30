@@ -1,8 +1,14 @@
-import { Button, Heading, Text } from "@react-email/components";
+import { Button, Heading, Link, Section, Text } from "@react-email/components";
 import { render } from "@react-email/render";
 import type { Locale } from "~/lib/utils";
 import { getEmailTranslator } from "./i18n";
-import { EmailLayout, colors } from "./layout";
+import {
+	EmailLayout,
+	buttonClassName,
+	headingClassName,
+	linkClassName,
+	paragraphClassName,
+} from "./layout";
 
 export type SharedLinkKind = "form" | "exam";
 
@@ -11,13 +17,14 @@ type SharedLinkEmailProps = {
 	classroomName: string;
 	kind: SharedLinkKind;
 	linkTo: string;
+	recipientEmail: string;
 };
 
 export const getSharedLinkSubject = ({
 	locale,
 	classroomName,
 	kind,
-}: Omit<SharedLinkEmailProps, "linkTo">) => {
+}: Omit<SharedLinkEmailProps, "linkTo" | "recipientEmail">) => {
 	const t = getEmailTranslator(locale);
 
 	return t("sharedLink.subject", {
@@ -31,41 +38,38 @@ export const SharedLinkEmail = ({
 	classroomName,
 	kind,
 	linkTo,
+	recipientEmail,
 }: SharedLinkEmailProps) => {
 	const t = getEmailTranslator(locale);
 	const kindLabel = t(`kinds.${kind}`);
+	const title = t("sharedLink.title", { kind: kindLabel });
 
 	return (
 		<EmailLayout
 			locale={locale}
-			title={t("sharedLink.title", { kind: kindLabel })}
+			title={title}
+			preview={t("sharedLink.subject", { classroomName, kind: kindLabel })}
+			recipientEmail={recipientEmail}
 		>
-			<Heading style={{ color: colors.text, fontSize: "24px" }}>
-				{t("sharedLink.title", { kind: kindLabel })}
-			</Heading>
-			<Text style={{ color: colors.text, fontSize: "14px" }}>
+			<Heading className={headingClassName}>{title}</Heading>
+			<Text className={paragraphClassName}>
 				{t.rich("sharedLink.description", {
 					kind: kindLabel,
 					classroomName,
 					strong: (chunks) => <strong>{chunks}</strong>,
 				})}
 			</Text>
-			<Button
-				href={linkTo}
-				style={{
-					display: "inline-block",
-					color: colors.black,
-					backgroundColor: colors.accent,
-					padding: "14px",
-					borderRadius: "5px",
-					fontWeight: 600,
-					margin: "20px 0",
-				}}
-			>
-				{t("sharedLink.cta", { kind: kindLabel })}
-			</Button>
-			<Text style={{ color: colors.text, fontSize: "14px" }}>
-				{t("sharedLink.expiry")}
+			<Section className="mt-[32px] mb-[32px] text-center">
+				<Button href={linkTo} className={buttonClassName}>
+					{t("sharedLink.cta", { kind: kindLabel })}
+				</Button>
+			</Section>
+			<Text className={paragraphClassName}>{t("sharedLink.expiry")}</Text>
+			<Text className={paragraphClassName}>
+				{t("layout.copyPaste")}{" "}
+				<Link href={linkTo} className={linkClassName}>
+					{linkTo}
+				</Link>
 			</Text>
 		</EmailLayout>
 	);
@@ -76,6 +80,7 @@ SharedLinkEmail.PreviewProps = {
 	classroomName: "Biología 3B",
 	kind: "exam",
 	linkTo: "https://pennink.xyz/exam/link/preview?t=token",
+	recipientEmail: "alumno@example.com",
 } satisfies SharedLinkEmailProps;
 
 export const renderSharedLinkEmail = (props: SharedLinkEmailProps) =>

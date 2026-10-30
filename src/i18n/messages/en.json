@@ -138,6 +138,7 @@
 				"generateAndEditForm": "Generating form",
 				"shareClassroomLink": "Sharing classroom link",
 				"manageStudyPlan": "Managing study plan",
+				"listClassroomStudents": "Listing classroom students",
 				"createMindMap": "Creating mind map",
 				"unknown": "Running tool"
 			}
@@ -1008,6 +1009,8 @@
 
 	"Emails": {
 		"layout": {
+			"intendedFor": "This email was intended for",
+			"copyPaste": "or copy and paste this URL into your browser:",
 			"contact": "If you have any questions or comments, please do not hesitate to contact us.",
 			"thanks": "Thank you!"
 		},
