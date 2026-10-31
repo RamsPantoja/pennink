@@ -66,10 +66,10 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
           </DialogTitle>
           <DialogDescription>{t("sheetDescription")}</DialogDescription>
         </DialogHeader>
-        <div className="h-full w-full grow min-h-0 flex gap-4 overflow-hidden">
-          <Card className="flex flex-col gap-4 h-full min-w-96 max-w-96 p-0">
-            <div className="flex items-center gap-4 p-4">
-              <div className="flex items-center relative gap-2">
+        <div className="h-full w-full grow min-h-0 flex gap-4">
+          <Card className="flex flex-col gap-4 h-full min-w-96 max-w-96">
+            <div className="flex items-center gap-4 p-3">
+              <div className="flex items-center relative gap-2 w-full">
                 <Input
                   type="text"
                   placeholder={t("input.placeholder")}
@@ -110,6 +110,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
                   setType(value as FormType);
                 }}
                 defaultValue="BASIC"
+                className="w-fit"
               >
                 <div className="flex items-center gap-3">
                   <RadioGroupItem value="BASIC" id="r1" />
@@ -125,7 +126,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
                 </div>
               </RadioGroup>
             </div>
-            <div className="flex flex-col h-fit overflow-auto w-full px-4 pb-4">
+            <div className="flex flex-col h-fit overflow-auto w-full pt-1 pb-3 pl-3 pr-3">
               {formsIsLoading && <Loading />}
               {!formsIsLoading && formsIsError && (
                 <FeedbackMessage

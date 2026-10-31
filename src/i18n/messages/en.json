@@ -160,7 +160,16 @@
 			"removeQuote": "Remove quote",
 			"chatInput": "Chat input field",
 			"stopStreaming": "Stop streaming response",
-			"sendMessage": "Send message"
+			"sendMessage": "Send message",
+			"addAttachment": "Add attachment",
+			"removeAttachment": "Remove {name}"
+		},
+		"attachments": {
+			"addFilesOrPhotos": "Add files or photos",
+			"tooMany": "You can attach up to {max} files per message",
+			"unsupportedType": "{name} is not a supported file type",
+			"tooLarge": "{name} is larger than 10 MB",
+			"sentLabel": "Sent {count, plural, one {# attachment} other {# attachments}}"
 		},
 		"toast": {
 			"signInToSave": "Please sign in to save your message",
@@ -197,7 +206,12 @@
 			"sources": "Sources",
 			"noSources": "No sources attached to this workspace",
 			"removeSource": "Remove source",
-			"neuralInterface": "Neural interface"
+			"neuralInterface": "Neural interface",
+			"contextUsage": "Context usage",
+			"contextUsed": "{used} of {total} tokens",
+			"contextWarn": "Context is filling up. Earlier messages may soon be lost.",
+			"contextDanger": "Context is almost full. The agent may lose earlier messages.",
+			"startNewWorkspace": "Start a new workspace"
 		}
 	},
 

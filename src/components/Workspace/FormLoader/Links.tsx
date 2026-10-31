@@ -16,7 +16,7 @@ export const Links = ({ id, type }: LinksProps) => {
   const { linksData, linksIsPending, linksError } = useLinksLogic({ id, type });
 
   return (
-    <Card className="flex h-full w-full ring-0">
+    <Card className="flex h-full w-full ring-0 ">
       <div className="flex flex-col gap-4 w-full">
         {linksIsPending && <Loading />}
         {!linksIsPending && linksError && (
@@ -26,7 +26,7 @@ export const Links = ({ id, type }: LinksProps) => {
           !linksError &&
           linksData &&
           linksData.links.length > 0 && (
-            <div className="grid grid-cols-2 gap-3 w-full overflow-auto">
+            <div className="grid grid-cols-2 gap-3 w-full overflow-auto p-1">
               {linksData.type === "BASIC" &&
                 linksData.links.map((link) => (
                   <LinkItem

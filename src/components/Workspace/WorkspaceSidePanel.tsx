@@ -1,13 +1,17 @@
 "use client";
 import { AcademicCapIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import { CHAT_CONTEXT_WINDOW, getContextUsage } from "~/lib/contextWindow";
+import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { AgentVisual } from "../AgentVisual";
 import { Button } from "../common/Button";
 import { StudyPlanDialog } from "../StudyPlan/StudyPlanDialog";
 import { Card } from "../ui/card";
+import { useWorkspaceStore } from "./useWorkspaceStore";
 
 type MiniSectionProps = {
   title: string;
@@ -23,8 +27,20 @@ export const MiniSection = ({ title, children }: MiniSectionProps) => (
   </Card>
 );
 
+const USAGE_BAR_CLASS = {
+  ok: "bg-primary",
+  warn: "bg-amber-500",
+  danger: "bg-destructive",
+} as const;
+
+const formatTokens = (tokens: number) =>
+  tokens >= 1000 ? `${Math.round(tokens / 1000)}K` : `${tokens}`;
+
 export const WorkspaceSidePanel = () => {
   const t = useTranslations("Workspace.sidePanel");
+  const contextTokens = useWorkspaceStore((state) => state.contextTokens);
+  const contextUsage =
+    contextTokens === null ? null : getContextUsage(contextTokens);
   const params = useParams();
   const workspaceId =
     typeof params?.workspaceId === "string" ? params.workspaceId : "";
@@ -63,6 +79,45 @@ export const WorkspaceSidePanel = () => {
             <span className="text-muted-foreground">{t("noClassroom")}</span>
           )}
         </div>
+      </MiniSection>
+
+      <MiniSection title={t("contextUsage")}>
+        {contextUsage && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="text-muted-foreground">
+                {t("contextUsed", {
+                  used: formatTokens(contextUsage.tokens),
+                  total: formatTokens(CHAT_CONTEXT_WINDOW),
+                })}
+              </span>
+              <span className="font-medium">{contextUsage.percent}%</span>
+            </div>
+            <div className="bg-muted h-1.5 w-full overflow-hidden rounded-full">
+              <div
+                className={cn(
+                  "h-full transition-all",
+                  USAGE_BAR_CLASS[contextUsage.level],
+                )}
+                style={{ width: `${contextUsage.percent}%` }}
+              />
+            </div>
+            {contextUsage.level === "warn" && (
+              <p className="text-xs text-amber-600">{t("contextWarn")}</p>
+            )}
+            {contextUsage.level === "danger" && (
+              <div className="space-y-2">
+                <p className="text-xs text-destructive">{t("contextDanger")}</p>
+                <Link
+                  href="/"
+                  className="block rounded border p-2 text-center text-sm font-medium hover:bg-muted/60"
+                >
+                  {t("startNewWorkspace")}
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
       </MiniSection>
 
       <MiniSection title={""}>

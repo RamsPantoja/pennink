@@ -23,7 +23,16 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { playAgentSpeech, stopAgentSpeech } from "~/lib/agentAudio";
 import { extractSpeechText } from "~/lib/speechText";
+import { getConversationTokens } from "~/lib/contextWindow";
 import { useActiveClassroom } from "../Classroom/useActiveClassroom";
+import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
+import {
+	CHAT_ATTACHMENT_MAX_FILES,
+	CHAT_ATTACHMENT_MAX_SIZE,
+	CHAT_ATTACHMENT_PREFIX,
+	type ChatAttachment,
+	isAllowedChatAttachmentType,
+} from "~/lib/chatAttachments";
 
 export type MyUIMessage = UIMessage<{
 	id: Message["id"];
@@ -39,7 +48,7 @@ export type MyUIMessage = UIMessage<{
 }>;
 
 const chatValidationSchema = z.object({
-	prompt: z.string().trim().min(1),
+	prompt: z.string().trim(),
 });
 
 export type ChatValidationSchema = z.infer<typeof chatValidationSchema>;
@@ -107,6 +116,11 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		queryFormData,
 	} = useWorkspaceStore();
 	const [quote, setQuote] = useState<string | null>(null);
+	const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
+	const {
+		onUploadFile,
+		loading: isUploadingAttachments,
+	} = useUploadObjectToStorage();
 	const newWorkspaceId = useRef<string | null>(null);
 	const newWorkspaceUserMessage = useRef<Message | null>(null);
 	const params = useParams();
@@ -193,6 +207,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 
 	const setAgentActivity = useWorkspaceStore((state) => state.setAgentActivity);
 	const audioState = useWorkspaceStore((state) => state.audioState);
+	const setContextTokens = useWorkspaceStore(
+		(state) => state.setContextTokens,
+	);
+
+	useEffect(() => {
+		setContextTokens(getConversationTokens(messages));
+	}, [messages, setContextTokens]);
 	const speechMessageId = useRef<string | null>(null);
 	const streamingAssistantMessage = parseUIMessage(tempMessages[0]);
 	useEffect(() => {
@@ -312,17 +333,79 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	});
 
+	const onAddFiles = async (files: File[]) => {
+		if (!session) {
+			sileo.show({ title: t("toast.notAuthenticated") });
+			return;
+		}
+
+		const availableSlots = Math.max(
+			CHAT_ATTACHMENT_MAX_FILES - attachments.length,
+			0,
+		);
+
+		if (files.length > availableSlots) {
+			sileo.show({
+				title: t("attachments.tooMany", {
+					max: CHAT_ATTACHMENT_MAX_FILES,
+				}),
+			});
+		}
+
+		for (const file of files.slice(0, availableSlots)) {
+			if (!isAllowedChatAttachmentType(file.type)) {
+				sileo.show({
+					title: t("attachments.unsupportedType", { name: file.name }),
+				});
+				continue;
+			}
+
+			if (file.size > CHAT_ATTACHMENT_MAX_SIZE) {
+				sileo.show({
+					title: t("attachments.tooLarge", { name: file.name }),
+				});
+				continue;
+			}
+
+			const uploaded = await onUploadFile({
+				path: `${CHAT_ATTACHMENT_PREFIX}/${session.user.id}/${typeid().toUUID()}`,
+				file,
+			});
+
+			if (!uploaded) continue;
+
+			setAttachments((prev) => [
+				...prev,
+				{
+					key: uploaded.key,
+					filename: file.name,
+					mediaType: file.type,
+					size: file.size,
+				},
+			]);
+		}
+	};
+
+	const onRemoveAttachment = (key: string) => {
+		setAttachments((prev) => prev.filter((item) => item.key !== key));
+	};
+
 	const onSentPrompt = async (data: ChatValidationSchema) => {
 		if (!hasClassroom) {
 			sileo.show({ title: t("toast.createClassroomFirst") });
 			return;
 		}
 
+		const sentAttachments = attachments;
+
+		if (!data.prompt && sentAttachments.length === 0) return;
+
 		const userMessage: ModelMessage = {
 			role: "user",
-			content: [{ type: "text", text: data.prompt }],
+			content: data.prompt ? [{ type: "text", text: data.prompt }] : [],
 		}; //Array of ModelMessage context
 		useChatForm.setValue("prompt", "");
+		setAttachments([]);
 
 		if (!session) {
 			sileo.show({ title: t("toast.notAuthenticated") });
@@ -335,11 +418,14 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			userId: session.user.id,
 			createdAt: new Date(),
 			updatedAt: new Date(),
-			content: data.prompt,
+			content:
+				data.prompt ||
+				t("attachments.sentLabel", { count: sentAttachments.length }),
 			role: "user",
 			quote,
 			parts: [],
-			metadata: null,
+			metadata:
+				sentAttachments.length > 0 ? { attachments: sentAttachments } : null,
 		};
 
 		const currentAssistantMessage = parseUIMessage(tempMessages[0]);
@@ -386,6 +472,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 						messages: [],
 					},
 					prompt: data.prompt,
+					attachments: sentAttachments,
 					metadata: createAssistantMessageMetadata(chatId, session),
 					activeForm: getActiveForm(),
 					activeClassroomId: activeClassroomId ?? null,
@@ -518,9 +605,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		await sendMessage(undefined, {
 			body: {
 				context: {
-					messages: [...convertedToModelMessages, userMessage],
+					messages: [
+						...convertedToModelMessages,
+						...(userMessage.content.length > 0 ? [userMessage] : []),
+					],
 				},
 				prompt: data.prompt,
+				attachments: sentAttachments,
 				metadata: createAssistantMessageMetadata(chatId, session),
 				activeForm: getActiveForm(),
 				activeClassroomId: activeClassroomId ?? null,
@@ -587,6 +678,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		chatContainer,
 		quote,
 		onRemoveQuote,
+		attachments,
+		onAddFiles,
+		onRemoveAttachment,
+		isUploadingAttachments,
 		documentVectorSearchMutationIsPending,
 		stopStreaming,
 		handleKeyDown,

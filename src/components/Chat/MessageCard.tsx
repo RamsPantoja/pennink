@@ -12,6 +12,8 @@ import type { MindMap } from "~/app/agents/chat/mind-map";
 import { VoiceOutputButton } from "./VoiceOutputButton";
 import { AgentTrace } from "./AgentTrace";
 import { extractSpeechText } from "~/lib/speechText";
+import { getChatAttachments } from "~/lib/chatAttachments";
+import { ChatAttachmentList } from "./ChatAttachments";
 
 type MessageCardProps = {
   message: Message;
@@ -43,6 +45,13 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
       >
         {message.role === "assistant" && (
           <AgentTrace parts={message.parts} isStreaming={isStreaming} />
+        )}
+
+        {message.role === "user" && (
+          <ChatAttachmentList
+            attachments={getChatAttachments(message.metadata)}
+            className="mb-2"
+          />
         )}
 
         {message.parts.length > 0 ? (

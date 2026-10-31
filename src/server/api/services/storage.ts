@@ -17,6 +17,16 @@ type StorageServiceParams = {
 	ctx: TRPCContext;
 };
 
+export const createR2Client = () =>
+	new S3Client({
+		region: "auto",
+		endpoint: `https://${env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+		credentials: {
+			accessKeyId: env.CF_PUBLIC_R2_KEY,
+			secretAccessKey: env.CF_SECRET_R2_KEY,
+		},
+	});
+
 type CreatePresignedUrlInputSchema = z.infer<
 	typeof createPresignedUrlInputSchema
 >;
@@ -27,14 +37,7 @@ export class StorageService {
 
 	constructor({ ctx }: StorageServiceParams) {
 		this.ctx = ctx;
-		this.s3 = new S3Client({
-			region: "auto",
-			endpoint: `https://${env.CF_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-			credentials: {
-				accessKeyId: env.CF_PUBLIC_R2_KEY,
-				secretAccessKey: env.CF_SECRET_R2_KEY,
-			},
-		});
+		this.s3 = createR2Client();
 	}
 
 	public async createPresignedUrl({

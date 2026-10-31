@@ -1,5 +1,14 @@
-import type { ModelMessage, ToolSet } from "ai";
+import type { FilePart, ImagePart, ModelMessage, ToolSet } from "ai";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getServerSession } from "next-auth";
+import { env } from "~/env";
+import {
+  CHAT_ATTACHMENT_MAX_SIZE,
+  CHAT_ATTACHMENT_PREFIX,
+  isAllowedChatAttachmentType,
+  type ChatAttachment,
+} from "~/lib/chatAttachments";
+import { createR2Client } from "~/server/api/services/storage";
 import { authOptions } from "~/server/auth";
 import type { Message } from "~/server/api/services/chat";
 import { db } from "~/server/db";
@@ -30,8 +39,61 @@ export type AgentChatRequestData = {
   metadata: Message;
   activeForm?: ActiveForm | null;
   activeClassroomId?: string | null;
+  attachments?: ChatAttachment[];
 };
 
+const toCurrentUserMessage = async (
+  userId: string,
+  prompt: string,
+  attachments: ChatAttachment[],
+): Promise<ModelMessage> => {
+  if (attachments.length === 0) {
+    return { role: "user", content: prompt };
+  }
+
+  const r2 = createR2Client();
+
+  const attachmentParts = await Promise.all(
+    attachments.map(
+      async (attachment): Promise<ImagePart | FilePart> => {
+        if (
+          !attachment.key.startsWith(`${CHAT_ATTACHMENT_PREFIX}/${userId}/`) ||
+          !isAllowedChatAttachmentType(attachment.mediaType)
+        ) {
+          throw new Error(`Invalid attachment: ${attachment.filename}`);
+        }
+
+        const object = await r2.send(
+          new GetObjectCommand({ Bucket: env.BUCKET, Key: attachment.key }),
+        );
+        const data = await object.Body?.transformToByteArray();
+
+        if (!data || data.byteLength > CHAT_ATTACHMENT_MAX_SIZE) {
+          throw new Error(`Attachment unavailable: ${attachment.filename}`);
+        }
+
+        if (attachment.mediaType.startsWith("image/")) {
+          return { type: "image", image: data, mediaType: attachment.mediaType };
+        }
+
+        return {
+          type: "file",
+          data,
+          mediaType: attachment.mediaType,
+          filename: attachment.filename,
+        };
+      },
+    ),
+  );
+
+  return {
+    role: "user",
+    content: [
+      ...(prompt ? [{ type: "text" as const, text: prompt }] : []),
+      ...attachmentParts,
+    ],
+  };
+};
 
 export async function POST(req: Request) {
   try {
@@ -56,6 +118,7 @@ export async function POST(req: Request) {
       metadata,
       activeForm,
       activeClassroomId,
+      attachments = [],
     } = (await req.json()) as AgentChatRequestData;
 
     tools.prepareSpeechText = prepareSpeechText;
@@ -93,7 +156,7 @@ export async function POST(req: Request) {
       activeClassroomId,
     });
 
-    if (!prompt) {
+    if (!prompt && attachments.length === 0) {
       throw new Error("Missing prompt");
     }
 
@@ -101,14 +164,31 @@ export async function POST(req: Request) {
       throw new Error("Missing context messages");
     }
 
+    const currentUserMessage = await toCurrentUserMessage(
+      session.user.id,
+      prompt,
+      attachments,
+    );
+
     const result = await createChatAgent(tools).stream({
-      messages: [...context.messages, { role: "user", content: prompt }],
+      messages: [...context.messages, currentUserMessage],
     });
+
+    // The last step's input size is the context the model actually received.
+    let contextTokens = 0;
 
     return result.toUIMessageStreamResponse({
       messageMetadata: ({ part }) => {
+        if (part.type === "finish-step") {
+          contextTokens = part.usage.inputTokens ?? contextTokens;
+        }
+
         if (part.type === "start") {
           return metadata;
+        }
+
+        if (part.type === "finish") {
+          return { ...metadata, metadata: { contextTokens } };
         }
       },
     });

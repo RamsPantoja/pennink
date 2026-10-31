@@ -160,7 +160,16 @@
 			"removeQuote": "Eliminar cita",
 			"chatInput": "Campo de entrada de chat",
 			"stopStreaming": "Detener la transmisión de la respuesta",
-			"sendMessage": "Enviar mensaje"
+			"sendMessage": "Enviar mensaje",
+			"addAttachment": "Agregar adjunto",
+			"removeAttachment": "Quitar {name}"
+		},
+		"attachments": {
+			"addFilesOrPhotos": "Agregar archivos o fotos",
+			"tooMany": "Puedes adjuntar hasta {max} archivos por mensaje",
+			"unsupportedType": "{name} no es un tipo de archivo compatible",
+			"tooLarge": "{name} supera los 10 MB",
+			"sentLabel": "{count, plural, one {# adjunto enviado} other {# adjuntos enviados}}"
 		},
 		"toast": {
 			"signInToSave": "Inicia sesión para guardar tu mensaje",
@@ -197,7 +206,12 @@
 			"sources": "Fuentes",
 			"noSources": "No hay fuentes asociadas a este espacio de trabajo",
 			"removeSource": "Quitar fuente",
-			"neuralInterface": "Interfaz neuronal"
+			"neuralInterface": "Interfaz neuronal",
+			"contextUsage": "Uso del contexto",
+			"contextUsed": "{used} de {total} tokens",
+			"contextWarn": "El contexto se está llenando. Los mensajes anteriores podrían perderse pronto.",
+			"contextDanger": "El contexto está casi lleno. El agente podría perder mensajes anteriores.",
+			"startNewWorkspace": "Iniciar un nuevo espacio de trabajo"
 		}
 	},
 

@@ -38,6 +38,8 @@ type WorkspaceStore = {
 	setCurrentForm: (form: CurrentForm | null) => void;
 	queryFormData: RouterOutputs["form"]["getData"] | null;
 	setQueryFormData: (data: RouterOutputs["form"]["getData"] | null) => void;
+	contextTokens: number | null;
+	setContextTokens: (tokens: number | null) => void;
 	resetWorkspaceStore: () => void;
 };
 
@@ -53,6 +55,8 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	displayFormEditor: false,
 	displayMindMap: false,
 	mindMapData: null,
+	contextTokens: null,
+	setContextTokens: (tokens) => set(() => ({ contextTokens: tokens })),
 	setDisplayMindMap: (displayMindMap) => set(() => ({ displayMindMap })),
 	setMindMapData: (data) => set(() => ({ mindMapData: data })),
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
@@ -74,5 +78,6 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 			displayFormEditor: false,
 			displayMindMap: false,
 			mindMapData: null,
+			contextTokens: null,
 		})),
 }));

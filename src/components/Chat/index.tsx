@@ -1,5 +1,7 @@
 import {
   ArrowTurnDownRightIcon,
+  PaperClipIcon,
+  PlusIcon,
   StopIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
@@ -7,7 +9,15 @@ import {
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { ArrowUpIcon } from "lucide-react";
+import { CHAT_ATTACHMENT_ACCEPT } from "~/lib/chatAttachments";
+import { ChatAttachmentList } from "./ChatAttachments";
 import { parseUIMessage, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
 import { ChatSkeleton } from "./ChatSkeleton";
@@ -18,7 +28,12 @@ import { AutoResizeTextarea } from "../common/AutoSizeTextarea";
 import { Controller } from "react-hook-form";
 import { Separator } from "../ui/separator";
 import { BrainIcon } from "lucide-react";
-import { Fragment } from "react";
+import {
+  Fragment,
+  type ClipboardEvent,
+  type KeyboardEvent,
+  useRef,
+} from "react";
 import { useTranslations } from "next-intl";
 import { VoiceInputButton } from "./VoiceInputButton";
 
@@ -47,9 +62,38 @@ export const Chat = ({ id, isNew }: ChatProps) => {
     handleKeyDown,
     triggerChatMessagesRuleIsPending,
     status,
+    attachments,
+    onAddFiles,
+    onRemoveAttachment,
+    isUploadingAttachments,
   } = useChatLogic({ chatId: id, isNew });
 
   const { handleSubmit, watch, control } = useChatForm;
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const openFilePicker = () => fileInputRef.current?.click();
+
+  const handleInputKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "u") {
+      event.preventDefault();
+      openFilePicker();
+      return;
+    }
+
+    handleKeyDown(event);
+  };
+
+  const handleInputPaste = (event: ClipboardEvent<HTMLTextAreaElement>) => {
+    const images = Array.from(event.clipboardData.items)
+      .filter((item) => item.kind === "file" && item.type.startsWith("image/"))
+      .map((item) => item.getAsFile())
+      .filter((file): file is File => file !== null);
+
+    if (images.length === 0) return;
+
+    event.preventDefault();
+    void onAddFiles(images);
+  };
 
   console.log(messages);
 
@@ -121,6 +165,13 @@ export const Chat = ({ id, isNew }: ChatProps) => {
               </Tooltip>
             </Card>
           )}
+          {(attachments.length > 0 || isUploadingAttachments) && (
+            <ChatAttachmentList
+              attachments={attachments}
+              onRemove={onRemoveAttachment}
+              className="mb-2"
+            />
+          )}
           <Controller
             control={control}
             name="prompt"
@@ -130,13 +181,45 @@ export const Chat = ({ id, isNew }: ChatProps) => {
                 className="border-none ring-0 text-foreground bg-background"
                 onChange={field.onChange}
                 value={field.value}
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleInputKeyDown}
+                onPaste={handleInputPaste}
                 aria-label={t("aria.chatInput")}
               />
             )}
           />
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept={CHAT_ATTACHMENT_ACCEPT}
+            className="hidden"
+            data-testid="chat-attachment-input"
+            onChange={(event) => {
+              const files = Array.from(event.target.files ?? []);
+              event.target.value = "";
+              void onAddFiles(files);
+            }}
+          />
           <div className="flex w-full gap-4 justify-between items-end">
             <div className="flex min-w-0 flex-1 items-center gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={isUploadingAttachments}
+                    aria-label={t("aria.addAttachment")}
+                  >
+                    <PlusIcon className="min-w-5 w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" side="top" className="w-fit">
+                  <DropdownMenuItem onSelect={openFilePicker}>
+                    <PaperClipIcon className="size-4" />
+                    {t("attachments.addFilesOrPhotos")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <VoiceInputButton
                 onTranscript={(transcript) =>
                   onSentPrompt({ prompt: transcript })
@@ -171,7 +254,8 @@ export const Chat = ({ id, isNew }: ChatProps) => {
                   !hasClassroom ||
                   createWorkspaceIsPending ||
                   triggerChatMessagesRuleIsPending ||
-                  !watch("prompt").trim()
+                  isUploadingAttachments ||
+                  (!watch("prompt").trim() && attachments.length === 0)
                 }
                 aria-label={t("aria.sendMessage")}
               >
