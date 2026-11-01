@@ -40,7 +40,7 @@ import { UsageService } from "../UsageService";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { GitBranch } from "lucide-react";
+import { FileText, GitBranch } from "lucide-react";
 import { SettingsDialog } from "../Settings/SettingsDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
@@ -152,6 +152,15 @@ export function AppSidebar({ session }: AppSidebarProps) {
                 >
                   <GitBranch className="h-5 min-w-5 text-foreground" />
                   <span>{t("studyPlans.manage")}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={Boolean(pathname?.startsWith("/plan-artifacts"))}
+                  onClick={() => router.push("/plan-artifacts")}
+                >
+                  <FileText className="h-5 min-w-5 text-foreground" />
+                  <span>{t("planArtifacts.manage")}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

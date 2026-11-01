@@ -32,6 +32,10 @@ type WorkspaceStore = {
 	setAiFormData: (data: AiForm | null) => void;
 	displayMindMap: boolean;
 	setDisplayMindMap: (displayMindMap: boolean) => void;
+	displayClassPlan: boolean;
+	setDisplayClassPlan: (displayClassPlan: boolean) => void;
+	classPlanId: string | null;
+	setClassPlanId: (id: string | null) => void;
 	mindMapData: MindMap | null;
 	setMindMapData: (data: MindMap | null) => void;
 	currentForm: CurrentForm | null;
@@ -55,16 +59,34 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	displayFormEditor: false,
 	displayMindMap: false,
 	mindMapData: null,
+	displayClassPlan: false,
+	classPlanId: null,
 	contextTokens: null,
 	setContextTokens: (tokens) => set(() => ({ contextTokens: tokens })),
-	setDisplayMindMap: (displayMindMap) => set(() => ({ displayMindMap })),
+	setDisplayMindMap: (displayMindMap) =>
+		set(() =>
+			displayMindMap
+				? { displayMindMap, displayClassPlan: false }
+				: { displayMindMap },
+		),
 	setMindMapData: (data) => set(() => ({ mindMapData: data })),
+	setDisplayClassPlan: (displayClassPlan) =>
+		set(() =>
+			displayClassPlan
+				? { displayClassPlan, displayFormEditor: false, displayMindMap: false }
+				: { displayClassPlan },
+		),
+	setClassPlanId: (id) => set(() => ({ classPlanId: id })),
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
 	setAgentActivity: (agentActivity) => set(() => ({ agentActivity })),
 	setAudioState: (audioState) => set(() => ({ audioState })),
 	setDisplayFormEditor: (displayFormEditor) =>
-		set(() => ({ displayFormEditor })),
+		set(() =>
+			displayFormEditor
+				? { displayFormEditor, displayClassPlan: false }
+				: { displayFormEditor },
+		),
 	setAiFormData: (data) => set(() => ({ aiFormData: data })),
 	setQueryFormData: (data) => set(() => ({ queryFormData: data })),
 	resetWorkspaceStore: () =>
@@ -78,6 +100,8 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 			displayFormEditor: false,
 			displayMindMap: false,
 			mindMapData: null,
+			displayClassPlan: false,
+			classPlanId: null,
 			contextTokens: null,
 		})),
 }));

@@ -8,9 +8,11 @@ const bedrock = createAmazonBedrock({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
+export const chatModel = bedrock("us.openai.gpt-6-luna");
+
 export const createChatAgent = (tools: ToolSet) =>
   new ToolLoopAgent({
-    model: bedrock("us.openai.gpt-6-luna"),
+    model: chatModel,
     instructions: chatSystemPrompt,
     tools,
   });

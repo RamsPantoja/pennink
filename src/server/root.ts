@@ -16,6 +16,7 @@ import { formRouter } from "./api/routers/form";
 import { linkRouter } from "./api/routers/link";
 import { classroomRouter } from "./api/routers/classroom";
 import { studyPlanRouter } from "./api/routers/study-plan";
+import { planArtifactRouter } from "./api/routers/plan-artifact";
 
 /**
  * This is the primary router for your server.
@@ -35,6 +36,7 @@ export const appRouter = createTRPCRouter({
 	link: linkRouter,
 	classroom: classroomRouter,
 	studyPlan: studyPlanRouter,
+	planArtifact: planArtifactRouter,
 });
 
 export const createCaller = (ctx: TRPCContext) => {

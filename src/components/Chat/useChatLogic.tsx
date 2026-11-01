@@ -164,6 +164,10 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				void utils.studyPlan.listForClassroom.invalidate();
 			}
 
+			if (data.message.parts.some((part) => part.type === "tool-createPlanArtifact")) {
+				void utils.planArtifact.listAll.invalidate();
+			}
+
 			if (!session) {
 				sileo.show({ title: t("toast.signInToSave") });
 				return;

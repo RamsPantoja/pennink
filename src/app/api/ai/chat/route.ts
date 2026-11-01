@@ -22,6 +22,7 @@ import {
 } from "~/app/agents/chat/shared-link";
 import { createChatTools, prepareSpeechText } from "~/app/agents/chat/tools";
 import { createStudyPlanTool } from "~/app/agents/chat/study-plan";
+import { createPlanArtifactTool } from "~/app/agents/chat/plan-artifact";
 import { createClassroomStudentsTool } from "~/app/agents/chat/classroom-students";
 import { createMindMapTool } from "~/app/agents/chat/mind-map";
 import { cookies } from "next/headers";
@@ -147,6 +148,11 @@ export async function POST(req: Request) {
     });
 
     tools.manageStudyPlan = createStudyPlanTool({
+      userId: session.user.id,
+      activeClassroomId,
+    });
+
+    tools.createPlanArtifact = createPlanArtifactTool({
       userId: session.user.id,
       activeClassroomId,
     });

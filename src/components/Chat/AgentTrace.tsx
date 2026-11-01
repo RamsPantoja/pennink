@@ -39,6 +39,7 @@ const LABELED_TOOLS = [
   "generateAndEditForm",
   "shareClassroomLink",
   "manageStudyPlan",
+  "createPlanArtifact",
   "listClassroomStudents",
   "createMindMap",
 ];

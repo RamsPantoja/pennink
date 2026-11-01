@@ -424,6 +424,47 @@ export const studyPlanItemsRelations = relations(studyPlanItems, ({ one }) => ({
   }),
 }));
 
+/**
+ * Markdown plans for one day or one week of a classroom, generated from the study
+ * plan items due in that range. `content` is the markdown the agent reads; `blocks`
+ * is the BlockNote document the editor saves, so edits keep their formatting.
+ */
+export const planArtifacts = createTable(
+  "plan_artifact",
+  {
+    id: customId.notNull().primaryKey(),
+    userId: uuid()
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    classroomId: uuid()
+      .notNull()
+      .references(() => classrooms.id, { onDelete: "cascade" }),
+    title: text().notNull(),
+    range: text({ enum: ["day", "week"] }).notNull(),
+    startDate: date({ mode: "string" }).notNull(),
+    endDate: date({ mode: "string" }).notNull(),
+    content: text().notNull().default(""),
+    blocks: json().$type<Block[]>(),
+    createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+    deletedAt: timestamp({ mode: "date" }),
+  },
+  (table) => [
+    index("plan_artifact_classroom_idx").on(table.classroomId, table.startDate),
+  ],
+);
+
+export const planArtifactsRelations = relations(planArtifacts, ({ one }) => ({
+  user: one(users, {
+    fields: [planArtifacts.userId],
+    references: [users.id],
+  }),
+  classroom: one(classrooms, {
+    fields: [planArtifacts.classroomId],
+    references: [classrooms.id],
+  }),
+}));
+
 export const classroomsRelations = relations(classrooms, ({ many }) => ({
   teachers: many(classroomTeachers),
   students: many(classroomStudents),

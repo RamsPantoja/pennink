@@ -100,6 +100,10 @@
 		"studyPlans": {
 			"title": "Planes de estudio",
 			"manage": "Planes de estudio"
+		},
+		"planArtifacts": {
+			"title": "Planes de clase",
+			"manage": "Planes de clase"
 		}
 	},
 
@@ -138,6 +142,7 @@
 				"generateAndEditForm": "Generando formulario",
 				"shareClassroomLink": "Compartiendo enlace de la clase",
 				"manageStudyPlan": "Gestionando plan de estudio",
+				"createPlanArtifact": "Escribiendo plan de clase",
 				"listClassroomStudents": "Listando estudiantes de la clase",
 				"createMindMap": "Creando mapa mental",
 				"unknown": "Ejecutando herramienta"
@@ -966,6 +971,46 @@
 		"error": "Error al subir el archivo"
 	},
 
+	"PlanArtifact": {
+		"title": "Planes de clase",
+		"description": "Planes en markdown para un día o una semana, creados a partir de tus planes de estudio. Ábrelo para editarlo.",
+		"empty": "Aún no hay planes de clase. Pídele al asistente el plan de hoy o de esta semana.",
+		"range": {
+			"day": "Día",
+			"week": "Semana"
+		},
+		"dates": "{start} a {end}",
+		"updated": "Actualizado {date}",
+		"open": "Abrir",
+		"openPlan": "Abrir plan",
+		"close": "Cerrar",
+		"loading": "Cargando...",
+		"error": "No se pudieron cargar los planes de clase.",
+		"notFound": "No se encontró este plan de clase.",
+		"back": "Volver a planes de clase",
+		"titleLabel": "Título del plan",
+		"untitled": "Plan sin título",
+		"save": "Guardar",
+		"saving": "Guardando...",
+		"saved": "Guardado",
+		"unsaved": "Cambios sin guardar",
+		"saveError": "No se pudo guardar. Inténtalo de nuevo.",
+		"settings": {
+			"button": "Ajustes",
+			"title": "Ajustes del plan de clase",
+			"description": "Cambia el nombre, el alcance y las fechas de este plan de clase.",
+			"range": "Alcance",
+			"date": "Fecha",
+			"startDate": "Fecha de inicio",
+			"endDate": "Fecha de fin",
+			"cancel": "Cancelar",
+			"save": "Guardar cambios",
+			"saving": "Guardando...",
+			"titleRequired": "El plan necesita un nombre.",
+			"datesRequired": "Elige las fechas de este plan.",
+			"endBeforeStart": "La fecha de fin debe ser igual o posterior a la de inicio."
+		}
+	},
 	"StudyPlan": {
 		"title": "Planes de estudio",
 		"description": "Planes con fechas y casillas, asociados a esta clase.",

@@ -20,7 +20,7 @@ type MiniSectionProps = {
 
 export const MiniSection = ({ title, children }: MiniSectionProps) => (
   <Card size="sm" className="shrink-0 gap-2">
-    <h3 className="px-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+    <h3 className="px-3 text-xs font-medium tracking-wide text-muted-foreground">
       {title}
     </h3>
     <div className="px-3">{children}</div>

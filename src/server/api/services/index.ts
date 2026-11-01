@@ -12,6 +12,7 @@ import { FormService } from "./form";
 import { LinkService } from "./link";
 import { ClassroomService } from "./classroom";
 import { StudyPlanService } from "./study-plan";
+import { PlanArtifactService } from "./plan-artifact";
 
 export type ServicesContext = {
 	userService: UserService;
@@ -27,6 +28,7 @@ export type ServicesContext = {
 	linkService: LinkService;
 	classroomService: ClassroomService;
 	studyPlanService: StudyPlanService;
+	planArtifactService: PlanArtifactService;
 };
 
 export type ServicesConfig = {
@@ -48,6 +50,7 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		linkService: new LinkService({ ctx }),
 		classroomService: new ClassroomService(ctx),
 		studyPlanService: new StudyPlanService(ctx),
+		planArtifactService: new PlanArtifactService(ctx),
 	};
 };
 
