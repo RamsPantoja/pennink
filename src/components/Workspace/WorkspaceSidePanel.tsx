@@ -10,6 +10,7 @@ import { api } from "~/trpc/react";
 import { AgentVisual } from "../AgentVisual";
 import { Button } from "../common/Button";
 import { StudyPlanDialog } from "../StudyPlan/StudyPlanDialog";
+import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 import { useWorkspaceStore } from "./useWorkspaceStore";
 
@@ -68,6 +69,24 @@ export const WorkspaceSidePanel = () => {
     onSuccess: () => utils.workspace.sourcesByWorkspace.invalidate(),
   });
 
+  const setClassPlanId = useWorkspaceStore((state) => state.setClassPlanId);
+  const setDisplayClassPlan = useWorkspaceStore(
+    (state) => state.setDisplayClassPlan,
+  );
+  const { data: lessonPlans = [] } =
+    api.planArtifact.listForWorkspace.useQuery(
+      { workspaceId },
+      { enabled: !!workspaceId },
+    );
+  const detachLessonPlan = api.planArtifact.detachFromWorkspace.useMutation({
+    onSuccess: () => utils.planArtifact.listForWorkspace.invalidate({ workspaceId }),
+  });
+
+  const openLessonPlan = (planId: string) => {
+    setClassPlanId(planId);
+    setDisplayClassPlan(true);
+  };
+
   return (
     <div className="flex h-full flex-col gap-3 overflow-y-auto bg-background p-3">
       <MiniSection title={t("classroom")}>
@@ -125,10 +144,13 @@ export const WorkspaceSidePanel = () => {
           <AgentVisual />
         </div>
       </MiniSection>
-      <MiniSection title={t("studyPlans")}>
-        {plans.length === 0 ? (
-          <p className="text-xs text-muted-foreground">{t("noStudyPlans")}</p>
-        ) : (
+      <MiniSection title={t("context")}>
+        <div className="space-y-3">
+          <div className="space-y-2">
+            <Badge variant="secondary">{t("studyPlans")}</Badge>
+            {plans.length === 0 ? (
+              <p className="text-xs text-muted-foreground">{t("noStudyPlans")}</p>
+            ) : (
           <ul className="space-y-2">
             {plans.map((plan) => {
               const percent =
@@ -168,10 +190,52 @@ export const WorkspaceSidePanel = () => {
               );
             })}
           </ul>
-        )}
-      </MiniSection>
-      <MiniSection title={t("sources")}>
-        {sources.length === 0 ? (
+            )}
+          </div>
+          <div className="space-y-2">
+            <Badge variant="secondary">{t("lessonPlans")}</Badge>
+            {lessonPlans.length === 0 ? (
+            <p className="text-xs text-muted-foreground">
+              {t("noLessonPlans")}
+            </p>
+          ) : (
+            <ul className="space-y-1">
+              {lessonPlans.map((plan) => (
+                <li
+                  key={plan.id}
+                  className="flex items-center gap-2 rounded border p-2"
+                >
+                  <button
+                    type="button"
+                    onClick={() => openLessonPlan(plan.id)}
+                    className="min-w-0 flex-1 truncate text-left text-sm hover:underline"
+                    title={plan.title}
+                  >
+                    {plan.title}
+                  </button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title={t("removeLessonPlan")}
+                    aria-label={t("removeLessonPlan")}
+                    isPending={detachLessonPlan.isPending}
+                    onClick={() =>
+                      detachLessonPlan.mutate({
+                        workspaceId,
+                        planArtifactId: plan.id,
+                      })
+                    }
+                  >
+                    <XMarkIcon className="h-4 w-4" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+          </div>
+          <div className="space-y-2">
+            <Badge variant="secondary">{t("sources")}</Badge>
+            {sources.length === 0 ? (
           <p className="text-xs text-muted-foreground">{t("noSources")}</p>
         ) : (
           <ul className="space-y-1">
@@ -204,7 +268,9 @@ export const WorkspaceSidePanel = () => {
               </li>
             ))}
           </ul>
-        )}
+            )}
+          </div>
+        </div>
       </MiniSection>
       <StudyPlanDialog
         planId={openPlanId}

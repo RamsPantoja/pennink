@@ -5,6 +5,7 @@ import {
 	classroomTeachers,
 	classrooms,
 	planArtifacts,
+	planArtifactsToWorkspaces,
 	studyPlanClassrooms,
 	studyPlanItems,
 	studyPlanProgress,
@@ -14,11 +15,19 @@ import type { TRPCContext } from "../../trpc";
 import type {
 	createPlanArtifactInputSchema,
 	updatePlanArtifactInputSchema,
+	workspacePlanArtifactInputSchema,
+	workspacePlanArtifactsInputSchema,
 } from "../schemas/plan-artifact";
 import type { z } from "zod";
 
 type CreateInput = z.infer<typeof createPlanArtifactInputSchema>;
 type UpdateInput = z.infer<typeof updatePlanArtifactInputSchema>;
+type WorkspacePlanArtifactInput = z.infer<
+	typeof workspacePlanArtifactInputSchema
+>;
+type WorkspacePlanArtifactsInput = z.infer<
+	typeof workspacePlanArtifactsInputSchema
+>;
 
 export type StudyPlanContextItem = {
 	dueDate: string;
@@ -118,6 +127,90 @@ export class PlanArtifactService {
 			.where(eq(planArtifacts.id, input.id));
 
 		return { id: input.id };
+	}
+
+	/**
+	 * Lesson plans the teacher attached to a workspace. Only active plans are listed.
+	 */
+	public async listForWorkspace(
+		input: WorkspacePlanArtifactsInput,
+		userId: string,
+	) {
+		const workspace = await this.findWorkspace(input.workspaceId);
+		await this.assertTeacher(workspace.classroomId, userId);
+
+		return this.ctx.db
+			.select({
+				id: planArtifacts.id,
+				title: planArtifacts.title,
+				range: planArtifacts.range,
+				startDate: planArtifacts.startDate,
+				endDate: planArtifacts.endDate,
+				updatedAt: planArtifacts.updatedAt,
+			})
+			.from(planArtifactsToWorkspaces)
+			.innerJoin(
+				planArtifacts,
+				eq(planArtifacts.id, planArtifactsToWorkspaces.planArtifactId),
+			)
+			.where(
+				and(
+					eq(planArtifactsToWorkspaces.workspaceId, input.workspaceId),
+					isNull(planArtifacts.deletedAt),
+				),
+			)
+			.orderBy(desc(planArtifacts.startDate), desc(planArtifacts.updatedAt));
+	}
+
+	/**
+	 * A lesson plan can only be used in a workspace of its own classroom.
+	 */
+	public async attachToWorkspace(
+		input: WorkspacePlanArtifactInput,
+		userId: string,
+	) {
+		const workspace = await this.findWorkspace(input.workspaceId);
+		await this.assertTeacher(workspace.classroomId, userId);
+
+		const plan = await this.findActive(input.planArtifactId);
+		if (plan.classroomId !== workspace.classroomId) {
+			throw new TRPCError({
+				code: "BAD_REQUEST",
+				message: "The lesson plan belongs to another classroom",
+			});
+		}
+
+		await this.ctx.db
+			.insert(planArtifactsToWorkspaces)
+			.values({
+				planArtifactId: input.planArtifactId,
+				workspaceId: input.workspaceId,
+			})
+			.onConflictDoNothing();
+
+		return { id: input.planArtifactId };
+	}
+
+	/**
+	 * Removes only the link. The lesson plan itself is kept.
+	 */
+	public async detachFromWorkspace(
+		input: WorkspacePlanArtifactInput,
+		userId: string,
+	) {
+		const workspace = await this.findWorkspace(input.workspaceId);
+		await this.assertTeacher(workspace.classroomId, userId);
+
+		await this.ctx.db
+			.delete(planArtifactsToWorkspaces)
+			.where(
+				and(
+					eq(planArtifactsToWorkspaces.planArtifactId, input.planArtifactId),
+					eq(planArtifactsToWorkspaces.workspaceId, input.workspaceId),
+				),
+			);
+
+		return { id: input.planArtifactId };
 	}
 
 	/**
@@ -234,6 +327,19 @@ export class PlanArtifactService {
 		}
 
 		return { range, startDate, endDate };
+	}
+
+	private async findWorkspace(workspaceId: string) {
+		const workspace = await this.ctx.db.query.workspaces.findFirst({
+			where: (table, { eq }) => eq(table.id, workspaceId),
+			columns: { id: true, classroomId: true },
+		});
+		if (!workspace)
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Workspace not found",
+			});
+		return workspace;
 	}
 
 	private async findActive(id: string) {

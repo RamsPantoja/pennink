@@ -58,6 +58,7 @@
 		"tooltips": {
 			"searchForms": "Buscar en tus formularios",
 			"searchSources": "Buscar en tus fuentes",
+			"searchPlanArtifacts": "Planes de clase",
 			"newWorkspace": "Nuevo espacio de trabajo"
 		},
 		"dropdown": {
@@ -203,10 +204,15 @@
 			"expandSidePanel": "Expandir panel"
 		},
 		"sidePanel": {
+			"context": "Contexto",
 			"classroom": "Aula",
 			"noClassroom": "No se encontró el aula",
 			"studyPlans": "Planes de estudio",
 			"noStudyPlans": "No hay planes de estudio asociados a este aula",
+			"lessonPlans": "Planes de clase",
+			"noLessonPlans": "No hay planes de clase asociados a este espacio de trabajo",
+			"attachLessonPlan": "Asociar un plan de clase",
+			"removeLessonPlan": "Quitar plan de clase",
 			"planProgress": "{completed} de {total} completados",
 			"sources": "Fuentes",
 			"noSources": "No hay fuentes asociadas a este espacio de trabajo",
@@ -975,6 +981,11 @@
 		"title": "Planes de clase",
 		"description": "Planes en markdown para un día o una semana, creados a partir de tus planes de estudio. Ábrelo para editarlo.",
 		"empty": "Aún no hay planes de clase. Pídele al asistente el plan de hoy o de esta semana.",
+		"dialogDescription": "Abre un plan de clase para editarlo o asócialo a uno de tus espacios de trabajo.",
+		"attach": {
+			"button": "Asociar",
+			"success": "Plan de clase asociado al espacio de trabajo"
+		},
 		"range": {
 			"day": "Día",
 			"week": "Semana"

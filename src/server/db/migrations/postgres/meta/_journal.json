@@ -43,6 +43,13 @@
       "when": 1793416490128,
       "tag": "0005_fuzzy_thaddeus_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793642050281,
+      "tag": "0006_third_mastermind",
+      "breakpoints": true
     }
   ]
 }

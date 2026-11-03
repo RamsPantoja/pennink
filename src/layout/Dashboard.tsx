@@ -2,6 +2,7 @@
 import {
   ArrowDownTrayIcon,
   CircleStackIcon,
+  DocumentTextIcon,
   ListBulletIcon,
   MagnifyingGlassIcon,
   SquaresPlusIcon,
@@ -37,6 +38,7 @@ import { SessionProvider } from "next-auth/react";
 import { api } from "~/trpc/react";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
+import { PlanArtifactLoader } from "~/components/PlanArtifact/PlanArtifactLoader";
 import { useTranslations } from "next-intl";
 
 type DashboardProps = {
@@ -58,6 +60,8 @@ const Dashboard = ({ children, session }: DashboardProps) => {
     useWorkspaceStore();
   const [isReadingPDF, setIsReadingPDF] = useState<boolean>(false);
   const [openFormLoader, setOpenFormLoader] = useState<boolean>(false);
+  const [openPlanArtifactLoader, setOpenPlanArtifactLoader] =
+    useState<boolean>(false);
 
   const { mutate: createFile, isPending: createFileIsPending } =
     api.workspace.createFile.useMutation({
@@ -188,7 +192,21 @@ const Dashboard = ({ children, session }: DashboardProps) => {
             onChange={handleFileChange}
             data-testid="file-input"
           />
-          <AppSidebar session={session} />
+          <AppSidebar
+            session={session}
+            onOpenPlanArtifacts={
+              typeof workspaceId === "string"
+                ? () => setOpenPlanArtifactLoader(true)
+                : undefined
+            }
+          />
+          {typeof workspaceId === "string" && (
+            <PlanArtifactLoader
+              workspaceId={workspaceId}
+              open={openPlanArtifactLoader}
+              onOpenChange={setOpenPlanArtifactLoader}
+            />
+          )}
           <FormLoader
             onOpen={(form) => {
               setDisplayFormEditor(true);
@@ -235,6 +253,22 @@ const Dashboard = ({ children, session }: DashboardProps) => {
                   </TooltipTrigger>
                   <TooltipContent>{t("tooltips.searchForms")}</TooltipContent>
                 </Tooltip>
+                {typeof workspaceId === "string" && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setOpenPlanArtifactLoader(true)}
+                      >
+                        <DocumentTextIcon className="min-w-5 w-5 h-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {t("tooltips.searchPlanArtifacts")}
+                    </TooltipContent>
+                  </Tooltip>
+                )}
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button

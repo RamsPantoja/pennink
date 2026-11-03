@@ -465,6 +465,37 @@ export const planArtifactsRelations = relations(planArtifacts, ({ one }) => ({
   }),
 }));
 
+/**
+ * Lesson plans a teacher attaches to a workspace. A plan can be used in several
+ * workspaces, and detaching it leaves the plan itself untouched.
+ */
+export const planArtifactsToWorkspaces = createTable(
+  "plan_artifact_workspace",
+  {
+    planArtifactId: uuid()
+      .notNull()
+      .references(() => planArtifacts.id, { onDelete: "cascade" }),
+    workspaceId: uuid()
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+  },
+  (table) => [primaryKey({ columns: [table.planArtifactId, table.workspaceId] })],
+);
+
+export const planArtifactsToWorkspacesRelations = relations(
+  planArtifactsToWorkspaces,
+  ({ one }) => ({
+    planArtifact: one(planArtifacts, {
+      fields: [planArtifactsToWorkspaces.planArtifactId],
+      references: [planArtifacts.id],
+    }),
+    workspace: one(workspaces, {
+      fields: [planArtifactsToWorkspaces.workspaceId],
+      references: [workspaces.id],
+    }),
+  }),
+);
+
 export const classroomsRelations = relations(classrooms, ({ many }) => ({
   teachers: many(classroomTeachers),
   students: many(classroomStudents),

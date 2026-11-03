@@ -7,31 +7,31 @@ import { resolveRange } from "~/lib/plan-artifact-range";
 import { chatModel } from "./agent";
 
 const planArtifactInputSchema = z.object({
-	range: z
-		.enum(["day", "week"])
-		.describe(
-			"day: the single date. week: the Monday to Sunday week containing the date.",
-		),
-	date: z
-		.string()
-		.regex(/^\d{4}-\d{2}-\d{2}$/)
-		.optional()
-		.describe("ISO date (YYYY-MM-DD) the plan is for. Defaults to today."),
-	title: z
-		.string()
-		.trim()
-		.min(1)
-		.max(150)
-		.optional()
-		.describe("Plan title. Defaults to one built from the range."),
-	focus: z
-		.string()
-		.trim()
-		.max(500)
-		.optional()
-		.describe(
-			"Extra instruction from the teacher, such as emphasis, time limits or a format.",
-		),
+  range: z
+    .enum(["day", "week"])
+    .describe(
+      "day: the single date. week: the Monday to Sunday week containing the date.",
+    ),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .describe("ISO date (YYYY-MM-DD) the plan is for. Defaults to today."),
+  title: z
+    .string()
+    .trim()
+    .min(1)
+    .max(150)
+    .optional()
+    .describe("Plan title. Defaults to one built from the range."),
+  focus: z
+    .string()
+    .trim()
+    .max(500)
+    .optional()
+    .describe(
+      "Extra instruction from the teacher, such as emphasis, time limits or a format.",
+    ),
 });
 
 const planSystemPrompt = `You are a lesson-planning assistant for teachers in basic education in Mexico (preescolar, primaria, secundaria and preparatoria). Your job is to produce clear, realistic lesson plans that are ready to use in the classroom, in Markdown, based on what the teacher asks for.
@@ -120,88 +120,88 @@ Limits
 * Always write in Mexican Spanish, with a professional and friendly tone, like an experienced colleague.`;
 
 const formatContext = (items: StudyPlanContextItem[]) => {
-	if (items.length === 0) return "(no study plan items are due in this range)";
+  if (items.length === 0) return "(no study plan items are due in this range)";
 
-	return items
-		.map((item) => {
-			const parent = item.parentTitle ? `${item.parentTitle} > ` : "";
-			const status = item.completed ? "completed" : "pending";
-			return `- ${item.dueDate} | ${item.planTitle} | ${parent}${item.title} | ${status}`;
-		})
-		.join("\n");
+  return items
+    .map((item) => {
+      const parent = item.parentTitle ? `${item.parentTitle} > ` : "";
+      const status = item.completed ? "completed" : "pending";
+      return `- ${item.dueDate} | ${item.planTitle} | ${parent}${item.title} | ${status}`;
+    })
+    .join("\n");
 };
 
 const defaultTitle = (
-	range: "day" | "week",
-	startDate: string,
-	endDate: string,
+  range: "day" | "week",
+  startDate: string,
+  endDate: string,
 ) =>
-	range === "day"
-		? `Class plan ${startDate}`
-		: `Week plan ${startDate} to ${endDate}`;
+  range === "day"
+    ? `Class plan ${startDate}`
+    : `Week plan ${startDate} to ${endDate}`;
 
 export const createPlanArtifactTool = ({
-	userId,
-	activeClassroomId,
+  userId,
+  activeClassroomId,
 }: {
-	userId: string;
-	activeClassroomId?: string | null;
+  userId: string;
+  activeClassroomId?: string | null;
 }) => {
-	const service = new PlanArtifactService({ db });
+  const service = new PlanArtifactService({ db });
 
-	return tool({
-		description:
-			"Generate a markdown plan for the active classroom for one day or one week, built from the study plan items due in that range, and save it as a plan artifact the teacher can open and edit. Use it when the teacher asks for the class plan of today, a date or the week. Call manageStudyPlan first only if the teacher needs the study plans changed.",
-		inputSchema: planArtifactInputSchema,
-		execute: async ({ range, date, title, focus }) => {
-			if (!activeClassroomId) {
-				return {
-					status: "error",
-					message:
-						"No active classroom is selected. Ask the teacher to select the classroom first.",
-				};
-			}
+  return tool({
+    description:
+      "Generate a lesson plan for the active classroom for one day or one week, built from the study plan items due in that range, and save it as a plan artifact the teacher can open and edit. Use it when the teacher asks for the class plan of today, a date or the week. Call manageStudyPlan first only if the teacher needs the study plans changed.",
+    inputSchema: planArtifactInputSchema,
+    execute: async ({ range, date, title, focus }) => {
+      if (!activeClassroomId) {
+        return {
+          status: "error",
+          message:
+            "No active classroom is selected. Ask the teacher to select the classroom first.",
+        };
+      }
 
-			const { startDate, endDate } = resolveRange({ range, date });
-			const items = await service.loadContext(
-				{ classroomId: activeClassroomId, startDate, endDate },
-				userId,
-			);
+      const { startDate, endDate } = resolveRange({ range, date });
+      const items = await service.loadContext(
+        { classroomId: activeClassroomId, startDate, endDate },
+        userId,
+      );
 
-			const { text } = await generateText({
-				model: chatModel,
-				system: planSystemPrompt,
-				prompt: [
-					`Range: ${range} (${startDate} to ${endDate})`,
-					focus ? `Teacher focus: ${focus}` : null,
-					"Study plan items due in this range (date | plan | item | status):",
-					formatContext(items),
-				]
-					.filter(Boolean)
-					.join("\n"),
-			});
+      const { text } = await generateText({
+        model: chatModel,
+        system: planSystemPrompt,
+        prompt: [
+          `Range: ${range} (${startDate} to ${endDate})`,
+          focus ? `Teacher focus: ${focus}` : null,
+          "Study plan items due in this range (date | plan | item | status):",
+          formatContext(items),
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      });
 
-			const plan = await service.create(
-				{
-					classroomId: activeClassroomId,
-					title: title ?? defaultTitle(range, startDate, endDate),
-					range,
-					startDate,
-					endDate,
-					content: text.trim(),
-				},
-				userId,
-			);
+      const plan = await service.create(
+        {
+          classroomId: activeClassroomId,
+          title: title ?? defaultTitle(range, startDate, endDate),
+          range,
+          startDate,
+          endDate,
+          content: text.trim(),
+        },
+        userId,
+      );
 
-			return {
-				status: "success",
-				id: plan.id,
-				title: title ?? defaultTitle(range, startDate, endDate),
-				range,
-				startDate,
-				endDate,
-				itemCount: items.length,
-			};
-		},
-	});
+      return {
+        status: "success",
+        id: plan.id,
+        title: title ?? defaultTitle(range, startDate, endDate),
+        range,
+        startDate,
+        endDate,
+        itemCount: items.length,
+      };
+    },
+  });
 };

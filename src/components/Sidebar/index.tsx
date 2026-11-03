@@ -47,9 +47,10 @@ import { Button } from "../ui/button";
 
 type AppSidebarProps = {
   session: Session | null;
+  onOpenPlanArtifacts?: () => void;
 };
 
-export function AppSidebar({ session }: AppSidebarProps) {
+export function AppSidebar({ session, onOpenPlanArtifacts }: AppSidebarProps) {
   const t = useTranslations("AppSidebar");
   const router = useRouter();
   const pathname = usePathname();
@@ -154,15 +155,14 @@ export function AppSidebar({ session }: AppSidebarProps) {
                   <span>{t("studyPlans.manage")}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  isActive={Boolean(pathname?.startsWith("/plan-artifacts"))}
-                  onClick={() => router.push("/plan-artifacts")}
-                >
-                  <FileText className="h-5 min-w-5 text-foreground" />
-                  <span>{t("planArtifacts.manage")}</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {onOpenPlanArtifacts && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={() => onOpenPlanArtifacts()}>
+                    <FileText className="h-5 min-w-5 text-foreground" />
+                    <span>{t("planArtifacts.manage")}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

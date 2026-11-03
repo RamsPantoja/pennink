@@ -58,6 +58,7 @@
 		"tooltips": {
 			"searchForms": "Search from your forms",
 			"searchSources": "Search from your sources",
+			"searchPlanArtifacts": "Class plans",
 			"newWorkspace": "New workspace"
 		},
 		"dropdown": {
@@ -203,10 +204,15 @@
 			"expandSidePanel": "Expand panel"
 		},
 		"sidePanel": {
+			"context": "Context",
 			"classroom": "Classroom",
 			"noClassroom": "No classroom found",
 			"studyPlans": "Study plans",
 			"noStudyPlans": "No study plans attached to this classroom",
+			"lessonPlans": "Lesson plans",
+			"noLessonPlans": "No lesson plans attached to this workspace",
+			"attachLessonPlan": "Attach a lesson plan",
+			"removeLessonPlan": "Remove lesson plan",
 			"planProgress": "{completed} of {total} done",
 			"sources": "Sources",
 			"noSources": "No sources attached to this workspace",
@@ -975,6 +981,11 @@
 		"title": "Class plans",
 		"description": "Markdown plans for a day or a week, built from your study plans. Open one to edit it.",
 		"empty": "No class plans yet. Ask the assistant for today's plan or this week's plan.",
+		"dialogDescription": "Open a class plan to edit it, or attach it to one of your workspaces.",
+		"attach": {
+			"button": "Attach",
+			"success": "Class plan attached to the workspace"
+		},
 		"range": {
 			"day": "Day",
 			"week": "Week"

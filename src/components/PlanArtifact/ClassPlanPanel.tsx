@@ -8,5 +8,5 @@ export function ClassPlanPanel() {
 
   if (!classPlanId) return null;
 
-  return <PlanArtifactEditor id={classPlanId} embedded />;
+  return <PlanArtifactEditor id={classPlanId} />;
 }

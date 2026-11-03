@@ -5,10 +5,12 @@ import { useTranslations } from "next-intl";
 import {
   CalendarDaysIcon,
   DocumentTextIcon,
+  PaperClipIcon,
   PencilSquareIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
+import { sileo } from "sileo";
 import { api } from "~/trpc/react";
 import { Button } from "../common/Button";
 import { Badge } from "../ui/badge";
@@ -32,15 +34,33 @@ import {
   type PlanSettings,
 } from "./PlanArtifactSettingsDialog";
 
-export function PlanArtifactList() {
+export function PlanArtifactList({ workspaceId }: { workspaceId: string }) {
   const t = useTranslations("PlanArtifact");
+  const utils = api.useUtils();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingPlan, setEditingPlan] = useState<PlanSettings | null>(null);
+  const { data: workspace } = api.workspace.workspaceById.useQuery({
+    id: workspaceId,
+  });
   const {
-    data: plans = [],
+    data: allPlans = [],
     isLoading,
     isError,
   } = api.planArtifact.listAll.useQuery();
+  // Only plans of the open workspace's classroom can be attached to it.
+  const plans = allPlans.filter(
+    (plan) => plan.classroomId === workspace?.classroomId,
+  );
+
+  const attach = api.planArtifact.attachToWorkspace.useMutation({
+    onSuccess: () => {
+      sileo.show({ title: t("attach.success") });
+      void utils.planArtifact.listForWorkspace.invalidate({ workspaceId });
+    },
+    onError: (error) => {
+      sileo.show({ title: error.message });
+    },
+  });
 
   return (
     <ResizablePanelGroup
@@ -122,6 +142,20 @@ export function PlanArtifactList() {
                   </div>
 
                   <div className="mt-auto flex justify-end gap-2 pt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      isPending={attach.isPending}
+                      onClick={() =>
+                        attach.mutate({
+                          workspaceId,
+                          planArtifactId: plan.id,
+                        })
+                      }
+                    >
+                      <PaperClipIcon className="h-4 w-4" />
+                      {t("attach.button")}
+                    </Button>
                     <Button
                       size="sm"
                       variant="outline"

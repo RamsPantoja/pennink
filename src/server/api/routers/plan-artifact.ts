@@ -3,6 +3,8 @@ import {
 	createPlanArtifactInputSchema,
 	planArtifactByIdInputSchema,
 	updatePlanArtifactInputSchema,
+	workspacePlanArtifactInputSchema,
+	workspacePlanArtifactsInputSchema,
 } from "../schemas/plan-artifact";
 
 export const planArtifactRouter = createTRPCRouter({
@@ -29,5 +31,26 @@ export const planArtifactRouter = createTRPCRouter({
 			ctx
 				.services({ ctx })
 				.planArtifactService.update(input, ctx.session.user.id),
+		),
+	listForWorkspace: protectedProcedure
+		.input(workspacePlanArtifactsInputSchema)
+		.query(({ input, ctx }) =>
+			ctx
+				.services({ ctx })
+				.planArtifactService.listForWorkspace(input, ctx.session.user.id),
+		),
+	attachToWorkspace: protectedProcedure
+		.input(workspacePlanArtifactInputSchema)
+		.mutation(({ input, ctx }) =>
+			ctx
+				.services({ ctx })
+				.planArtifactService.attachToWorkspace(input, ctx.session.user.id),
+		),
+	detachFromWorkspace: protectedProcedure
+		.input(workspacePlanArtifactInputSchema)
+		.mutation(({ input, ctx }) =>
+			ctx
+				.services({ ctx })
+				.planArtifactService.detachFromWorkspace(input, ctx.session.user.id),
 		),
 });

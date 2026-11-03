@@ -20,6 +20,15 @@ export const updatePlanArtifactInputSchema = z.object({
 	blocks: z.array(z.record(z.string(), z.unknown())).max(5_000).optional(),
 });
 
+export const workspacePlanArtifactsInputSchema = z.object({
+	workspaceId: z.string().uuid(),
+});
+
+export const workspacePlanArtifactInputSchema = z.object({
+	workspaceId: z.string().uuid(),
+	planArtifactId: planArtifactIdSchema,
+});
+
 export const createPlanArtifactInputSchema = z.object({
 	classroomId: classroomIdSchema,
 	title: titleSchema,

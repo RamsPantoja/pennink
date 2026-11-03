@@ -5,6 +5,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type KeyboardEvent,
 } from "react";
 import { useTranslations } from "next-intl";
@@ -170,9 +171,11 @@ function PlanArtifactContent({ plan }: { plan: PlanArtifactData }) {
         <p className="text-destructive text-sm">{t("saveError")}</p>
       )}
 
-      <div className="overflow-auto flex w-full h-full border rounded-md">
+      <div className="overflow-auto flex w-full h-full">
         <BlockNoteView
-          style={{ background: "transparent" }}
+          style={
+            { "--bn-colors-editor-background": "transparent" } as CSSProperties
+          }
           editor={editor}
           theme={"dark"}
         />
