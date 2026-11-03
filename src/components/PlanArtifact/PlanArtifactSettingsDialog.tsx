@@ -25,7 +25,7 @@ import {
 export type PlanSettings = {
 	id: string;
 	title: string;
-	range: "day" | "week";
+	range: "day" | "week" | "lesson";
 	startDate: string;
 	endDate: string;
 };

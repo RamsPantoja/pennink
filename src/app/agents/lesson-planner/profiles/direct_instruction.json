@@ -1,0 +1,150 @@
+{
+	"id": "direct_instruction",
+	"name": "Direct Instruction (Gradual Release)",
+	"description": "Lesson structure of Madeline Hunter and the gradual release of responsibility: from modeling to independent practice.",
+	"version": "1.0.0",
+	"default_language": "en-US",
+	"hints": [
+		"madeline hunter",
+		"gradual release",
+		"direct instruction",
+		"instruccion directa",
+		"liberacion gradual",
+		"anticipatory set"
+	],
+	"fields": [
+		{
+			"key": "grade",
+			"label": "Grade or level",
+			"type": "text",
+			"required": true,
+			"ask_priority": 1,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "subject",
+			"label": "Subject",
+			"type": "text",
+			"required": true,
+			"ask_priority": 2,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "topic",
+			"label": "Skill or concept",
+			"type": "text",
+			"required": true,
+			"ask_priority": 3,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "sessions",
+			"label": "Number of sessions",
+			"type": "number",
+			"required": true,
+			"ask_priority": 4,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "minutes_per_session",
+			"label": "Minutes per session",
+			"type": "number",
+			"required": true,
+			"ask_priority": 5,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "objective",
+			"label": "Learning objective",
+			"type": "text",
+			"required": false,
+			"ask_priority": 6,
+			"help": "Leave empty and I will write one",
+			"default_strategy": "ask"
+		},
+		{
+			"key": "group_size",
+			"label": "Number of students",
+			"type": "number",
+			"required": false,
+			"ask_priority": 20,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "student_needs",
+			"label": "Students who need support",
+			"type": "text",
+			"required": false,
+			"ask_priority": 21,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "resources",
+			"label": "Available resources",
+			"type": "text",
+			"required": false,
+			"ask_priority": 22,
+			"default_strategy": "ask"
+		}
+	],
+	"derived_fields": [],
+	"sequence_models": [
+		{
+			"id": "gradual_release",
+			"label": "Gradual release",
+			"phases": [
+				{ "key": "objective_and_purpose", "label": "Objective and purpose" },
+				{ "key": "anticipatory_set", "label": "Anticipatory set" },
+				{ "key": "input_and_modeling", "label": "Input and modeling" },
+				{
+					"key": "checking_for_understanding",
+					"label": "Checking for understanding"
+				},
+				{ "key": "guided_practice", "label": "Guided practice" },
+				{ "key": "independent_practice", "label": "Independent practice" },
+				{ "key": "closure", "label": "Closure" }
+			]
+		}
+	],
+	"default_sequence": { "map": {}, "default": "gradual_release" },
+	"session_template": [
+		{ "key": "opening", "label": "Opening" },
+		{ "key": "development", "label": "Development" },
+		{ "key": "closure", "label": "Closure" },
+		{ "key": "resources", "label": "Resources" },
+		{ "key": "evidence", "label": "Evidence" }
+	],
+	"assessment": {
+		"approach": "formative",
+		"instrument_types": ["exit ticket", "checklist", "observation guide"],
+		"criteria_min": 3,
+		"criteria_max": 5
+	},
+	"content_rules": [
+		"Input and modeling must think aloud, with the teacher showing each step before students try it.",
+		"Checking for understanding must include at least one question or task that every student answers, with a response to a common mistake.",
+		"Guided practice comes before independent practice; independent practice must be short and matched to the objective.",
+		"Do not invent standards or curriculum codes."
+	],
+	"official_text_fields": [],
+	"output_sections": [
+		{ "key": "general_info", "label": "General information" },
+		{ "key": "purpose", "label": "Objective" },
+		{ "key": "framework_fields", "label": "Lesson components" },
+		{ "key": "sequence", "label": "Lesson sequence" },
+		{ "key": "materials", "label": "Materials by session" },
+		{ "key": "resources", "label": "Resources" },
+		{ "key": "differentiation", "label": "Differentiation" },
+		{ "key": "assessment", "label": "Assessment" },
+		{ "key": "assumptions", "label": "Assumptions" },
+		{ "key": "warnings", "label": "Warnings" }
+	],
+	"glossary": [
+		"anticipatory set",
+		"modeling",
+		"checking for understanding",
+		"guided practice",
+		"independent practice",
+		"closure"
+	]
+}

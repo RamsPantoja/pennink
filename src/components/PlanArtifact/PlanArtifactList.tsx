@@ -116,7 +116,7 @@ export function PlanArtifactList({ workspaceId }: { workspaceId: string }) {
                       <p className="text-muted-foreground flex items-center gap-2 text-xs">
                         <CalendarDaysIcon className="h-3.5 w-3.5 shrink-0" />
                         <span className="truncate">
-                          {plan.range === "day"
+                          {plan.range !== "week"
                             ? plan.startDate
                             : t("dates", {
                                 start: plan.startDate,

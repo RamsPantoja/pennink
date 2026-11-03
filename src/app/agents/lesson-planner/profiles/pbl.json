@@ -1,0 +1,164 @@
+{
+	"id": "pbl",
+	"name": "Project-Based Learning",
+	"description": "Project sequence: entry event and driving question, build knowledge, develop and critique, present a public product, reflect.",
+	"version": "1.0.0",
+	"default_language": "en-US",
+	"hints": [
+		"pbl",
+		"project based learning",
+		"project-based learning",
+		"driving question",
+		"pregunta detonadora",
+		"public product"
+	],
+	"fields": [
+		{
+			"key": "grade",
+			"label": "Grade or level",
+			"type": "text",
+			"required": true,
+			"ask_priority": 1,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "subject",
+			"label": "Subject",
+			"type": "text",
+			"required": true,
+			"ask_priority": 2,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "topic",
+			"label": "Project theme",
+			"type": "text",
+			"required": true,
+			"ask_priority": 3,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "sessions",
+			"label": "Number of sessions",
+			"type": "number",
+			"required": true,
+			"ask_priority": 4,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "minutes_per_session",
+			"label": "Minutes per session",
+			"type": "number",
+			"required": true,
+			"ask_priority": 5,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "driving_question",
+			"label": "Driving question",
+			"type": "text",
+			"required": false,
+			"ask_priority": 10,
+			"help": "Leave empty and I will propose one",
+			"default_strategy": "ask"
+		},
+		{
+			"key": "public_product",
+			"label": "Public product",
+			"type": "text",
+			"required": false,
+			"ask_priority": 11,
+			"help": "What students will show to an audience",
+			"default_strategy": "ask"
+		},
+		{
+			"key": "group_size",
+			"label": "Number of students",
+			"type": "number",
+			"required": false,
+			"ask_priority": 20,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "student_needs",
+			"label": "Students who need support",
+			"type": "text",
+			"required": false,
+			"ask_priority": 21,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "resources",
+			"label": "Available resources",
+			"type": "text",
+			"required": false,
+			"ask_priority": 22,
+			"default_strategy": "ask"
+		}
+	],
+	"derived_fields": [],
+	"sequence_models": [
+		{
+			"id": "pbl",
+			"label": "Project phases",
+			"phases": [
+				{
+					"key": "launch",
+					"label": "Launch: entry event and driving question"
+				},
+				{ "key": "build_knowledge", "label": "Build knowledge and skills" },
+				{
+					"key": "develop_and_critique",
+					"label": "Develop and critique, with feedback cycles"
+				},
+				{ "key": "present_product", "label": "Present the public product" },
+				{ "key": "reflect", "label": "Reflect" }
+			]
+		}
+	],
+	"default_sequence": { "map": {}, "default": "pbl" },
+	"session_template": [
+		{ "key": "teacher_role", "label": "Teacher role" },
+		{ "key": "student_work", "label": "Student work" },
+		{ "key": "feedback", "label": "Feedback cycle" },
+		{ "key": "resources", "label": "Resources" },
+		{ "key": "evidence", "label": "Evidence" }
+	],
+	"assessment": {
+		"approach": "both",
+		"instrument_types": [
+			"rubric",
+			"checklist",
+			"critique protocol",
+			"reflection journal"
+		],
+		"criteria_min": 4,
+		"criteria_max": 6
+	},
+	"content_rules": [
+		"The driving question must be open, relevant to students and answerable through the project. If the teacher did not give one, propose one and list it in the assumptions.",
+		"The develop-and-critique phase must include at least one feedback cycle with a concrete protocol (peer or teacher critique).",
+		"The public product must have a real audience. If the teacher did not say one, propose it and list it in the assumptions.",
+		"Do not invent standards or curriculum codes."
+	],
+	"official_text_fields": [],
+	"output_sections": [
+		{ "key": "general_info", "label": "General information" },
+		{ "key": "purpose", "label": "Purpose" },
+		{ "key": "framework_fields", "label": "Project" },
+		{ "key": "sequence", "label": "Project sequence" },
+		{ "key": "materials", "label": "Materials by session" },
+		{ "key": "final_product", "label": "Public product" },
+		{ "key": "resources", "label": "Resources" },
+		{ "key": "differentiation", "label": "Differentiation" },
+		{ "key": "assessment", "label": "Assessment" },
+		{ "key": "assumptions", "label": "Assumptions" },
+		{ "key": "warnings", "label": "Warnings" }
+	],
+	"glossary": [
+		"driving question",
+		"public product",
+		"entry event",
+		"critique protocol"
+	]
+}

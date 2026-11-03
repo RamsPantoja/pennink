@@ -14,13 +14,27 @@ import { AgentTrace } from "./AgentTrace";
 import { extractSpeechText } from "~/lib/speechText";
 import { getChatAttachments } from "~/lib/chatAttachments";
 import { ChatAttachmentList } from "./ChatAttachments";
+import { AskUserCard } from "./AskUserCard";
+import type {
+  AskUserInput,
+  AskUserOutput,
+} from "~/app/agents/chat/ask-user";
 
 type MessageCardProps = {
   message: Message;
   isStreaming?: boolean;
+  onAskUserAnswer?: (
+    message: Message,
+    toolCallId: string,
+    output: AskUserOutput,
+  ) => void;
 };
 
-export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
+export const MessageCard = ({
+  message,
+  isStreaming,
+  onAskUserAnswer,
+}: MessageCardProps) => {
   const { data } = useSession();
   const speechText = extractSpeechText(message.parts) ?? message.content;
 
@@ -67,8 +81,30 @@ export const MessageCard = ({ message, isStreaming }: MessageCardProps) => {
                 default: {
                   const toolPart = part as unknown as {
                     type?: string;
-                    output?: { artifact?: ChatArtifact; mindMap?: MindMap };
+                    toolCallId?: string;
+                    state?: string;
+                    input?: AskUserInput;
+                    output?: { artifact?: ChatArtifact; mindMap?: MindMap } &
+                      AskUserOutput;
                   };
+                  if (toolPart.type === "tool-askUser" && toolPart.input) {
+                    return (
+                      <AskUserCard
+                        key={`${message.id}-${i}`}
+                        toolCallId={toolPart.toolCallId ?? ""}
+                        input={toolPart.input}
+                        output={
+                          toolPart.state === "output-available"
+                            ? toolPart.output
+                            : undefined
+                        }
+                        disabled={isStreaming}
+                        onSubmit={(toolCallId, output) =>
+                          onAskUserAnswer?.(message, toolCallId, output)
+                        }
+                      />
+                    );
+                  }
                   if (
                     toolPart.type === "tool-createMindMap" &&
                     toolPart.output?.mindMap

@@ -13,7 +13,7 @@ export const planArtifactByIdInputSchema = z.object({
 export const updatePlanArtifactInputSchema = z.object({
 	id: planArtifactIdSchema,
 	title: titleSchema.optional(),
-	range: z.enum(["day", "week"]).optional(),
+	range: z.enum(["day", "week", "lesson"]).optional(),
 	startDate: isoDateSchema.optional(),
 	endDate: isoDateSchema.optional(),
 	content: z.string().max(200_000).optional(),
@@ -32,7 +32,7 @@ export const workspacePlanArtifactInputSchema = z.object({
 export const createPlanArtifactInputSchema = z.object({
 	classroomId: classroomIdSchema,
 	title: titleSchema,
-	range: z.enum(["day", "week"]),
+	range: z.enum(["day", "week", "lesson"]),
 	startDate: isoDateSchema,
 	endDate: isoDateSchema,
 	content: z.string().max(200_000).default(""),

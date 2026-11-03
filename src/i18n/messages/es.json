@@ -134,6 +134,18 @@
 	},
 
 	"Chat": {
+		"status": {
+			"thinking": "Pensando…",
+			"searching": "Preparando tu respuesta…",
+			"waitingForTeacher": "Esperando tu respuesta",
+			"error": "Algo salió mal. Inténtalo de nuevo."
+		},
+		"askUser": {
+			"submit": "Enviar respuestas",
+			"other": "Otra",
+			"placeholder": "Escribe tu respuesta",
+			"skipped": "Omitida: se continuó sin responder"
+		},
 		"trace": {
 			"summary": "Usó {count, plural, one {# paso} other {# pasos}}",
 			"thinking": "Pensando",
@@ -143,7 +155,7 @@
 				"generateAndEditForm": "Generando formulario",
 				"shareClassroomLink": "Compartiendo enlace de la clase",
 				"manageStudyPlan": "Gestionando plan de estudio",
-				"createPlanArtifact": "Escribiendo plan de clase",
+				"lessonPlanner": "Planeando la clase",
 				"listClassroomStudents": "Listando estudiantes de la clase",
 				"createMindMap": "Creando mapa mental",
 				"unknown": "Ejecutando herramienta"
@@ -853,6 +865,29 @@
 		"manage": "Administrar aula"
 	},
 
+	"StudentImportDialog": {
+		"title": "Importar estudiantes desde Excel",
+		"description": "Sube un archivo .xlsx con columnas de nombre y correo, y revisa la vista previa antes de importar.",
+		"format": "Usa la primera hoja. La primera fila debe tener los encabezados name y email (o nombre y correo). Hasta 500 estudiantes, 2 MB.",
+		"parsing": "Leyendo archivo...",
+		"summary": "Nuevos: {new} · Existentes: {existing} · Ya inscritos: {enrolled} · Inválidos: {invalid} · Duplicados: {duplicate}",
+		"status": {
+			"new": "Nuevo",
+			"existing": "Estudiante existente",
+			"already_enrolled": "Ya inscrito",
+			"invalid": "Inválido",
+			"duplicate_in_file": "Duplicado"
+		},
+		"errors": {
+			"notXlsx": "Elige un archivo .xlsx.",
+			"tooLarge": "El archivo supera los 2 MB."
+		},
+		"button": {
+			"chooseFile": "Elegir archivo",
+			"cancel": "Cancelar",
+			"import": "Importar {count} estudiantes"
+		}
+	},
 	"ClassroomDetails": {
 		"loading": "Cargando aula...",
 		"description": "Gestiona tu aula.",
@@ -860,6 +895,7 @@
 			"delete": "Eliminar aula",
 			"rename": "Renombrar",
 			"addStudent": "Agregar estudiante",
+			"importExcel": "Importar desde Excel",
 			"addTeacher": "Agregar profesor",
 			"remove": "Quitar"
 		},
@@ -988,7 +1024,8 @@
 		},
 		"range": {
 			"day": "Día",
-			"week": "Semana"
+			"week": "Semana",
+			"lesson": "Clase"
 		},
 		"dates": "{start} a {end}",
 		"updated": "Actualizado {date}",

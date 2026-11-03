@@ -12,6 +12,7 @@
     "dev": "next dev",
     "email": "email dev --dir src/emails --port 3030",
     "lint": "biome lint ./src",
+    "test": "vitest run",
     "start": "next start"
   },
   "dependencies": {
@@ -81,6 +82,7 @@
     "docx": "^9.5.1",
     "drizzle-orm": "^0.41.0",
     "editorjs-html": "^4.0.5",
+    "exceljs": "^4.4.0",
     "framer-motion": "^12.23.12",
     "geist": "^1.4.2",
     "json-schema-to-zod": "^2.6.1",
@@ -156,7 +158,8 @@
     "react-email": "^6.11.3",
     "tailwindcss": "^4.1.13",
     "tsx": "^4.19.3",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "vitest": "^3.2.7"
   },
   "ct3aMetadata": {
     "initVersion": "7.34.0"

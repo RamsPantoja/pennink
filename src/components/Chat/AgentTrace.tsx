@@ -33,13 +33,17 @@ type AgentTraceProps = {
   isStreaming?: boolean;
 };
 
-const HIDDEN_TOOLS = ["tool-prepareSpeechText", "tool-createArtifact"];
+const HIDDEN_TOOLS = [
+  "tool-prepareSpeechText",
+  "tool-createArtifact",
+  "tool-askUser",
+];
 
 const LABELED_TOOLS = [
   "generateAndEditForm",
   "shareClassroomLink",
   "manageStudyPlan",
-  "createPlanArtifact",
+  "lessonPlanner",
   "listClassroomStudents",
   "createMindMap",
 ];

@@ -16,6 +16,7 @@ import {
 } from "ai";
 import { useChat } from "@ai-sdk/react";
 import type { AiForm } from "~/app/agents/chat/schema";
+import type { AskUserOutput } from "~/app/agents/chat/ask-user";
 import type { MindMap } from "~/app/agents/chat/mind-map";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
@@ -23,6 +24,11 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { playAgentSpeech, stopAgentSpeech } from "~/lib/agentAudio";
 import { extractSpeechText } from "~/lib/speechText";
+import {
+	hasPendingAskUser,
+	settleAskUser,
+	withAskUserOutput,
+} from "~/lib/askUserParts";
 import { getConversationTokens } from "~/lib/contextWindow";
 import { useActiveClassroom } from "../Classroom/useActiveClassroom";
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
@@ -99,6 +105,18 @@ const createAssistantMessageMetadata = (chatId: string, session: Session) => {
 	};
 };
 
+const withTextParts = (list: Message[]): Message[] =>
+	list.map((item) => {
+		if (item.parts.length > 0) {
+			return item;
+		}
+
+		return {
+			...item,
+			parts: [{ type: "text", text: item.content }] as Message["parts"],
+		};
+	});
+
 export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	const t = useTranslations("Chat");
 	const router = useRouter();
@@ -164,7 +182,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				void utils.studyPlan.listForClassroom.invalidate();
 			}
 
-			if (data.message.parts.some((part) => part.type === "tool-createPlanArtifact")) {
+			if (data.message.parts.some((part) => part.type === "tool-lessonPlanner")) {
 				void utils.planArtifact.listAll.invalidate();
 			}
 
@@ -316,6 +334,13 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		},
 	});
 
+	const { mutateAsync: updateMessagePartsAsync } =
+		api.chat.updateMessageParts.useMutation({
+			onError: (error) => {
+				console.error(error.message);
+			},
+		});
+
 	const { mutate: createMessage, mutateAsync: createMessageAsync } =
 		api.chat.createMessage.useMutation({
 		onSuccess: async (data) => {
@@ -394,6 +419,62 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		setAttachments((prev) => prev.filter((item) => item.key !== key));
 	};
 
+	// Saves the answers (or the skip) on the message that asked, so a reload shows them.
+	const persistAskUser = (message: Message) => {
+		updateMessagePartsAsync({
+			chatId,
+			messageId: message.id,
+			parts: message.parts,
+		}).catch((error: unknown) => console.error(error));
+	};
+
+	// A new message sent while a question is open skips it, so the model gets a tool result.
+	const settleOpenAskUser = (message: Message): Message => {
+		if (!hasPendingAskUser(message)) return message;
+
+		const settled = settleAskUser(message);
+		persistAskUser(settled);
+		return settled;
+	};
+
+	const resumeAgent = async (history: Message[]) => {
+		if (!session) return;
+
+		const convertedToModelMessages = await convertToModelMessages(
+			withTextParts(history),
+		);
+
+		await sendMessage(undefined, {
+			body: {
+				context: {
+					messages: convertedToModelMessages,
+				},
+				prompt: "",
+				attachments: [],
+				metadata: createAssistantMessageMetadata(chatId, session),
+				activeForm: getActiveForm(),
+				activeClassroomId: activeClassroomId ?? null,
+			},
+		});
+	};
+
+	const answerAskUser = (
+		assistant: Message,
+		toolCallId: string,
+		output: AskUserOutput,
+	) => {
+		const answered = withAskUserOutput(assistant, toolCallId, output);
+		const nextMessages = [
+			...messages.filter((item) => item.id !== answered.id),
+			answered,
+		];
+
+		setMessages(nextMessages);
+		cleanUseChatMessages([]);
+		persistAskUser(answered);
+		void resumeAgent(nextMessages);
+	};
+
 	const onSentPrompt = async (data: ChatValidationSchema) => {
 		if (!hasClassroom) {
 			sileo.show({ title: t("toast.createClassroomFirst") });
@@ -432,18 +513,17 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 				sentAttachments.length > 0 ? { attachments: sentAttachments } : null,
 		};
 
-		const currentAssistantMessage = parseUIMessage(tempMessages[0]);
+		const openMessages = messages.map(settleOpenAskUser);
+		const parsedAssistantMessage = parseUIMessage(tempMessages[0]);
+		const currentAssistantMessage =
+			parsedAssistantMessage && settleOpenAskUser(parsedAssistantMessage);
 
 		if (currentAssistantMessage) {
-			setMessages((prev) => {
-				return [...prev, currentAssistantMessage, message];
-			});
+			setMessages([...openMessages, currentAssistantMessage, message]);
 
 			cleanUseChatMessages([]);
 		} else {
-			setMessages((prev) => {
-				return [...prev, message];
-			});
+			setMessages([...openMessages, message]);
 		}
 
 		try {
@@ -589,16 +669,7 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		}
 
-		const allMessages = messages.map((item) => {
-			if (item.parts.length > 0) {
-				return item;
-			}
-
-			return {
-				...item,
-				parts: [{ type: "text", text: item.content }] as Message["parts"],
-			};
-		});
+		const allMessages = withTextParts(openMessages);
 
 		if (currentAssistantMessage) {
 			allMessages.push(currentAssistantMessage);
@@ -691,5 +762,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,
 		status,
+		answerAskUser,
 	};
 };

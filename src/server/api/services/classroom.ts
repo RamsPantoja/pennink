@@ -8,16 +8,22 @@ import {
 	students,
 } from "~/server/db/schema";
 import type { TRPCContext } from "../../trpc";
-import {
+import type {
 	classroomByIdInputSchema,
 	classroomTeacherInputSchema,
 	addClassroomTeacherInputSchema,
 	createClassroomInputSchema,
 	createStudentInputSchema,
 	deleteStudentInputSchema,
+	importStudentsInputSchema,
+	parseStudentImportInputSchema,
 	updateClassroomNameInputSchema,
 	updateStudentInputSchema,
 } from "../schemas/classroom";
+import {
+	classifyStudentRows,
+	parseStudentsWorkbook,
+} from "./classroom-import";
 
 type CreateClassroomInput = z.infer<typeof createClassroomInputSchema>;
 type UpdateClassroomInput = z.infer<typeof updateClassroomNameInputSchema>;
@@ -26,6 +32,8 @@ type AddTeacherInput = z.infer<typeof addClassroomTeacherInputSchema>;
 type CreateStudentInput = z.infer<typeof createStudentInputSchema>;
 type UpdateStudentInput = z.infer<typeof updateStudentInputSchema>;
 type DeleteStudentInput = z.infer<typeof deleteStudentInputSchema>;
+type PreviewStudentImportInput = z.infer<typeof parseStudentImportInputSchema>;
+type ImportStudentsInput = z.infer<typeof importStudentsInputSchema>;
 
 export class ClassroomService {
 	constructor(private readonly ctx: TRPCContext) {}
@@ -197,6 +205,67 @@ export class ClassroomService {
 				),
 			);
 		return { id: input.studentId };
+	}
+
+	public async previewStudentImport(
+		input: PreviewStudentImportInput,
+		userId: string,
+	) {
+		await this.assertTeacher(input.classroomId, userId);
+		const parsed = await parseStudentsWorkbook(
+			Buffer.from(input.fileBase64, "base64"),
+		);
+		if (!parsed.ok) {
+			throw new TRPCError({ code: "BAD_REQUEST", message: parsed.message });
+		}
+		const rows = await classifyStudentRows(
+			this.ctx.db,
+			input.classroomId,
+			parsed.rows,
+		);
+		return { rows };
+	}
+
+	public async importStudents(input: ImportStudentsInput, userId: string) {
+		await this.assertTeacher(input.classroomId, userId);
+		const uniqueRows = [
+			...new Map(
+				input.rows.map((row) => [row.email.toLowerCase(), row]),
+			).values(),
+		];
+
+		return this.ctx.db.transaction(async (tx) => {
+			const summary = { created: 0, linked: 0, skipped: 0 };
+			for (const row of uniqueRows) {
+				const email = row.email.toLowerCase();
+				const [existing] = await tx
+					.select({ id: students.id })
+					.from(students)
+					.where(eq(students.email, email))
+					.limit(1);
+
+				let studentId = existing?.id;
+				if (!studentId) {
+					const [student] = await tx
+						.insert(students)
+						.values({ name: row.name, email })
+						.returning({ id: students.id });
+					if (!student) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+					studentId = student.id;
+				}
+
+				const enrolled = await tx
+					.insert(classroomStudents)
+					.values({ classroomId: input.classroomId, studentId, email })
+					.onConflictDoNothing()
+					.returning({ studentId: classroomStudents.studentId });
+
+				if (enrolled.length === 0) summary.skipped++;
+				else if (existing) summary.linked++;
+				else summary.created++;
+			}
+			return summary;
+		});
 	}
 
 	private async assertTeacher(classroomId: string, userId: string) {

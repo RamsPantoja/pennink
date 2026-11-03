@@ -1,10 +1,13 @@
 import type { z } from "zod";
 import type { TRPCContext } from "../../trpc";
 import { messages, statics } from "~/server/db/schema";
-import type { createMessageInputSchema } from "../schemas/chat";
+import type {
+	createMessageInputSchema,
+	updateMessagePartsInputSchema,
+} from "../schemas/chat";
 import { TRPCError } from "@trpc/server";
 import { DateTime } from "luxon";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { userHasClassroom } from "./classroom";
 
 export type Message = typeof messages.$inferSelect;
@@ -14,6 +17,7 @@ type ChatConstructor = {
 };
 
 type CreateMessageInput = z.infer<typeof createMessageInputSchema>;
+type UpdateMessagePartsInput = z.infer<typeof updateMessagePartsInputSchema>;
 
 export class Chat {
 	ctx: TRPCContext;
@@ -132,6 +136,33 @@ export class Chat {
 		}
 
 		return message;
+	}
+
+	// Saves the answers to an askUser card on the message that asked, so a reload shows them.
+	public async updateMessageParts(
+		input: UpdateMessagePartsInput,
+		userId: string,
+	) {
+		const [updated] = await this.ctx.db
+			.update(messages)
+			.set({ parts: input.parts })
+			.where(
+				and(
+					eq(messages.id, input.messageId),
+					eq(messages.chatId, input.chatId),
+					eq(messages.userId, userId),
+				),
+			)
+			.returning({ id: messages.id });
+
+		if (!updated) {
+			throw new TRPCError({
+				code: "NOT_FOUND",
+				message: "Message not found",
+			});
+		}
+
+		return updated;
 	}
 
 	public chatMessagesRule(userId: string) {

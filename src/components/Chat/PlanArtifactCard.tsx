@@ -8,7 +8,7 @@ export type PlanArtifactOutput = {
 	status: "success" | "error";
 	id?: string;
 	title?: string;
-	range?: "day" | "week";
+	range?: "day" | "week" | "lesson";
 	startDate?: string;
 	endDate?: string;
 	itemCount?: number;
@@ -38,7 +38,7 @@ export const PlanArtifactCard = ({ plan }: { plan: PlanArtifactOutput }) => {
 			<div className="min-w-0 flex-1">
 				<p className="truncate font-medium text-foreground">{plan.title}</p>
 				<p className="text-xs text-muted-foreground">
-					{plan.range === "day"
+					{plan.range !== "week"
 						? plan.startDate
 						: t("dates", {
 								start: plan.startDate ?? "",

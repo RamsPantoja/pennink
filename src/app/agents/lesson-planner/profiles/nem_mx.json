@@ -1,0 +1,506 @@
+{
+	"id": "nem_mx",
+	"name": "Nueva Escuela Mexicana (Plan de Estudio 2022)",
+	"description": "Planeación por fases y campos formativos del Plan de Estudio 2022 de la Nueva Escuela Mexicana, con metodología según el campo formativo.",
+	"version": "1.0.0",
+	"default_language": "es-MX",
+	"hints": [
+		"nem",
+		"nueva escuela mexicana",
+		"plan de estudio 2022",
+		"campo formativo",
+		"campos formativos",
+		"ejes articuladores",
+		"pda",
+		"proceso de desarrollo de aprendizaje",
+		"problematica del contexto"
+	],
+	"fields": [
+		{
+			"key": "grade",
+			"label": "Grado o nivel",
+			"type": "grade",
+			"required": true,
+			"ask_priority": 1,
+			"help": "Preescolar o grado de primaria o secundaria",
+			"default_strategy": "ask",
+			"options": [
+				{
+					"value": "preescolar",
+					"label": "Preescolar",
+					"aliases": ["kinder", "kinder de preescolar"]
+				},
+				{
+					"value": "1_primaria",
+					"label": "1° de primaria",
+					"aliases": ["primero de primaria", "1 primaria", "1ro de primaria"]
+				},
+				{
+					"value": "2_primaria",
+					"label": "2° de primaria",
+					"aliases": ["segundo de primaria", "2 primaria", "2do de primaria"]
+				},
+				{
+					"value": "3_primaria",
+					"label": "3° de primaria",
+					"aliases": ["tercero de primaria", "3 primaria", "3ro de primaria"]
+				},
+				{
+					"value": "4_primaria",
+					"label": "4° de primaria",
+					"aliases": [
+						"cuarto",
+						"cuarto de primaria",
+						"4 primaria",
+						"4to de primaria"
+					]
+				},
+				{
+					"value": "5_primaria",
+					"label": "5° de primaria",
+					"aliases": [
+						"quinto",
+						"quinto de primaria",
+						"5 primaria",
+						"5to de primaria"
+					]
+				},
+				{
+					"value": "6_primaria",
+					"label": "6° de primaria",
+					"aliases": [
+						"sexto",
+						"sexto de primaria",
+						"6 primaria",
+						"6to de primaria"
+					]
+				},
+				{
+					"value": "1_secundaria",
+					"label": "1° de secundaria",
+					"aliases": [
+						"primero de secundaria",
+						"1 secundaria",
+						"1ro de secundaria"
+					]
+				},
+				{
+					"value": "2_secundaria",
+					"label": "2° de secundaria",
+					"aliases": [
+						"segundo de secundaria",
+						"2 secundaria",
+						"2do de secundaria"
+					]
+				},
+				{
+					"value": "3_secundaria",
+					"label": "3° de secundaria",
+					"aliases": [
+						"tercero de secundaria",
+						"3 secundaria",
+						"3ro de secundaria"
+					]
+				}
+			]
+		},
+		{
+			"key": "campo_formativo",
+			"label": "Campo formativo principal",
+			"type": "enum",
+			"required": true,
+			"ask_priority": 2,
+			"help": "Campo que guía la metodología",
+			"default_strategy": "ask",
+			"options": [
+				{
+					"value": "lenguajes",
+					"label": "Lenguajes",
+					"aliases": ["lenguaje", "lengua", "lenguajes"]
+				},
+				{
+					"value": "saberes_pensamiento_cientifico",
+					"label": "Saberes y pensamiento científico",
+					"aliases": [
+						"saberes",
+						"pensamiento cientifico",
+						"ciencias",
+						"ciencia",
+						"stem",
+						"steam"
+					]
+				},
+				{
+					"value": "etica_naturaleza_sociedades",
+					"label": "Ética, naturaleza y sociedades",
+					"aliases": [
+						"etica",
+						"naturaleza",
+						"sociedades",
+						"historia",
+						"geografia"
+					]
+				},
+				{
+					"value": "de_lo_humano_y_lo_comunitario",
+					"label": "De lo humano y lo comunitario",
+					"aliases": [
+						"lo humano",
+						"humano y comunitario",
+						"comunitario",
+						"formacion civica"
+					]
+				}
+			]
+		},
+		{
+			"key": "campos_combinados",
+			"label": "Otros campos formativos combinados",
+			"type": "multi_enum",
+			"required": false,
+			"ask_priority": 20,
+			"help": "Solo si la clase combina más de un campo",
+			"default_strategy": "ask",
+			"options": [
+				{
+					"value": "lenguajes",
+					"label": "Lenguajes",
+					"aliases": ["lenguaje", "lengua"]
+				},
+				{
+					"value": "saberes_pensamiento_cientifico",
+					"label": "Saberes y pensamiento científico",
+					"aliases": ["saberes", "ciencias"]
+				},
+				{
+					"value": "etica_naturaleza_sociedades",
+					"label": "Ética, naturaleza y sociedades",
+					"aliases": ["etica", "naturaleza", "sociedades"]
+				},
+				{
+					"value": "de_lo_humano_y_lo_comunitario",
+					"label": "De lo humano y lo comunitario",
+					"aliases": ["lo humano", "comunitario"]
+				}
+			]
+		},
+		{
+			"key": "problematica",
+			"label": "Problemática del contexto",
+			"type": "text",
+			"required": true,
+			"ask_priority": 3,
+			"help": "Situación real del grupo o la comunidad que se quiere atender",
+			"default_strategy": "ask"
+		},
+		{
+			"key": "sessions",
+			"label": "Número de sesiones",
+			"type": "number",
+			"required": true,
+			"ask_priority": 4,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "minutes_per_session",
+			"label": "Minutos por sesión",
+			"type": "number",
+			"required": true,
+			"ask_priority": 5,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "group_size",
+			"label": "Número de estudiantes",
+			"type": "number",
+			"required": false,
+			"ask_priority": 20,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "student_needs",
+			"label": "Estudiantes con necesidades específicas de apoyo",
+			"type": "text",
+			"required": false,
+			"ask_priority": 21,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "resources",
+			"label": "Recursos disponibles",
+			"type": "text",
+			"required": false,
+			"ask_priority": 22,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "ejes",
+			"label": "Ejes articuladores",
+			"type": "multi_enum",
+			"required": false,
+			"ask_priority": 23,
+			"default_strategy": "infer",
+			"options": [
+				{
+					"value": "inclusion",
+					"label": "Inclusión",
+					"aliases": ["inclusion", "inclusivo"]
+				},
+				{
+					"value": "pensamiento_critico",
+					"label": "Pensamiento crítico",
+					"aliases": ["pensamiento critico", "critico", "critica"]
+				},
+				{
+					"value": "interculturalidad_critica",
+					"label": "Interculturalidad crítica",
+					"aliases": ["interculturalidad", "intercultural"]
+				},
+				{
+					"value": "igualdad_de_genero",
+					"label": "Igualdad de género",
+					"aliases": ["genero", "igualdad"]
+				},
+				{
+					"value": "vida_saludable",
+					"label": "Vida saludable",
+					"aliases": ["salud", "saludable"]
+				},
+				{
+					"value": "apropiacion_de_las_culturas_a_traves_de_la_lectura_y_la_escritura",
+					"label": "Apropiación de las culturas a través de la lectura y la escritura",
+					"aliases": ["lectura", "escritura", "culturas"]
+				},
+				{
+					"value": "artes_y_experiencias_esteticas",
+					"label": "Artes y experiencias estéticas",
+					"aliases": ["artes", "arte", "estetica"]
+				}
+			]
+		},
+		{
+			"key": "escenario",
+			"label": "Escenario",
+			"type": "enum",
+			"required": false,
+			"ask_priority": 24,
+			"default_strategy": "ask",
+			"options": [
+				{ "value": "aula", "label": "Aula", "aliases": ["aula"] },
+				{
+					"value": "escolar",
+					"label": "Escolar",
+					"aliases": ["escuela", "escolar", "patio"]
+				},
+				{
+					"value": "comunitario",
+					"label": "Comunitario",
+					"aliases": ["comunidad", "comunitario"]
+				}
+			]
+		},
+		{
+			"key": "contenidos",
+			"label": "Contenidos (texto oficial)",
+			"type": "text",
+			"required": false,
+			"ask_priority": 30,
+			"help": "Texto del programa sintético, si lo tienes",
+			"default_strategy": "infer"
+		},
+		{
+			"key": "pda",
+			"label": "PDA (texto oficial)",
+			"type": "text",
+			"required": false,
+			"ask_priority": 31,
+			"help": "Procesos de Desarrollo de Aprendizaje, si los tienes",
+			"default_strategy": "infer"
+		}
+	],
+	"derived_fields": [
+		{
+			"key": "fase",
+			"label": "Fase",
+			"from": "grade",
+			"map": {
+				"preescolar": "2",
+				"1_primaria": "3",
+				"2_primaria": "3",
+				"3_primaria": "4",
+				"4_primaria": "4",
+				"5_primaria": "5",
+				"6_primaria": "5",
+				"1_secundaria": "6",
+				"2_secundaria": "6",
+				"3_secundaria": "6"
+			}
+		}
+	],
+	"sequence_models": [
+		{
+			"id": "proyectos_comunitarios",
+			"label": "Lenguajes: proyectos comunitarios",
+			"phases": [
+				{
+					"key": "planeacion",
+					"label": "Planeación",
+					"steps": [
+						{ "key": "identificacion", "label": "Identificación" },
+						{ "key": "recuperacion", "label": "Recuperación" },
+						{ "key": "planificacion", "label": "Planificación" }
+					]
+				},
+				{
+					"key": "accion",
+					"label": "Acción",
+					"steps": [
+						{ "key": "acercamiento", "label": "Acercamiento" },
+						{
+							"key": "comprension_y_produccion",
+							"label": "Comprensión y producción"
+						},
+						{ "key": "reconocimiento", "label": "Reconocimiento" },
+						{ "key": "concrecion", "label": "Concreción" }
+					]
+				},
+				{
+					"key": "intervencion",
+					"label": "Intervención",
+					"steps": [
+						{ "key": "integracion", "label": "Integración" },
+						{ "key": "difusion", "label": "Difusión" },
+						{ "key": "consideraciones", "label": "Consideraciones" },
+						{ "key": "avances", "label": "Avances" }
+					]
+				}
+			]
+		},
+		{
+			"id": "indagacion_steam",
+			"label": "Saberes y pensamiento científico: indagación con enfoque STEAM",
+			"phases": [
+				{ "key": "introduccion_al_tema", "label": "Introducción al tema" },
+				{
+					"key": "diseno_de_investigacion",
+					"label": "Diseño de investigación"
+				},
+				{
+					"key": "organizar_y_estructurar_respuestas",
+					"label": "Organizar y estructurar respuestas"
+				},
+				{
+					"key": "presentacion_de_resultados",
+					"label": "Presentación de resultados"
+				},
+				{ "key": "metacognicion", "label": "Metacognición" }
+			]
+		},
+		{
+			"id": "aprendizaje_basado_en_problemas",
+			"label": "Ética, naturaleza y sociedades: aprendizaje basado en problemas",
+			"phases": [
+				{ "key": "presentemos", "label": "Presentemos" },
+				{ "key": "recolectemos", "label": "Recolectemos" },
+				{ "key": "formulemos_el_problema", "label": "Formulemos el problema" },
+				{
+					"key": "organicemos_la_experiencia",
+					"label": "Organicemos la experiencia"
+				},
+				{ "key": "vivamos_la_experiencia", "label": "Vivamos la experiencia" },
+				{ "key": "resultados_y_analisis", "label": "Resultados y análisis" }
+			]
+		},
+		{
+			"id": "aprendizaje_servicio",
+			"label": "De lo humano y lo comunitario: aprendizaje servicio",
+			"phases": [
+				{ "key": "punto_de_partida", "label": "Punto de partida" },
+				{
+					"key": "lo_que_se_y_lo_que_quiero_saber",
+					"label": "Lo que sé y lo que quiero saber"
+				},
+				{
+					"key": "organicemos_las_actividades",
+					"label": "Organicemos las actividades"
+				},
+				{ "key": "creatividad_en_marcha", "label": "Creatividad en marcha" },
+				{ "key": "compartimos_y_evaluamos", "label": "Compartimos y evaluamos" }
+			]
+		}
+	],
+	"default_sequence": {
+		"from": "campo_formativo",
+		"map": {
+			"lenguajes": "proyectos_comunitarios",
+			"saberes_pensamiento_cientifico": "indagacion_steam",
+			"etica_naturaleza_sociedades": "aprendizaje_basado_en_problemas",
+			"de_lo_humano_y_lo_comunitario": "aprendizaje_servicio"
+		},
+		"default": "proyectos_comunitarios"
+	},
+	"session_template": [
+		{ "key": "inicio", "label": "Inicio" },
+		{ "key": "desarrollo", "label": "Desarrollo" },
+		{ "key": "cierre", "label": "Cierre" },
+		{ "key": "recursos", "label": "Recursos y materiales" },
+		{ "key": "evidencia", "label": "Evidencia de aprendizaje" }
+	],
+	"assessment": {
+		"approach": "formative",
+		"instrument_types": [
+			"lista de cotejo",
+			"rúbrica",
+			"guía de observación",
+			"registro anecdótico"
+		],
+		"criteria_min": 4,
+		"criteria_max": 6
+	},
+	"content_rules": [
+		"Usa el vocabulario de la NEM: fases, campos formativos, ejes articuladores, PDA y las metodologías del modelo de secuencia.",
+		"Si el docente no proporcionó los contenidos o PDA, escríbelos como aproximación y deja claro en las notas que deben verificarse con el programa sintético de la fase.",
+		"Cada fase del modelo de secuencia debe aparecer en la secuencia. Si hay menos sesiones que fases, agrupa las fases en la sesión indicada.",
+		"Si la clase combina campos formativos, usa la metodología del campo principal y nómbralo primero.",
+		"Cada eje articulador seleccionado debe tener una entrada en los campos del marco que explique cómo se aborda en las actividades.",
+		"Incluye al menos un ajuste razonable, aunque el docente no haya mencionado necesidades específicas.",
+		"Escribe las actividades con instrucciones concretas que el docente pueda decir en clase, con materiales accesibles en una escuela pública sin internet.",
+		"No inventes nombres de alumnos, datos del grupo, números de página ni títulos de libros.",
+		"No presentes documentos, claves ni folios como materiales oficiales de la SEP."
+	],
+	"official_text_fields": ["contenidos", "pda"],
+	"output_sections": [
+		{ "key": "general_info", "label": "Datos generales" },
+		{ "key": "purpose", "label": "Propósito" },
+		{
+			"key": "framework_fields",
+			"label": "Campos formativos y ejes articuladores"
+		},
+		{ "key": "official_items", "label": "Contenidos y PDA" },
+		{ "key": "sequence", "label": "Secuencia didáctica" },
+		{ "key": "materials", "label": "Materiales por sesión" },
+		{ "key": "final_product", "label": "Producto final" },
+		{ "key": "resources", "label": "Recursos y materiales" },
+		{ "key": "differentiation", "label": "Ajustes razonables" },
+		{ "key": "assessment", "label": "Evaluación" },
+		{
+			"key": "family_community_links",
+			"label": "Vinculación con familias y comunidad"
+		},
+		{ "key": "assumptions", "label": "Supuestos" },
+		{ "key": "warnings", "label": "Advertencias" }
+	],
+	"glossary": [
+		"Nueva Escuela Mexicana",
+		"Plan de Estudio 2022",
+		"campo formativo",
+		"fase",
+		"Procesos de Desarrollo de Aprendizaje (PDA)",
+		"ejes articuladores",
+		"problemática del contexto",
+		"proyectos comunitarios",
+		"indagación con enfoque STEAM",
+		"aprendizaje basado en problemas",
+		"aprendizaje servicio"
+	]
+}

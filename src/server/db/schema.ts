@@ -440,7 +440,7 @@ export const planArtifacts = createTable(
       .notNull()
       .references(() => classrooms.id, { onDelete: "cascade" }),
     title: text().notNull(),
-    range: text({ enum: ["day", "week"] }).notNull(),
+    range: text({ enum: ["day", "week", "lesson"] }).notNull(),
     startDate: date({ mode: "string" }).notNull(),
     endDate: date({ mode: "string" }).notNull(),
     content: text().notNull().default(""),

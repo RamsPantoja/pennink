@@ -1,15 +1,11 @@
 import type { Block } from "@blocknote/core";
 import { TRPCError } from "@trpc/server";
-import { and, asc, desc, eq, gte, inArray, isNull, lte } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull } from "drizzle-orm";
 import {
 	classroomTeachers,
 	classrooms,
 	planArtifacts,
 	planArtifactsToWorkspaces,
-	studyPlanClassrooms,
-	studyPlanItems,
-	studyPlanProgress,
-	studyPlans,
 } from "~/server/db/schema";
 import type { TRPCContext } from "../../trpc";
 import type {
@@ -28,14 +24,6 @@ type WorkspacePlanArtifactInput = z.infer<
 type WorkspacePlanArtifactsInput = z.infer<
 	typeof workspacePlanArtifactsInputSchema
 >;
-
-export type StudyPlanContextItem = {
-	dueDate: string;
-	planTitle: string;
-	title: string;
-	parentTitle: string | null;
-	completed: boolean;
-};
 
 /**
  * Markdown plans for one day or week of a classroom. Access follows the classroom:
@@ -214,96 +202,15 @@ export class PlanArtifactService {
 	}
 
 	/**
-	 * Study plan items of the classroom whose due date falls in the range, across every
-	 * attached plan. `completed` is the classroom's progress for that item.
-	 */
-	public async loadContext(
-		input: { classroomId: string; startDate: string; endDate: string },
-		userId: string,
-	): Promise<StudyPlanContextItem[]> {
-		await this.assertTeacher(input.classroomId, userId);
-
-		const rows = await this.ctx.db
-			.select({
-				planId: studyPlans.id,
-				planTitle: studyPlans.title,
-				position: studyPlanItems.position,
-				parentPosition: studyPlanItems.parentPosition,
-				title: studyPlanItems.title,
-				dueDate: studyPlanItems.dueDate,
-				completed: studyPlanProgress.completed,
-			})
-			.from(studyPlanItems)
-			.innerJoin(studyPlans, eq(studyPlans.id, studyPlanItems.studyPlanId))
-			.innerJoin(
-				studyPlanClassrooms,
-				and(
-					eq(studyPlanClassrooms.studyPlanId, studyPlans.id),
-					eq(studyPlanClassrooms.classroomId, input.classroomId),
-				),
-			)
-			.leftJoin(
-				studyPlanProgress,
-				and(
-					eq(studyPlanProgress.studyPlanId, studyPlans.id),
-					eq(studyPlanProgress.classroomId, input.classroomId),
-					eq(studyPlanProgress.position, studyPlanItems.position),
-				),
-			)
-			.where(
-				and(
-					isNull(studyPlans.deletedAt),
-					gte(studyPlanItems.dueDate, input.startDate),
-					lte(studyPlanItems.dueDate, input.endDate),
-				),
-			)
-			.orderBy(
-				asc(studyPlanItems.dueDate),
-				asc(studyPlans.title),
-				asc(studyPlanItems.position),
-			);
-
-		if (rows.length === 0) return [];
-
-		const planIds = [...new Set(rows.map((row) => row.planId))];
-		const parents = await this.ctx.db
-			.select({
-				planId: studyPlanItems.studyPlanId,
-				position: studyPlanItems.position,
-				title: studyPlanItems.title,
-			})
-			.from(studyPlanItems)
-			.where(
-				and(
-					inArray(studyPlanItems.studyPlanId, planIds),
-					isNull(studyPlanItems.parentPosition),
-				),
-			);
-		const parentTitles = new Map(
-			parents.map((parent) => [
-				`${parent.planId}:${parent.position}`,
-				parent.title,
-			]),
-		);
-
-		return rows.map((row) => ({
-			dueDate: row.dueDate ?? "",
-			planTitle: row.planTitle,
-			title: row.title,
-			parentTitle:
-				row.parentPosition === null
-					? null
-					: (parentTitles.get(`${row.planId}:${row.parentPosition}`) ?? null),
-			completed: row.completed ?? false,
-		}));
-	}
-
-	/**
 	 * Range and dates to store. Returns nothing when the input leaves them alone.
 	 * A day plan always ends on its start date.
 	 */
 	private resolveDates(
-		plan: { range: "day" | "week"; startDate: string; endDate: string },
+		plan: {
+			range: "day" | "week" | "lesson";
+			startDate: string;
+			endDate: string;
+		},
 		input: UpdateInput,
 	) {
 		if (
@@ -317,7 +224,7 @@ export class PlanArtifactService {
 		const range = input.range ?? plan.range;
 		const startDate = input.startDate ?? plan.startDate;
 		const endDate =
-			range === "day" ? startDate : (input.endDate ?? plan.endDate);
+			range !== "week" ? startDate : (input.endDate ?? plan.endDate);
 
 		if (endDate < startDate) {
 			throw new TRPCError({

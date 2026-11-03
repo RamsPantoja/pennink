@@ -20,6 +20,8 @@ import { CHAT_ATTACHMENT_ACCEPT } from "~/lib/chatAttachments";
 import { ChatAttachmentList } from "./ChatAttachments";
 import { parseUIMessage, useChatLogic } from "./useChatLogic";
 import { MessageCard } from "./MessageCard";
+import { AgentStatus } from "./AgentStatus";
+import { getAgentStatus } from "./agentStatus";
 import { ChatSkeleton } from "./ChatSkeleton";
 import FeedbackMessage from "../common/FeedbackMessage";
 import { cn } from "~/lib/utils";
@@ -66,7 +68,15 @@ export const Chat = ({ id, isNew }: ChatProps) => {
     onAddFiles,
     onRemoveAttachment,
     isUploadingAttachments,
+    answerAskUser,
   } = useChatLogic({ chatId: id, isNew });
+
+  const agentStatus = getAgentStatus({
+    status,
+    isSearching:
+      documentVectorSearchMutationIsPending || triggerChatMessagesRuleIsPending,
+    lastMessageParts: (tempMessages.at(-1) ?? messages.at(-1))?.parts,
+  });
 
   const { handleSubmit, watch, control } = useChatForm;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -125,7 +135,11 @@ export const Chat = ({ id, isNew }: ChatProps) => {
           )}
           {messages.length > 0 &&
             messages.map((message) => (
-              <MessageCard key={message.id} message={message} />
+              <MessageCard
+                key={message.id}
+                message={message}
+                onAskUserAnswer={answerAskUser}
+              />
             ))}
           {tempMessages.map((message) => {
             const parsedMessage = parseUIMessage(message);
@@ -135,12 +149,14 @@ export const Chat = ({ id, isNew }: ChatProps) => {
                   <MessageCard
                     isStreaming={status === "streaming"}
                     message={parsedMessage}
+                    onAskUserAnswer={answerAskUser}
                   />
                 </div>
               );
             }
             return <Fragment key={message.id} />;
           })}
+          <AgentStatus state={agentStatus} />
         </div>
         <ScrollToBottomButton scrollableElementId="chat-container" />
       </div>

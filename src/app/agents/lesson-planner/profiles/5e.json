@@ -1,0 +1,132 @@
+{
+	"id": "5e",
+	"name": "5E Instructional Model",
+	"description": "Inquiry sequence: Engage, Explore, Explain, Elaborate and Evaluate.",
+	"version": "1.0.0",
+	"default_language": "en-US",
+	"hints": [
+		"5e",
+		"5 e",
+		"engage explore explain elaborate evaluate",
+		"5e model",
+		"5e instructional model"
+	],
+	"fields": [
+		{
+			"key": "grade",
+			"label": "Grade or level",
+			"type": "text",
+			"required": true,
+			"ask_priority": 1,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "subject",
+			"label": "Subject",
+			"type": "text",
+			"required": false,
+			"ask_priority": 2,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "topic",
+			"label": "Topic",
+			"type": "text",
+			"required": true,
+			"ask_priority": 3,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "sessions",
+			"label": "Number of sessions",
+			"type": "number",
+			"required": true,
+			"ask_priority": 4,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "minutes_per_session",
+			"label": "Minutes per session",
+			"type": "number",
+			"required": true,
+			"ask_priority": 5,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "group_size",
+			"label": "Number of students",
+			"type": "number",
+			"required": false,
+			"ask_priority": 20,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "student_needs",
+			"label": "Students who need support",
+			"type": "text",
+			"required": false,
+			"ask_priority": 21,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "resources",
+			"label": "Available resources",
+			"type": "text",
+			"required": false,
+			"ask_priority": 22,
+			"default_strategy": "ask"
+		}
+	],
+	"derived_fields": [],
+	"sequence_models": [
+		{
+			"id": "5e",
+			"label": "5E model",
+			"phases": [
+				{ "key": "engage", "label": "Engage" },
+				{ "key": "explore", "label": "Explore" },
+				{ "key": "explain", "label": "Explain" },
+				{ "key": "elaborate", "label": "Elaborate" },
+				{ "key": "evaluate", "label": "Evaluate" }
+			]
+		}
+	],
+	"default_sequence": { "map": {}, "default": "5e" },
+	"session_template": [
+		{ "key": "teacher_actions", "label": "Teacher actions" },
+		{ "key": "student_actions", "label": "Student actions" },
+		{ "key": "materials", "label": "Materials" },
+		{ "key": "evidence", "label": "Evidence of understanding" }
+	],
+	"assessment": {
+		"approach": "formative",
+		"instrument_types": [
+			"exit ticket",
+			"checklist",
+			"rubric",
+			"anecdotal record"
+		],
+		"criteria_min": 3,
+		"criteria_max": 5
+	},
+	"content_rules": [
+		"Every session must cover the phases assigned to it, in order. When phases are grouped, cover them in one session without skipping any.",
+		"Engage must activate prior knowledge with a question, phenomenon or scenario; Explore is hands-on before the explanation; Explain gives the formal vocabulary and concepts; Elaborate applies the idea to a new context; Evaluate checks the understanding.",
+		"Do not invent standards, curriculum codes or textbook references."
+	],
+	"official_text_fields": [],
+	"output_sections": [
+		{ "key": "general_info", "label": "General information" },
+		{ "key": "purpose", "label": "Purpose" },
+		{ "key": "framework_fields", "label": "Learning goals" },
+		{ "key": "sequence", "label": "5E sequence" },
+		{ "key": "materials", "label": "Materials by session" },
+		{ "key": "final_product", "label": "Final product" },
+		{ "key": "resources", "label": "Resources" },
+		{ "key": "differentiation", "label": "Differentiation" },
+		{ "key": "assessment", "label": "Assessment" },
+		{ "key": "assumptions", "label": "Assumptions" },
+		{ "key": "warnings", "label": "Warnings" }
+	],
+	"glossary": ["Engage", "Explore", "Explain", "Elaborate", "Evaluate"]
+}

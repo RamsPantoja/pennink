@@ -7,6 +7,8 @@ import {
 	createStudentInputSchema,
 	deleteClassroomInputSchema,
 	deleteStudentInputSchema,
+	importStudentsInputSchema,
+	parseStudentImportInputSchema,
 	updateClassroomNameInputSchema,
 	updateStudentInputSchema,
 } from "../schemas/classroom";
@@ -75,5 +77,19 @@ export const classroomRouter = createTRPCRouter({
 			ctx
 				.services({ ctx })
 				.classroomService.deleteStudent(input, ctx.session.user.id),
+		),
+	previewStudentImport: protectedProcedure
+		.input(parseStudentImportInputSchema)
+		.mutation(({ input, ctx }) =>
+			ctx
+				.services({ ctx })
+				.classroomService.previewStudentImport(input, ctx.session.user.id),
+		),
+	importStudents: protectedProcedure
+		.input(importStudentsInputSchema)
+		.mutation(({ input, ctx }) =>
+			ctx
+				.services({ ctx })
+				.classroomService.importStudents(input, ctx.session.user.id),
 		),
 });

@@ -9,6 +9,7 @@ import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Input } from "../ui/input";
 import { StudyPlansCard } from "../StudyPlan/StudyPlansCard";
+import { StudentImportDialog } from "./StudentImportDialog";
 
 export function ClassroomDetails({
   classroomId,
@@ -23,6 +24,7 @@ export function ClassroomDetails({
   const [studentName, setStudentName] = useState("");
   const [studentEmail, setStudentEmail] = useState("");
   const [teacherEmail, setTeacherEmail] = useState("");
+  const [importOpen, setImportOpen] = useState(false);
   const [displayDeleteAlert, setDisplayDeleteAlert] = useState(false);
   const [pendingRemoval, setPendingRemoval] = useState<
     | { type: "student"; id: string; name: string }
@@ -172,19 +174,29 @@ export function ClassroomDetails({
                 type="email"
               />
             </div>
-            <Button
-              onClick={() =>
-                createStudent.mutate({
-                  classroomId,
-                  name: studentName,
-                  email: studentEmail,
-                })
-              }
-              isPending={createStudent.isPending}
-              disabled={!studentName.trim() || !studentEmail.trim()}
-            >
-              {t("button.addStudent")}
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={() =>
+                  createStudent.mutate({
+                    classroomId,
+                    name: studentName,
+                    email: studentEmail,
+                  })
+                }
+                isPending={createStudent.isPending}
+                disabled={!studentName.trim() || !studentEmail.trim()}
+              >
+                {t("button.addStudent")}
+              </Button>
+              <Button variant="outline" onClick={() => setImportOpen(true)}>
+                {t("button.importExcel")}
+              </Button>
+            </div>
+            <StudentImportDialog
+              classroomId={classroomId}
+              open={importOpen}
+              onOpenChange={setImportOpen}
+            />
             <div className="space-y-2">
               {classroom.students.map(({ student }) => (
                 <div

@@ -1,0 +1,156 @@
+{
+	"id": "ubd",
+	"name": "Understanding by Design (Backward Design)",
+	"description": "Unit planning in three stages: desired results, evidence of understanding, and the learning plan.",
+	"version": "1.0.0",
+	"default_language": "en-US",
+	"hints": [
+		"ubd",
+		"understanding by design",
+		"backward design",
+		"diseno hacia atras",
+		"unit plan"
+	],
+	"fields": [
+		{
+			"key": "grade",
+			"label": "Grade or level",
+			"type": "text",
+			"required": true,
+			"ask_priority": 1,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "subject",
+			"label": "Subject",
+			"type": "text",
+			"required": true,
+			"ask_priority": 2,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "topic",
+			"label": "Unit topic or big idea",
+			"type": "text",
+			"required": true,
+			"ask_priority": 3,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "sessions",
+			"label": "Number of lessons in the unit",
+			"type": "number",
+			"required": true,
+			"ask_priority": 4,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "minutes_per_session",
+			"label": "Minutes per lesson",
+			"type": "number",
+			"required": true,
+			"ask_priority": 5,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "standards",
+			"label": "Standards (official text)",
+			"type": "text",
+			"required": false,
+			"ask_priority": 30,
+			"help": "Paste the standards if you have them",
+			"default_strategy": "infer"
+		},
+		{
+			"key": "group_size",
+			"label": "Number of students",
+			"type": "number",
+			"required": false,
+			"ask_priority": 20,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "student_needs",
+			"label": "Students who need support",
+			"type": "text",
+			"required": false,
+			"ask_priority": 21,
+			"default_strategy": "ask"
+		},
+		{
+			"key": "resources",
+			"label": "Available resources",
+			"type": "text",
+			"required": false,
+			"ask_priority": 22,
+			"default_strategy": "ask"
+		}
+	],
+	"derived_fields": [],
+	"sequence_models": [
+		{
+			"id": "unit_learning_plan",
+			"label": "Stage 3: learning plan",
+			"phases": [
+				{
+					"key": "hook_and_prior_knowledge",
+					"label": "Hook and prior knowledge"
+				},
+				{ "key": "guided_instruction", "label": "Guided instruction" },
+				{ "key": "practice", "label": "Practice" },
+				{ "key": "performance_task", "label": "Performance task" },
+				{ "key": "reflection", "label": "Reflection" }
+			]
+		}
+	],
+	"default_sequence": { "map": {}, "default": "unit_learning_plan" },
+	"session_template": [
+		{ "key": "opening", "label": "Opening" },
+		{ "key": "development", "label": "Development" },
+		{ "key": "closure", "label": "Closure" },
+		{ "key": "resources", "label": "Resources" },
+		{ "key": "evidence", "label": "Evidence" }
+	],
+	"assessment": {
+		"approach": "both",
+		"instrument_types": [
+			"rubric",
+			"checklist",
+			"exit ticket",
+			"performance task"
+		],
+		"criteria_min": 3,
+		"criteria_max": 6
+	},
+	"content_rules": [
+		"Stage 1 (desired results): write transfer goals, enduring understandings, essential questions, and the knowledge and skills students will gain, in the framework_fields.",
+		"Stage 2 (evidence): describe the performance task and other evidence in the assessment section, so every understanding has evidence.",
+		"Stage 3 (learning plan): the sequence follows the model's phases and each lesson must serve the Stage 1 goals.",
+		"If the teacher did not paste the standards, write them as an approximation and mark them as not verified.",
+		"Do not invent standard codes, page numbers or textbook titles."
+	],
+	"official_text_fields": ["standards"],
+	"output_sections": [
+		{ "key": "general_info", "label": "General information" },
+		{ "key": "purpose", "label": "Purpose" },
+		{ "key": "framework_fields", "label": "Stage 1: Desired results" },
+		{ "key": "official_items", "label": "Standards" },
+		{ "key": "sequence", "label": "Stage 3: Learning plan" },
+		{ "key": "materials", "label": "Materials" },
+		{ "key": "final_product", "label": "Final product" },
+		{ "key": "resources", "label": "Resources" },
+		{ "key": "differentiation", "label": "Differentiation" },
+		{ "key": "assessment", "label": "Stage 2: Evidence of understanding" },
+		{ "key": "assumptions", "label": "Assumptions" },
+		{ "key": "warnings", "label": "Warnings" }
+	],
+	"glossary": [
+		"transfer goals",
+		"enduring understandings",
+		"essential questions",
+		"performance task",
+		"Stage 1",
+		"Stage 2",
+		"Stage 3"
+	]
+}

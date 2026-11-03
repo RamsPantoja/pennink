@@ -22,9 +22,10 @@ import {
 } from "~/app/agents/chat/shared-link";
 import { createChatTools, prepareSpeechText } from "~/app/agents/chat/tools";
 import { createStudyPlanTool } from "~/app/agents/chat/study-plan";
-import { createPlanArtifactTool } from "~/app/agents/chat/plan-artifact";
+import { createLessonPlannerTool } from "~/app/agents/lesson-planner/tool";
 import { createClassroomStudentsTool } from "~/app/agents/chat/classroom-students";
 import { createMindMapTool } from "~/app/agents/chat/mind-map";
+import { askUserTool } from "~/app/agents/chat/ask-user";
 import { cookies } from "next/headers";
 import { LOCALE_COOKIE_NAME, getRequestLocale } from "~/lib/utils";
 
@@ -137,6 +138,7 @@ export async function POST(req: Request) {
     });
     tools.generateAndEditForm = createChatTools({}).generateAndEditForm;
     tools.createMindMap = createMindMapTool;
+    tools.askUser = askUserTool;
     tools.shareClassroomLink = createSharedLinkTool({
       userId: session.user.id,
       locale: getRequestLocale(
@@ -152,7 +154,7 @@ export async function POST(req: Request) {
       activeClassroomId,
     });
 
-    tools.createPlanArtifact = createPlanArtifactTool({
+    tools.lessonPlanner = createLessonPlannerTool({
       userId: session.user.id,
       activeClassroomId,
     });
@@ -162,23 +164,28 @@ export async function POST(req: Request) {
       activeClassroomId,
     });
 
-    if (!prompt && attachments.length === 0) {
-      throw new Error("Missing prompt");
-    }
-
     if (!context.messages) {
       throw new Error("Missing context messages");
     }
 
-    const currentUserMessage = await toCurrentUserMessage(
-      session.user.id,
-      prompt,
-      attachments,
-    );
+    // A resume sends the teacher's askUser answers as the last tool result, with no new prompt.
+    const isResume =
+      !prompt &&
+      attachments.length === 0 &&
+      context.messages.at(-1)?.role === "tool";
 
-    const result = await createChatAgent(tools).stream({
-      messages: [...context.messages, currentUserMessage],
-    });
+    if (!prompt && attachments.length === 0 && !isResume) {
+      throw new Error("Missing prompt");
+    }
+
+    const messages = isResume
+      ? context.messages
+      : [
+          ...context.messages,
+          await toCurrentUserMessage(session.user.id, prompt, attachments),
+        ];
+
+    const result = await createChatAgent(tools).stream({ messages });
 
     // The last step's input size is the context the model actually received.
     let contextTokens = 0;
