@@ -13,6 +13,8 @@ import { LinkService } from "./link";
 import { ClassroomService } from "./classroom";
 import { StudyPlanService } from "./study-plan";
 import { PlanArtifactService } from "./plan-artifact";
+import { EvaluationSchemaService } from "./evaluation-schema";
+import { EvaluationRunService } from "./evaluation-run";
 
 export type ServicesContext = {
 	userService: UserService;
@@ -29,6 +31,8 @@ export type ServicesContext = {
 	classroomService: ClassroomService;
 	studyPlanService: StudyPlanService;
 	planArtifactService: PlanArtifactService;
+	evaluationSchemaService: EvaluationSchemaService;
+	evaluationRunService: EvaluationRunService;
 };
 
 export type ServicesConfig = {
@@ -51,6 +55,8 @@ const Services = ({ ctx }: ServicesConfig): ServicesContext => {
 		classroomService: new ClassroomService(ctx),
 		studyPlanService: new StudyPlanService(ctx),
 		planArtifactService: new PlanArtifactService(ctx),
+		evaluationSchemaService: new EvaluationSchemaService(ctx),
+		evaluationRunService: new EvaluationRunService(ctx),
 	};
 };
 

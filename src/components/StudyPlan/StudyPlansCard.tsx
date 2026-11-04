@@ -2,9 +2,12 @@
 
 import { useRef, useState, type ChangeEvent } from "react";
 import { useTranslations } from "next-intl";
+import { keepPreviousData } from "@tanstack/react-query";
 import { api } from "~/trpc/react";
+import { DEFAULT_PAGE_SIZE } from "~/server/api/schemas/pagination";
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
+import { Pagination } from "../ui/pagination";
 import { StudyPlanDialog } from "./StudyPlanDialog";
 
 export function StudyPlansCard({ classroomId }: { classroomId: string }) {
@@ -13,8 +16,12 @@ export function StudyPlansCard({ classroomId }: { classroomId: string }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   const [startEditing, setStartEditing] = useState(false);
-  const { data: plans = [], isLoading } =
-    api.studyPlan.listForClassroom.useQuery({ classroomId });
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = api.studyPlan.listForClassroom.useQuery(
+    { classroomId, page, pageSize: DEFAULT_PAGE_SIZE },
+    { placeholderData: keepPreviousData },
+  );
+  const plans = data?.items ?? [];
 
   const openPlan = async (id: string, editing: boolean) => {
     await utils.studyPlan.listForClassroom.invalidate({ classroomId });
@@ -105,6 +112,15 @@ export function StudyPlansCard({ classroomId }: { classroomId: string }) {
             </button>
           );
         })}
+        {data && (
+          <Pagination
+            page={data.page}
+            totalPages={data.totalPages}
+            total={data.total}
+            pageSize={data.pageSize}
+            onPageChange={setPage}
+          />
+        )}
       </div>
 
       <StudyPlanDialog

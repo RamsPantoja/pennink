@@ -25,7 +25,7 @@ import type { ImperativePanelHandle } from "react-resizable-panels";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { WorkspaceSidePanel } from "./WorkspaceSidePanel";
-import { ClassPlanPanel } from "../PlanArtifact/ClassPlanPanel";
+import { LessonPlanPanel } from "../PlanArtifact/LessonPlanPanel";
 
 export const Workspace = () => {
 	const params = useParams();
@@ -42,9 +42,9 @@ export const Workspace = () => {
 		displayMindMap,
 		setDisplayMindMap,
 		setMindMapData,
-		displayClassPlan,
-		setDisplayClassPlan,
-		setClassPlanId,
+		displayLessonPlan,
+		setDisplayLessonPlan,
+		setLessonPlanId,
 	} = useWorkspaceStore();
 	const [sidePanelCollapsed, setSidePanelCollapsed] = useState(false);
 	const [contentPanelCollapsed, setContentPanelCollapsed] = useState(false);
@@ -69,8 +69,8 @@ export const Workspace = () => {
 		setQueryFormData(null);
 		setDisplayMindMap(false);
 		setMindMapData(null);
-		setDisplayClassPlan(false);
-		setClassPlanId(null);
+		setDisplayLessonPlan(false);
+		setLessonPlanId(null);
 	};
 
 	return (
@@ -101,7 +101,7 @@ export const Workspace = () => {
 						className={cn([
 							"hidden relative",
 							{
-								flex: displayFormEditor || displayMindMap || displayClassPlan,
+								flex: displayFormEditor || displayMindMap || displayLessonPlan,
 							},
 						])}
 					>
@@ -140,13 +140,13 @@ export const Workspace = () => {
 						</div>
 						{displayFormEditor && <FormEditor />}
 						{displayMindMap && <MindMap />}
-						{displayClassPlan && <ClassPlanPanel />}
+						{displayLessonPlan && <LessonPlanPanel />}
 					</ResizablePanel>
 					<ResizableHandle
 						className={cn([
 							"hidden",
 							{
-								flex: displayFormEditor || displayMindMap || displayClassPlan,
+								flex: displayFormEditor || displayMindMap || displayLessonPlan,
 							},
 						])}
 						withHandle

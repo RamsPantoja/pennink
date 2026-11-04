@@ -2,6 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 import { db } from "~/server/db";
 import { StudyPlanService } from "~/server/api/services/study-plan";
+import { MAX_PAGE_SIZE } from "~/server/api/schemas/pagination";
 
 const studyPlanToolInputSchema = z.object({
 	action: z
@@ -67,11 +68,15 @@ export const createStudyPlanTool = ({
 		execute: async (input: StudyPlanToolInput) => {
 			switch (input.action) {
 				case "list": {
-					const plans = await service.listForClassroom(
-						requireClassroom(),
+					const page = await service.listForClassroom(
+						{
+							classroomId: requireClassroom(),
+							page: 1,
+							pageSize: MAX_PAGE_SIZE,
+						},
 						userId,
 					);
-					return { plans };
+					return { plans: page.items };
 				}
 				case "read": {
 					const plan = await service.getById(

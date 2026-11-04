@@ -58,7 +58,7 @@
 		"tooltips": {
 			"searchForms": "Search from your forms",
 			"searchSources": "Search from your sources",
-			"searchPlanArtifacts": "Class plans",
+			"searchPlanArtifacts": "Lesson plans",
 			"newWorkspace": "New workspace"
 		},
 		"dropdown": {
@@ -102,9 +102,15 @@
 			"title": "Study plans",
 			"manage": "Study plans"
 		},
+		"evaluateExams": {
+			"manage": "Evaluate exams"
+		},
+		"evaluationSchemas": {
+			"manage": "Evaluation schemas"
+		},
 		"planArtifacts": {
-			"title": "Class plans",
-			"manage": "Class plans"
+			"title": "Lesson plans",
+			"manage": "Lesson plans"
 		}
 	},
 
@@ -269,6 +275,17 @@
 		}
 	},
 
+	"ListSearch": {
+		"submit": "Search",
+		"clear": "Clear search"
+	},
+	"Pagination": {
+		"navigation": "Pagination",
+		"previous": "Previous",
+		"next": "Next",
+		"goToPage": "Go to page {page}",
+		"range": "{from}–{to} of {total}"
+	},
 	"FormLoader": {
 		"sheetTitle": "Your forms",
 		"sheetDescription": "Manage your forms and exams, links, and responses",
@@ -1014,13 +1031,17 @@
 	},
 
 	"PlanArtifact": {
-		"title": "Class plans",
+		"title": "Lesson plans",
 		"description": "Markdown plans for a day or a week, built from your study plans. Open one to edit it.",
-		"empty": "No class plans yet. Ask the assistant for today's plan or this week's plan.",
-		"dialogDescription": "Open a class plan to edit it, or attach it to one of your workspaces.",
+		"search": {
+			"placeholder": "Search lesson plans by title",
+			"noResults": "No lesson plans match your search."
+		},
+		"empty": "No lesson plans yet. Ask the assistant for today's plan or this week's plan.",
+		"dialogDescription": "Open a lesson plan to edit it, or attach it to one of your workspaces.",
 		"attach": {
 			"button": "Attach",
-			"success": "Class plan attached to the workspace"
+			"success": "Lesson plan attached to the workspace"
 		},
 		"range": {
 			"day": "Day",
@@ -1033,9 +1054,9 @@
 		"openPlan": "Open plan",
 		"close": "Close",
 		"loading": "Loading...",
-		"error": "Could not load class plans.",
-		"notFound": "This class plan could not be found.",
-		"back": "Back to class plans",
+		"error": "Could not load lesson plans.",
+		"notFound": "This lesson plan could not be found.",
+		"back": "Back to lesson plans",
 		"titleLabel": "Plan title",
 		"untitled": "Untitled plan",
 		"save": "Save",
@@ -1045,8 +1066,8 @@
 		"saveError": "Could not save. Try again.",
 		"settings": {
 			"button": "Settings",
-			"title": "Class plan settings",
-			"description": "Change the name, range and dates of this class plan.",
+			"title": "Lesson plan settings",
+			"description": "Change the name, range and dates of this lesson plan.",
 			"range": "Range",
 			"date": "Date",
 			"startDate": "Start date",
@@ -1059,9 +1080,118 @@
 			"endBeforeStart": "The end date must be on or after the start date."
 		}
 	},
+	"EvaluationSchema": {
+		"title": "Evaluation schemas",
+		"description": "Reusable answer keys for AI exam evaluation. Each question becomes a Jev question.",
+		"search": {
+			"placeholder": "Search schemas by name",
+			"noResults": "No evaluation schemas match your search."
+		},
+		"empty": "No evaluation schemas yet. Create one, or ask the assistant to draft it.",
+		"questions": "{count} questions",
+		"button": {
+			"create": "New schema",
+			"open": "Edit",
+			"duplicate": "Duplicate",
+			"delete": "Delete",
+			"save": "Save",
+			"back": "Back"
+		},
+		"confirmDelete": "Delete this evaluation schema?",
+		"editor": {
+			"nameLabel": "Name",
+			"descriptionLabel": "Description",
+			"detailsTitle": "Details",
+			"namePlaceholder": "E.g. Biology midterm exam",
+			"descriptionPlaceholder": "What this schema is used for (optional)",
+			"jsonLabel": "Questions",
+			"jsonHint": "Each question has a unique key and a type: choice, score, noul or box.",
+			"valid": "Valid schema with {count} questions.",
+			"invalid": "The schema has {count} problems:",
+			"syntaxError": "Invalid JSON: {message}"
+		}
+	},
+	"EvaluateExams": {
+		"title": "Evaluate exams",
+		"description": "Upload scanned exams, grade them with Jev using a saved schema, review flagged answers, and export the results.",
+		"search": {
+			"placeholder": "Search evaluations by name",
+			"noResults": "No evaluations match your search."
+		},
+		"empty": "No evaluations yet. Start one to grade a set of exams.",
+		"defaultName": "Evaluation {date}",
+		"button": {
+			"new": "New evaluation",
+			"open": "Open",
+			"back": "Back",
+			"start": "Start evaluation",
+			"export": "Export CSV",
+			"hide": "Hide",
+			"details": "Details",
+			"retry": "Retry"
+		},
+		"new": {
+			"title": "New evaluation",
+			"schemaLabel": "Evaluation schema",
+			"schemaPlaceholder": "Choose a schema",
+			"schemaPicker": {
+				"title": "Choose an evaluation schema",
+				"description": "Select the schema the exams will be graded with.",
+				"searchPlaceholder": "Search schema by name",
+				"empty": "No schemas found."
+			},
+			"noSchemas": "No schemas yet. Create one on the Evaluation schemas page first.",
+			"nameLabel": "Name",
+			"filesLabel": "Exam images",
+			"filesHint": "One zip file with a folder per student. Name each page page-01.png, page-02.png, and so on. PNG and JPEG only.",
+						"chooseZip": "Choose zip file",
+			"preview": "{students} students, {pages} pages",
+			"pages": "{count} pages",
+			"unassigned": "{count} files could not be assigned to a student"
+		},
+		"progress": {
+			"preparing": "Preparing images {done} of {total}",
+			"uploading": "Uploading page {done} of {total}",
+			"grading": "Grading student {done} of {total}"
+		},
+		"errors": {
+			"generic": "Something went wrong. Please try again.",
+			"noPages": "No PNG or JPEG pages were found in this zip."
+		},
+		"runs": {
+			"meta": "{schema} questions · {date}"
+		},
+		"results": {
+			"schema": "{count} questions",
+			"student": "Student",
+			"status": "Status",
+			"total": "Total",
+			"question": "Question",
+			"answer": "Answer",
+			"aiScore": "AI score",
+			"teacherScore": "Your score",
+			"flagged": "Check",
+			"empty": "No students in this evaluation."
+		},
+		"status": {
+			"pending": "Pending",
+			"running": "Grading",
+			"needs_review": "Needs review",
+			"graded": "Graded",
+			"failed": "Failed"
+		},
+		"answer": {
+			"box": "Marked region",
+			"unscored": "Not scored"
+		}
+	},
 	"StudyPlan": {
 		"title": "Study plans",
 		"description": "Dated plans with checkboxes, attached to this classroom.",
+		"search": {
+			"placeholder": "Search study plans by title",
+			"noResults": "No study plans match your search."
+		},
 		"empty": "No study plans yet. Create one, import a .md file, or ask the assistant.",
 		"progress": "{completed} of {total} done",
 		"nextDue": "Next: {title} ({date})",

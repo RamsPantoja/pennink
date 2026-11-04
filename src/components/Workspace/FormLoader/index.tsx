@@ -6,7 +6,10 @@ import { DateTime } from "luxon";
 import type { CurrentForm } from "../useWorkspaceStore";
 import { Input } from "../../ui/input";
 import { useState } from "react";
+import { keepPreviousData } from "@tanstack/react-query";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { DEFAULT_PAGE_SIZE } from "~/server/api/schemas/pagination";
+import { Pagination } from "../../ui/pagination";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 import type { FormType } from "~/lib/enum";
 import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
@@ -35,6 +38,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
   const [searchKey, setSearchKey] = useState<string>("");
   const [searchParam, setSearchParam] = useState<string | undefined>();
   const [type, setType] = useState<FormType>("BASIC");
+  const [page, setPage] = useState(1);
   const {
     setCurrentForm,
     currentForm,
@@ -47,9 +51,13 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
     data: forms,
     isLoading: formsIsLoading,
     isError: formsIsError,
-  } = api.form.forms.useQuery({ search: searchParam, type });
+  } = api.form.forms.useQuery(
+    { search: searchParam, type, page, pageSize: DEFAULT_PAGE_SIZE },
+    { placeholderData: keepPreviousData },
+  );
 
   const performSearch = () => {
+    setPage(1);
     if (searchKey) {
       setSearchParam(searchKey);
     } else {
@@ -99,6 +107,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
                     onClick={() => {
                       setSearchKey("");
                       setSearchParam(undefined);
+                      setPage(1);
                     }}
                   >
                     <XMarkIcon className="min-w-5 h-5" />
@@ -108,6 +117,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
               <RadioGroup
                 onValueChange={(value) => {
                   setType(value as FormType);
+                  setPage(1);
                 }}
                 defaultValue="BASIC"
                 className="w-fit"
@@ -137,7 +147,7 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
               {!formsIsLoading &&
                 !formsIsError &&
                 forms &&
-                forms.data.length === 0 && (
+                forms.items.length === 0 && (
                   <div className="flex items-center justify-center text-foreground">
                     {t("emptyState.forms")}
                   </div>
@@ -145,9 +155,9 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
               {!formsIsLoading &&
                 !formsIsError &&
                 forms &&
-                forms.data.length > 0 && (
+                forms.items.length > 0 && (
                   <div className="flex flex-col gap-3">
-                    {forms.data.map((doc) => (
+                    {forms.items.map((doc) => (
                       <FormCard
                         key={doc.id}
                         title={doc.title}
@@ -171,6 +181,16 @@ export const FormLoader = ({ onOpen, open, onOpenChange }: FormLoaderProps) => {
                     ))}
                   </div>
                 )}
+              {!formsIsError && forms && (
+                <Pagination
+                  page={forms.page}
+                  totalPages={forms.totalPages}
+                  total={forms.total}
+                  pageSize={forms.pageSize}
+                  onPageChange={setPage}
+                  className="pt-3"
+                />
+              )}
             </div>
           </Card>
           {!currentForm && (

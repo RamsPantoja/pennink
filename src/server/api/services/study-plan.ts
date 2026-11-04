@@ -1,6 +1,6 @@
 import type { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { and, asc, eq, inArray } from "drizzle-orm";
+import { and, asc, count, eq, ilike, inArray, isNull, or } from "drizzle-orm";
 import {
 	classroomTeachers,
 	studyPlanClassrooms,
@@ -15,9 +15,13 @@ import {
 	type StudyPlanMeta,
 } from "~/lib/study-plan-markdown";
 import type { TRPCContext } from "../../trpc";
+import { paginate } from "../schemas/pagination";
+import type { PageInput } from "../schemas/pagination";
 import {
 	createStudyPlanInputSchema,
 	importStudyPlanInputSchema,
+	listAllStudyPlansInputSchema,
+	listStudyPlansInputSchema,
 	setStudyPlanItemInputSchema,
 	studyPlanClassroomInputSchema,
 	studyPlanViewInputSchema,
@@ -25,6 +29,8 @@ import {
 } from "../schemas/study-plan";
 
 type Tx = Parameters<Parameters<TRPCContext["db"]["transaction"]>[0]>[0];
+type ListForClassroomInput = z.infer<typeof listStudyPlansInputSchema>;
+type ListAllInput = z.infer<typeof listAllStudyPlansInputSchema>;
 type CreateInput = z.infer<typeof createStudyPlanInputSchema>;
 type UpdateInput = z.infer<typeof updateStudyPlanInputSchema>;
 type ImportInput = z.infer<typeof importStudyPlanInputSchema>;
@@ -50,13 +56,26 @@ type ItemRow = {
 export class StudyPlanService {
 	constructor(private readonly ctx: Pick<TRPCContext, "db">) {}
 
-	public async listForClassroom(classroomId: string, userId: string) {
+	public async listForClassroom(input: ListForClassroomInput, userId: string) {
+		const { classroomId, search } = input;
 		await this.assertTeacher(classroomId, userId);
 
-		const rows = await this.ctx.db.query.studyPlanClassrooms.findMany({
-			where: (table, { eq }) => eq(table.classroomId, classroomId),
-			with: {
-				studyPlan: {
+		const attachedPlanIds = this.ctx.db
+			.select({ id: studyPlanClassrooms.studyPlanId })
+			.from(studyPlanClassrooms)
+			.where(eq(studyPlanClassrooms.classroomId, classroomId));
+		const titleMatch = `%${search ?? ""}%`;
+
+		const page = await paginate(
+			input,
+			({ limit, offset }) =>
+				this.ctx.db.query.studyPlans.findMany({
+					where: (table, { and, isNull, inArray, ilike }) =>
+						and(
+							isNull(table.deletedAt),
+							inArray(table.id, attachedPlanIds),
+							search ? ilike(table.title, titleMatch) : undefined,
+						),
 					with: {
 						items: {
 							columns: {
@@ -68,35 +87,49 @@ export class StudyPlanService {
 							orderBy: (table, { asc }) => [asc(table.position)],
 						},
 					},
-				},
+					orderBy: (table, { desc }) => [desc(table.updatedAt), desc(table.id)],
+					limit,
+					offset,
+				}),
+			async () => {
+				const [row] = await this.ctx.db
+					.select({ total: count() })
+					.from(studyPlans)
+					.where(
+						and(
+							isNull(studyPlans.deletedAt),
+							inArray(studyPlans.id, attachedPlanIds),
+							search ? ilike(studyPlans.title, titleMatch) : undefined,
+						),
+					);
+				return row?.total ?? 0;
 			},
-		});
-
-		const plans = rows
-			.map((row) => row.studyPlan)
-			.filter((plan) => !plan.deletedAt);
+		);
 
 		const progress = await this.loadProgress(
-			plans.map((plan) => plan.id),
+			page.items.map((plan) => plan.id),
 			[classroomId],
 		);
 
-		return plans
-			.map((plan) => ({
+		return {
+			...page,
+			items: page.items.map((plan) => ({
 				id: plan.id,
 				title: plan.title,
 				description: plan.description,
 				updatedAt: plan.updatedAt,
 				...this.summarize(plan.items, progress.get(`${plan.id}:${classroomId}`)),
-			}))
-			.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+			})),
+		};
 	}
 
 	/**
 	 * Every plan the user owns or that is attached to a classroom they teach.
 	 * Progress is returned only for classrooms the user teaches.
 	 */
-	public async listAll(userId: string) {
+	public async listAll(input: ListAllInput, userId: string) {
+		const { search } = input;
+		const titleMatch = `%${search ?? ""}%`;
 		const sharedPlanIds = this.ctx.db
 			.select({ id: studyPlanClassrooms.studyPlanId })
 			.from(studyPlanClassrooms)
@@ -106,28 +139,52 @@ export class StudyPlanService {
 			)
 			.where(eq(classroomTeachers.userId, userId));
 
-		const plans = await this.ctx.db.query.studyPlans.findMany({
-			where: (table, { and, isNull, or, eq, inArray }) =>
-				and(
-					isNull(table.deletedAt),
-					or(eq(table.userId, userId), inArray(table.id, sharedPlanIds)),
-				),
-			with: {
-				items: {
-					columns: {
-						position: true,
-						parentPosition: true,
-						title: true,
-						dueDate: true,
+		const page = await paginate(
+			input,
+			({ limit, offset }) =>
+				this.ctx.db.query.studyPlans.findMany({
+					where: (table, { and, isNull, or, eq, inArray, ilike }) =>
+						and(
+							isNull(table.deletedAt),
+							or(eq(table.userId, userId), inArray(table.id, sharedPlanIds)),
+							search ? ilike(table.title, titleMatch) : undefined,
+						),
+					with: {
+						items: {
+							columns: {
+								position: true,
+								parentPosition: true,
+								title: true,
+								dueDate: true,
+							},
+							orderBy: (table, { asc }) => [asc(table.position)],
+						},
+						classrooms: {
+							with: { classroom: { columns: { id: true, name: true } } },
+						},
 					},
-					orderBy: (table, { asc }) => [asc(table.position)],
-				},
-				classrooms: {
-					with: { classroom: { columns: { id: true, name: true } } },
-				},
+					orderBy: (table, { desc }) => [desc(table.updatedAt), desc(table.id)],
+					limit,
+					offset,
+				}),
+			async () => {
+				const [row] = await this.ctx.db
+					.select({ total: count() })
+					.from(studyPlans)
+					.where(
+						and(
+							isNull(studyPlans.deletedAt),
+							or(
+								eq(studyPlans.userId, userId),
+								inArray(studyPlans.id, sharedPlanIds),
+							),
+							search ? ilike(studyPlans.title, titleMatch) : undefined,
+						),
+					);
+				return row?.total ?? 0;
 			},
-			orderBy: (table, { desc }) => [desc(table.updatedAt)],
-		});
+		);
+		const plans = page.items;
 
 		const teachable = new Set(
 			await this.teachableClassroomIds(
@@ -140,23 +197,26 @@ export class StudyPlanService {
 			[...teachable],
 		);
 
-		return plans.map((plan) => ({
-			id: plan.id,
-			title: plan.title,
-			description: plan.description,
-			updatedAt: plan.updatedAt,
-			isOwner: plan.userId === userId,
-			classrooms: plan.classrooms.map((link) => ({
-				id: link.classroom.id,
-				name: link.classroom.name,
-				progress: teachable.has(link.classroomId)
-					? this.summarize(
-							plan.items,
-							progress.get(`${plan.id}:${link.classroomId}`),
-						)
-					: null,
+		return {
+			...page,
+			items: plans.map((plan) => ({
+				id: plan.id,
+				title: plan.title,
+				description: plan.description,
+				updatedAt: plan.updatedAt,
+				isOwner: plan.userId === userId,
+				classrooms: plan.classrooms.map((link) => ({
+					id: link.classroom.id,
+					name: link.classroom.name,
+					progress: teachable.has(link.classroomId)
+						? this.summarize(
+								plan.items,
+								progress.get(`${plan.id}:${link.classroomId}`),
+							)
+						: null,
+				})),
 			})),
-		}));
+		};
 	}
 
 	/**

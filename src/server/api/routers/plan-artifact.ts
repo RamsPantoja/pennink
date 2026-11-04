@@ -1,6 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/trpc";
 import {
 	createPlanArtifactInputSchema,
+	listPlanArtifactsInputSchema,
 	planArtifactByIdInputSchema,
 	updatePlanArtifactInputSchema,
 	workspacePlanArtifactInputSchema,
@@ -8,9 +9,13 @@ import {
 } from "../schemas/plan-artifact";
 
 export const planArtifactRouter = createTRPCRouter({
-	listAll: protectedProcedure.query(({ ctx }) =>
-		ctx.services({ ctx }).planArtifactService.listAll(ctx.session.user.id),
-	),
+	listAll: protectedProcedure
+		.input(listPlanArtifactsInputSchema)
+		.query(({ input, ctx }) =>
+			ctx
+				.services({ ctx })
+				.planArtifactService.listAll(input, ctx.session.user.id),
+		),
 	byId: protectedProcedure
 		.input(planArtifactByIdInputSchema)
 		.query(({ input, ctx }) =>

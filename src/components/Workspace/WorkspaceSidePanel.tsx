@@ -1,5 +1,6 @@
 "use client";
 import { AcademicCapIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { keepPreviousData } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -12,7 +13,10 @@ import { Button } from "../common/Button";
 import { StudyPlanDialog } from "../StudyPlan/StudyPlanDialog";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
+import { Pagination } from "../ui/pagination";
 import { useWorkspaceStore } from "./useWorkspaceStore";
+
+const SIDE_PANEL_PAGE_SIZE = 5;
 
 type MiniSectionProps = {
   title: string;
@@ -56,10 +60,12 @@ export const WorkspaceSidePanel = () => {
   const { data: classrooms } = api.classroom.classrooms.useQuery();
   const classroom = classrooms?.find((item) => item.id === classroomId);
 
-  const { data: plans = [] } = api.studyPlan.listForClassroom.useQuery(
-    { classroomId },
-    { enabled: !!classroomId },
+  const [planPage, setPlanPage] = useState(1);
+  const { data: planPageData } = api.studyPlan.listForClassroom.useQuery(
+    { classroomId, page: planPage, pageSize: SIDE_PANEL_PAGE_SIZE },
+    { enabled: !!classroomId, placeholderData: keepPreviousData },
   );
+  const plans = planPageData?.items ?? [];
   const { data: sources = [] } = api.workspace.sourcesByWorkspace.useQuery(
     { workspaceId },
     { enabled: !!workspaceId },
@@ -69,9 +75,9 @@ export const WorkspaceSidePanel = () => {
     onSuccess: () => utils.workspace.sourcesByWorkspace.invalidate(),
   });
 
-  const setClassPlanId = useWorkspaceStore((state) => state.setClassPlanId);
-  const setDisplayClassPlan = useWorkspaceStore(
-    (state) => state.setDisplayClassPlan,
+  const setLessonPlanId = useWorkspaceStore((state) => state.setLessonPlanId);
+  const setDisplayLessonPlan = useWorkspaceStore(
+    (state) => state.setDisplayLessonPlan,
   );
   const { data: lessonPlans = [] } =
     api.planArtifact.listForWorkspace.useQuery(
@@ -83,8 +89,8 @@ export const WorkspaceSidePanel = () => {
   });
 
   const openLessonPlan = (planId: string) => {
-    setClassPlanId(planId);
-    setDisplayClassPlan(true);
+    setLessonPlanId(planId);
+    setDisplayLessonPlan(true);
   };
 
   return (
@@ -268,6 +274,15 @@ export const WorkspaceSidePanel = () => {
               </li>
             ))}
           </ul>
+            )}
+            {planPageData && (
+              <Pagination
+                page={planPageData.page}
+                totalPages={planPageData.totalPages}
+                total={planPageData.total}
+                pageSize={planPageData.pageSize}
+                onPageChange={setPlanPage}
+              />
             )}
           </div>
         </div>

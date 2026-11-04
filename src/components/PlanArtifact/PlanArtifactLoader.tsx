@@ -17,7 +17,7 @@ type PlanArtifactLoaderProps = {
 };
 
 /**
- * The class plans section, opened as a dialog from the dashboard like the sources
+ * The lesson plans section, opened as a dialog from the dashboard like the sources
  * and forms loaders. It is only offered while a workspace is open.
  */
 export const PlanArtifactLoader = ({
@@ -29,7 +29,7 @@ export const PlanArtifactLoader = ({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="flex h-[85vh] w-full flex-col gap-4 overflow-hidden p-4 sm:max-w-6xl">
+			<DialogContent className="flex h-[85vh] w-[calc(100vw-1rem)] max-w-[calc(100vw-1rem)] flex-col gap-4 overflow-hidden p-4 sm:max-w-[calc(100vw-2rem)]">
 				<DialogHeader>
 					<DialogTitle className="text-sm font-semibold">
 						{t("title")}

@@ -19,8 +19,8 @@ export const PlanArtifactCard = ({ plan }: { plan: PlanArtifactOutput }) => {
 	const {
 		setDisplayFormEditor,
 		setDisplayMindMap,
-		setDisplayClassPlan,
-		setClassPlanId,
+		setDisplayLessonPlan,
+		setLessonPlanId,
 	} = useWorkspaceStore();
 
 	if (!plan.id) return null;
@@ -28,8 +28,8 @@ export const PlanArtifactCard = ({ plan }: { plan: PlanArtifactOutput }) => {
 	const onOpen = () => {
 		setDisplayFormEditor(false);
 		setDisplayMindMap(false);
-		setClassPlanId(plan.id ?? null);
-		setDisplayClassPlan(true);
+		setLessonPlanId(plan.id ?? null);
+		setDisplayLessonPlan(true);
 	};
 
 	return (

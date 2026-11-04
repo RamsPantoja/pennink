@@ -1,6 +1,6 @@
 import type { Block } from "@blocknote/core";
 import { TRPCError } from "@trpc/server";
-import { and, desc, eq, inArray, isNull } from "drizzle-orm";
+import { and, count, desc, eq, ilike, inArray, isNull } from "drizzle-orm";
 import {
 	classroomTeachers,
 	classrooms,
@@ -8,14 +8,17 @@ import {
 	planArtifactsToWorkspaces,
 } from "~/server/db/schema";
 import type { TRPCContext } from "../../trpc";
+import { paginate } from "../schemas/pagination";
 import type {
 	createPlanArtifactInputSchema,
+	listPlanArtifactsInputSchema,
 	updatePlanArtifactInputSchema,
 	workspacePlanArtifactInputSchema,
 	workspacePlanArtifactsInputSchema,
 } from "../schemas/plan-artifact";
 import type { z } from "zod";
 
+type ListPlanArtifactsInput = z.infer<typeof listPlanArtifactsInputSchema>;
 type CreateInput = z.infer<typeof createPlanArtifactInputSchema>;
 type UpdateInput = z.infer<typeof updatePlanArtifactInputSchema>;
 type WorkspacePlanArtifactInput = z.infer<
@@ -32,30 +35,60 @@ type WorkspacePlanArtifactsInput = z.infer<
 export class PlanArtifactService {
 	constructor(private readonly ctx: Pick<TRPCContext, "db">) {}
 
-	public async listAll(userId: string) {
+	public async listAll(input: ListPlanArtifactsInput, userId: string) {
 		const teachable = await this.teachableClassroomIds(userId);
-		if (teachable.length === 0) return [];
+		const classroomIds = input.classroomId
+			? teachable.filter((id) => id === input.classroomId)
+			: teachable;
 
-		return this.ctx.db
-			.select({
-				id: planArtifacts.id,
-				title: planArtifacts.title,
-				range: planArtifacts.range,
-				startDate: planArtifacts.startDate,
-				endDate: planArtifacts.endDate,
-				updatedAt: planArtifacts.updatedAt,
-				classroomId: planArtifacts.classroomId,
-				classroomName: classrooms.name,
-			})
-			.from(planArtifacts)
-			.innerJoin(classrooms, eq(classrooms.id, planArtifacts.classroomId))
-			.where(
-				and(
-					inArray(planArtifacts.classroomId, teachable),
-					isNull(planArtifacts.deletedAt),
-				),
-			)
-			.orderBy(desc(planArtifacts.startDate), desc(planArtifacts.updatedAt));
+		if (classroomIds.length === 0) {
+			return paginate(
+				input,
+				async () => [],
+				async () => 0,
+			);
+		}
+
+		const where = and(
+			inArray(planArtifacts.classroomId, classroomIds),
+			isNull(planArtifacts.deletedAt),
+			input.search
+				? ilike(planArtifacts.title, `%${input.search}%`)
+				: undefined,
+		);
+
+		return paginate(
+			input,
+			async ({ limit, offset }) =>
+				this.ctx.db
+					.select({
+						id: planArtifacts.id,
+						title: planArtifacts.title,
+						range: planArtifacts.range,
+						startDate: planArtifacts.startDate,
+						endDate: planArtifacts.endDate,
+						updatedAt: planArtifacts.updatedAt,
+						classroomId: planArtifacts.classroomId,
+						classroomName: classrooms.name,
+					})
+					.from(planArtifacts)
+					.innerJoin(classrooms, eq(classrooms.id, planArtifacts.classroomId))
+					.where(where)
+					.orderBy(
+						desc(planArtifacts.startDate),
+						desc(planArtifacts.updatedAt),
+						desc(planArtifacts.id),
+					)
+					.limit(limit)
+					.offset(offset),
+			async () => {
+				const [row] = await this.ctx.db
+					.select({ total: count() })
+					.from(planArtifacts)
+					.where(where);
+				return row?.total ?? 0;
+			},
+		);
 	}
 
 	public async getById(id: string, userId: string) {

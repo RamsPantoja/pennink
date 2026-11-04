@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { messageSchema } from "./chat";
 import { isSourceDocumentType } from "~/lib/documentTypes";
+import { pageInputSchema } from "./pagination";
 
 export const createWorkspaceInputSchema = z.object({
 	name: z.string().min(2).max(100),
@@ -47,6 +48,6 @@ export const deleteWorkspaceInputSchema = z.object({
 	id: z.string().uuid(),
 });
 
-export const getFilesByUserInputSchema = z.object({
+export const getFilesByUserInputSchema = pageInputSchema.extend({
 	search: z.string().optional(),
 });

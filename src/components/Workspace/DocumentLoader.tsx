@@ -5,8 +5,11 @@ import FeedbackMessage from "../common/FeedbackMessage";
 import { DateTime } from "luxon";
 import type { PenninkDocument } from "./useWorkspaceStore";
 import { Input } from "../ui/input";
-import { Fragment, useState } from "react";
+import { useState } from "react";
+import { keepPreviousData } from "@tanstack/react-query";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { DEFAULT_PAGE_SIZE } from "~/server/api/schemas/pagination";
+import { Pagination } from "../ui/pagination";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import {
   Sheet,
@@ -17,7 +20,6 @@ import {
 } from "../ui/sheet";
 import { useTranslations } from "next-intl";
 import PDFDocumentCard from "./PDFDocumentCard";
-import { isSourceDocumentType } from "~/lib/documentTypes";
 
 type DocumentLoaderProps = {
   onSelect: (doc: PenninkDocument) => void;
@@ -33,14 +35,19 @@ export const DocumentLoader = ({
   const t = useTranslations("DocumentLoader");
   const [documentName, setDocumentName] = useState<string>("");
   const [searchParam, setSearchParam] = useState<string | undefined>();
+  const [page, setPage] = useState(1);
 
   const {
     data: filesByUser,
     isLoading: filesByUserLoading,
     isError: filesByUserError,
-  } = api.workspace.filesByUserId.useQuery({ search: searchParam });
+  } = api.workspace.filesByUserId.useQuery(
+    { search: searchParam, page, pageSize: DEFAULT_PAGE_SIZE },
+    { placeholderData: keepPreviousData },
+  );
 
   const performSearch = () => {
+    setPage(1);
     if (documentName) {
       setSearchParam(documentName);
     } else {
@@ -87,6 +94,7 @@ export const DocumentLoader = ({
                   onClick={() => {
                     setDocumentName("");
                     setSearchParam(undefined);
+                    setPage(1);
                   }}
                 >
                   <XMarkIcon className="min-w-5 h-5" />
@@ -105,7 +113,7 @@ export const DocumentLoader = ({
             {!filesByUserLoading &&
               !filesByUserError &&
               filesByUser &&
-              filesByUser.length === 0 && (
+              filesByUser.items.length === 0 && (
                 <div className="flex items-center justify-center text-foreground">
                   {t("emptyState.documents")}
                 </div>
@@ -113,27 +121,30 @@ export const DocumentLoader = ({
             {!filesByUserLoading &&
               !filesByUserError &&
               filesByUser &&
-              filesByUser.length > 0 && (
-                <div className="grid gap-4 grid-cols-4 w-full">
-                  {filesByUser.map((doc) => {
-                    return (
-                      <Fragment key={doc.id}>
-                        {isSourceDocumentType(doc.type) && (
-                          <PDFDocumentCard
-                            key={doc.id}
-                            title={doc.filename}
-                            type={doc.type}
-                            date={DateTime.fromJSDate(
-                              doc.createdAt,
-                            ).toLocaleString(DateTime.DATETIME_MED)}
-                            onSelect={onSelect}
-                            id={doc.id}
-                            storageKey={doc.key}
-                          />
+              filesByUser.items.length > 0 && (
+                <div className="flex flex-col gap-4 w-full">
+                  <div className="grid gap-4 grid-cols-4 w-full">
+                    {filesByUser.items.map((doc) => (
+                      <PDFDocumentCard
+                        key={doc.id}
+                        title={doc.filename}
+                        type={doc.type}
+                        date={DateTime.fromJSDate(doc.createdAt).toLocaleString(
+                          DateTime.DATETIME_MED,
                         )}
-                      </Fragment>
-                    );
-                  })}
+                        onSelect={onSelect}
+                        id={doc.id}
+                        storageKey={doc.key}
+                      />
+                    ))}
+                  </div>
+                  <Pagination
+                    page={filesByUser.page}
+                    totalPages={filesByUser.totalPages}
+                    total={filesByUser.total}
+                    pageSize={filesByUser.pageSize}
+                    onPageChange={setPage}
+                  />
                 </div>
               )}
           </div>

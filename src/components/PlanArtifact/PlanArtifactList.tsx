@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { keepPreviousData } from "@tanstack/react-query";
 import {
   CalendarDaysIcon,
   DocumentTextIcon,
@@ -12,9 +13,12 @@ import {
 import { format } from "date-fns";
 import { sileo } from "sileo";
 import { api } from "~/trpc/react";
+import { DEFAULT_PAGE_SIZE } from "~/server/api/schemas/pagination";
 import { Button } from "../common/Button";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
+import { Pagination } from "../ui/pagination";
+import { ListSearch } from "../ui/list-search";
 import {
   Empty,
   EmptyDescription,
@@ -39,18 +43,28 @@ export function PlanArtifactList({ workspaceId }: { workspaceId: string }) {
   const utils = api.useUtils();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [editingPlan, setEditingPlan] = useState<PlanSettings | null>(null);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState<string | undefined>();
   const { data: workspace } = api.workspace.workspaceById.useQuery({
     id: workspaceId,
   });
-  const {
-    data: allPlans = [],
-    isLoading,
-    isError,
-  } = api.planArtifact.listAll.useQuery();
+  const classroomId = workspace?.classroomId;
   // Only plans of the open workspace's classroom can be attached to it.
-  const plans = allPlans.filter(
-    (plan) => plan.classroomId === workspace?.classroomId,
+  const {
+    data,
+    isPending,
+    isError,
+  } = api.planArtifact.listAll.useQuery(
+    { classroomId, page, pageSize: DEFAULT_PAGE_SIZE, search },
+    { enabled: !!classroomId, placeholderData: keepPreviousData },
   );
+  const isLoading = isPending;
+  const plans = data?.items ?? [];
+
+  const handleSearch = (term: string | undefined) => {
+    setSearch(term);
+    setPage(1);
+  };
 
   const attach = api.planArtifact.attachToWorkspace.useMutation({
     onSuccess: () => {
@@ -78,8 +92,13 @@ export function PlanArtifactList({ workspaceId }: { workspaceId: string }) {
             <p className="text-muted-foreground text-sm">{t("description")}</p>
           </div>
 
+          <ListSearch
+            placeholder={t("search.placeholder")}
+            onSearch={handleSearch}
+          />
+
           {isLoading && (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]">
               {[0, 1, 2].map((key) => (
                 <Skeleton key={key} className="h-40 rounded-xl" />
               ))}
@@ -94,7 +113,13 @@ export function PlanArtifactList({ workspaceId }: { workspaceId: string }) {
             </Empty>
           )}
 
-          {!isLoading && !isError && plans.length === 0 && (
+          {!isLoading && !isError && plans.length === 0 && search && (
+            <p className="text-muted-foreground text-sm">
+              {t("search.noResults")}
+            </p>
+          )}
+
+          {!isLoading && !isError && plans.length === 0 && !search && (
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
@@ -107,7 +132,7 @@ export function PlanArtifactList({ workspaceId }: { workspaceId: string }) {
           )}
 
           {plans.length > 0 && (
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(18rem,1fr))]">
               {plans.map((plan) => (
                 <Card key={plan.id} className="flex flex-col gap-4 p-5">
                   <div className="flex items-start justify-between gap-2">
@@ -171,6 +196,16 @@ export function PlanArtifactList({ workspaceId }: { workspaceId: string }) {
                 </Card>
               ))}
             </div>
+          )}
+
+          {data && (
+            <Pagination
+              page={data.page}
+              totalPages={data.totalPages}
+              total={data.total}
+              pageSize={data.pageSize}
+              onPageChange={setPage}
+            />
           )}
         </div>
       </ResizablePanel>

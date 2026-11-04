@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { pageInputSchema, searchSchema } from "./pagination";
 
 const studyPlanIdSchema = z.string().uuid();
 const classroomIdSchema = z.string().uuid();
@@ -11,8 +12,13 @@ export const studyPlanByIdInputSchema = z.object({
 	id: studyPlanIdSchema,
 });
 
-export const listStudyPlansInputSchema = z.object({
+export const listStudyPlansInputSchema = pageInputSchema.extend({
 	classroomId: classroomIdSchema,
+	search: searchSchema,
+});
+
+export const listAllStudyPlansInputSchema = pageInputSchema.extend({
+	search: searchSchema,
 });
 
 export const createStudyPlanInputSchema = z.object({

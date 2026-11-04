@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { aiFormSchema } from "~/app/agents/chat/schema";
+import { pageInputSchema } from "./pagination";
 
 export const createFormSchema = z.object({
 	formData: aiFormSchema,
@@ -15,7 +16,7 @@ export const editFormSchema = z.object({
 	formData: aiFormSchema,
 });
 
-export const getFormsSchema = z.object({
+export const getFormsSchema = pageInputSchema.extend({
 	type: z.enum(["BASIC", "EXAM"]),
 	search: z.string().optional(),
 });

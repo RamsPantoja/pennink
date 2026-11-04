@@ -35,7 +35,8 @@ import {
 	gradeQuestion,
 } from "~/app/agents/exam-evaluation/grade";
 import type { FormType } from "~/lib/enum";
-import { and, eq, inArray, sql } from "drizzle-orm";
+import { and, count, desc, eq, ilike, inArray, sql } from "drizzle-orm";
+import { paginate } from "../schemas/pagination";
 
 type FormServiceContructor = {
 	ctx: TRPCContext;
@@ -448,36 +449,56 @@ export class FormService {
 
 			switch (type) {
 				case "EXAM": {
-					const exams = await this.ctx.db.query.exams.findMany({
-						where: (exams, { eq, and, ilike }) => {
-							const conditions = [eq(exams.userId, userId)];
-
-							if (search) {
-								conditions.push(ilike(exams.title, `%${search}%`));
-							}
-
-							return and(...conditions);
+					const where = and(
+						eq(exams.userId, userId),
+						search ? ilike(exams.title, `%${search}%`) : undefined,
+					);
+					const page = await paginate(
+						input,
+						({ limit, offset }) =>
+							this.ctx.db
+								.select()
+								.from(exams)
+								.where(where)
+								.orderBy(desc(exams.id))
+								.limit(limit)
+								.offset(offset),
+						async () => {
+							const [row] = await this.ctx.db
+								.select({ total: count() })
+								.from(exams)
+								.where(where);
+							return row?.total ?? 0;
 						},
-						orderBy: (exams, { desc }) => [desc(exams.id)],
-					});
+					);
 
-					return { data: exams, type };
+					return { ...page, type };
 				}
 				case "BASIC": {
-					const forms = await this.ctx.db.query.forms.findMany({
-						where: (forms, { eq, and, ilike }) => {
-							const conditions = [eq(forms.userId, userId)];
-
-							if (search) {
-								conditions.push(ilike(forms.title, `%${search}%`));
-							}
-
-							return and(...conditions);
+					const where = and(
+						eq(forms.userId, userId),
+						search ? ilike(forms.title, `%${search}%`) : undefined,
+					);
+					const page = await paginate(
+						input,
+						({ limit, offset }) =>
+							this.ctx.db
+								.select()
+								.from(forms)
+								.where(where)
+								.orderBy(desc(forms.id))
+								.limit(limit)
+								.offset(offset),
+						async () => {
+							const [row] = await this.ctx.db
+								.select({ total: count() })
+								.from(forms)
+								.where(where);
+							return row?.total ?? 0;
 						},
-						orderBy: (forms, { desc }) => [desc(forms.id)],
-					});
+					);
 
-					return { data: forms, type };
+					return { ...page, type };
 				}
 				default:
 					throw new TRPCError({

@@ -32,10 +32,10 @@ type WorkspaceStore = {
 	setAiFormData: (data: AiForm | null) => void;
 	displayMindMap: boolean;
 	setDisplayMindMap: (displayMindMap: boolean) => void;
-	displayClassPlan: boolean;
-	setDisplayClassPlan: (displayClassPlan: boolean) => void;
-	classPlanId: string | null;
-	setClassPlanId: (id: string | null) => void;
+	displayLessonPlan: boolean;
+	setDisplayLessonPlan: (displayLessonPlan: boolean) => void;
+	lessonPlanId: string | null;
+	setLessonPlanId: (id: string | null) => void;
 	mindMapData: MindMap | null;
 	setMindMapData: (data: MindMap | null) => void;
 	currentForm: CurrentForm | null;
@@ -59,24 +59,24 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	displayFormEditor: false,
 	displayMindMap: false,
 	mindMapData: null,
-	displayClassPlan: false,
-	classPlanId: null,
+	displayLessonPlan: false,
+	lessonPlanId: null,
 	contextTokens: null,
 	setContextTokens: (tokens) => set(() => ({ contextTokens: tokens })),
 	setDisplayMindMap: (displayMindMap) =>
 		set(() =>
 			displayMindMap
-				? { displayMindMap, displayClassPlan: false }
+				? { displayMindMap, displayLessonPlan: false }
 				: { displayMindMap },
 		),
 	setMindMapData: (data) => set(() => ({ mindMapData: data })),
-	setDisplayClassPlan: (displayClassPlan) =>
+	setDisplayLessonPlan: (displayLessonPlan) =>
 		set(() =>
-			displayClassPlan
-				? { displayClassPlan, displayFormEditor: false, displayMindMap: false }
-				: { displayClassPlan },
+			displayLessonPlan
+				? { displayLessonPlan, displayFormEditor: false, displayMindMap: false }
+				: { displayLessonPlan },
 		),
-	setClassPlanId: (id) => set(() => ({ classPlanId: id })),
+	setLessonPlanId: (id) => set(() => ({ lessonPlanId: id })),
 	setCurrentForm: (form) => set(() => ({ currentForm: form })),
 	setWorkspaceTitle: (title) => set(() => ({ workspaceTitle: title })),
 	setAgentActivity: (agentActivity) => set(() => ({ agentActivity })),
@@ -84,7 +84,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 	setDisplayFormEditor: (displayFormEditor) =>
 		set(() =>
 			displayFormEditor
-				? { displayFormEditor, displayClassPlan: false }
+				? { displayFormEditor, displayLessonPlan: false }
 				: { displayFormEditor },
 		),
 	setAiFormData: (data) => set(() => ({ aiFormData: data })),
@@ -100,8 +100,8 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => ({
 			displayFormEditor: false,
 			displayMindMap: false,
 			mindMapData: null,
-			displayClassPlan: false,
-			classPlanId: null,
+			displayLessonPlan: false,
+			lessonPlanId: null,
 			contextTokens: null,
 		})),
 }));

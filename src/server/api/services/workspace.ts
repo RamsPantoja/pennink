@@ -3,6 +3,7 @@ import type {
 	createFileInputSchema,
 	createWorkspaceInputSchema,
 	documentVectorSearchInputSchema,
+	getFilesByUserInputSchema,
 	updateWorkspaceNameInputSchema,
 	workspaceSourceInputSchema,
 } from "../schemas/workspace";
@@ -24,15 +25,19 @@ import { TRPCError } from "@trpc/server";
 import {
 	and,
 	asc,
+	count,
+	desc,
 	eq,
 	getTableColumns,
+	ilike,
 	inArray,
 	isNull,
 	sql,
 } from "drizzle-orm";
+import { paginate } from "../schemas/pagination";
 import { env } from "~/env";
 import { loadSourceDocuments } from "~/server/lib/loadSourceDocuments";
-import { isSourceDocumentType } from "~/lib/documentTypes";
+import { isSourceDocumentType, SOURCE_DOCUMENT_TYPES } from "~/lib/documentTypes";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embed, embedMany } from "ai";
 import { DateTime } from "luxon";
@@ -447,20 +452,35 @@ export class WorkspaceService {
 		return result;
 	}
 
-	public async getFilesByUserId(userId: string, searchTerm?: string) {
-		const files = await this.ctx.db.query.files.findMany({
-			where: (files, { eq, and, ilike }) => {
-				const conditions = [eq(files.userId, userId)];
+	public async getFilesByUserId(
+		input: z.infer<typeof getFilesByUserInputSchema>,
+		userId: string,
+	) {
+		const { search, page, pageSize } = input;
+		const where = and(
+			eq(files.userId, userId),
+			inArray(files.type, Object.keys(SOURCE_DOCUMENT_TYPES)),
+			search ? ilike(files.filename, `%${search}%`) : undefined,
+		);
 
-				if (searchTerm) {
-					conditions.push(ilike(files.filename, `%${searchTerm}%`));
-				}
-
-				return and(...conditions);
+		return paginate(
+			{ page, pageSize },
+			({ limit, offset }) =>
+				this.ctx.db
+					.select()
+					.from(files)
+					.where(where)
+					.orderBy(desc(files.createdAt), desc(files.id))
+					.limit(limit)
+					.offset(offset),
+			async () => {
+				const [row] = await this.ctx.db
+					.select({ total: count() })
+					.from(files)
+					.where(where);
+				return row?.total ?? 0;
 			},
-		});
-
-		return files;
+		);
 	}
 
 	private async assertWorkspaceTeacher(workspaceId: string, userId: string) {

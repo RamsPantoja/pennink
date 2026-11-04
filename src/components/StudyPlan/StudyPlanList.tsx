@@ -2,15 +2,19 @@
 
 import { useRef, useState, type ChangeEvent } from "react";
 import { useTranslations } from "next-intl";
+import { keepPreviousData } from "@tanstack/react-query";
 import {
   ArrowUpTrayIcon,
   CalendarDaysIcon,
   ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import { api } from "~/trpc/react";
+import { DEFAULT_PAGE_SIZE } from "~/server/api/schemas/pagination";
 import { Button } from "../common/Button";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
+import { ListSearch } from "../ui/list-search";
+import { Pagination } from "../ui/pagination";
 import {
   Empty,
   EmptyContent,
@@ -31,11 +35,22 @@ export function StudyPlanList() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [startEditing, setStartEditing] = useState(false);
   const [attachId, setAttachId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState<string | undefined>();
   const {
-    data: plans = [],
+    data,
     isLoading,
     isError,
-  } = api.studyPlan.listAll.useQuery();
+  } = api.studyPlan.listAll.useQuery(
+    { page, pageSize: DEFAULT_PAGE_SIZE, search },
+    { placeholderData: keepPreviousData },
+  );
+  const plans = data?.items ?? [];
+
+  const handleSearch = (term: string | undefined) => {
+    setSearch(term);
+    setPage(1);
+  };
 
   const open = async (id: string, editing: boolean) => {
     await utils.studyPlan.invalidate();
@@ -71,12 +86,17 @@ export function StudyPlanList() {
   );
 
   const attachingPlan = plans.find((plan) => plan.id === attachId);
-  const showEmpty = !isLoading && !isError && plans.length === 0;
+  const showEmpty = !isLoading && !isError && plans.length === 0 && !search;
+  const showNoResults = !isLoading && !isError && plans.length === 0 && !!search;
 
   return (
     <div className="flex w-full flex-col gap-6 p-3">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        {plans.length > 0 && importButton}
+        <ListSearch
+          placeholder={t("search.placeholder")}
+          onSearch={handleSearch}
+        />
+        {(plans.length > 0 || search) && importButton}
         <input
           ref={fileInput}
           type="file"
@@ -104,6 +124,10 @@ export function StudyPlanList() {
             <EmptyTitle>{t("page.error")}</EmptyTitle>
           </EmptyHeader>
         </Empty>
+      )}
+
+      {showNoResults && (
+        <p className="text-muted-foreground text-sm">{t("search.noResults")}</p>
       )}
 
       {showEmpty && (
@@ -202,6 +226,16 @@ export function StudyPlanList() {
             </Card>
           ))}
         </div>
+      )}
+
+      {data && (
+        <Pagination
+          page={data.page}
+          totalPages={data.totalPages}
+          total={data.total}
+          pageSize={data.pageSize}
+          onPageChange={setPage}
+        />
       )}
 
       <AttachPlanDialog

@@ -1,10 +1,16 @@
 import { z } from "zod";
+import { pageInputSchema, searchSchema } from "./pagination";
 
 const planArtifactIdSchema = z.string().uuid();
 const classroomIdSchema = z.string().uuid();
 
 const titleSchema = z.string().trim().min(1).max(150);
 const isoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+export const listPlanArtifactsInputSchema = pageInputSchema.extend({
+	classroomId: classroomIdSchema.optional(),
+	search: searchSchema,
+});
 
 export const planArtifactByIdInputSchema = z.object({
 	id: planArtifactIdSchema,

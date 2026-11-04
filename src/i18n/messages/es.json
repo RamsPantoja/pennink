@@ -102,6 +102,12 @@
 			"title": "Planes de estudio",
 			"manage": "Planes de estudio"
 		},
+		"evaluateExams": {
+			"manage": "Evaluar exámenes"
+		},
+		"evaluationSchemas": {
+			"manage": "Esquemas de evaluación"
+		},
 		"planArtifacts": {
 			"title": "Planes de clase",
 			"manage": "Planes de clase"
@@ -269,6 +275,17 @@
 		}
 	},
 
+	"ListSearch": {
+		"submit": "Buscar",
+		"clear": "Limpiar búsqueda"
+	},
+	"Pagination": {
+		"navigation": "Paginación",
+		"previous": "Anterior",
+		"next": "Siguiente",
+		"goToPage": "Ir a la página {page}",
+		"range": "{from}–{to} de {total}"
+	},
 	"FormLoader": {
 		"sheetTitle": "Tus formularios",
 		"sheetDescription": "Administra tus formularios, exámenes, enlaces y respuestas",
@@ -1016,6 +1033,10 @@
 	"PlanArtifact": {
 		"title": "Planes de clase",
 		"description": "Planes en markdown para un día o una semana, creados a partir de tus planes de estudio. Ábrelo para editarlo.",
+		"search": {
+			"placeholder": "Buscar planes de clase por título",
+			"noResults": "Ningún plan de clase coincide con tu búsqueda."
+		},
 		"empty": "Aún no hay planes de clase. Pídele al asistente el plan de hoy o de esta semana.",
 		"dialogDescription": "Abre un plan de clase para editarlo o asócialo a uno de tus espacios de trabajo.",
 		"attach": {
@@ -1059,9 +1080,118 @@
 			"endBeforeStart": "La fecha de fin debe ser igual o posterior a la de inicio."
 		}
 	},
+	"EvaluationSchema": {
+		"title": "Esquemas de evaluación",
+		"description": "Claves de respuesta reutilizables para evaluar exámenes con IA. Cada pregunta se convierte en una pregunta de Jev.",
+		"search": {
+			"placeholder": "Buscar esquemas por nombre",
+			"noResults": "Ningún esquema de evaluación coincide con tu búsqueda."
+		},
+		"empty": "Aún no hay esquemas de evaluación. Crea uno o pídele al asistente que lo redacte.",
+		"questions": "{count} preguntas",
+		"button": {
+			"create": "Nuevo esquema",
+			"open": "Editar",
+			"duplicate": "Duplicar",
+			"delete": "Eliminar",
+			"save": "Guardar",
+			"back": "Volver"
+		},
+		"confirmDelete": "¿Eliminar este esquema de evaluación?",
+		"editor": {
+			"nameLabel": "Nombre",
+			"descriptionLabel": "Descripción",
+			"detailsTitle": "Detalles",
+			"namePlaceholder": "Ej. Examen parcial de biología",
+			"descriptionPlaceholder": "Para qué se usa este esquema (opcional)",
+			"jsonLabel": "Preguntas",
+			"jsonHint": "Cada pregunta tiene una clave única y un tipo: choice, score, noul o box.",
+			"valid": "Esquema válido con {count} preguntas.",
+			"invalid": "El esquema tiene {count} problemas:",
+			"syntaxError": "JSON no válido: {message}"
+		}
+	},
+	"EvaluateExams": {
+		"title": "Evaluar exámenes",
+		"description": "Sube exámenes escaneados, califícalos con Jev usando un esquema guardado, revisa las respuestas marcadas y exporta los resultados.",
+		"search": {
+			"placeholder": "Buscar evaluaciones por nombre",
+			"noResults": "Ninguna evaluación coincide con tu búsqueda."
+		},
+		"empty": "Aún no hay evaluaciones. Inicia una para calificar un grupo de exámenes.",
+		"defaultName": "Evaluación {date}",
+		"button": {
+			"new": "Nueva evaluación",
+			"open": "Abrir",
+			"back": "Volver",
+			"start": "Iniciar evaluación",
+			"export": "Exportar CSV",
+			"hide": "Ocultar",
+			"details": "Detalle",
+			"retry": "Reintentar"
+		},
+		"new": {
+			"title": "Nueva evaluación",
+			"schemaLabel": "Esquema de evaluación",
+			"schemaPlaceholder": "Elige un esquema",
+			"schemaPicker": {
+				"title": "Elige un esquema de evaluación",
+				"description": "Selecciona el esquema con el que se calificarán los exámenes.",
+				"searchPlaceholder": "Buscar esquema por nombre",
+				"empty": "No se encontraron esquemas."
+			},
+			"noSchemas": "Aún no hay esquemas. Crea uno primero en la página de esquemas de evaluación.",
+			"nameLabel": "Nombre",
+			"filesLabel": "Imágenes de los exámenes",
+			"filesHint": "Un archivo zip con una carpeta por estudiante. Nombra cada página page-01.png, page-02.png, etc. Solo PNG y JPEG.",
+						"chooseZip": "Elegir archivo zip",
+			"preview": "{students} estudiantes, {pages} páginas",
+			"pages": "{count} páginas",
+			"unassigned": "{count} archivos no se pudieron asignar a un estudiante"
+		},
+		"progress": {
+			"preparing": "Preparando imágenes {done} de {total}",
+			"uploading": "Subiendo página {done} de {total}",
+			"grading": "Calificando estudiante {done} de {total}"
+		},
+		"errors": {
+			"generic": "Algo salió mal. Inténtalo de nuevo.",
+			"noPages": "No se encontraron páginas PNG o JPEG en este zip."
+		},
+		"runs": {
+			"meta": "{schema} preguntas · {date}"
+		},
+		"results": {
+			"schema": "{count} preguntas",
+			"student": "Estudiante",
+			"status": "Estado",
+			"total": "Total",
+			"question": "Pregunta",
+			"answer": "Respuesta",
+			"aiScore": "Puntaje IA",
+			"teacherScore": "Tu puntaje",
+			"flagged": "Revisar",
+			"empty": "No hay estudiantes en esta evaluación."
+		},
+		"status": {
+			"pending": "Pendiente",
+			"running": "Calificando",
+			"needs_review": "Requiere revisión",
+			"graded": "Calificado",
+			"failed": "Falló"
+		},
+		"answer": {
+			"box": "Región marcada",
+			"unscored": "Sin puntaje"
+		}
+	},
 	"StudyPlan": {
 		"title": "Planes de estudio",
 		"description": "Planes con fechas y casillas, asociados a esta clase.",
+		"search": {
+			"placeholder": "Buscar planes de estudio por título",
+			"noResults": "Ningún plan de estudio coincide con tu búsqueda."
+		},
 		"empty": "Aún no hay planes de estudio. Crea uno, importa un archivo .md o pídeselo al asistente.",
 		"progress": "{completed} de {total} completados",
 		"nextDue": "Próximo: {title} ({date})",

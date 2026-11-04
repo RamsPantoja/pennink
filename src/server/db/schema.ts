@@ -23,6 +23,11 @@ import type { AdapterAccount } from "next-auth/adapters";
 import { typeid } from "typeid-js";
 import type { UIMessage } from "ai";
 import type { QuestionResult } from "../../app/agents/exam-evaluation/grade";
+import type { EvaluationSchemaDefinition } from "../api/schemas/evaluation-schema";
+import type {
+  EvaluationAnswers,
+  EvaluationSubmissionStatus,
+} from "../api/schemas/evaluation-run";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -703,6 +708,106 @@ export const notesRelations = relations(notes, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const evaluationSchemas = createTable("evaluation_schema", {
+  id: customId.notNull().primaryKey(),
+  userId: uuid()
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text().notNull(),
+  description: text().notNull().default(""),
+  definition: json().$type<EvaluationSchemaDefinition>().notNull(),
+  createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+  deletedAt: timestamp({ mode: "date" }),
+});
+
+export const evaluationSchemasRelations = relations(
+  evaluationSchemas,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [evaluationSchemas.userId],
+      references: [users.id],
+    }),
+  }),
+);
+
+export const evaluationRuns = createTable("evaluation_run", {
+  id: customId.notNull().primaryKey(),
+  userId: uuid()
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  evaluationSchemaId: uuid().references(() => evaluationSchemas.id, {
+    onDelete: "set null",
+  }),
+  name: text().notNull(),
+  // Copy of the schema definition at run time, so later edits do not change past results.
+  schemaSnapshot: json().$type<EvaluationSchemaDefinition>().notNull(),
+  createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+});
+
+export const evaluationRunsRelations = relations(
+  evaluationRuns,
+  ({ one, many }) => ({
+    user: one(users, {
+      fields: [evaluationRuns.userId],
+      references: [users.id],
+    }),
+    submissions: many(evaluationSubmissions),
+  }),
+);
+
+export const evaluationSubmissions = createTable("evaluation_submission", {
+  id: customId.notNull().primaryKey(),
+  runId: uuid()
+    .notNull()
+    .references(() => evaluationRuns.id, { onDelete: "cascade" }),
+  studentName: text().notNull(),
+  status: text().$type<EvaluationSubmissionStatus>().notNull().default("pending"),
+  score: integer(),
+  // Per-question result keyed by question key. See services/evaluation-run.ts.
+  answers: json().$type<EvaluationAnswers>(),
+  rawResponse: json(),
+  errorMessage: text(),
+  createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+});
+
+export const evaluationSubmissionsRelations = relations(
+  evaluationSubmissions,
+  ({ one, many }) => ({
+    run: one(evaluationRuns, {
+      fields: [evaluationSubmissions.runId],
+      references: [evaluationRuns.id],
+    }),
+    pages: many(evaluationSubmissionPages),
+  }),
+);
+
+export const evaluationSubmissionPages = createTable(
+  "evaluation_submission_page",
+  {
+    id: customId.notNull().primaryKey(),
+    submissionId: uuid()
+      .notNull()
+      .references(() => evaluationSubmissions.id, { onDelete: "cascade" }),
+    pageNo: integer().notNull(),
+    storageKey: text().notNull(),
+    mimeType: text().notNull(),
+    createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
+  },
+);
+
+export const evaluationSubmissionPagesRelations = relations(
+  evaluationSubmissionPages,
+  ({ one }) => ({
+    submission: one(evaluationSubmissions, {
+      fields: [evaluationSubmissionPages.submissionId],
+      references: [evaluationSubmissions.id],
+    }),
+  }),
+);
 
 export const files = createTable("file", {
   id: customId.notNull().primaryKey(),

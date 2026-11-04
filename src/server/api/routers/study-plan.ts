@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/trpc";
 import {
 	createStudyPlanInputSchema,
 	importStudyPlanInputSchema,
+	listAllStudyPlansInputSchema,
 	listStudyPlansInputSchema,
 	setStudyPlanItemInputSchema,
 	studyPlanByIdInputSchema,
@@ -16,11 +17,13 @@ export const studyPlanRouter = createTRPCRouter({
 		.query(({ input, ctx }) =>
 			ctx
 				.services({ ctx })
-				.studyPlanService.listForClassroom(input.classroomId, ctx.session.user.id),
+				.studyPlanService.listForClassroom(input, ctx.session.user.id),
 		),
-	listAll: protectedProcedure.query(({ ctx }) =>
-		ctx.services({ ctx }).studyPlanService.listAll(ctx.session.user.id),
-	),
+	listAll: protectedProcedure
+		.input(listAllStudyPlansInputSchema)
+		.query(({ input, ctx }) =>
+			ctx.services({ ctx }).studyPlanService.listAll(input, ctx.session.user.id),
+		),
 	byId: protectedProcedure
 		.input(studyPlanViewInputSchema)
 		.query(({ input, ctx }) =>
