@@ -35,7 +35,6 @@
 			}
 		}
 	},
-
 	"Dashboard": {
 		"toast": {
 			"success": {
@@ -66,7 +65,6 @@
 			"searchSources": "Buscar fuentes"
 		}
 	},
-
 	"AppSidebar": {
 		"signOutDialog": {
 			"title": "Cerrar sesión",
@@ -113,7 +111,6 @@
 			"manage": "Planes de clase"
 		}
 	},
-
 	"WorkspaceCard": {
 		"toast": {
 			"error": {
@@ -138,7 +135,6 @@
 			"delete": "Eliminar"
 		}
 	},
-
 	"Chat": {
 		"status": {
 			"thinking": "Pensando…",
@@ -164,7 +160,8 @@
 				"lessonPlanner": "Planeando la clase",
 				"listClassroomStudents": "Listando estudiantes de la clase",
 				"createMindMap": "Creando mapa mental",
-				"unknown": "Ejecutando herramienta"
+				"unknown": "Ejecutando herramienta",
+				"draftEvaluationSchema": "Redactando el esquema de evaluación"
 			}
 		},
 		"errors": {
@@ -205,7 +202,6 @@
 			"createClassroomFirst": "Crea un aula antes de chatear"
 		}
 	},
-
 	"Workspace": {
 		"toast": {
 			"error": "Algo salió mal, inténtalo más tarde.",
@@ -243,7 +239,6 @@
 			"startNewWorkspace": "Iniciar un nuevo espacio de trabajo"
 		}
 	},
-
 	"DocumentLoader": {
 		"sheetTitle": "Tus fuentes",
 		"sheetDescription": "Asocia un documento guardado a este espacio de trabajo",
@@ -260,7 +255,6 @@
 			"documents": "Tus documentos aparecerán aquí."
 		}
 	},
-
 	"PDFDocumentCard": {
 		"badge": {
 			"pdf": "PDF",
@@ -274,7 +268,6 @@
 			"download": "Error al descargar el archivo:"
 		}
 	},
-
 	"ListSearch": {
 		"submit": "Buscar",
 		"clear": "Limpiar búsqueda"
@@ -316,7 +309,6 @@
 			"selectForm": "Haz clic en la tarjeta del formulario para ver enlaces y resultados"
 		}
 	},
-
 	"FormCard": {
 		"button": {
 			"open": "Abrir"
@@ -332,7 +324,6 @@
 			"deleteFailed": "No se pudo eliminar"
 		}
 	},
-
 	"LinksManager": {
 		"button": {
 			"share": "Compartir",
@@ -343,13 +334,11 @@
 			"linkAccess": "Cualquiera con el enlace puede acceder a este formulario"
 		}
 	},
-
 	"Links": {
 		"message": {
 			"noLinks": "Tus enlaces aparecerán aquí"
 		}
 	},
-
 	"FormReview": {
 		"descriptionLabel": "Descripción",
 		"detailedReview": "Revisión detallada de preguntas",
@@ -360,7 +349,6 @@
 		"falseValue": "Falso",
 		"availableOptions": "Opciones disponibles"
 	},
-
 	"ExamReview": {
 		"instructions": "Instrucciones",
 		"performanceSummary": "Resumen de rendimiento",
@@ -385,7 +373,6 @@
 		"questionScore": "{score}/100",
 		"noReferenceAnswer": "Sin respuesta de referencia"
 	},
-
 	"PomodoroTimer": {
 		"startSession": "Iniciar sesión",
 		"pauseSession": "Pausar sesión",
@@ -421,7 +408,6 @@
 		"noSessionsCompleted": "No hay sesiones completadas aún. ¡Comienza tu primer Pomodoro!",
 		"restBreak": "Descanso"
 	},
-
 	"SignIn": {
 		"headline": "Tu asistente de enseñanza con IA, listo cuando tú lo estés.",
 		"tagline": "Trabaja inteligente, no duro – Espacios de trabajo impulsados por IA que se adaptan a ti.",
@@ -434,7 +420,6 @@
 			"description": "Inicia sesión en tu cuenta."
 		}
 	},
-
 	"Settings": {
 		"dialogTitle": "Configuración",
 		"head": {
@@ -492,7 +477,6 @@
 			"description": "Elige el idioma de la interfaz. La página se recargará al cambiarlo."
 		}
 	},
-
 	"FormEditor": {
 		"toast": {
 			"error": "Ocurrió un error",
@@ -507,7 +491,6 @@
 			"test": "Probar"
 		}
 	},
-
 	"DynamicForm": {
 		"validation": {
 			"required": "{field} es obligatorio",
@@ -531,7 +514,6 @@
 			"currentValue": "Valor"
 		}
 	},
-
 	"SharedNotes": {
 		"title": {
 			"notes": "Notas"
@@ -548,7 +530,6 @@
 			"placeholder": "Esta nota es de solo lectura..."
 		}
 	},
-
 	"ShareExam": {
 		"title": {
 			"exam": "Examen"
@@ -581,7 +562,6 @@
 			"evaluateExam": "Evalúa el siguiente examen y extrae la puntuación y comentarios: Preguntas: {questions} y Respuestas del usuario: {answers}"
 		}
 	},
-
 	"ShareForm": {
 		"head": {
 			"title": "Formulario",
@@ -604,7 +584,6 @@
 			"errorFetching": "Ocurrió un error al obtener las notas compartidas."
 		}
 	},
-
 	"SubscriptionPlans": {
 		"upgradeButton": "Actualizar plan",
 		"dialog": {
@@ -648,7 +627,6 @@
 			"error": "Ocurrió un error"
 		}
 	},
-
 	"UsageService": {
 		"title": "Uso",
 		"resetsAt": "Se reinicia en",
@@ -666,7 +644,6 @@
 			"limit": "5"
 		}
 	},
-
 	"Editor": {
 		"placeholders": {
 			"default": "Escribe, usa '/ai' para IA, '/' para comandos..."
@@ -689,7 +666,6 @@
 			"accept": "Aceptar"
 		}
 	},
-
 	"ShareLinkEditor": {
 		"button": {
 			"share": "Compartir",
@@ -701,7 +677,6 @@
 			"anyoneCanView": "Cualquiera en la web con el enlace puede ver tus notas"
 		}
 	},
-
 	"InsertContentLinkDialog": {
 		"tooltip": {
 			"importFromLink": "Importar contenido desde enlace"
@@ -726,7 +701,6 @@
 			"error": "Ocurrió un error al procesar su solicitud."
 		}
 	},
-
 	"Feedback": {
 		"button": {
 			"feedback": "Comentarios",
@@ -745,7 +719,6 @@
 			"success": "¡Comentarios enviados con éxito!"
 		}
 	},
-
 	"Identification": {
 		"form": {
 			"name": {
@@ -794,7 +767,6 @@
 			}
 		}
 	},
-
 	"ExamFeedback": {
 		"dialog": {
 			"title": "Resultados del examen",
@@ -812,7 +784,6 @@
 			"title": "Tu puntuación"
 		}
 	},
-
 	"IdentificationForm": {
 		"dialog": {
 			"title": "Identifícate",
@@ -853,7 +824,6 @@
 			}
 		}
 	},
-
 	"ClassroomPicker": {
 		"section": "Aulas",
 		"search": {
@@ -877,11 +847,9 @@
 		},
 		"loading": "Cargando aulas..."
 	},
-
 	"ClassroomSection": {
 		"manage": "Administrar aula"
 	},
-
 	"StudentImportDialog": {
 		"title": "Importar estudiantes desde Excel",
 		"description": "Sube un archivo .xlsx con columnas de nombre y correo, y revisa la vista previa antes de importar.",
@@ -951,7 +919,6 @@
 			"confirm": "Quitar"
 		}
 	},
-
 	"Common": {
 		"close": "Cerrar",
 		"more": "Más",
@@ -962,15 +929,12 @@
 			"description": "Muestra la barra lateral móvil."
 		}
 	},
-
 	"ExamResultCard": {
 		"score": "Puntaje: {score}"
 	},
-
 	"Notifications": {
 		"empty": "Sin notificaciones"
 	},
-
 	"PDFUploader": {
 		"errors": {
 			"invalidFileType": "Tipo de archivo no válido",
@@ -983,53 +947,42 @@
 		"preview": "Vista previa de {name}",
 		"uploadAndAsk": "Subir y preguntar"
 	},
-
 	"Reasoning": {
 		"thinking": "Pensando...",
 		"thoughtFor": "Pensó durante {duration} segundos",
 		"thoughtAMoment": "Pensó durante unos segundos"
 	},
-
 	"AgentVisual": {
 		"ariaLabel": "Visualización del agente de IA"
 	},
-
 	"FeedbackMessage": {
 		"reportError": "Reportar error"
 	},
-
 	"ScrollToBottomButton": {
 		"tooltip": "Desplazarse al final"
 	},
-
 	"ZoomableDiv": {
 		"zoomOut": "Alejar",
 		"resetZoom": "Restablecer zoom",
 		"zoomIn": "Acercar"
 	},
-
 	"Logo": {
 		"alt": "Logotipo de Pennink"
 	},
-
 	"ArtifactCard": {
 		"download": "Descargar"
 	},
-
 	"MindMap": {
 		"canvasLabel": "Lienzo del mapa mental",
 		"open": "Abrir mapa mental",
 		"nodes": "{count} ideas"
 	},
-
 	"SharedContent": {
 		"poweredBy": "Desarrollado con Pennink"
 	},
-
 	"UploadObjectToStorage": {
 		"error": "Error al subir el archivo"
 	},
-
 	"PlanArtifact": {
 		"title": "Planes de clase",
 		"description": "Planes en markdown para un día o una semana, creados a partir de tus planes de estudio. Ábrelo para editarlo.",
@@ -1107,8 +1060,34 @@
 			"jsonLabel": "Preguntas",
 			"jsonHint": "Cada pregunta tiene una clave única y un tipo: choice, score, noul o box.",
 			"valid": "Esquema válido con {count} preguntas.",
-			"invalid": "El esquema tiene {count} problemas:",
-			"syntaxError": "JSON no válido: {message}"
+			"invalid": "El esquema tiene {count} problemas:"
+		},
+		"builder": {
+			"empty": "Aún no hay preguntas. Agrega la primera abajo.",
+			"questionNumber": "Pregunta {number}",
+			"instructionsLabel": "Afirmación",
+			"instructionsPlaceholder": "Ej. El alumno menciona la capital de Francia.",
+			"converted": "Esta pregunta era de opción múltiple, escala o región. Reescríbela como una afirmación de sí o no.",
+			"actions": {
+				"moveUp": "Subir",
+				"moveDown": "Bajar",
+				"duplicate": "Duplicar pregunta",
+				"remove": "Eliminar"
+			},
+			"noul": {
+				"whenTrue": "Si la afirmación es verdadera",
+				"whenFalse": "Si la afirmación es falsa",
+				"placeholderTrue": "Ej. El alumno menciona la causa principal.",
+				"placeholderFalse": "Ej. El alumno no menciona una causa.",
+				"hint": "Ambos campos son opcionales. El modelo responde sí o no a cada afirmación."
+			},
+			"addQuestion": "Agregar pregunta",
+			"limitReached": "Llegaste al límite de {max} preguntas."
+		},
+		"draftCard": {
+			"questions": "{count} preguntas",
+			"review": "Revisar en el editor",
+			"more": "+{count} más"
 		}
 	},
 	"EvaluateExams": {
@@ -1120,6 +1099,11 @@
 		},
 		"empty": "Aún no hay evaluaciones. Inicia una para calificar un grupo de exámenes.",
 		"defaultName": "Evaluación {date}",
+		"manageSchemas": {
+			"title": "Esquemas de evaluación",
+			"description": "Crea, edita, duplica o elimina los esquemas con los que se califican los exámenes.",
+			"button": "Gestionar esquemas"
+		},
 		"button": {
 			"new": "Nueva evaluación",
 			"open": "Abrir",
@@ -1140,11 +1124,11 @@
 				"searchPlaceholder": "Buscar esquema por nombre",
 				"empty": "No se encontraron esquemas."
 			},
-			"noSchemas": "Aún no hay esquemas. Crea uno primero en la página de esquemas de evaluación.",
+			"noSchemas": "Aún no hay esquemas. Crea uno con Gestionar esquemas en esta página primero.",
 			"nameLabel": "Nombre",
 			"filesLabel": "Imágenes de los exámenes",
 			"filesHint": "Un archivo zip con una carpeta por estudiante. Nombra cada página page-01.png, page-02.png, etc. Solo PNG y JPEG.",
-						"chooseZip": "Elegir archivo zip",
+			"chooseZip": "Elegir archivo zip",
 			"preview": "{students} estudiantes, {pages} páginas",
 			"pages": "{count} páginas",
 			"unassigned": "{count} archivos no se pudieron asignar a un estudiante"
@@ -1243,7 +1227,6 @@
 			"noClassroom": "Elige una clase que impartas para marcar los elementos."
 		}
 	},
-
 	"Emails": {
 		"layout": {
 			"intendedFor": "Este correo está dirigido a",

@@ -6,6 +6,7 @@ import {
 	type EvaluationSchemaDefinition,
 	type JevQuestion,
 	compileEvaluationSchema,
+	normalizeLegacyDefinition,
 } from "~/server/api/schemas/evaluation-schema";
 
 export const JEV_API_URL = "https://api.typesafe.ai/v1/systemone";
@@ -41,11 +42,11 @@ export function buildJevRequest({
 	pages,
 	model,
 }: {
-	definition: EvaluationSchemaDefinition;
+	definition: unknown;
 	pages: JevPage[];
 	model: string;
 }): JevSystemOneRequest {
-	const compiled = compileEvaluationSchema(definition);
+	const compiled = compileEvaluationSchema(asDefinition(definition));
 	const assets: JevSystemOneRequest["assets"] = {};
 	const pageRefs: Record<string, string> = {};
 
@@ -61,7 +62,6 @@ export function buildJevRequest({
 	return {
 		model,
 		state: {
-			...(compiled.instructions ? { instructions: compiled.instructions } : {}),
 			pages: pageRefs,
 		},
 		assets,
@@ -89,16 +89,20 @@ const isNumber = (value: unknown): value is number =>
 const clamp = (value: number, min: number, max: number) =>
 	Math.min(max, Math.max(min, value));
 
+/** Stored snapshots may predate yes/no-only questions, so normalize before use. */
+function asDefinition(definition: unknown): EvaluationSchemaDefinition {
+	return normalizeLegacyDefinition(definition)
+		.definition as EvaluationSchemaDefinition;
+}
+
 /**
- * Converts Jev answers into stored results.
- * Scoring rules (the teacher can override any score):
+ * Converts Jev answers into stored results. Every question is a yes/no statement.
+ * Scoring rule (the teacher can override any score):
  * - noul: the probability of the "true" statement, as 0 to 100.
- * - score: the level position as a share of the highest level, as 0 to 100.
- * - choice and box: informational, no score.
  * The exam score is the average of the scored questions.
  */
 export function mapJevAnswers(
-	definition: EvaluationSchemaDefinition,
+	definition: unknown,
 	rawAnswers: unknown,
 ): { answers: EvaluationAnswers; score: number | null } {
 	if (!rawAnswers || typeof rawAnswers !== "object") {
@@ -107,78 +111,32 @@ export function mapJevAnswers(
 	const raw = rawAnswers as Record<string, RawAnswer | undefined>;
 	const answers: EvaluationAnswers = {};
 
-	for (const question of definition.questions) {
+	for (const question of asDefinition(definition).questions) {
 		const answer = raw[question.key];
 		if (!answer) {
 			throw new Error(`Jev returned no answer for "${question.key}"`);
 		}
-		answers[question.key] = toEvaluationAnswer(question, answer);
+		answers[question.key] = toYesNoAnswer(question.key, answer);
 	}
 
 	return { answers, score: examScore(answers) };
 }
 
-function toEvaluationAnswer(
-	question: { key: string; type: string; criteria?: unknown },
-	answer: RawAnswer,
-): EvaluationAnswer {
-	if (answer.type !== question.type) {
-		throw new Error(
-			`Jev answered "${question.key}" as ${answer.type}, expected ${question.type}`,
-		);
+function toYesNoAnswer(key: string, answer: RawAnswer): EvaluationAnswer {
+	if (answer.type !== "noul") {
+		throw new Error(`Jev answered "${key}" as ${answer.type}, expected noul`);
 	}
+	if (!isNumber(answer.noul)) throw new Error(`Missing noul for "${key}"`);
 
-	const confidence = isNumber(answer.confidence) ? answer.confidence : null;
-
-	switch (question.type) {
-		case "noul": {
-			if (!isNumber(answer.noul))
-				throw new Error(`Missing noul for "${question.key}"`);
-			const probability = clamp(answer.noul, 0, 1);
-			return {
-				type: "noul",
-				score: Math.round(probability * 100),
-				probability,
-				confidence: null,
-				// A probability near 0.5 means Jev is not sure either way.
-				flagged: probability > 0.3 && probability < 0.7,
-			};
-		}
-		case "score": {
-			const criteria = question.criteria as string[];
-			if (!isNumber(answer.score))
-				throw new Error(`Missing score for "${question.key}"`);
-			const highest = Math.max(criteria.length - 1, 1);
-			const value = clamp(answer.score, 0, highest);
-			return {
-				type: "score",
-				score: Math.round((value / highest) * 100),
-				confidence,
-				flagged: confidence !== null && confidence < JEV_CONFIDENCE_THRESHOLD,
-			};
-		}
-		case "choice": {
-			if (typeof answer.choice !== "string") {
-				throw new Error(`Missing choice for "${question.key}"`);
-			}
-			return {
-				type: "choice",
-				score: null,
-				label: answer.choice,
-				confidence,
-				flagged: confidence !== null && confidence < JEV_CONFIDENCE_THRESHOLD,
-			};
-		}
-		default: {
-			return {
-				type: "box",
-				score: null,
-				box: answer.box,
-				confidence,
-				flagged: false,
-			};
-		}
-	}
+	const probability = clamp(answer.noul, 0, 1);
+	return {
+		type: "noul",
+		score: Math.round(probability * 100),
+		probability,
+		confidence: null,
+		// A probability near 0.5 means Jev is not sure either way.
+		flagged: probability > 0.3 && probability < 0.7,
+	};
 }
 
 /** Average of the scored answers, honoring teacher overrides. Null when nothing is scored. */

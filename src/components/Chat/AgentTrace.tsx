@@ -44,6 +44,7 @@ const LABELED_TOOLS = [
   "shareClassroomLink",
   "manageStudyPlan",
   "lessonPlanner",
+  "draftEvaluationSchema",
   "listClassroomStudents",
   "createMindMap",
 ];

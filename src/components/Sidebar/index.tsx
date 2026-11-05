@@ -6,7 +6,7 @@ import {
 	DocumentIcon,
 	SquaresPlusIcon,
 } from "@heroicons/react/24/outline";
-import { ClipboardCheck, ClipboardList, FileText, GitBranch } from "lucide-react";
+import { ClipboardList, FileText, GitBranch } from "lucide-react";
 import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -153,15 +153,6 @@ export function AppSidebar({ session, onOpenPlanArtifacts }: AppSidebarProps) {
 								>
 									<GitBranch className="h-5 min-w-5 text-foreground" />
 									<span>{t("studyPlans.manage")}</span>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
-							<SidebarMenuItem>
-								<SidebarMenuButton
-									isActive={pathname === "/evaluation-schemas"}
-									onClick={() => router.push("/evaluation-schemas")}
-								>
-									<ClipboardCheck className="h-5 min-w-5 text-foreground" />
-									<span>{t("evaluationSchemas.manage")}</span>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 							<SidebarMenuItem>

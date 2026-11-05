@@ -2,39 +2,27 @@ import { describe, expect, it } from "vitest";
 import {
 	compileEvaluationSchema,
 	evaluationSchemaDefinitionSchema,
+	normalizeLegacyDefinition,
 } from "../evaluation-schema";
 
 const validDefinition = {
-	instructions: "Grade handwritten answers in Spanish.",
 	questions: [
-		{
-			type: "choice",
-			key: "capital",
-			instructions: "Which city is the capital of France?",
-			criteria: { paris: "Paris is correct", lyon: "Lyon is incorrect" },
-		},
-		{
-			type: "score",
-			key: "explanation",
-			instructions: "Rate the explanation of photosynthesis.",
-			criteria: ["No explanation", "Partial", "Complete"],
-		},
 		{
 			type: "noul",
 			key: "has_name",
-			instructions: "Is the student's name written on the page?",
+			instructions: "The student's name is written on the page.",
 			criteria: { true: "Name present", false: "Name missing" },
 		},
 		{
-			type: "box",
-			key: "signature",
-			instructions: "Locate the teacher's signature.",
+			type: "noul",
+			key: "has_date",
+			instructions: "The date is written on the page.",
 		},
 	],
 };
 
 describe("evaluationSchemaDefinitionSchema", () => {
-	it("accepts a definition with every Jev question type", () => {
+	it("accepts yes/no questions with and without criteria", () => {
 		expect(
 			evaluationSchemaDefinitionSchema.safeParse(validDefinition).success,
 		).toBe(true);
@@ -50,8 +38,8 @@ describe("evaluationSchemaDefinitionSchema", () => {
 	it("rejects duplicate question keys and points at the second one", () => {
 		const result = evaluationSchemaDefinitionSchema.safeParse({
 			questions: [
-				{ type: "box", key: "q1", instructions: "First" },
-				{ type: "box", key: "q1", instructions: "Second" },
+				{ type: "noul", key: "q1", instructions: "First" },
+				{ type: "noul", key: "q1", instructions: "Second" },
 			],
 		});
 		expect(result.success).toBe(false);
@@ -63,43 +51,99 @@ describe("evaluationSchemaDefinitionSchema", () => {
 	it("rejects keys that are not safe Jev question names", () => {
 		for (const key of ["Q1", "1st", "has space", "a-b", ""]) {
 			const result = evaluationSchemaDefinitionSchema.safeParse({
-				questions: [{ type: "box", key, instructions: "x" }],
+				questions: [{ type: "noul", key, instructions: "x" }],
 			});
 			expect(result.success, key).toBe(false);
 		}
 	});
 
-	it("requires at least two levels for a score question", () => {
+	it("rejects choice, score and box questions", () => {
+		for (const type of ["choice", "score", "box"]) {
+			const result = evaluationSchemaDefinitionSchema.safeParse({
+				questions: [
+					{ type, key: "q1", instructions: "x", criteria: ["a", "b"] },
+				],
+			});
+			expect(result.success, type).toBe(false);
+		}
+	});
+
+	it("rejects an empty statement", () => {
 		const result = evaluationSchemaDefinitionSchema.safeParse({
+			questions: [{ type: "noul", key: "q1", instructions: "   " }],
+		});
+		expect(result.success).toBe(false);
+	});
+});
+
+describe("normalizeLegacyDefinition", () => {
+	it("converts choice, score and box questions to yes/no and reports their keys", () => {
+		const legacy = {
 			questions: [
-				{ type: "score", key: "s", instructions: "x", criteria: ["only one"] },
+				{
+					type: "choice",
+					key: "capital",
+					instructions: "Which city is the capital of France?",
+					criteria: { paris: "Correct" },
+				},
+				{
+					type: "score",
+					key: "explanation",
+					instructions: "Rate the explanation.",
+					criteria: ["None", "Full"],
+				},
+				{ type: "box", key: "signature", instructions: "Find the signature." },
+				validDefinition.questions[0],
+			],
+		};
+
+		const { definition, convertedKeys } = normalizeLegacyDefinition(legacy);
+
+		expect(convertedKeys).toEqual(["capital", "explanation", "signature"]);
+		expect(definition).toEqual({
+			questions: [
+				{
+					type: "noul",
+					key: "capital",
+					instructions: "Which city is the capital of France?",
+				},
+				{
+					type: "noul",
+					key: "explanation",
+					instructions: "Rate the explanation.",
+				},
+				{ type: "noul", key: "signature", instructions: "Find the signature." },
+				validDefinition.questions[0],
 			],
 		});
-		expect(result.success).toBe(false);
+		expect(evaluationSchemaDefinitionSchema.safeParse(definition).success).toBe(
+			true,
+		);
 	});
 
-	it("caps score levels at ten", () => {
-		const criteria = Array.from({ length: 11 }, (_, i) => `level ${i}`);
-		const result = evaluationSchemaDefinitionSchema.safeParse({
-			questions: [{ type: "score", key: "s", instructions: "x", criteria }],
-		});
-		expect(result.success).toBe(false);
+	it("leaves a yes/no-only definition unchanged and reports nothing", () => {
+		const { definition, convertedKeys } =
+			normalizeLegacyDefinition(validDefinition);
+		expect(definition).toEqual(validDefinition);
+		expect(convertedKeys).toEqual([]);
 	});
 
-	it("rejects a choice question with no options", () => {
-		const result = evaluationSchemaDefinitionSchema.safeParse({
-			questions: [
-				{ type: "choice", key: "c", instructions: "x", criteria: {} },
-			],
+	it("is idempotent", () => {
+		const once = normalizeLegacyDefinition({
+			questions: [{ type: "box", key: "b", instructions: "x" }],
 		});
-		expect(result.success).toBe(false);
+		const twice = normalizeLegacyDefinition(once.definition);
+		expect(twice.definition).toEqual(once.definition);
+		expect(twice.convertedKeys).toEqual([]);
 	});
 
-	it("rejects an unknown question type", () => {
-		const result = evaluationSchemaDefinitionSchema.safeParse({
-			questions: [{ type: "essay", key: "e", instructions: "x" }],
-		});
-		expect(result.success).toBe(false);
+	it("passes values it does not recognize through untouched", () => {
+		expect(normalizeLegacyDefinition(null).definition).toBeNull();
+		expect(normalizeLegacyDefinition({ questions: "nope" }).definition).toEqual(
+			{
+				questions: "nope",
+			},
+		);
 	});
 });
 
@@ -108,21 +152,11 @@ describe("compileEvaluationSchema", () => {
 		const parsed = evaluationSchemaDefinitionSchema.parse(validDefinition);
 		const compiled = compileEvaluationSchema(parsed);
 
-		expect(compiled.instructions).toBe("Grade handwritten answers in Spanish.");
-		expect(Object.keys(compiled.questions)).toEqual([
-			"capital",
-			"explanation",
-			"has_name",
-			"signature",
-		]);
-		expect(compiled.questions.capital).toEqual({
-			type: "choice",
-			instructions: "Which city is the capital of France?",
-			criteria: { paris: "Paris is correct", lyon: "Lyon is incorrect" },
-		});
-		expect(compiled.questions.signature).toEqual({
-			type: "box",
-			instructions: "Locate the teacher's signature.",
+		expect(Object.keys(compiled.questions)).toEqual(["has_name", "has_date"]);
+		expect(compiled.questions.has_name).toEqual({
+			type: "noul",
+			instructions: "The student's name is written on the page.",
+			criteria: { true: "Name present", false: "Name missing" },
 		});
 	});
 

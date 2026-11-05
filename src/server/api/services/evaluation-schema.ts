@@ -6,6 +6,7 @@ import type { TRPCContext } from "../../trpc";
 import {
 	compileEvaluationSchema,
 	type createEvaluationSchemaInputSchema,
+	normalizeLegacyDefinition,
 	type listEvaluationSchemasInputSchema,
 	type updateEvaluationSchemaInputSchema,
 } from "../schemas/evaluation-schema";
@@ -50,8 +51,17 @@ export class EvaluationSchemaService {
 		);
 	}
 
+	/** Returns the schema with legacy questions converted, and the keys that were converted. */
 	public async getById(id: string, userId: string) {
-		return this.findOwned(id, userId);
+		const row = await this.findOwned(id, userId);
+		const { definition, convertedKeys } = normalizeLegacyDefinition(
+			row.definition,
+		);
+		return {
+			...row,
+			definition: definition as typeof row.definition,
+			convertedKeys,
+		};
 	}
 
 	public async create(input: CreateInput, userId: string) {
@@ -102,12 +112,12 @@ export class EvaluationSchemaService {
 
 	/** Copies a schema under a new name. */
 	public async duplicate(id: string, userId: string) {
-		const source = await this.findOwned(id, userId);
+		const source = await this.getById(id, userId);
 		return this.create(
 			{
 				name: `${source.name} (copy)`.slice(0, 150),
 				description: source.description,
-				definition: source.definition,
+				definition: source.definition as CreateInput["definition"],
 			},
 			userId,
 		);

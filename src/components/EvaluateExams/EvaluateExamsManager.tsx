@@ -7,6 +7,7 @@ import { useState } from "react";
 import { DEFAULT_PAGE_SIZE } from "~/server/api/schemas/pagination";
 import { api } from "~/trpc/react";
 import { Button } from "../common/Button";
+import { ManageSchemasDialog } from "../EvaluationSchema/ManageSchemasDialog";
 import { Card } from "../ui/card";
 import { Empty, EmptyHeader, EmptyTitle } from "../ui/empty";
 import { ListSearch } from "../ui/list-search";
@@ -22,6 +23,7 @@ export function EvaluateExamsManager() {
 	>({
 		kind: "list",
 	});
+	const [managingSchemas, setManagingSchemas] = useState(false);
 	const [page, setPage] = useState(1);
 	const [search, setSearch] = useState<string | undefined>();
 	const runs = api.evaluationRun.list.useQuery(
@@ -61,11 +63,21 @@ export function EvaluateExamsManager() {
 						setPage(1);
 					}}
 				/>
-				<Button onClick={() => setView({ kind: "new" })}>
-					<PlusIcon className="h-4 w-4" />
-					{t("button.new")}
-				</Button>
+				<div className="flex flex-wrap gap-2">
+					<Button variant="outline" onClick={() => setManagingSchemas(true)}>
+						{t("manageSchemas.button")}
+					</Button>
+					<Button onClick={() => setView({ kind: "new" })}>
+						<PlusIcon className="h-4 w-4" />
+						{t("button.new")}
+					</Button>
+				</div>
 			</div>
+
+			<ManageSchemasDialog
+				open={managingSchemas}
+				onOpenChange={setManagingSchemas}
+			/>
 
 			{runs.isLoading && (
 				<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

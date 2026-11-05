@@ -22,6 +22,7 @@ import {
 } from "~/app/agents/chat/shared-link";
 import { createChatTools, prepareSpeechText } from "~/app/agents/chat/tools";
 import { createStudyPlanTool } from "~/app/agents/chat/study-plan";
+import { createEvaluationSchemaDraftTool } from "~/app/agents/evaluation-schema/tool";
 import { createLessonPlannerTool } from "~/app/agents/lesson-planner/tool";
 import { createClassroomStudentsTool } from "~/app/agents/chat/classroom-students";
 import { createMindMapTool } from "~/app/agents/chat/mind-map";
@@ -158,6 +159,8 @@ export async function POST(req: Request) {
       userId: session.user.id,
       activeClassroomId,
     });
+
+    tools.draftEvaluationSchema = createEvaluationSchemaDraftTool();
 
     tools.listClassroomStudents = createClassroomStudentsTool({
       userId: session.user.id,

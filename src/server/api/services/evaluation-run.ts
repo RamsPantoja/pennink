@@ -28,6 +28,7 @@ import {
 	type listEvaluationRunsInputSchema,
 	type overrideEvaluationAnswerInputSchema,
 } from "../schemas/evaluation-run";
+import { normalizeLegacyDefinition } from "../schemas/evaluation-schema";
 import { paginate } from "../schemas/pagination";
 import { callJevSystemOne } from "./jev";
 import { createR2Client } from "./storage";
@@ -108,7 +109,9 @@ export class EvaluationRunService {
 				userId,
 				evaluationSchemaId: schema.id,
 				name: input.name,
-				schemaSnapshot: schema.definition,
+				// Legacy choice/score/box questions are stored as yes/no from here on.
+				schemaSnapshot: normalizeLegacyDefinition(schema.definition)
+					.definition as typeof schema.definition,
 			})
 			.returning();
 		if (!run) {

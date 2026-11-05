@@ -2,14 +2,12 @@ import { z } from "zod";
 import { pageInputSchema, searchSchema } from "./pagination";
 
 /**
- * A teacher-defined evaluation schema. Each question maps to one Jev question
- * (choice, score, noul or box). `key` becomes the Jev question name, so it must
- * be a stable identifier the teacher can read in results.
+ * A teacher-defined evaluation schema. Every question is a yes/no statement (`noul`)
+ * that maps to one Jev question. `key` becomes the Jev question name. Teachers never
+ * see it: the builder generates it.
  */
 export const EVALUATION_QUESTION_KEY_REGEX = /^[a-z][a-z0-9_]{0,63}$/;
 export const MAX_EVALUATION_QUESTIONS = 50;
-export const MAX_CHOICE_OPTIONS = 255;
-export const MAX_SCORE_LEVELS = 10;
 
 const keySchema = z
 	.string()
@@ -21,29 +19,7 @@ const keySchema = z
 const instructionsSchema = z.string().trim().min(1).max(2000);
 const levelSchema = z.string().trim().min(1).max(1000);
 
-const choiceQuestionSchema = z.object({
-	type: z.literal("choice"),
-	key: keySchema,
-	instructions: instructionsSchema,
-	criteria: z
-		.record(z.string().trim().min(1).max(200), levelSchema)
-		.refine(
-			(options) =>
-				Object.keys(options).length >= 1 &&
-				Object.keys(options).length <= MAX_CHOICE_OPTIONS,
-			`Choice questions need between 1 and ${MAX_CHOICE_OPTIONS} options`,
-		),
-});
-
-const scoreQuestionSchema = z.object({
-	type: z.literal("score"),
-	key: keySchema,
-	instructions: instructionsSchema,
-	// Ordered from the lowest level (0) to the highest (N-1).
-	criteria: z.array(levelSchema).min(2).max(MAX_SCORE_LEVELS),
-});
-
-const noulQuestionSchema = z.object({
+export const evaluationQuestionSchema = z.object({
 	type: z.literal("noul"),
 	key: keySchema,
 	instructions: instructionsSchema,
@@ -55,23 +31,8 @@ const noulQuestionSchema = z.object({
 		.optional(),
 });
 
-const boxQuestionSchema = z.object({
-	type: z.literal("box"),
-	key: keySchema,
-	instructions: instructionsSchema,
-});
-
-export const evaluationQuestionSchema = z.discriminatedUnion("type", [
-	choiceQuestionSchema,
-	scoreQuestionSchema,
-	noulQuestionSchema,
-	boxQuestionSchema,
-]);
-
 export const evaluationSchemaDefinitionSchema = z
 	.object({
-		// Exam-level context sent with every evaluation, such as the subject or the expected layout.
-		instructions: z.string().trim().max(4000).optional(),
 		questions: z
 			.array(evaluationQuestionSchema)
 			.min(1)
@@ -96,20 +57,51 @@ export type EvaluationSchemaDefinition = z.infer<
 	typeof evaluationSchemaDefinitionSchema
 >;
 
-export type JevQuestion =
-	| { type: "choice"; instructions: string; criteria: Record<string, string> }
-	| { type: "score"; instructions: string; criteria: string[] }
-	| {
-			type: "noul";
-			instructions: string;
-			criteria?: { true?: string; false?: string };
-	  }
-	| { type: "box"; instructions: string };
+export type JevQuestion = {
+	type: "noul";
+	instructions: string;
+	criteria?: { true?: string; false?: string };
+};
 
 export type CompiledEvaluationSchema = {
-	instructions?: string;
 	questions: Record<string, JevQuestion>;
 };
+
+const LEGACY_QUESTION_TYPES = new Set(["choice", "score", "box"]);
+
+/**
+ * Schemas saved before yes/no-only questions may contain choice, score or box
+ * questions. Each one becomes a yes/no question with the same key and instructions and
+ * no criteria, so the teacher rewrites the statement. Yes/no questions pass through
+ * unchanged. Returns the keys that were converted so the builder can flag them.
+ * Accepts any value and is idempotent.
+ */
+export function normalizeLegacyDefinition(raw: unknown): {
+	definition: unknown;
+	convertedKeys: string[];
+} {
+	const convertedKeys: string[] = [];
+	if (!raw || typeof raw !== "object" || !("questions" in raw)) {
+		return { definition: raw, convertedKeys };
+	}
+	const { questions } = raw as { questions: unknown };
+	if (!Array.isArray(questions)) return { definition: raw, convertedKeys };
+
+	const normalized = questions.map((question: unknown) => {
+		if (!question || typeof question !== "object") return question;
+		const { type, key, instructions } = question as Record<string, unknown>;
+		if (typeof type !== "string" || !LEGACY_QUESTION_TYPES.has(type)) {
+			return question;
+		}
+		if (typeof key === "string") convertedKeys.push(key);
+		return { type: "noul", key, instructions };
+	});
+
+	return {
+		definition: { ...(raw as object), questions: normalized },
+		convertedKeys,
+	};
+}
 
 /**
  * Maps a validated definition to the Jev question set, keyed by question key.
@@ -124,7 +116,7 @@ export function compileEvaluationSchema(
 		questions[key] = question;
 	}
 
-	return { instructions: definition.instructions, questions };
+	return { questions };
 }
 
 const evaluationSchemaIdSchema = z.string().uuid();

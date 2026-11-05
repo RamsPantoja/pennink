@@ -35,7 +35,6 @@
 			}
 		}
 	},
-
 	"Dashboard": {
 		"toast": {
 			"success": {
@@ -66,7 +65,6 @@
 			"searchSources": "Search sources"
 		}
 	},
-
 	"AppSidebar": {
 		"signOutDialog": {
 			"title": "Sign out",
@@ -113,7 +111,6 @@
 			"manage": "Lesson plans"
 		}
 	},
-
 	"WorkspaceCard": {
 		"toast": {
 			"error": {
@@ -138,7 +135,6 @@
 			"delete": "Delete"
 		}
 	},
-
 	"Chat": {
 		"status": {
 			"thinking": "Thinking…",
@@ -164,7 +160,8 @@
 				"lessonPlanner": "Planning the lesson",
 				"listClassroomStudents": "Listing classroom students",
 				"createMindMap": "Creating mind map",
-				"unknown": "Running tool"
+				"unknown": "Running tool",
+				"draftEvaluationSchema": "Drafting the evaluation schema"
 			}
 		},
 		"errors": {
@@ -205,7 +202,6 @@
 			"createClassroomFirst": "Create a classroom before chatting"
 		}
 	},
-
 	"Workspace": {
 		"toast": {
 			"error": "Something went wrong, try again later.",
@@ -243,7 +239,6 @@
 			"startNewWorkspace": "Start a new workspace"
 		}
 	},
-
 	"DocumentLoader": {
 		"sheetTitle": "Your sources",
 		"sheetDescription": "Attach a saved document to this workspace",
@@ -260,7 +255,6 @@
 			"documents": "Your documents will appear here."
 		}
 	},
-
 	"PDFDocumentCard": {
 		"badge": {
 			"pdf": "PDF",
@@ -274,7 +268,6 @@
 			"download": "Error downloading file:"
 		}
 	},
-
 	"ListSearch": {
 		"submit": "Search",
 		"clear": "Clear search"
@@ -316,7 +309,6 @@
 			"selectForm": "Click the form card to view links and results"
 		}
 	},
-
 	"FormCard": {
 		"button": {
 			"open": "Open"
@@ -332,7 +324,6 @@
 			"deleteFailed": "Failed to delete"
 		}
 	},
-
 	"LinksManager": {
 		"button": {
 			"share": "Share",
@@ -343,13 +334,11 @@
 			"linkAccess": "Anyone with the link can access this form"
 		}
 	},
-
 	"Links": {
 		"message": {
 			"noLinks": "Your links will appear here"
 		}
 	},
-
 	"FormReview": {
 		"descriptionLabel": "Description",
 		"detailedReview": "Detailed review of questions",
@@ -360,7 +349,6 @@
 		"falseValue": "False",
 		"availableOptions": "Available options"
 	},
-
 	"ExamReview": {
 		"instructions": "Instructions",
 		"performanceSummary": "Performance Summary",
@@ -385,7 +373,6 @@
 		"questionScore": "{score}/100",
 		"noReferenceAnswer": "No reference answer"
 	},
-
 	"PomodoroTimer": {
 		"startSession": "Start session",
 		"pauseSession": "Pause session",
@@ -421,7 +408,6 @@
 		"noSessionsCompleted": "No sessions completed yet. Start your first Pomodoro!",
 		"restBreak": "Rest break"
 	},
-
 	"SignIn": {
 		"headline": "Your AI teaching partner, ready when you are.",
 		"tagline": "Work Smarter, Not Harder – AI‑Driven Workspaces That Adapt to You.",
@@ -434,7 +420,6 @@
 			"description": "Sign in to your account."
 		}
 	},
-
 	"Settings": {
 		"dialogTitle": "Settings",
 		"head": {
@@ -492,7 +477,6 @@
 			"description": "Choose the language for the interface. The page reloads when you change it."
 		}
 	},
-
 	"FormEditor": {
 		"toast": {
 			"error": "An error occurred",
@@ -507,7 +491,6 @@
 			"test": "Test"
 		}
 	},
-
 	"DynamicForm": {
 		"validation": {
 			"required": "{field} is required",
@@ -531,7 +514,6 @@
 			"currentValue": "Value"
 		}
 	},
-
 	"SharedNotes": {
 		"title": {
 			"notes": "Notes"
@@ -548,7 +530,6 @@
 			"placeholder": "This note is read-only..."
 		}
 	},
-
 	"ShareExam": {
 		"title": {
 			"exam": "Exam"
@@ -581,7 +562,6 @@
 			"evaluateExam": "Evaluate the following exam and extract the score and feedback: Questions: {questions} and User Answers: {answers}"
 		}
 	},
-
 	"ShareForm": {
 		"head": {
 			"title": "Form",
@@ -604,7 +584,6 @@
 			"errorFetching": "An error occurred while fetching the shared notes."
 		}
 	},
-
 	"SubscriptionPlans": {
 		"upgradeButton": "Upgrade plan",
 		"dialog": {
@@ -648,7 +627,6 @@
 			"error": "An error occurred"
 		}
 	},
-
 	"UsageService": {
 		"title": "Usage",
 		"resetsAt": "Resets at",
@@ -666,7 +644,6 @@
 			"limit": "5"
 		}
 	},
-
 	"Editor": {
 		"placeholders": {
 			"default": "Write, type '/ai' for AI, '/' for commands..."
@@ -689,7 +666,6 @@
 			"accept": "Accept"
 		}
 	},
-
 	"ShareLinkEditor": {
 		"button": {
 			"share": "Share",
@@ -701,7 +677,6 @@
 			"anyoneCanView": "Anyone on the web with the link can view your notes"
 		}
 	},
-
 	"InsertContentLinkDialog": {
 		"tooltip": {
 			"importFromLink": "Import content from link"
@@ -726,7 +701,6 @@
 			"error": "An error occurred while processing your request."
 		}
 	},
-
 	"Feedback": {
 		"button": {
 			"feedback": "Feedback",
@@ -745,7 +719,6 @@
 			"success": "Feedback sent successfully!"
 		}
 	},
-
 	"Identification": {
 		"form": {
 			"name": {
@@ -794,7 +767,6 @@
 			}
 		}
 	},
-
 	"ExamFeedback": {
 		"dialog": {
 			"title": "Exam results",
@@ -812,7 +784,6 @@
 			"title": "Your score"
 		}
 	},
-
 	"IdentificationForm": {
 		"dialog": {
 			"title": "Identify yourself",
@@ -853,7 +824,6 @@
 			}
 		}
 	},
-
 	"ClassroomPicker": {
 		"section": "Classrooms",
 		"search": {
@@ -877,11 +847,9 @@
 		},
 		"loading": "Loading classrooms..."
 	},
-
 	"ClassroomSection": {
 		"manage": "Manage classroom"
 	},
-
 	"StudentImportDialog": {
 		"title": "Import students from Excel",
 		"description": "Upload an .xlsx file with name and email columns, then review the preview before importing.",
@@ -951,7 +919,6 @@
 			"confirm": "Remove"
 		}
 	},
-
 	"Common": {
 		"close": "Close",
 		"more": "More",
@@ -962,15 +929,12 @@
 			"description": "Displays the mobile sidebar."
 		}
 	},
-
 	"ExamResultCard": {
 		"score": "Score: {score}"
 	},
-
 	"Notifications": {
 		"empty": "No notifications"
 	},
-
 	"PDFUploader": {
 		"errors": {
 			"invalidFileType": "Invalid file type",
@@ -983,53 +947,42 @@
 		"preview": "Preview of {name}",
 		"uploadAndAsk": "Upload and Ask"
 	},
-
 	"Reasoning": {
 		"thinking": "Thinking...",
 		"thoughtFor": "Thought for {duration} seconds",
 		"thoughtAMoment": "Thought for a couple of seconds"
 	},
-
 	"AgentVisual": {
 		"ariaLabel": "AI agent visualization"
 	},
-
 	"FeedbackMessage": {
 		"reportError": "Report error"
 	},
-
 	"ScrollToBottomButton": {
 		"tooltip": "Scroll to bottom"
 	},
-
 	"ZoomableDiv": {
 		"zoomOut": "Zoom out",
 		"resetZoom": "Reset zoom",
 		"zoomIn": "Zoom in"
 	},
-
 	"Logo": {
 		"alt": "Pennink logo"
 	},
-
 	"ArtifactCard": {
 		"download": "Download"
 	},
-
 	"MindMap": {
 		"canvasLabel": "Mind map canvas",
 		"open": "Open mind map",
 		"nodes": "{count} ideas"
 	},
-
 	"SharedContent": {
 		"poweredBy": "Powered by Pennink"
 	},
-
 	"UploadObjectToStorage": {
 		"error": "Failed to upload file"
 	},
-
 	"PlanArtifact": {
 		"title": "Lesson plans",
 		"description": "Markdown plans for a day or a week, built from your study plans. Open one to edit it.",
@@ -1107,8 +1060,34 @@
 			"jsonLabel": "Questions",
 			"jsonHint": "Each question has a unique key and a type: choice, score, noul or box.",
 			"valid": "Valid schema with {count} questions.",
-			"invalid": "The schema has {count} problems:",
-			"syntaxError": "Invalid JSON: {message}"
+			"invalid": "The schema has {count} problems:"
+		},
+		"builder": {
+			"empty": "No questions yet. Add the first one below.",
+			"questionNumber": "Question {number}",
+			"instructionsLabel": "Statement",
+			"instructionsPlaceholder": "E.g. The student names the capital of France.",
+			"converted": "This question used to be a multiple choice, scale or region question. Rewrite it as a yes/no statement.",
+			"actions": {
+				"moveUp": "Move up",
+				"moveDown": "Move down",
+				"duplicate": "Duplicate question",
+				"remove": "Remove"
+			},
+			"noul": {
+				"whenTrue": "If the statement is true",
+				"whenFalse": "If the statement is false",
+				"placeholderTrue": "E.g. The student names the main cause.",
+				"placeholderFalse": "E.g. The student does not mention a cause.",
+				"hint": "Both fields are optional. The model answers yes or no for each statement."
+			},
+			"addQuestion": "Add question",
+			"limitReached": "You have reached the limit of {max} questions."
+		},
+		"draftCard": {
+			"questions": "{count} questions",
+			"review": "Review in editor",
+			"more": "+{count} more"
 		}
 	},
 	"EvaluateExams": {
@@ -1120,6 +1099,11 @@
 		},
 		"empty": "No evaluations yet. Start one to grade a set of exams.",
 		"defaultName": "Evaluation {date}",
+		"manageSchemas": {
+			"title": "Evaluation schemas",
+			"description": "Create, edit, duplicate or delete the schemas used to grade exams.",
+			"button": "Manage schemas"
+		},
 		"button": {
 			"new": "New evaluation",
 			"open": "Open",
@@ -1140,11 +1124,11 @@
 				"searchPlaceholder": "Search schema by name",
 				"empty": "No schemas found."
 			},
-			"noSchemas": "No schemas yet. Create one on the Evaluation schemas page first.",
+			"noSchemas": "No schemas yet. Create one with Manage schemas on this page first.",
 			"nameLabel": "Name",
 			"filesLabel": "Exam images",
 			"filesHint": "One zip file with a folder per student. Name each page page-01.png, page-02.png, and so on. PNG and JPEG only.",
-						"chooseZip": "Choose zip file",
+			"chooseZip": "Choose zip file",
 			"preview": "{students} students, {pages} pages",
 			"pages": "{count} pages",
 			"unassigned": "{count} files could not be assigned to a student"
@@ -1243,7 +1227,6 @@
 			"noClassroom": "Choose a classroom you teach to tick items for it."
 		}
 	},
-
 	"Emails": {
 		"layout": {
 			"intendedFor": "This email was intended for",

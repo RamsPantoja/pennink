@@ -8,6 +8,15 @@ import { DateTime } from "luxon";
 import { Response } from "../ai-elements/response";
 import { ArtifactCard, type ChatArtifact } from "./ArtifactCard";
 import { MindMapCard } from "./MindMapCard";
+import { EvaluationSchemaDraftCard } from "./EvaluationSchemaDraftCard";
+import type { EvaluationSchemaDraftResult } from "~/app/agents/evaluation-schema/draft";
+
+const isDraftOutput = (
+  output: unknown,
+): output is Extract<EvaluationSchemaDraftResult, { status: "draft" }> =>
+  typeof output === "object" &&
+  output !== null &&
+  (output as { status?: unknown }).status === "draft";
 import type { MindMap } from "~/app/agents/chat/mind-map";
 import { VoiceOutputButton } from "./VoiceOutputButton";
 import { AgentTrace } from "./AgentTrace";
@@ -113,6 +122,17 @@ export const MessageCard = ({
                       <MindMapCard
                         key={`${message.id}-${i}`}
                         mindMap={toolPart.output.mindMap}
+                      />
+                    );
+                  }
+                  if (
+                    toolPart.type === "tool-draftEvaluationSchema" &&
+                    isDraftOutput(toolPart.output)
+                  ) {
+                    return (
+                      <EvaluationSchemaDraftCard
+                        key={`${message.id}-${i}`}
+                        draft={toolPart.output}
                       />
                     );
                   }
