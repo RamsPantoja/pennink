@@ -25,6 +25,7 @@ import { createStudyPlanTool } from "~/app/agents/chat/study-plan";
 import { createEvaluationSchemaDraftTool } from "~/app/agents/evaluation-schema/tool";
 import { createLessonPlannerTool } from "~/app/agents/lesson-planner/tool";
 import { createClassroomStudentsTool } from "~/app/agents/chat/classroom-students";
+import { createDocumentSearchTool } from "~/app/agents/chat/document-search";
 import { createMindMapTool } from "~/app/agents/chat/mind-map";
 import { askUserTool } from "~/app/agents/chat/ask-user";
 import { cookies } from "next/headers";
@@ -161,6 +162,21 @@ export async function POST(req: Request) {
     });
 
     tools.draftEvaluationSchema = createEvaluationSchemaDraftTool();
+
+    if (workspace) {
+      const sourceRows = await db.query.filesToWorkspaces.findMany({
+        where: (table, { eq }) => eq(table.workspaceId, workspace.id),
+        columns: { fileId: true },
+      });
+      const sourceFileIds = sourceRows.map((row) => row.fileId);
+
+      if (sourceFileIds.length > 0) {
+        tools.searchDocuments = createDocumentSearchTool({
+          db,
+          fileIds: sourceFileIds,
+        });
+      }
+    }
 
     tools.listClassroomStudents = createClassroomStudentsTool({
       userId: session.user.id,

@@ -20,7 +20,7 @@ import type { AskUserOutput } from "~/app/agents/chat/ask-user";
 import type { MindMap } from "~/app/agents/chat/mind-map";
 import { DateTime } from "luxon";
 import type { Session } from "next-auth";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { playAgentSpeech, stopAgentSpeech } from "~/lib/agentAudio";
 import { extractSpeechText } from "~/lib/speechText";
@@ -141,13 +141,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 	} = useUploadObjectToStorage();
 	const newWorkspaceId = useRef<string | null>(null);
 	const newWorkspaceUserMessage = useRef<Message | null>(null);
-	const params = useParams();
-	const workspaceId =
-		typeof params?.workspaceId === "string" ? params.workspaceId : undefined;
-	const { data: sources = [] } = api.workspace.sourcesByWorkspace.useQuery(
-		{ workspaceId: workspaceId ?? "" },
-		{ enabled: !!workspaceId },
-	);
 
 	const {
 		messages: tempMessages,
@@ -270,16 +263,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			}
 		}
 	};
-
-	const {
-		mutateAsync: documentVectorSearchMutation,
-		isPending: documentVectorSearchMutationIsPending,
-	} = api.workspace.documentVectorSearch.useMutation({
-		onError: (error) => {
-			console.error("Mutation failed:", error);
-			sileo.error({ title: t("toast.sendError") });
-		},
-	});
 
 	const {
 		data: messagesData,
@@ -571,22 +554,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 			message,
 		});
 
-		if (sources.length > 0) {
-			const documentContext = await documentVectorSearchMutation({
-				query: data.prompt,
-				fileIds: sources.map((source) => source.id),
-			});
-
-			if (documentContext.length > 0) {
-				if (Array.isArray(userMessage.content)) {
-					userMessage.content.push({
-						type: "text",
-						text: `Document context information: ${documentContext.map((context) => context.content).join(", ")}`,
-					});
-				}
-			}
-		}
-
 		if (queryFormData) {
 			let data = "";
 
@@ -757,7 +724,6 @@ export const useChatLogic = ({ chatId, isNew }: UseChatLogicProps) => {
 		onAddFiles,
 		onRemoveAttachment,
 		isUploadingAttachments,
-		documentVectorSearchMutationIsPending,
 		stopStreaming,
 		handleKeyDown,
 		triggerChatMessagesRuleIsPending,

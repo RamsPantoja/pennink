@@ -12,6 +12,15 @@ type AgentStatusInput = {
 	lastMessageParts: readonly unknown[] | undefined;
 };
 
+// A searchDocuments tool call that has not produced its result yet.
+export const isSearchingDocumentsPart = (part: unknown): boolean =>
+	typeof part === "object" &&
+	part !== null &&
+	(part as { type?: unknown }).type === "tool-searchDocuments" &&
+	["input-streaming", "input-available"].includes(
+		String((part as { state?: unknown }).state),
+	);
+
 // Picks the one state to show. Order matters: an error wins over everything else.
 export const getAgentStatus = ({
 	status,
@@ -21,7 +30,7 @@ export const getAgentStatus = ({
 	const parts = lastMessageParts ?? [];
 
 	if (status === "error") return "error";
-	if (isSearching) return "searching";
+	if (isSearching || parts.some(isSearchingDocumentsPart)) return "searching";
 	if (status === "ready" && parts.some(isPendingAskUserPart)) {
 		return "waitingForTeacher";
 	}

@@ -59,7 +59,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
     chatContainer,
     quote,
     onRemoveQuote,
-    documentVectorSearchMutationIsPending,
     stopStreaming,
     handleKeyDown,
     triggerChatMessagesRuleIsPending,
@@ -73,8 +72,7 @@ export const Chat = ({ id, isNew }: ChatProps) => {
 
   const agentStatus = getAgentStatus({
     status,
-    isSearching:
-      documentVectorSearchMutationIsPending || triggerChatMessagesRuleIsPending,
+    isSearching: triggerChatMessagesRuleIsPending,
     lastMessageParts: (tempMessages.at(-1) ?? messages.at(-1))?.parts,
   });
 
@@ -243,7 +241,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
               />
             </div>
             {(status === "submitted" ||
-              documentVectorSearchMutationIsPending ||
               status === "streaming" ||
               triggerChatMessagesRuleIsPending) && (
               <Button
@@ -258,7 +255,6 @@ export const Chat = ({ id, isNew }: ChatProps) => {
             )}
             {!(
               status === "submitted" ||
-              documentVectorSearchMutationIsPending ||
               status === "streaming" ||
               triggerChatMessagesRuleIsPending
             ) && (

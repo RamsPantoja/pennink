@@ -31,7 +31,7 @@ import {
 import useUploadObjectToStorage from "~/hooks/useUploadObjectToStorage";
 import { fileSizeRule } from "~/lib/utils";
 import { SOURCE_ACCEPT, getSourceDocumentType } from "~/lib/documentTypes";
-import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
+import { pdfjs } from "react-pdf";
 import PomodoroTimer from "~/components/Pomodoro";
 import { FormLoader } from "~/components/Workspace/FormLoader";
 import { SessionProvider } from "next-auth/react";
@@ -40,6 +40,23 @@ import { useRouter, usePathname, useParams } from "next/navigation";
 import { DocumentLoader } from "~/components/Workspace/DocumentLoader";
 import { PlanArtifactLoader } from "~/components/PlanArtifact/PlanArtifactLoader";
 import { useTranslations } from "next-intl";
+
+// react-pdf sets its own worker path at import time; point pdf.js at the worker file
+// that the bundler emits, so the browser fetches a real script.
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url,
+).toString();
+
+const countPdfPages = async (file: File) => {
+  const pdf = await pdfjs.getDocument({ data: await file.arrayBuffer() })
+    .promise;
+  try {
+    return pdf.numPages;
+  } finally {
+    await pdf.destroy();
+  }
+};
 
 type DashboardProps = {
   session: Session;
@@ -128,18 +145,21 @@ const Dashboard = ({ children, session }: DashboardProps) => {
 
     if (documentType === "application/pdf") {
       setIsReadingPDF(true);
-      const loader = new WebPDFLoader(selectedFile);
-      const docs = await loader.load();
-      setIsReadingPDF(false);
+      let pageCount: number;
+      try {
+        pageCount = await countPdfPages(selectedFile);
+      } finally {
+        setIsReadingPDF(false);
+      }
 
-      if (docs.length === 0) {
+      if (pageCount === 0) {
         sileo.show({ title: t("toast.error.noPages") });
         return;
       }
 
-      if (docs.length > 50) {
+      if (pageCount > 50) {
         sileo.show({
-          title: t("toast.error.tooManyPages", { count: docs.length }),
+          title: t("toast.error.tooManyPages", { count: pageCount }),
         });
         return;
       }

@@ -8,8 +8,128 @@ import CustomAlertDialog from "../common/AlertDialog";
 import { Button } from "../common/Button";
 import { Card } from "../ui/card";
 import { Input } from "../ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import { StudyPlansCard } from "../StudyPlan/StudyPlansCard";
 import { StudentImportDialog } from "./StudentImportDialog";
+
+type EditableStudent = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+};
+
+function StudentEditDialog({
+  student,
+  isPending,
+  onCancel,
+  onSave,
+}: {
+  student: EditableStudent | null;
+  isPending: boolean;
+  onCancel: () => void;
+  onSave: (values: { name: string; email: string; phone: string }) => void;
+}) {
+  const t = useTranslations("ClassroomDetails.students");
+  return (
+    <Dialog
+      open={student !== null}
+      onOpenChange={(open) => {
+        if (!open) onCancel();
+      }}
+    >
+      <DialogContent className="max-w-md">
+        {student && (
+          <StudentEditForm
+            key={student.id}
+            student={student}
+            isPending={isPending}
+            onCancel={onCancel}
+            onSave={onSave}
+            labels={{
+              title: t("editDialog.title"),
+              description: t("editDialog.description"),
+              phone: t("editDialog.phone"),
+              save: t("editDialog.save"),
+              cancel: t("editDialog.cancel"),
+            }}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function StudentEditForm({
+  student,
+  isPending,
+  onCancel,
+  onSave,
+  labels,
+}: {
+  student: EditableStudent;
+  isPending: boolean;
+  onCancel: () => void;
+  onSave: (values: { name: string; email: string; phone: string }) => void;
+  labels: {
+    title: string;
+    description: string;
+    phone: string;
+    save: string;
+    cancel: string;
+  };
+}) {
+  const t = useTranslations("ClassroomDetails.students");
+  const [name, setName] = useState(student.name);
+  const [email, setEmail] = useState(student.email);
+  const [phone, setPhone] = useState(student.phone);
+  return (
+    <>
+      <DialogHeader>
+        <DialogTitle>{labels.title}</DialogTitle>
+        <DialogDescription>{labels.description}</DialogDescription>
+      </DialogHeader>
+      <div className="grid gap-2">
+        <Input
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          placeholder={t("namePlaceholder")}
+        />
+        <Input
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder={t("emailPlaceholder")}
+          type="email"
+        />
+        <Input
+          value={phone}
+          onChange={(event) => setPhone(event.target.value)}
+          placeholder={labels.phone}
+          type="tel"
+        />
+      </div>
+      <DialogFooter>
+        <Button variant="ghost" onClick={onCancel}>
+          {labels.cancel}
+        </Button>
+        <Button
+          isPending={isPending}
+          disabled={!name.trim() || !email.trim()}
+          onClick={() => onSave({ name, email, phone })}
+        >
+          {labels.save}
+        </Button>
+      </DialogFooter>
+    </>
+  );
+}
 
 export function ClassroomDetails({
   classroomId,
@@ -23,6 +143,10 @@ export function ClassroomDetails({
   const utils = api.useUtils();
   const [studentName, setStudentName] = useState("");
   const [studentEmail, setStudentEmail] = useState("");
+  const [studentPhone, setStudentPhone] = useState("");
+  const [editingStudent, setEditingStudent] = useState<EditableStudent | null>(
+    null,
+  );
   const [teacherEmail, setTeacherEmail] = useState("");
   const [importOpen, setImportOpen] = useState(false);
   const [displayDeleteAlert, setDisplayDeleteAlert] = useState(false);
@@ -50,6 +174,13 @@ export function ClassroomDetails({
     onSuccess: async () => {
       setStudentName("");
       setStudentEmail("");
+      setStudentPhone("");
+      await utils.classroom.classroomById.invalidate({ id: classroomId });
+    },
+  });
+  const updateStudent = api.classroom.updateStudent.useMutation({
+    onSuccess: async () => {
+      setEditingStudent(null);
       await utils.classroom.classroomById.invalidate({ id: classroomId });
     },
   });
@@ -161,7 +292,7 @@ export function ClassroomDetails({
                 {t("students.description")}
               </p>
             </div>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-2 sm:grid-cols-3">
               <Input
                 value={studentName}
                 onChange={(event) => setStudentName(event.target.value)}
@@ -173,6 +304,12 @@ export function ClassroomDetails({
                 placeholder={t("students.emailPlaceholder")}
                 type="email"
               />
+              <Input
+                value={studentPhone}
+                onChange={(event) => setStudentPhone(event.target.value)}
+                placeholder={t("students.phonePlaceholder")}
+                type="tel"
+              />
             </div>
             <div className="flex flex-wrap gap-2">
               <Button
@@ -181,6 +318,7 @@ export function ClassroomDetails({
                     classroomId,
                     name: studentName,
                     email: studentEmail,
+                    phone: studentPhone,
                   })
                 }
                 isPending={createStudent.isPending}
@@ -203,23 +341,42 @@ export function ClassroomDetails({
                   key={student.id}
                   className="flex items-center justify-between rounded border p-2"
                 >
-                  <div>
+                  <div className="min-w-0">
                     <p>{student.name}</p>
                     <p className="text-muted-foreground">{student.email}</p>
+                    {student.phone && (
+                      <p className="text-muted-foreground">{student.phone}</p>
+                    )}
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      setPendingRemoval({
-                        type: "student",
-                        id: student.id,
-                        name: student.name,
-                      })
-                    }
-                  >
-                    {t("button.remove")}
-                  </Button>
+                  <div className="flex shrink-0">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() =>
+                        setEditingStudent({
+                          id: student.id,
+                          name: student.name,
+                          email: student.email,
+                          phone: student.phone ?? "",
+                        })
+                      }
+                    >
+                      {t("students.edit")}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() =>
+                        setPendingRemoval({
+                          type: "student",
+                          id: student.id,
+                          name: student.name,
+                        })
+                      }
+                    >
+                      {t("button.remove")}
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -274,6 +431,20 @@ export function ClassroomDetails({
             </div>
           </Card>
         </div>
+
+        <StudentEditDialog
+          student={editingStudent}
+          isPending={updateStudent.isPending}
+          onCancel={() => setEditingStudent(null)}
+          onSave={(values) => {
+            if (!editingStudent) return;
+            updateStudent.mutate({
+              classroomId,
+              studentId: editingStudent.id,
+              ...values,
+            });
+          }}
+        />
 
         <StudyPlansCard classroomId={classroomId} />
       </div>

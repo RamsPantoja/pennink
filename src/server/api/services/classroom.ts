@@ -151,7 +151,7 @@ export class ClassroomService {
 		return this.ctx.db.transaction(async (tx) => {
 			const [student] = await tx
 				.insert(students)
-				.values({ name: input.name, email })
+				.values({ name: input.name, email, phone: input.phone })
 				.returning();
 			if (!student) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 			await tx.insert(classroomStudents).values({
@@ -178,7 +178,12 @@ export class ClassroomService {
 		if (!membership) throw this.notFound("Student not found");
 		const [student] = await this.ctx.db
 			.update(students)
-			.set({ name: input.name, email, updatedAt: new Date() })
+			.set({
+				name: input.name,
+				email,
+				phone: input.phone,
+				updatedAt: new Date(),
+			})
 			.where(eq(students.id, input.studentId))
 			.returning();
 		await this.ctx.db
@@ -248,10 +253,15 @@ export class ClassroomService {
 				if (!studentId) {
 					const [student] = await tx
 						.insert(students)
-						.values({ name: row.name, email })
+						.values({ name: row.name, email, phone: row.phone })
 						.returning({ id: students.id });
 					if (!student) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 					studentId = student.id;
+				} else if (row.phone) {
+					await tx
+						.update(students)
+						.set({ phone: row.phone, updatedAt: new Date() })
+						.where(eq(students.id, studentId));
 				}
 
 				const enrolled = await tx

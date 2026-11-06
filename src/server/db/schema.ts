@@ -292,6 +292,7 @@ export const students = createTable("student", {
   id: customId.notNull().primaryKey(),
   name: text().notNull(),
   email: text().notNull(),
+  phone: text(),
   createdAt: timestamp({ mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp({ mode: "date" }).notNull().defaultNow(),
 });

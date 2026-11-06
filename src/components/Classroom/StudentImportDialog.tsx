@@ -19,6 +19,7 @@ type PreviewRow = {
   rowNumber: number;
   name: string;
   email: string;
+  phone: string;
   status: "new" | "existing" | "already_enrolled" | "invalid" | "duplicate_in_file";
   reason?: string;
 };
@@ -150,6 +151,9 @@ export function StudentImportDialog({
                     <div className="min-w-0">
                       <p className="truncate">{row.name || "—"}</p>
                       <p className="truncate text-muted-foreground">{row.email || "—"}</p>
+                      {row.phone && (
+                        <p className="truncate text-muted-foreground">{row.phone}</p>
+                      )}
                     </div>
                     <div className="shrink-0 text-right text-sm">
                       <p>{t(`status.${row.status}`)}</p>
@@ -172,7 +176,11 @@ export function StudentImportDialog({
             onClick={() =>
               importStudents.mutate({
                 classroomId,
-                rows: importable.map(({ name, email }) => ({ name, email })),
+                rows: importable.map(({ name, email, phone }) => ({
+                  name,
+                  email,
+                  phone,
+                })),
               })
             }
             isPending={importStudents.isPending}

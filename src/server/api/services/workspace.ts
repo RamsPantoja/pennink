@@ -24,22 +24,20 @@ import {
 import { TRPCError } from "@trpc/server";
 import {
 	and,
-	asc,
 	count,
 	desc,
 	eq,
-	getTableColumns,
 	ilike,
 	inArray,
 	isNull,
-	sql,
 } from "drizzle-orm";
 import { paginate } from "../schemas/pagination";
 import { env } from "~/env";
 import { loadSourceDocuments } from "~/server/lib/loadSourceDocuments";
 import { isSourceDocumentType, SOURCE_DOCUMENT_TYPES } from "~/lib/documentTypes";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { embed, embedMany } from "ai";
+import { embedMany } from "ai";
+import { searchDocumentChunks } from "./document-search";
 import { DateTime } from "luxon";
 import { bedrock } from "@ai-sdk/amazon-bedrock";
 
@@ -550,26 +548,11 @@ export class WorkspaceService {
 
 	public async documentVectorSearch(input: DocumentVectorSearchInput) {
 		try {
-			const model = bedrock.embeddingModel("amazon.titan-embed-text-v2:0");
-
-			const embedding = await embed({
-				model,
-				value: input.query,
+			return await searchDocumentChunks({
+				db: this.ctx.db,
+				query: input.query,
+				fileIds: input.fileIds,
 			});
-
-			const distance = sql<number>`${embeddingDocuments.embedding} <=> ${JSON.stringify(embedding.embedding)}::vector`;
-
-			const topK = await this.ctx.db
-				.select({
-					...getTableColumns(embeddingDocuments),
-					distance: distance.as("distance"),
-				})
-				.from(embeddingDocuments)
-				.where(inArray(embeddingDocuments.fileId, input.fileIds))
-				.orderBy(asc(distance))
-				.limit(5);
-
-			return topK;
 		} catch (error) {
 			console.log(error);
 			throw new TRPCError({

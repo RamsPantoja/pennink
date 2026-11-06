@@ -1,0 +1,5340 @@
+Programa de Estudio Programa
+para la Educación Sintético de la
+Primaria: Fase 4
+
+Programa de Estudio
+para la Educación
+Primaria:
+
+Programa
+Sintético de la
+Fase 4
+
+El Programa de Estudio para la Educación Primaria:
+Programa Sintético de la Fase 4, fue elaborado por la
+Dirección General de Desarrollo Curricular de la
+Secretaría de Educación Pública.
+
+Secretario de Educación Pública
+Mario Martín Delgado Carrillo
+Subsecretaria de Educación Básica
+Angélica Noemí Juárez Pérez
+Directora General de Desarrollo Curricular
+Xóchitl Leticia Moreno Fernández
+
+Primera edición, 2025
+D.R. © Secretaría de Educación Pública, 2025
+Argentina 28, Centro, 06020
+Ciudad de México
+ISBN: 978-607-2605-36-7
+Impreso en México
+DISTRIBUCIÓN GRATUITA-PROHIBIDA SU VENTA
+
+El contenido, así como la disposición en conjunto de cada página del presente documento
+son propiedad de la Secretaría de Educación Pública.
+Se autoriza su reproducción parcial o total por cualquier sistema mecánico, digital o
+electrónico para fines no comerciales, bajo la condición de no alterar o modificar el material
+y reconociendo la autoría intelectual del trabajo y en los términos especificados por los
+propios autores.
+
+De la escuela al México que queremos
+
+E
+
+n el corazón de cada aula late el futuro. A tres años de encender las primeras
+antorchas de la Nueva Escuela Mexicana, podemos afirmar que hemos construido cimientos sólidos para el proyecto de nación de la Cuarta Transformación.
+Porque es justamente en la política educativa donde se dibuja el rostro del país
+que anhelamos construir. El gobierno del que orgullosamente formamos parte,
+ese que camina bajo el liderazgo de la presidenta Claudia Sheinbaum Pardo, está
+decidido a reivindicar los derechos de las mexicanas y los mexicanos que, durante décadas, fueron condenados al olvido y a la marginación. Representa a
+quienes nunca tuvieron nada y estamos comprometidos a cambiarlo todo,
+comenzando por lo que florece en nuestras escuelas de educación básica.
+La educación es más que depositar conocimientos: es un encuentro de
+saberes. Es preciso reconocer que los verdaderos arquitectos de esta reforma
+curricular humanista y emancipadora han sido, son y serán, las maestras y los
+maestros de todo el país. Es en el trabajo cotidiano, en ese diálogo amoroso
+entre educador y educando, donde el sueño de la Nueva Escuela Mexicana deja
+de ser utopía para convertirse en práctica transformadora.
+No ha sido sencillo caminar este sendero, porque el planteamiento curricular
+reformula la idea misma de educación que nos habían impuesto. Demanda un
+compromiso total del magisterio, pero también su liberación pedagógica. Nuestras maestras y maestros han sabido responder con la valentía de quien enseña
+preguntando y aprende enseñando. Se han apropiado del modelo curricular
+como quien recupera su propia voz, lo han contextualizado en sus comunidades,
+permitiendo que niñas, niños y adolescentes descubran aprendizajes que laten
+al ritmo de sus vidas, forjando una ciudadanía crítica y comprometida con el
+México de la justicia.
+Este Plan de Estudio es la cartografía de la esperanza, el puente hacia un país
+donde quepamos todas y todos. Es la vía a la paz, la justicia y el bienestar.
+Quien nos conducirá hacia ese horizonte con el que tanto hemos soñado,
+eres tú, querida maestra; eres tú, querido maestro: constructores de sueños
+que hacen realidad la revolución de conciencias desde las aulas de México.
+Mario Martín Delgado Carrillo
+Secretario de Educación Pública
+
+Índice
+Programa de Estudio para la Educación Primaria: Programa
+Sintético de la Fase 4
+Introducción
+Elementos curriculares de los Programas Sintéticos
+Panorama de los Contenidos de la Fase 4
+
+9
+10
+12
+
+Lenguajes
+Finalidades del Campo
+Especificidades del Campo formativo para la Fase 4
+Contenidos y Procesos de desarrollo de aprendizaje del Campo formativo
+
+21
+21
+22
+24
+
+Saberes y Pensamiento Científico
+Finalidades del Campo
+Especificidades del Campo formativo para la Fase 4
+Contenidos y Procesos de desarrollo de aprendizaje del Campo formativo
+
+39
+39
+40
+42
+
+Ética, Naturaleza y Sociedades
+Finalidades del Campo
+Especificidades del Campo formativo para la Fase 4
+Contenidos y Procesos de desarrollo de aprendizaje del Campo formativo
+
+53
+53
+54
+56
+
+De lo Humano y lo Comunitario
+Finalidades del Campo
+Especificidades del Campo formativo para la Fase 4
+Contenidos y Procesos de desarrollo de aprendizaje del Campo formativo
+
+69
+69
+70
+72
+
+El Programa Analítico
+Primer plano: Lectura de la realidad
+Segundo plano: Contextualización
+Tercer plano: Formulación del Programa Analítico
+
+79
+80
+81
+82
+
+Algunas reflexiones sobre la evaluación formativa
+
+83
+
+Materiales de apoyo para el diseño de actividades didácticas
+Sobre planeación didáctica
+Sobre lectoescritura
+Sobre la enseñanza mediante lo lúdico
+Sobre lenguajes artísticos
+Sobre pensamiento matemático y pensamiento científico
+Sobre ética, naturaleza y sociedades
+Sobre lo humano y lo comunitario
+
+87
+87
+87
+87
+88
+88
+88
+89
+
+Referencias
+
+90
+
+Introducción
+
+E
+
+ste Programa de estudio forma parte de un proceso
+de diseño y desarrollo curricular continuo; representa
+el primer nivel de concreción curricular, en el que se
+presentan los elementos centrales para el trabajo docente, y donde se perfila la posibilidad de que maestras
+y maestros en colectivo, y en el ejercicio de su autonomía
+profesional, determinen los contenidos y procesos de desarrollo de aprendizaje, con base en el análisis de las necesidades
+particulares de cada escuela y la contextualización que se lleve a
+cabo para la toma de decisiones.
+Es un documento flexible que constituye el punto de partida desde el cual cada colectivo docente toma decisiones para el diseño de los Programas Analíticos. Consiste
+en un planteamiento de Contenidos nacionales para la Educación Básica, entendido lo
+nacional como espacio de lo común desde la diversidad que nos caracteriza como país.
+También se considera como un documento inacabado, en tanto cada uno de los Contenidos que se presentan deberá someterse al proceso de contextualización por parte
+del colectivo docente.
+El Programa Sintético concreta para cada Fase, tanto los Contenidos que se abordarán en cada Campo formativo como los Procesos de desarrollo de aprendizaje correspondientes, mismos que mantienen una relación directa con el Perfil de egreso y los
+Ejes articuladores, de manera que maestras y maestros que impartan el tercer y cuarto
+grados de primaria encuentren insumos y elementos para diseñar y poner en marcha
+actividades didácticas pertinentes y relevantes para niñas y niños.
+Asimismo, este programa se encuentra organizado de la siguiente manera:
+■ Los elementos curriculares del Programa Sintético, entre los cuales se encuentran los Campos formativos, los Contenidos y los Procesos de desarrollo de
+aprendizaje.
+■ El panorama de los contenidos de la Fase 4, en donde a partir de reconocer las
+características de niñas y niños durante esta etapa, se presentan los Contenidos previstos para cada grado escolar.
+■ Los Campos formativos: Lenguajes; Saberes y Pensamiento Científico; Ética,
+Naturaleza y Sociedades, y De lo Humano y lo Comunitario. En cada uno se
+presentan la descripción y las finalidades del Campo para todas las fases de la
+Educación Básica. En relación con sus especificidades, estas se abordan de manera puntual para cada Fase y Campo.
+■ El Programa Analítico: Contextualización y Codiseño, en el que se consideran
+elementos que permiten el análisis y la reflexión para orientar su diseño.
+■ Algunas reflexiones para la evaluación formativa que permitan replantear su
+relevancia en los procesos de aprendizaje y enseñanza.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+9
+
+Elementos curriculares de los Programas Sintéticos
+El Plan de estudio 2022 señala a la integración curricular como uno de los aspectos
+primordiales que han de impulsarse, con la intención de alcanzar los rasgos del Perfil
+de egreso e incorporar los Ejes articuladores a lo largo del trayecto formativo de la
+Educación Básica. En este sentido, la estructura de los Programas Sintéticos considera
+distintos elementos curriculares que permiten orientar la práctica de las maestras y
+los maestros para lograr una articulación y vinculación de los aprendizajes que han de
+desarrollar niñas, niños y adolescentes.
+A continuación, se describen los principales elementos que conforman los Programas
+Sintéticos.
+
+Campos formativos
+
+Trabajar un currículo con Campos formativos implica el desplazamiento de una educación basada en asignaturas —que propicia una fragmentación de la enseñanza y
+el aprendizaje de los conocimientos— hacia un modelo que contempla la interacción del
+conocimiento de diversas disciplinas.
+La integración de los conocimientos a través de los Campos formativos debe entenderse como el proceso durante el cual la y el estudiante aprende, resignifica, rearticula y
+expresa los saberes del periodo en cuestión (fase y grado correspondiente), y no la manifestación concreta al final del proceso. En otras palabras, integrar saberes es un proceso,
+no sólo su manifestación en un producto final.
+Son organizadores que establecen objetos de aprendizaje a desarrollar en las distintas fases y niveles educativos; tienen como propósito abordar temas o problemáticas
+desde una perspectiva complementaria entre las disciplinas o áreas de conocimiento
+que se incorporan en cada uno, impulsando con ello una menor fragmentación de los
+saberes.
+Los Campos formativos promueven una mayor vinculación entre conocimientos, impulsando la comprensión de las situaciones y las posibles alternativas de las que se disponen para hacerles frente.
+
+Contenidos
+
+Los Contenidos de los Programas de estudio son una disposición de conocimientos y
+saberes en un campo formativo que cobran sentido más allá de su significado particular
+en la relación que se establecen entre ellos y los Ejes articuladores, los cuales vinculan
+el conocimiento con hechos concretos de la realidad mediante problematizaciones o
+temas generales de estudio.
+Los Contenidos poseen distintos niveles de concreción, por lo que se incorporan y
+complejizan en cada fase dependiendo de las características de desarrollo de niñas, niños y adolescentes, dando pauta a un abordaje en espiral. Pueden organizarse a partir
+de acontecimientos y temas de interés, así como de las situaciones de aprendizaje que
+se consideren pertinentes.
+
+10
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Procesos de desarrollo de aprendizaje
+
+Representan recorridos o rutas posibles que dan cuenta de las formas en las que niñas,
+niños y adolescentes se apropian de aprendizajes que les permiten comprender el mundo que les rodea e intervenir en distintas situaciones.
+
+Elementos curriculares de los Programas Sintéticos
+Esta organización impulsa una mayor autonomía profesional que fomenta el diseño
+de propuestas contextualizadas en las que se problematice la realidad y se atienda a las
+características, necesidades e intereses de niñas, niños y adolescentes.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+11
+
+Panorama de los Contenidos de la Fase 4
+Lenguajes
+
+Saberes y
+Pensamiento
+Científico
+
+Ética, Naturaleza
+y Sociedades
+
+De lo Humano y lo
+Comunitario
+
+Narración de sucesos del pasado y del
+presente.
+
+Estructura y funcionamiento del cuerpo
+humano: sistemas
+locomotor y digestivo,
+así como prácticas
+para su cuidado,
+desde su contexto
+sociocultural.
+
+Representaciones
+cartográficas de la
+localidad y/o comunidad; su ubicación
+dentro de la entidad
+y del país, con relación al conocimiento,
+función y cuidados de
+los ecosistemas como
+sustento de la vida.
+
+La comunidad
+como el espacio
+en el que se vive
+y se encuentra la
+escuela.
+
+Descripción de personas, lugares, hechos y procesos.
+
+Estructura y funcionamiento del cuerpo
+humano: sistema
+sexual; cambios en la
+pubertad e implicaciones socioculturales.
+
+Valoración de los
+ecosistemas: características del territorio
+como espacio de vida
+y las interacciones de
+la comunidad con los
+ecosistemas, para su
+preservación responsable y sustentable.
+
+Las familias como
+espacio de protección, cuidado,
+afecto y sustento
+para el desarrollo
+personal.
+
+Diálogo para la
+toma de acuerdos
+y el intercambio de
+puntos de vista.
+
+Alimentación saludable, con base en el
+Plato del Bien Comer,
+así como prácticas
+culturales y la toma
+de decisiones encaminadas a favorecer la
+salud y el medio ambiente y la economía
+familiar.
+
+Interculturalidad y
+sustentabilidad: formas en las que los
+pueblos originarios
+y otras culturas del
+país se relacionan con
+la naturaleza para
+contribuir a reducir el
+impacto negativo de la
+humanidad en el medio natural y social, así
+como acciones colectivas para promover el
+bienestar con respeto
+y protección, a fin de
+preservar la naturaleza
+y fortalecer la conciencia geográfica.
+
+Entendimiento mutuo en la escuela.
+
+12
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+Saberes y
+Pensamiento
+Científico
+
+Ética, Naturaleza
+y Sociedades
+
+De lo Humano y lo
+Comunitario
+
+Comprensión y producción de textos
+expositivos en los
+que se planteen:
+problema–solución,
+comparación–contraste, causa–
+consecuencia y
+enumeración.
+
+Interacciones entre
+plantas, animales y el
+entorno natural: nutrición y locomoción.
+
+Cuidado de los ecosistemas para su
+regeneración, preservación responsable y
+sustentable.
+
+La escuela como
+espacio de convivencia, colaboración y aprendizaje.
+
+Búsqueda y manejo reflexivo de
+información.
+
+Relaciones entre los
+factores físicos y biológicos que conforman los ecosistemas
+y favorecen la preservación de la vida.
+
+Acciones de
+prevención ante
+peligros o amenazas
+de fenómenos
+naturales y
+acciones humanas
+y la importancia de
+actuar y participar
+en la escuela, barrio,
+pueblo, comunidad,
+entidad y país;
+promover la cultura
+de prevención,
+autoprotección,
+empatía y solidaridad
+con las personas
+afectadas y el entorno
+socioambiental.
+
+Formas de ser,
+pensar, actuar y
+relacionarse.
+
+Comprensión y producción de textos
+discontinuos para
+organizar actividades y ordenar
+información.
+
+Impacto de las actividades humanas en
+la naturaleza y en la
+salud.
+
+Caracterización y localización del territorio
+donde vive, la entidad
+y México; identificación
+de los tipos de suelo,
+clima, vegetación,
+fauna, cuerpos de agua
+(ríos, lagos, cenotes, humedales, entre otros),
+así como las formas
+culturales que se desarrollan, vinculadas al
+patrimonio biocultural
+de la entidad y región;
+reconocimiento de su
+organización política
+y cambios históricos,
+hasta su conformación
+actual.
+
+Construcción del
+proyecto de vida.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+13
+
+Lenguajes
+
+Saberes y
+Pensamiento
+Científico
+
+Ética, Naturaleza
+y Sociedades
+
+De lo Humano y lo
+Comunitario
+
+Comprensión y
+producción de
+resúmenes.
+
+Propiedades de los
+materiales: masa y
+longitud; relación
+entre estados físicos
+y la temperatura.
+
+Composición sociocultural de la entidad federativa y de México, y
+su configuración a través de la historia como
+un país pluricultural,
+integrado por pueblos
+originarios, afromexicanos, migrantes y
+diversas comunidades
+con características y
+necesidades, quienes
+han luchado por el
+reconocimiento de la
+igualdad en dignidad
+y derechos.
+
+Equidad de género
+en las familias,
+la escuela y la
+comunidad.
+
+Comprensión y producción de textos
+instructivos para
+realizar actividades
+escolares y participar en diversos
+juegos.
+
+Formación de mezclas
+y sus propiedades.
+
+La vida cotidiana antes
+de la primera invasión
+europea y en el México
+colonial: personas y
+grupos sociales que
+incidieron en la historia de la comunidad,
+entidad y el país, para
+reconocer sus aportes
+en lo social, cultural,
+político y económico.
+
+Educación Integral
+en Sexualidad.
+
+Exposición sobre
+temas diversos.
+
+Efectos de la aplicación de fuerzas y
+del calor sobre los
+objetos.
+
+Origen histórico de
+algunos símbolos (territorio, lugares sagrados, figuras y colores,
+banderas, escudos,
+himnos, entre otros),
+que identifican a las
+comunidades, pueblos,
+la entidad y a México
+como país, en tanto
+referentes que dan
+sentido de identidad y
+pertenencia.
+
+Efectos en la vida de
+las personas, derivados de cambios
+sociales, culturales
+y en la salud.
+
+14
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+Saberes y
+Pensamiento
+Científico
+
+Ética, Naturaleza
+y Sociedades
+
+De lo Humano y lo
+Comunitario
+
+Comunicación a
+distancia con personas y propósitos
+diversos.
+
+Sistema Tierra–Luna–
+Sol: interacciones,
+cambios y regularidades; diversas explicaciones acerca del
+movimiento de estos
+astros y su relación
+con algunos fenómenos naturales.
+
+El derecho a la protección de la integridad
+propia y la de todas las
+personas, reconociendo
+situaciones de riesgo,
+como el maltrato, el
+abuso, bullying o la explotación de tipo sexual
+y la importancia de su
+prevención, al conocer
+las instancias para solicitar ayuda y/o denunciar.
+
+Reconocimiento de
+las necesidades y
+características propias y de las demás
+personas.
+
+Análisis e intercambio de comentarios
+sobre empaques de
+productos y anuncios publicitarios.
+
+Estudio de los
+números.
+
+Experiencias de
+organización
+comunitaria del
+pasado y del presente,
+y las acciones
+de colaboración,
+reciprocidad, cuidado
+mutuo y trabajo por el
+bienestar de la escuela,
+barrio, comunidad,
+pueblo y colectivo
+social, para configurar
+ambientes seguros e
+igualitarios, con equidad
+y justicia.
+
+Sentido de pertenencia, identidad
+personal y social.
+
+Indagación, reelaboración y difusión de
+notas informativas
+con opiniones sobre
+hechos que afectan
+a la escuela y/o a la
+comunidad.
+
+Suma y resta, su relación como operaciones inversas.
+
+Situaciones de discriminación en el aula, la
+escuela, la comunidad,
+la entidad y el país,
+sobre la diversidad de
+género, cultural, étnica,
+lingüística, social, así
+como sobre rasgos
+físicos, desarrollo cognitivo y barreras de
+aprendizaje, y participación en ámbitos de
+convivencia, para la promoción de ambientes
+igualitarios, de respeto
+a la dignidad humana
+y a los derechos de todas las personas.
+
+Capacidades y habilidades motrices.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+15
+
+Lenguajes
+
+Saberes y
+Pensamiento
+Científico
+
+Ética, Naturaleza
+y Sociedades
+
+De lo Humano y lo
+Comunitario
+
+Uso de textos formales para atender
+diversos asuntos
+personales o del
+bienestar común.
+
+Multiplicación y división, su relación como
+operaciones inversas.
+
+Retos en el reconocimiento y ejercicio de
+los derechos humanos
+y la satisfacción de las
+necesidades básicas,
+físicas, sociales, de seguridad, emocionales
+y cognitivas de niñas,
+niños y adolescentes,
+así como situaciones
+injustas en el pasado y
+el presente, en las que
+no se respetan los derechos para satisfacer
+las necesidades básicas
+de todas las personas.
+
+Posibilidades cognitivas, expresivas,
+motrices, creativas
+y de relación.
+
+Entrevistas con personas de la comunidad para conocer
+diversos temas.
+
+Cuerpos geométricos
+y sus características.
+
+La construcción colectiva de la paz: situaciones que generan
+diferencias y conflictos
+que afectan la
+convivencia entre las
+personas y grupos
+de pertenencia, causas
+y formas de resolverlo
+a través del diálogo, la
+comunicación y la empatía, para contribuir a
+la convivencia y la resolución de conflictos sin
+violencia.
+
+Estilos de vida activos y saludables.
+
+Indagación sobre la
+diversidad lingüística en su comunidad y el resto del
+país.
+
+Figuras geométricas y
+sus características.
+
+Formas y procedimientos mediante las que
+se eligen a las autoridades de gobierno, y
+los cambios que han
+tenido a través del
+tiempo, en función del
+bienestar colectivo.
+
+Pensamiento lúdico, estratégico y
+creativo.
+
+16
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+Saberes y
+Pensamiento
+Científico
+
+Ética, Naturaleza
+y Sociedades
+
+De lo Humano y lo
+Comunitario
+
+Uso de croquis y mapas para describir
+trayectos o localizar
+lugares.
+
+Medición de longitud,
+masa y capacidad.
+
+Democracia en la vida
+cotidiana: construcción, cumplimiento
+y aplicación justa de
+acuerdos, normas y
+leyes que contribuyen
+a la protección de los
+derechos de todas las
+personas individuales y colectivos, y a la
+convivencia conforme
+a los principios de
+igualdad, justicia y
+responsabilidad.
+
+Interacción motriz.
+
+Reconocimiento y
+reflexión sobre el
+uso de elementos de
+los lenguajes artísticos, en manifestaciones culturales y
+artísticas de la comunidad y del resto
+del mundo.
+
+Cálculo de perímetro
+y área.
+
+La toma de decisiones
+ante situaciones cotidianas y de riesgos,
+con base en el cuidado
+de la dignidad de todas
+y todos, considerando
+posibles consecuencias de las acciones,
+para actuar con
+responsabilidad.
+
+Hábitos saludables
+para promover el
+bienestar en los
+seres vivos.
+
+Creación de propuestas con intención artística para
+mejorar la escuela
+y el resto de la
+comunidad.
+
+Medición del tiempo.
+
+Desigualdades por
+diferencias de género:
+causas y consecuencias
+en la vida cotidiana pasada y presente, para
+proponer acciones en
+favor de la igualdad,
+basadas en el reconocimiento y el respeto
+de los derechos de
+todas las personas.
+
+Higiene para una
+vida saludable.
+
+Lectura y creación
+de poemas, canciones y juegos de
+palabras para su
+disfrute.
+
+Organización e interpretación de datos.
+
+Situaciones de
+riesgo social en la
+comunidad y región donde vive.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+17
+
+Lenguajes
+
+Saberes y
+Pensamiento
+Científico
+
+Ética, Naturaleza
+y Sociedades
+
+Experimentación
+con elementos visuales y sonoros en
+producciones colectivas artísticas.
+
+Reflexión y uso de
+los lenguajes artísticos, para recrear
+experiencias estéticas que tienen lugar
+en la vida cotidiana.
+
+Representación de
+hechos y experiencias significativas
+mediante el empleo
+de recursos textuales, visuales, corporales y sonoros.
+
+Identificación del
+uso de la fantasía
+y la realidad en
+diferentes manifestaciones culturales y
+artísticas.
+Lectura dramatizada
+y representación
+teatral.
+
+Comprensión y producción de cuentos
+para su disfrute.
+
+18
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo
+Comunitario
+Los afectos y su
+influencia en el
+bienestar.
+
+Lenguajes
+Los lenguajes son construcciones cognitivas, sociales y dinámicas que las personas
+utilizan desde su nacimiento para expresar, conocer, pensar, aprender, representar, comunicar, interpretar y nombrar el mundo, así ́ como compartir necesidades, emociones,
+sentimientos, experiencias, ideas, significados, saberes y conocimientos; por tanto, los
+lenguajes permiten establecer vínculos que propicien la convivencia y la participación colaborativa a fin de comprender y atender situaciones que se presentan cotidianamente.
+El objeto de aprendizaje de este campo se constituye a partir de las experiencias y la interacción con el mundo a través del empleo de diferentes lenguajes. Niñas, niños y adolescentes amplían sus posibilidades de expresión en distintas situaciones; construyen
+significados compartidos y comunican de manera asertiva intereses, necesidades, motivaciones, afectos y saberes. Dichas situaciones favorecen, por una parte, la puesta en
+práctica de los lenguajes que potencien y complejicen gradualmente su uso, y por otra,
+ofrecen la oportunidad de explorar y desarrollar la sensibilidad, percepción, imaginación
+y creatividad como herramientas para interpretar e incidir en la realidad.
+Este campo formativo vincula procesos graduales de aprendizaje del español y lenguas
+indígenas, así como lenguajes artísticos e inglés como lengua extranjera y, en el caso de
+atención de personas con discapacidad auditiva, la Lengua de Señas Mexicana, considerando las características de la edad de desarrollo de niñas, niños y adolescentes, así como la
+búsqueda de una integración interdisciplinaria a través de los contenidos de los lenguajes.
+Mediante la oralidad, lectura, escritura, sensorialidad, percepción y composición, niñas, niños y adolescentes tendrán la oportunidad de explorar, experimentar y producir
+creaciones individuales o colectivas que entrelacen los diferentes contextos en los que
+se desenvuelven para que reconozcan, comprendan y usen la diversidad de formas de
+comunicación y expresión donde relacionan signos con significados, a través de sistemas
+lingüísticos, visuales, gestuales, espaciales y aurales o sonoros.
+
+Finalidades del Campo
+Este campo está orientado a que niñas, niños y adolescentes adquieran y desarrollen de
+manera gradual, razonada, vivencial y consciente:
+■ La expresión y la comunicación de sus formas de ser y estar en el mundo para
+conformar y manifestar su identidad personal y colectiva, al tiempo que conocen, reconocen y valoran la diversidad étnica, cultural, lingüística, sexual, de
+género, social, de capacidades, necesidades, condiciones, intereses y formas
+de pensar, que constituye a nuestro país y al mundo; de esta manera se propicia, además, el diálogo intercultural e inclusivo.
+■ La apropiación progresiva de formas de expresión y comunicación mediante
+la oralidad, la escucha, lectura, escritura, sensorialidad, percepción y composición de diversas producciones —orales, escritas, sonoras, visuales, corporales
+o hápticas— para aprender a interpretarlas, elaborarlas, disfrutarlas y utilizarlas con intención, tomando en cuenta la libertad creativa y las convenciones.
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+21
+
+■ La experimentación creativa y lúdica que provoque el disfrute de los elementos
+de las artes a partir de la interacción con manifestaciones culturales y artísticas
+en las que predomine una función estética para apreciarlas, reaccionar de manera afectiva ante ellas e interpretar sus sentidos y significados a través de la
+intuición, sensibilidad o análisis de sus componentes, además de la posibilidad
+de considerar información adicional sobre los contextos.
+■ El establecimiento de vínculos afectivos y el despliegue de herramientas para diversificar las formas de aprendizaje por medio de experiencias artísticas y estéticas como vehículos alternativos de expresión y comunicación de ideas, sueños,
+experiencias, sentimientos, puntos de vista y reflexiones.
+
+Especificidades del Campo formativo para Fase 4
+En la cuarta fase, se busca generar las condiciones para que las y los estudiantes amplíen las posibilidades de participación en prácticas sociales de los lenguajes, profundizando en los procesos de apropiación de la oralidad, lectura y escritura, así como de los
+lenguajes artísticos.
+Para ahondar en procesos relacionados con la oralidad, se pretende seguir promoviendo entre las alumnas y los alumnos la escucha activa y respetuosa, introduciendo
+prácticas de autorregulación y regulación entre pares; la negociación como medio para
+el establecimiento de acuerdos; la organización de ideas mediante estrategias básicas
+como la planeación de exposiciones; la expresión y comunicación de información sustentada y opiniones personales cada vez más reflexionadas; el desarrollo paulatino de la
+seguridad y confianza en ellos mismos al participar en eventos sociales.
+También, para profundizar en los procesos de adquisición de la lectura y la escritura
+convencionales, se promueve la lectura autónoma a través de la identificación de propósitos y estrategias de búsqueda de información específica; el manejo crítico y responsable de la información y los medios de comunicación a través del análisis de más de
+una fuente de consulta y del uso de recursos tradicionales y tecnológicos accesibles; el
+uso reflexivo de aspectos gramaticales, como puntos, comas, signos de interrogación
+y admiración, mayúsculas, minúsculas; el empleo de estructuras y funciones de los
+textos mediadas por reflexiones interculturales; la lectura y escritura autónomas de
+diversos tipos de textos —descriptivo, argumentativo, narrativo, conversacional—,
+valiéndose de estrategias de planeación, revisión, corrección y socialización, considerando propósitos previamente establecidos y destinatarios reales.
+Además, para que las niñas y los niños profundicen en la apropiación de los lenguajes artísticos, se espera que continúen desarrollando los procesos de interpretación
+y representación de sus interacciones con otras personas y fenómenos naturales, así
+como con manifestaciones culturales y artísticas; se busca también que experimenten,
+en producciones creativas personales y colectivas, la combinación expresiva de movimientos corporales, ritmos visuales con formas, colores y texturas, sonidos con distintas duraciones, intensidades, tonos y timbres, y en juegos dramáticos que incentiven su
+imaginación, con la finalidad de proponer, cada vez más, intervenciones a los espacios
+
+22
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+de su entorno, para fomentar el bienestar de
+la comunidad, así como fortalecer sus
+identidades personal y colectiva.
+Para los contextos bilingües
+en los que, además del español,
+tienen presencia otras lenguas,
+como las indígenas, Lengua de
+Señas Mexicana y sistemas alternativos de comunicación,
+es necesario que no sólo se
+profundice en el uso de la
+oralidad —valorar la pertinencia con las y los estudiantes
+sordos—, lectura y escritura,
+sino que se propicie la participación bilingüe en prácticas sociales
+de los lenguajes, donde la segunda
+lengua enriquezca —y no sustituya—
+a la materna.
+Con el propósito de profundizar en la
+apropiación de la oralidad, lectura, escritura
+y los lenguajes artísticos, las y los docentes deben reconocer que las
+alumnas y los alumnos se hallan en etapas diferentes de dichos procesos; en ese sentido, algunos habrán consolidado la lectura y escritura convencionales, así como el
+empleo reflexivo de elementos de los lenguajes artísticos, mientras que otros requerirán de ayuda específica. Por ello, se espera que las maestras y los maestros cumplan
+la función de mediadores del aprendizaje y que consideren diversas estrategias que
+desafíen las posibilidades reales y los conocimientos de las niñas y los niños, a fin de
+potenciarlos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+23
+
+Contenidos y Procesos de desarrollo de aprendizaje
+del Campo formativo
+Contenidos
+Narración de
+sucesos del pasado
+y del presente.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Identifica y comprende la función y
+las características principales de la
+narración.
+
+Reconoce y usa diversos estilos,
+recursos y estrategias narrativas.
+
+Reconoce y usa las estructuras narrativas: lineal, circular, in media res
+y otras, de acuerdo con su propia
+cultura y gusto para narrar.
+Identifica y establece relaciones
+causa–efecto en una narración.
+Usa el punto y el punto y seguido
+para separar oraciones en un
+párrafo.
+
+Descripción de personas, lugares, hechos y procesos.
+
+Comprende, a partir de la lectura
+de textos descriptivos, que hay formas detalladas para describir a las
+personas y los lugares, señalando
+características que van más allá de
+su apariencia.
+
+Establece relaciones causales y
+temporales entre acontecimientos.
+Reflexiona sobre los tiempos presente, pretérito y copretérito, para
+narrar sucesos.
+Infiere el significado de las palabras, a partir de la información
+contextual de un texto.
+
+Planea, escribe, revisa y corrige
+textos donde describe, de manera
+lógica, procesos con los que tiene
+cierta familiaridad.
+
+Reflexiona sobre el uso de palabras
+y frases adjetivas y adverbiales
+Reflexiona sobre el uso de palabras para describir procesos.
+y frases para describir personas,
+lugares y hechos: adjetivos, adver- Utiliza algunos conectores secuenciales, como en primer lugar, postebios y frases adverbiales.
+riormente, finalmente; y temporales,
+como al mismo tiempo, simultáneaPlanea, escribe, revisa y corrige
+mente, más tarde, antes, cuando
+textos en los que describe hechos
+describe un proceso, a fin de dar
+en orden cronológico.
+claridad al texto.
+Reflexiona sobre el uso de la coma
+al enumerar cosas o elementos y la Revisa y corrige las descripciones
+que realiza, para transmitir ideas
+emplea.
+de forma clara, evitando repeticioUsa mayúsculas al inicio de las ora- nes innecesarias.
+ciones y de los nombres propios.
+Reconoce el uso del punto y coma
+y los dos puntos, y los emplea al
+enumerar diferentes elementos o
+aspectos.
+
+24
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+Contenidos
+Diálogo para la
+toma de acuerdos
+y el intercambio de
+puntos de vista.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Reconoce y usa pautas que norman
+los intercambios orales, como respetar el turno para hacer uso de la
+palabra, prestar atención, adecuar
+el volumen de voz, emplear fórmulas de cortesía, mantener el interés,
+plantear preguntas.
+
+Indica de manera respetuosa
+cuando no ha comprendido los
+puntos de vista o ideas de otros.
+Utiliza información de varias fuentes orales y escritas, para explicar
+y argumentar sus propias ideas y
+puntos de vista.
+
+Escucha las ideas de otras y otros, y
+Recupera de forma explícita exexpresa las propias con respeto.
+periencias y conocimientos, para
+tomar decisiones o asumir una
+Reconoce que expresar sus ideas
+postura.
+con claridad y acompañadas de
+las razones que las sustentan, son
+Intercambia información, practica
+aspectos que ayudan a que otras
+la escucha activa, empatía y/o nepersonas las comprendan.
+gociación y toma acuerdos.
+Participa activamente en diálogos para tomar acuerdos, dando
+razones de sus preferencias o
+puntos de vista.
+Comprensión y
+producción de
+textos expositivos
+en los que
+se planteen:
+problema–solución,
+comparación–contraste, causa–
+consecuencia y
+enumeración.
+
+Recurre a diversos soportes que
+contienen textos expositivos, para
+ampliar sus conocimientos sobre
+algún tema, así como a diccionarios
+para consultar definiciones.
+Comprende textos expositivos que
+plantean un problema y la solución
+al mismo.
+Reconoce semejanzas y diferencias
+entre textos de comparación y de
+contraste.
+Reconoce antecedentes y consecuentes en el cuerpo de
+un texto expositivo, del tipo
+causa–consecuencia.
+Se apoya en la enumeración para
+identificar los principales elementos del tema que trata.
+Participa en la planeación y escritura de algún texto expositivo, así
+
+Identifica los efectos de una situación o fenómeno planteados en la
+información que presenta un texto
+expositivo.
+Planea, escribe, revisa y corrige
+sus propios textos expositivos del
+tipo: problema–solución, comparación–contraste, causa–consecuencia
+y enumeración.
+Es capaz de seleccionar fuentes y
+obtener información para proponer soluciones a problemas de su
+entorno.
+Utiliza nexos, adverbios y frases
+adverbiales de secuencia como
+luego, más adelante, después, antes, más temprano, así como nexos
+para establecer comparaciones: en
+cambio, por un lado, por otro lado, a
+diferencia de, al igual que.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+25
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+como en su revisión y corrección,
+haciendo sugerencias de mejora.
+Reflexiona sobre palabras y frases
+que impliquen comparación: algunos, otros, en cambio.
+Búsqueda y manejo reflexivo de
+información.
+
+Formula preguntas para realizar la
+búsqueda de información y las responde luego de localizar la información correspondiente. Emplea los
+signos de interrogación al elaborar
+preguntas.
+
+Elabora preguntas para localizar
+la información que requiere y reflexiona sobre el uso de acentos
+gráficos en palabras que se usan
+para preguntar: qué, cómo, cuándo,
+dónde, por qué, para qué.
+
+Usa variadas fuentes de consulta,
+entre ellas medios de comunicación
+y personas, recupera información
+pertinente, en función del propósito de búsqueda: resolver dudas,
+profundizar en un tema, escribir
+un texto, preparar una exposición,
+generar contenido en las redes
+sociales, etcétera.
+
+Emplea elementos de los textos
+que organizan el contenido: títulos, subtítulos, viñetas, tipografía, palabras clave, para localizar
+información.
+Hace anticipaciones sobre el
+contenido de un libro, a partir de
+la información de la portada y
+contraportada.
+
+Reflexiona sobre el orden alfabético
+Diversifica el uso de fuentes de
+en diccionarios e índices de otras
+obras de consulta y lo emplea para consulta en función del propósito y
+el tema, y reconoce la organización
+localizar información.
+de materiales informativos y sus
+elementos.
+Comprende el sentido general de
+un texto informativo.
+Parafrasea y/o ejemplifica planteamientos que expone un texto
+informativo.
+Consulta diccionarios y glosarios
+para resolver dudas relacionadas
+con el uso de ciertos términos.
+Comprensión y producción de textos
+discontinuos para
+organizar actividades y ordenar
+información.
+
+Identifica características y funciones de los textos discontinuos, en
+particular de esquemas de partes
+de seres vivos y objetos, así como de
+la programación y/o calendarización de actividades.
+Reflexiona sobre la utilidad de los
+formatos para organizar actividades e información.
+
+26
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Identifica características y funciones
+de los textos discontinuos, en particular de líneas del tiempo, tablas
+de doble entrada y gráficas.
+Reflexiona sobre el uso de textos
+discontinuos, para resumir y ordenar información.
+
+Lenguajes
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Usa mayúsculas al comienzo de
+nombres propios y oraciones.
+
+Produce textos discontinuos para
+organizar información que expone
+a otras personas.
+Emplea signos de puntuación como
+el punto y la coma.
+
+Comprensión y
+producción de
+resúmenes.
+
+Reflexiona sobre las funciones y características del resumen, como un
+tipo de texto conciso, cuyo objetivo
+principal es exponer de forma clara,
+precisa y breve las ideas más
+importantes de la fuente consultada
+y no como un producto de una tarea
+mecánica, alejada de la comprensión de las ideas expuestas.
+
+Explora y analiza el contenido de
+los textos por resumir.
+
+Identifica y reflexiona sobre la función de los textos instructivos y
+sus características genéricas:
+organización de los datos; uso de
+numerales para ordenar cronológicamente los pasos de un procedimiento; brevedad y secuencia de
+la información; y precisión en las
+indicaciones.
+
+Analiza las características de diversos textos instructivos, como
+reglamentos, recetas médicas y de
+cocina, indicaciones para participar
+en un juego de mesa o de patio,
+e interpreta la información que
+presentan.
+
+Relaciona el contenido del texto
+por resumir y los recursos complementarios: recuadros, tablas, gráficas e imágenes.
+
+Registra, con sus propias palabras,
+la información más relevante del
+texto por resumir, en función de los
+Determina cuál considera que es
+propósitos predeterminados; por
+la información más relevante del
+ejemplo: escribir un texto informatexto por resumir, en función de
+sus propósitos, y la registra con sus tivo o presentar una exposición.
+propias palabras.
+Usa signos de interrogación y
+Establece diferencias entre paráfra- exclamación para distinguir una
+pregunta de la expresión de una
+sis y síntesis.
+emoción.
+Emplea el punto y aparte para orRevisa y corrige errores de concorganizar un texto por párrafos.
+dancia de género y número.
+
+Comprensión y producción de textos
+instructivos para
+realizar actividades
+escolares y participar en diversos
+juegos.
+
+Comprende la utilidad de los recursos gráficos empleados en
+textos instructivos: diagramas de
+procesos, ilustraciones, cuadros y
+símbolos.
+
+Emplea verbos en infinitivo o imperativo, así como términos secuenciales, para escribir instrucciones.
+Describe el orden secuencial de un
+procedimiento.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+27
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Identifica y reflexiona respecto
+del vocabulario empleado en los
+instructivos: verbos en infinitivo o
+en imperativo para redactar instrucciones y términos secuenciales,
+como primero, después, antes de,
+enseguida, finalmente.
+
+Reflexiona sobre la ortografía de
+palabras homónimas.
+Emplea signos de puntuación como
+el punto, la coma y los dos puntos.
+
+Emplea signos de puntuación,
+como la coma, el punto y seguido,
+el punto y aparte, dos puntos.
+
+Exposición sobre
+temas diversos.
+
+Reconoce características de la oralidad: recursos expresivos (estilo)
+y paralingüísticos o no lingüísticos, como movimiento corporal y
+gestos.
+Expone sobre diversos temas
+considerando:
+Como presentador o presentadora
+-Planear su exposición, lo cual incluye la elaboración de materiales
+de apoyo.
+-Realizar apuntes para usar como
+guía.
+-Usar pronombres y nexos.
+
+Como presentador o presentadora
+-Planear su exposición, lo cual incluye la elaboración de materiales
+de apoyo.
+-Realizar apuntes para usar como
+guía.
+-Reflexionar sobre el uso de sinónimos y antónimos.
+-Mantener el interés del auditorio,
+ajustando el volumen de voz y
+usando elementos paralingüísticos.
+
+-Valorar el interés del auditorio
+
+-Responder dudas y atender
+inquietudes.
+
+Como audiencia
+
+Como audiencia
+
+-Escuchar o atender lo que se comunica, siguiendo el hilo de lo que
+se dice.
+
+-Escuchar atenta y comprensivamente, tomando notas.
+
+-Tomar nota de lo que se quiere
+recordar.
+
+28
+
+Expone sobre diversos temas,
+considerando:
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+-Plantear preguntas o comentar
+sobre lo expuesto.
+
+Lenguajes
+
+Contenidos
+Comunicación a
+distancia con personas y propósitos
+diversos.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Lee y comenta cartas reales y/o
+literarias.
+
+Lee y analiza cartas reales y/o
+literarias.
+
+Identifica características y funciones de las cartas y otros textos epistolares enviados o recibidos por vía
+postal o electrónica.
+
+Usa convenciones de cartas y otros
+textos epistolares, como lugar, fecha, destinatario, dirección, en el
+intercambio postal y/o electrónico
+de mensajes.
+
+Intercambia mensajes epistolares,
+por vía postal y/o electrónica, con
+otras personas a partir de propósitos determinados, como saludar,
+invitar, felicitar, dar recados, informar, entre otros.
+
+Análisis e intercambio de comentarios
+sobre empaques de
+productos y anuncios publicitarios.
+
+Mantiene comunicación a distancia
+con interlocutores y propósitos
+diversos, usando invitaciones, felicitaciones, recados, tarjetas postales
+y documentos adjuntos.
+
+Reflexiona, al comunicarse a distancia, sobre la necesidad de proteger
+sus datos personales y propone
+medidas para salvaguardar su integridad física y moral.
+
+Reflexiona sobre la necesidad de
+proteger sus datos personales y
+acuerda medidas y acciones para
+salvaguardar su integridad física y
+moral.
+
+Reconoce y reflexiona sobre información que contienen los empaques y otros recursos publicitarios
+de productos diversos.
+
+Comprende advertencias e instrucciones incluidas en empaques
+y etiquetas de productos, así
+como la finalidad de sus anuncios
+publicitarios.
+
+Comprende de manera particular la
+Identifica emisor, receptor y prorelevancia de leer advertencias en
+el etiquetado de los productos por pósito de anuncios publicitarios
+difundidos en diferentes medios y
+consumir y/o adquirir.
+reflexiona sobre su veracidad.
+Identifica mensajes, recursos gráReflexiona y comenta sobre la
+ficos y audiovisuales utilizados en
+función persuasiva del lenguaje
+diversos anuncios publicitarios.
+publicitario y el desarrollo del penAnaliza y comenta mensajes publi- samiento crítico ante la publicidad.
+citarios para identificar beneficios
+y perjuicios derivados del consumo
+de los productos publicitados.
+Reflexiona acerca de las ventajas
+del consumo responsable y de la
+toma de decisiones con base en la
+información que se señala en los
+productos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+29
+
+Contenidos
+Indagación, reelaboración y difusión de
+notas informativas
+con opiniones sobre
+hechos que afectan
+a la escuela y/o a la
+comunidad.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Interactúa con medios de comuniConoce hechos noticiosos o nocación y comenta hechos noticiosos ticias por medio de noticieros de
+o noticias de su interés.
+radio y/o televisión.
+Identifica qué, quién, cómo,
+cuándo, dónde y por qué en una
+nota informativa o reporte de noticia.
+Distingue entre notas informativas
+sobre noticias y opiniones acerca
+de las mismas.
+Discute y comparte noticias y opiniones sobre éstas a través de
+medios a su alcance, como periódico mural o boletín escolar.
+
+Uso de textos formales para atender
+diversos asuntos
+personales o del
+bienestar común.
+
+Explora y reconoce características
+de documentos personales, como
+acta de nacimiento, credenciales,
+cartilla de vacunación y comprobantes de estudio.
+Reflexiona sobre las funciones que
+tienen los documentos personales.
+
+Compara cómo se presenta una
+misma noticia en distintos medios
+de comunicación e identifica
+diferencias y semejanzas en su
+tratamiento.
+Comenta y comparte sus impresiones sobre diferencias y semejanzas
+identificadas en el tratamiento de
+una noticia.
+
+Identifica formularios que se emplean en la gestión de determinados trámites personales.
+Comprende el contenido de documentos de uso en trámites
+personales.
+
+Reflexiona sobre las característiReconoce situaciones en las que los cas gráficas y de diseño de dichos
+documentos: tipografía, logotipos,
+documentos personales son necerecuadros, subrayados.
+sarios y/o útiles.
+Comprende la utilidad y el significado de las siglas de las instituciones que expiden los documentos,
+así como el valor de los sellos y
+firmas de autorización.
+
+Entrevistas con personas de la comunidad para conocer
+diversos temas.
+
+30
+
+Reconoce la relación entre los documentos personales, su identidad
+y el ejercicio de sus derechos.
+
+Participa en entrevistas a distintos
+personajes de la comunidad acerca
+de condiciones problemáticas
+Observa, lee y comenta entrevistas. que padecen y posibilidades de
+solución.
+Comprende la utilidad de elaborar
+cuestionarios para obtener la infor- Elabora preguntas pertinentes que
+recaben la información deseada y
+mación que desea, y reconoce la
+diferencia entre plantear preguntas evita plantear redundantes.
+cerradas y abiertas.
+Reconoce las características de la
+entrevista y sus propósitos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Entrevista a personas de la comuni- Usa signos de interrogación y pundad, o externas, con conocimiento tuación para escribir las preguntas
+y respuestas.
+sobre el tema y con propósitos y
+preguntas definidos previamente.
+Planifica entrevistas: define proRespeta turnos para hablar y escu- pósito(s), identifica persona(s) por
+entrevistar, plantea pregunta(s),
+char, presta atención a la persona
+duración, lugar, fecha.
+entrevistada, adecua tono y volumen de voz, plantea preguntas elaUsa pautas que norman intercamboradas con antelación.
+bios orales: respetar turno para
+hacer uso de la palabra, prestar
+atención, adecuar tono y volumen
+de voz, emplear fórmulas de cortesía, plantear preguntas, exponer
+opiniones.
+Indagación sobre la
+diversidad lingüística en su comunidad y el resto del
+país.
+
+Reconoce nombres de lugares,
+objetos y otras palabras cotidianas
+que tienen raíces en lenguas
+indígenas.
+
+Observa y reproduce expresiones,
+orales y escritas, con raíces en lenguas originarias, que son usuales
+en su comunidad y en otras.
+
+Emplea, en forma oral y escrita, expresiones lingüísticas identificadas.
+
+Identifica lenguas que se hablan en
+su municipio y en su entidad, y en
+qué contextos y ocasiones.
+
+Identifica expresiones variantes de
+su lengua materna en comunidades diferentes.
+Conoce lenguas diferentes a la
+suya, que se hablan en su localidad
+y en otras regiones del país.
+
+Uso de croquis y
+mapas para describir trayectos o localizar lugares.
+
+Reflexiona acerca de la relevancia
+que tiene para la vida social hablar
+y escribir según el contexto y los
+interlocutores e interlocutoras.
+Identifica variantes de su lengua
+materna que se usan en comunidades diferentes.
+
+Observa croquis e identifica sus
+características y función.
+
+Observa mapas e identifica sus
+características y función.
+
+Identifica convenciones gráficas
+usadas en croquis.
+
+Identifica convenciones gráficas
+usadas en mapas.
+
+Reconoce y usa palabras para
+dar indicaciones sobre lugares o
+trayectos, como esquina, derecha,
+izquierda, al lado, paralelo.
+
+Comprende y usa vocabulario adecuado para dar indicaciones a fin
+de localizar lugares en un mapa.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+31
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Elabora croquis para representar
+trayectos.
+
+Elabora mapas para representar
+lugares.
+
+Describe trayectos a partir de la
+información contenida en croquis.
+Reconocimiento y
+reflexión sobre el
+uso de elementos
+de los lenguajes
+artísticos, en manifestaciones culturales y artísticas de
+la comunidad y del
+resto del mundo.
+
+Realiza recreaciones orales o escritas, acompañadas de una representación gráfica, como dibujos,
+cómics, historietas, secuencias de
+dibujos que realizan movimientos
+(“folioscopio” o flip books), a partir
+de la observación de videos o de
+la asistencia a lugares en donde se
+lleven a cabo manifestaciones culturales y artísticas.
+
+Distingue movimientos, vestuarios,
+aromas, gestos, sonidos u objetos,
+en las manifestaciones culturales y
+artísticas de su comunidad y otros
+lugares del mundo, para reflexionar sobre su sentido y significado.
+
+Creación de propuestas con intención artística para
+mejorar la escuela
+y el resto de la
+comunidad.
+
+Identifica aspectos por mejorar de
+la escuela o del resto de la comunidad a partir de gustos e intereses
+propios, para generar ideas sobre
+distintas posibilidades de transformación y las representa mediante
+descripciones, dibujos, bocetos o
+maquetas.
+
+Crea producciones con distintos
+lenguajes, oral, escrito, musical, visual, teatral, dancístico, que representen vínculos respetuosos con la
+diversidad para su participación en
+la mejora comunitaria.
+
+Interactúa con manifestaciones
+culturales y artísticas de su comunidad y las compara con las de
+otros lugares, compartiendo sus
+conclusiones, mediante fotografías
+Compara movimientos, sonidos,
+formas, colores, gestos y objetos de o dibujos comentados, o bien, mediante un escrito.
+manifestaciones culturales y artísticas de su comunidad con los de
+Aprecia la diversidad cultural y linotros lugares.
+güística en su país y el mundo meExpresa sus gustos e intereses hacia diante la reflexión sobre algunas
+las manifestaciones culturales y artís- manifestaciones culturales y artísticas, y realiza descripciones orales o ticas de su interés para conocer su
+escritas, para agruparlas de acuerdo contexto.
+con sus similitudes en un collage de
+dibujos, fotografías o recortes.
+
+Elabora una propuesta con intención artística, en colectivo,
+Dialoga sobre las transformaciones mediante movimientos, sonidos,
+formas, colores, gestos y objetos,
+que han tenido distintos espacios
+para ofrecer propuestas de soluescolares y del resto de la comunidad a partir de cambios impulsados ción a situaciones o problemas
+identificados, ya sea en la escuela o
+a través de los lenguajes artísticos,
+como murales, esculturas, teatro ca- en el resto de la comunidad.
+llejero, recitales o bailes al aire libre.
+
+32
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Explora y emplea movimientos,
+sonidos, formas, colores, texturas,
+gestos, objetos y palabras, para
+representar situaciones del espacio escolar o de la localidad.
+
+Opina de manera oral y escrita sobre propuestas realizadas por sus
+pares, así como de los elementos y
+recursos de los lenguajes que emplearon, y de qué manera consideran que éstas mejoran los espacios
+escolares y comunitarios.
+
+Crea producciones con distintos
+lenguajes, oral, escrito, musical,
+Experimenta con una variedad de
+visual, teatral, dancístico, en las
+que destaque aspectos valiosos de formas, colores, texturas, sonidos,
+movimientos, gestos y objetos,
+la escuela o la comunidad.
+para crear una propuesta artística
+Construye propuestas artísticas de colectiva que mejore el espacio que
+habita.
+manera colectiva, a partir del uso
+de formas, colores, texturas, sonidos, movimientos y gestos, que
+permitan generar una mejora para
+el bien común.
+Lectura y creación
+de poemas, canciones y juegos de
+palabras para su
+disfrute.
+
+Lee y escucha poemas, canciones
+y juegos de palabras, de acuerdo
+con sus gustos e intereses, para
+propiciar su disfrute.
+Reconoce la rima y la aliteración
+como elementos rítmicos de
+poemas, canciones y juegos de
+palabras.
+Explora y combina sonidos y palabras para jugar con su acomodo y
+entonación, y modifica las palabras
+o la letra de una canción, siguiendo
+el ritmo original.
+
+Reconoce algunas características
+del contexto de creación de un
+poema, canción o juego de palabras, para realizar interpretaciones
+de su significado.
+Establece relaciones entre el texto y
+las experiencias de vida, a partir de
+lo que le sugiere su lectura (figuras
+de significación).
+
+Identifica y reflexiona sobre los elementos rítmicos y melódicos de los
+textos poéticos: ritmos y duraciones, repetición de frases, palabras,
+sílabas, etcétera, en los poemas,
+Reconoce el contenido de distintos canciones y juegos de palabras.
+poemas y canciones y lo relaciona
+con experiencias personales o co- Revisa de manera lúdica las varialectivas, para otorgarles un sentido ciones que se dan en la lectura en
+voz alta, en cuanto a los tonos, paupropio.
+sas y acentos posibles. Asimismo,
+interpreta los diferentes tonos,
+Realiza inferencias de sentido y
+pausas y acentos que realiza cada
+significado, a partir de la lectura
+persona al leer en voz alta.
+y socialización de trabalenguas,
+chistes, adivinanzas, refranes y
+acertijos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+33
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+Experimenta con la creación de
+poemas en verso y prosa, canciones o juegos de palabras, a partir
+del establecimiento de un tema
+que le sea significativo.
+
+Experimentación
+con elementos visuales y sonoros en
+producciones colectivas artísticas.
+
+Crea un cortometraje colectivo,
+utilizando objetos cotidianos en
+animaciones con secuencias fotográficas y lo sonoriza para compartir ideas y experiencias.
+
+Combina secuencias de sonidos
+rápidos, lentos, agudos, graves,
+fuertes, débiles, con pausas y acentos, producidos con objetos del
+entorno, el cuerpo y/o la voz, para
+transmitir una idea colectiva.
+
+Recrea una experiencia colectiva
+mediante la intervención o transformación de un objeto significativo, con el uso de colores, telas,
+materiales reciclados y elementos
+de la naturaleza, entre otros.
+
+Realiza una composición visual
+colectiva con objetos a su alcance
+para representar distintas ideas y
+formas mediante esculturas efímeras, performances o instalaciones.
+
+Reflexión y uso de
+los lenguajes artísticos, para recrear
+experiencias estéticas que tienen lugar
+en la vida cotidiana.
+
+Elabora un libro de artista o libro
+objeto, previa selección de textos,
+en el que experimenta con materiales diversos, como cartón, reciclados, telas, origami; y con el uso de
+diferentes elementos de los lenguajes artísticos, como puntos, líneas,
+texturas, formas, colores e imágenes y los comparte con sus pares.
+
+Elabora una producción artística
+colectiva que le permita imaginar
+formas de incidir constructivamente en su entorno natural y
+social, utilizando elementos y recursos de los lenguajes artísticos.
+
+Utiliza elementos de los lenguajes
+artísticos para representar experiencias significativas de su vida
+cotidiana; por ejemplo, un paseo
+familiar, puesta de sol, comida
+deliciosa.
+
+Utiliza formas, colores, texturas, sonidos y movimientos para recrear,
+mediante diferentes producciones
+artísticas, obras de arte que le han
+causado interés e impacto.
+
+Identifica y recrea mediante el
+uso de formas, colores, texturas y
+sonidos, sensaciones, emociones,
+sentimientos e ideas que surgen
+de distintas experiencias significativas que tienen lugar en la vida
+cotidiana.
+
+34
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Reconoce las formas, líneas, colores y texturas de su entorno natural
+y social, y lo recrea mediante distintas producciones artísticas individuales y colectivas para reflexionar
+sobre la presencia de los lenguajes
+artísticos en la vida cotidiana.
+
+Lenguajes
+
+Contenidos
+Representación de
+hechos y experiencias significativas
+mediante el empleo
+de recursos textuales, visuales, corporales y sonoros.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Representa lúdicamente una experiencia significativa con el uso de
+movimientos, formas, gestos, sonidos, colores y objetos para construir nuevos significados.
+
+Selecciona los recursos textuales
+que le permiten recrear un hecho
+significativo, de acuerdo con el
+énfasis que busca comunicar.
+
+Reelabora acciones cotidianas al
+jugar con movimientos rápidos o
+lentos, fuertes o débiles, con pausas o acentos, imaginando distintos
+espacios donde se llevan a cabo
+para descubrir nuevas maneras de
+realizarlas.
+
+Reflexiona sobre una experiencia
+significativa que ha transformado
+su manera de ser o vivir, y la recrea
+por medio de una historia, que
+representa con objetos animados y
+sonidos corporales.
+
+Realiza un cortometraje con imágenes de su entorno, o elabora un
+Contrasta lúdicamente el lenguaje
+folioscopio (flip book), para narrar
+figurado y el literal, por medio de
+un acontecimiento significativo de
+preguntas retóricas, comparaciones la comunidad.
+y metáforas.
+Describe un hecho significativo
+mediante la estructura narrativa
+de su elección, estableciendo
+para cada parte una secuencia de
+movimientos, con acompañamiento
+musical, lo cual complementa con
+desplazamientos, pausas, acentos y
+velocidades corporales.
+Identificación del
+uso de la fantasía
+y la realidad en
+diferentes manifestaciones culturales y
+artísticas.
+
+Distingue la fantasía de la realidad
+en manifestaciones culturales y artísticas de su comunidad, y de otros
+lugares del mundo.
+Aprecia el uso intencional de
+formas, colores, sonidos, texturas,
+movimientos, gestos u objetos, que
+expresan la realidad y la fantasía
+en manifestaciones culturales y
+artísticas.
+Comenta impresiones y sensaciones, a partir de la identificación del
+uso intencional de formas, colores,
+sonidos, texturas, movimientos o
+gestos, en las manifestaciones culturales y artísticas de su interés.
+
+Analiza la representación de distintas formas de ser y estar en el
+mundo, incluyendo al género, en
+manifestaciones culturales y artísticas que sean de su interés.
+Crea un personaje, empleando
+elementos de los lenguajes artísticos, que retome aspectos reales y
+fantásticos de una manifestación
+cultural o artística, para expresar
+sus gustos e intereses.
+Escribe comentarios críticos sobre
+manifestaciones culturales y artísticas, y los comparte por medio de
+una publicación física y/o electrónica elaborada con sus compañeras
+y compañeros.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Lenguajes
+
+35
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizajes
+
+Tercer grado
+
+Cuarto grado
+
+Lectura dramatizada Reconoce características de los
+textos dramáticos, como diálogos,
+y representación
+acotaciones, listado de personajes,
+teatral.
+espacio y temporalidad, al realizar
+una lectura comprensiva de los
+mismos.
+
+Explora en colectivo el movimiento,
+el gesto, la forma, el color y el sonido, para recrear fragmentos de
+una lectura de su interés, por medio del teatro de títeres, sombras o
+papel.
+
+Transforma objetos y recursos a su
+alcance de manera creativa, para
+utilizarlos en la representación de
+personajes, al realizar una lectura
+dramatizada.
+
+Realiza, en colectivo, una lectura
+dramatizada o teatro de atril de
+un texto dramático, jugando con
+combinaciones de secuencias de
+sonidos rápidos, lentos, agudos,
+graves, fuertes, débiles, con pausa
+y con acentos variados.
+
+Improvisa con el uso del cuerpo y
+la voz algunas situaciones significativas, identificadas en distintas
+narraciones.
+
+Identifica la estructura externa del
+texto dramático, conformada por
+diálogos, listado de personajes y
+acotaciones.
+
+Participa en juegos de roles en los
+que representa diferentes personajes, en espacios y tiempos definidos. Conoce otros tipos de textos en los
+que se puede realizar una lectura
+dramatizada: historieta, cómic,
+Explora posibilidades expresivas
+manga, que contienen onomatopedel cuerpo, el espacio y el tiempo,
+yas, símbolos, viñetas, etcétera.
+en la construcción de historias
+narrativas.
+
+Comprensión y producción de cuentos
+para su disfrute.
+
+Escucha y lee cuentos de distintos
+orígenes y autores.
+
+Selecciona, lee y escucha cuentos
+de distintos orígenes y autores.
+
+Reconoce relaciones causa–efecto
+entre las partes de los cuentos.
+
+Reflexiona sobre el uso de los tiempos pretérito y copretérito para
+narrar sucesos pasados, y sobre el
+empleo del presente en diálogos
+directos.
+
+Desarrolla una historia con una
+secuencia causal de hechos derivados de un conflicto inicial que se
+soluciona al final.
+Planea, escribe, revisa, corrige y
+comparte cuentos sobre temas de
+su interés.
+Reconoce semejanzas y diferencias
+entre los cuentos y los eventos de
+la vida cotidiana, para darles un
+sentido y significado propios.
+
+36
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Planea, escribe, revisa, corrige y
+comparte cuentos sobre diversos
+temas.
+Escribe un cuento de manera colectiva y elabora los personajes con
+objetos cotidianos y realiza una
+presentación frente a un público.
+
+Lenguajes
+
+Saberes y Pensamiento Científico
+Desde el nacimiento, el ser humano busca conocer todo aquello que lo rodea y que conforma su entorno natural y sociocultural a partir de su curiosidad e interés por explorarlo.
+Conforme niñas, niños y adolescentes interactúan con el mundo, desarrollan experiencias
+y construyen saberes que se amplían y diversifican, por lo que es importante reconocer
+que existen diferentes caminos para construir conocimientos, usarlos y compartirlos.
+El objeto de aprendizaje de este campo es la comprensión y explicación de los fenómenos y procesos naturales tales como cuerpo humano, seres vivos, materia, energía,
+salud, medio ambiente y tecnología, desde la perspectiva de diversos saberes y en su
+relación con lo social.
+Los saberes provienen de conocimientos y prácticas específicas construidas en diversos
+contextos incluyendo el conocimiento científico, mismos que conforman un acervo social
+y cultural que se refiere a las distintas maneras de pensar, hacer, expresar y representar de
+las personas que determinan la pertenencia a una comunidad o a un grupo social.
+Las ciencias son construcciones, entre muchas otras, para explicar la realidad física,
+que a su vez está condicionada por factores culturales e históricos. En tanto construcción
+cultural, no se puede afirmar que sea superior a otros sistemas de conocimientos, ya que
+cada explicación puede ser adecuada en mayor o menor medida según el contexto en el
+que se aplique.
+Por esta razón, y desde una perspectiva democrática y plural, se plantea la necesidad
+de que la enseñanza científica forme en las y los estudiantes la capacidad de analizar
+distintas concepciones del mundo y para que aprenda a tomar decisiones sobre la explicación más adecuada al momento de resolver cada problema concreto.
+En este marco, el pensamiento científico representa un modo de razonamiento que
+implica relaciones coherentes de conocimientos fundados en el desarrollo de habilidades para indagar, interpretar, modelizar, argumentar y explicar el entorno.
+El estudio de este campo aporta a la formación de una ciudadanía que cuente con
+conocimientos para resolver un problema determinado o explicar lo que sucede a su
+alrededor; participe democráticamente; genere y exprese opiniones propias y tome decisiones fundamentadas en asuntos de trascendencia personal y social; y contribuya en
+la transformación sustentable de la comunidad.
+
+Finalidades del Campo
+Este campo está orientado a que niñas, niños y adolescentes adquieran y desarrollen de
+manera gradual, razonada, vivencial y consciente:
+■ La comprensión para explicar procesos y fenómenos naturales en su relación
+con lo social, los cuales ocurren en el mundo con base en los saberes y el pensamiento científico por medio de indagación, interpretación, experimentación, sistematización, representación con modelos y argumentación de tales
+fenómenos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+39
+
+■ El reconocimiento y uso de diversos métodos durante la construcción de conocimientos para contrarrestar la idea de un método único.
+■ La toma de decisiones libres, responsables y conscientes orientadas al bienestar
+individual, familiar y comunitario para una vida saludable.
+■ La práctica de relaciones sociales igualitarias e interculturales, así como relaciones que coadyuven a cuidar el medio ambiente y transformar de manera
+sustentable su comunidad.
+■ El acercamiento a los conocimientos científicos y tecnológicos tomando en cuenta que son resultado de actividades humanas interdependientes desarrolladas
+en un contexto específico, que están en permanente cambio, con alcances y
+limitaciones, y se emplean según la cultura y las necesidades de la sociedad.
+■ La apropiación y el uso del lenguaje científico y técnico como medio de comunicación oral, escrita, gráfica y digital para establecer nuevas relaciones, construir
+conocimientos y explicar modelos.
+
+Especificidades del Campo formativo para la Fase 4
+En la Fase 4 de la Educación Básica, se fomenta que niñas y niños interaccionen con el
+entorno natural de forma más autónoma, mantengan y amplíen el gusto, interés y curiosidad por comprender, explicar e intervenir en lo que sucede a su alrededor, así como
+para elaborar respuestas de forma más sistemática a sus preguntas.
+Asimismo, que muestren mayor independencia en la práctica de habilidades para
+observar, cuestionar, clasificar, comparar, ordenar, experimentar, analizar, describir, relacionar, inducir, verificar, inferir, modelar, contar, formular algoritmos, registrar; además fortalezcan valores y actitudes indispensables para relacionarse con la naturaleza
+y la sociedad de una forma respetuosa.
+El estudio de fenómenos y procesos naturales, y la resolución de múltiples situaciones problemáticas en diversos contextos permiten que niñas y niños continúen construyendo nociones y representaciones acerca de la estructura y el funcionamiento de
+su cuerpo; los cambios físicos y emocionales que notarán durante su desarrollo, las
+implicaciones socioculturales de estos; las acciones para el cuidado de la salud; las interrelaciones en los ecosistemas, cómo las actividades humanas impactan en ellos o
+favorecen su cuidado, además de la descripción de cambios y regularidades en el entorno natural.
+A la par, se avanza en el estudio de los números naturales, decimales y fracciones,
+operaciones de suma, resta, multiplicación y división con números naturales y, suma y
+resta con fracciones; las características de formas geométricas en el plano y en el espacio; la medición de longitud, masa, capacidad, superficie y tiempo, y la organización de
+la información en categorías, tablas y gráficas.
+También, por las características propias del pensamiento científico, así como por sus
+aplicaciones, en esta fase se propicia la modelación a partir de la construcción de representaciones (dibujos, gráficas, símbolos matemáticos, entre otros).
+
+40
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+Para ello, es necesario que las y los
+docentes, preferentemente de manera colegiada, diseñen, seleccionen,
+organicen y desarrollen situaciones
+reales acordes a la edad, contexto, características, necesidades e
+intereses de niñas y niños, en las
+que pongan en juego y construyan los conocimientos del campo
+formativo. También, que den lugar
+a preguntas retadoras que para ser
+contestadas impliquen la recuperación de sus experiencias, el trabajo dentro y fuera del aula, así como la
+experimentación, bajo condiciones de seguridad para prevenir accidentes y lesiones.
+Además, queda a su criterio, secuenciar el conocimiento e integrarlo a partir de diversas estrategias y
+de las necesidades de aprendizaje de niñas y niños.
+El abordaje de los Contenidos y Procesos de desarrollo de aprendizaje implica partir
+de lo concreto y relacionarlo con sus vivencias, contextos y situaciones relevantes. En
+este sentido, se pretende que paulatinamente sean capaces de comprender la relación
+vital de interdependencia entre los seres humanos y la naturaleza, así como la importancia de fortalecer prácticas, actitudes y valores que fomenten el respeto, cuidado y
+protección de esta. Además, que comprendan la relevancia de las matemáticas en tanto
+herramientas para la construcción de conocimientos, y referente para el desarrollo del
+pensamiento. Por ello, es importante que niñas y niños expresen verbalmente y por
+escrito lo aprendido, utilizando palabras y símbolos.
+Igualmente, habrá que identificar y dar significado a los contenidos matemáticos a
+través de situaciones problemáticas que sean interesantes y tengan sentido para niñas
+y niños, desarrollarlos en el aula a partir de los elementos observados, y aplicarlos en
+el momento en que surja la oportunidad en cualquier campo formativo o actividad cotidiana: como una herramienta de análisis para entender fenómenos de la naturaleza o
+para dar propuestas de solución en la vida diaria, ante cuestionamientos como ¿cuál es
+mayor?, ¿cuántos?, ¿cuánto?, ¿qué forma tiene?, ¿a qué se parece?, ¿cómo registramos?,
+¿cuándo?, ¿dónde?, etcétera.
+Con la finalidad de promover una comprensión de manera integrada de los procesos
+y fenómenos naturales, es pertinente establecer vinculaciones entre los Contenidos de
+este Campo; para ello, habrá que atender a criterios claros como el orden de aprendizaje derivado de las especificidades de las disciplinas, de la construcción de significados de los objetos de estudio y la relación complementaria entre las matemáticas y
+las ciencias naturales.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+41
+
+Contenidos y Procesos de desarrollo de aprendizaje
+del Campo formativo
+Contenidos
+
+Estructura y funcionamiento del
+cuerpo humano:
+sistemas locomotor y digestivo, así
+como prácticas
+para su cuidado,
+desde su contexto
+sociocultural.
+
+Estructura y
+funcionamiento
+del cuerpo humano: sistema
+sexual; cambios
+en la pubertad
+e implicaciones
+socioculturales.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Identifica y describe que el sistema
+locomotor está conformado por el
+sistema óseo (huesos y columna
+vertebral), y el sistema muscular
+(músculos y articulaciones), y que
+sus funciones se relacionan con el
+soporte, protección y movimiento
+del cuerpo.
+
+Identifica y describe la estructura
+y funciones del sistema digestivo,
+así como su relación con el sistema circulatorio, a partir de representar la ruta de los alimentos
+durante la ingestión, digestión,
+absorción y transporte de nutrimentos, y los órganos que participan en estos procesos.
+
+Explica y representa el
+funcionamiento del sistema
+locomotor, con modelos que
+muestran la acción coordinada
+de los sistemas óseo, muscular
+y nervioso, en el movimiento del
+cuerpo.
+Describe acciones y prácticas socioculturales para el cuidado del sistema locomotor y la prevención de
+accidentes y lesiones, reconoce la
+importancia de la postura correcta,
+de acudir a los servicios de salud y
+evitar la automedicación.
+
+Reconoce prácticas socioculturales como la herbolaria, para
+la atención de malestares e
+infecciones del sistema digestivo, y practica acciones para su
+cuidado.
+
+Describe semejanzas y diferencias entre los órganos sexuales
+de las personas, sus nombres
+correctos y en su lengua materna,
+e identifica que estos determinan
+el sexo biológico; propone o practica acciones y hábitos de higiene
+para su cuidado como parte de la
+salud sexual.
+
+Indaga, describe y representa
+mediante modelos, los caracteres
+sexuales primarios y secundarios,
+al comparar los cuerpos de niñas
+y niños con los de adolescentes;
+establece relaciones entre los
+cambios que se presentan durante la pubertad y la adolescencia, con el desarrollo biológico del
+ser humano.
+
+Comprende que los cuerpos cambian a lo largo del tiempo, al reconocer la variabilidad en tamaño,
+forma, funciones y características; explica que todas las culturas
+tienen maneras diferentes de ver
+los cuerpos y que todos merecen
+respeto, incluido el de las personas con discapacidad, como
+
+42
+
+Describe la participación de la
+saliva y los jugos gástricos en la
+transformación de los alimentos,
+a partir de experimentar con
+agua, vinagre, jugo de limón y
+diversos alimentos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Comprende la importancia de
+llevar a cabo hábitos de higiene
+de los sistemas sexuales; practica
+acciones de autocuidado y toma
+decisiones para fortalecerlas.
+Comprende que la menstruación
+es un ciclo natural de desarrollo
+
+Saberes y Pensamiento Científico
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+parte del derecho a una vida libre
+de violencia.
+
+físico de las niñas a partir de
+describir y representar sus fases;
+explica la diversidad de síntomas
+físicos y sensaciones que se pueden experimentar, algunas creencias y tabúes alrededor de ésta,
+así como medidas de cuidado e
+higiene personal.
+Indaga y comunica ideas, valores, prácticas, costumbres y
+estereotipos que existen en las
+familias y la comunidad, en torno
+a los cambios anatómicos y fisiológicos que se presentan tanto
+en la pubertad como en la adolescencia, para distinguir entre
+las niñas y los niños, de las y los
+adolescentes.
+
+Alimentación saludable, con base
+en el Plato del
+Bien Comer, así
+como prácticas
+culturales y la
+toma de decisiones encaminadas
+a favorecer la
+salud y el medio
+ambiente y la economía familiar.
+
+Explica la importancia del consumo de una alimentación
+higiénica y variada que incluya
+verduras y frutas; cereales y
+tubérculos; leguminosas y alimentos de origen animal acorde
+con el Plato del Bien Comer y sus
+prácticas culturales, para el buen
+funcionamiento del cuerpo.
+Propone y practica acciones para
+favorecer una alimentación saludable, como consumir alimentos
+naturales, de la localidad y de
+temporada, en la cantidad recomendada para su edad, beber
+agua simple potable; disminuir el
+consumo de alimentos con exceso de grasas, azúcares y sal,
+entre otras.
+Comprende que las personas
+tienen diferentes necesidades
+alimentarias, de acuerdo con su
+edad y actividad física, y que
+
+Indaga y describe los nutrimentos que proporcionan los ali­
+mentos que consume e identifica
+los que necesita incluir en su
+alimentación, así como los beneficios para su salud y para realizar
+sus actividades diarias.
+Identifica y analiza la influencia
+de diversos medios de comunicación o redes sociales en el consumo de alimentos con
+alto contenido de grasa, azúcares y sal, así como su impacto en
+la salud, y toma decisiones que
+mejoren tanto su alimentación
+como la economía personal y
+familiar.
+Reconoce y valora las prácticas
+culturales, relacionadas con la
+alimentación saludable presentes
+en su comunidad, como la milpa,
+y la rotación de cultivos, que favorecen la producción y consumo
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+43
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+satisfacerlas impacta en la economía familiar.
+
+responsable, la obtención de una
+variedad de alimentos y el cuidado del medio ambiente.
+Indaga y explica qué productos
+y alimentos son convenientes
+adquirir o consumir en su familia, por su costo económico y el
+impacto medio ambiental que
+provocan.
+
+Interacciones
+entre plantas,
+animales y el
+entorno natural:
+nutrición y
+locomoción.
+
+Indaga y describe la locomoción
+de animales, a partir de reconocer las formas en las que se mueven y desplazan en la búsqueda
+de alimento, agua o refugio y su
+relación con las características del
+lugar donde viven.
+Clasifica animales en vertebrados
+e invertebrados, a partir de sus
+características, y reconoce que
+los seres humanos pertenecen
+al grupo de los vertebrados, con
+base en similitudes y diferencias en la locomoción de otros
+animales.
+Explica el movimiento y desplazamiento de algún animal
+vertebrado de su interés, con
+modelos que muestran la acción
+coordinada de los sistemas óseo
+y muscular.
+
+44
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Identifica y clasifica animales, con
+base en su tipo de alimentación:
+herbívoros, carnívoros y omnívoros, y su relación con el lugar
+donde viven.
+Identifica, representa y explica el
+proceso de nutrición de plantas,
+en el que intervienen la luz solar,
+el agua, las sales minerales y el
+dióxido de carbono, sin llegar al
+uso de fórmulas químicas.
+Analiza y describe la estructura
+de cadenas alimentarias: productores (plantas), consumidores
+(animales), y descomponedores
+(hongos y bacterias), así como
+su relación con el lugar donde
+habitan.
+Explica las condiciones del entorno propicias para la existencia
+y sobrevivencia de plantas y animales, entre ellos el ser humano;
+reconociendo su compromiso
+para cuidarlo.
+
+Saberes y Pensamiento Científico
+
+Contenidos
+
+Relaciones entre
+los factores físicos y biológicos
+que conforman
+los ecosistemas
+y favorecen la
+preservación de la
+vida.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Describe la importancia del aire,
+el agua, el suelo y el Sol para
+todos los seres vivos, a partir de
+representar las relaciones que
+establecen para su alimentación y
+protección.
+
+Identifica, representa y explica las
+interacciones entre los factores
+biológicos (plantas, animales,
+incluido el ser humano, hongos y
+organismos microscópicos como
+bacterias), y los factores físicos
+(agua, aire, suelo y Sol) en la conformación de los ecosistemas.
+
+Reconoce y describe las condiciones en las que se encuentra
+el aire, el suelo y el agua en el
+lugar en donde vive; y argumenta
+acerca del impacto de dichas
+condiciones en la vida de plantas,
+animales y personas.
+Identifica y valora la presencia del
+aire, agua, suelo y Sol en las expresiones culturales de diversas
+personas y grupos.
+
+Impacto de las
+actividades humanas en la naturaleza y en la salud.
+
+Indaga y describe el impacto
+de las actividades humanas del
+entorno natural del lugar donde
+vive, y establece relaciones
+causa–efecto en la naturaleza y
+en la salud de las personas.
+Indaga saberes y prácticas de
+diversos pueblos y culturas, para
+cuidar la naturaleza y establecer
+una relación armónica.
+Propone y practica acciones que
+favorecen el cuidado de la naturaleza, la salud de las personas y el
+bienestar animal.
+
+Compara y describe la dinámica
+de distintos ecosistemas de México, a partir de la diversidad de
+seres vivos que habitan en ellos y
+las características de los factores
+físicos que los conforman.
+Reconoce y explica la importancia
+de los ecosistemas en la vida cotidiana de las personas y pueblos,
+así como en sus manifestaciones
+culturales.
+
+Indaga y describe los problemas
+de contaminación de agua, aire y
+suelo, y generación de residuos
+sólidos en su comunidad; establece relaciones causa–efecto
+en los ecosistemas, así como en
+la salud de las personas y en el
+bienestar de pueblos y culturas.
+Propone y practica acciones de
+consumo responsable para prevenir o mitigar la contaminación
+de agua, aire y suelo, así como la
+generación de residuos sólidos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+45
+
+Contenidos
+
+Propiedades de
+los materiales:
+masa y longitud;
+relación entre
+estados físicos y la
+temperatura.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Describe la masa y la longitud
+como propiedades medibles de
+los materiales, a partir de experimentar con distintos objetos y
+materiales y el uso de instrumentos como balanza y regla, y establece relaciones entre el material,
+tamaño y forma.
+
+Describe y representa los cambios físicos del ciclo del agua:
+evaporación, condensación, solidificación, y su relación con la
+variación de la temperatura.
+
+Reconoce al kilogramo (kg) como
+la unidad básica de medida
+de la masa, y al metro (m) como
+la unidad básica de medición
+de la longitud (distancia entre
+dos puntos), así como otras
+unidades que se utilizan en su
+comunidad para medir la masa y
+la longitud.
+
+Formación de
+mezclas y sus
+propiedades.
+
+Identifica al agua como disolvente a partir de experimentar
+con distintos materiales como
+aceite, talco, azúcar, sal, arena, y
+los clasifica en solubles o insolubles en agua.
+Describe la aplicación de la solubilidad del agua en actividades
+cotidianas y en la industria.
+
+Efectos de la aplicación de fuerzas
+y del calor sobre
+los objetos.
+
+Describe y representa los movimientos de personas, objetos y
+animales, considera la dirección
+(izquierda a derecha, de arriba a
+abajo), la rapidez (lento o rápido),
+y su trayectoria (recta, curva o
+zigzag), así como los puntos de
+referencia.
+Describe el efecto de las fuerzas
+sobre los objetos: movimiento y
+
+46
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Indaga y describe los cambios de
+estado físico de los materiales,
+a partir de experimentar con la
+variación de la temperatura y sus
+efectos en diversos materiales
+(chocolate, mantequilla, agua,
+hielo, vela –cera–, alcohol, gelatina, otros).
+Reconoce los avances tecnológicos en el diseño de termómetros
+más precisos y su aplicación en
+la vida cotidiana, la industria, la
+medicina y la investigación.
+
+Comprende que una mezcla está
+formada por diversos materiales
+en diferentes proporciones, a
+partir de experimentar con mezclas de materiales como agua y
+arena, agua y aceite, semillas y
+clips.
+Experimenta con mezclas de diversos materiales y proporciones,
+para identificar sus propiedades
+de color y sabor.
+Comprende algunas formas de
+generar calor, como la fricción y
+el contacto, e indaga su importancia en la vida cotidiana.
+Describe los efectos del calor sobre
+los objetos, a partir de experimentar con ellos al frotarlos unos con
+otros; reconoce que la transferencia de calor va del objeto de mayor al de menor temperatura.
+
+Saberes y Pensamiento Científico
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+reposo, al experimentar con los
+cambios en la rapidez o la dirección del movimiento, sin llegar
+a la noción de intensidad de la
+fuerza.
+
+Diseña y construye un dispositivo o juguete sencillo que funcione con calor, y explica
+su funcionamiento.
+
+Experimenta con la aplicación de
+fuerzas y el movimiento, con base
+en el diseño de distintos recorridos (circuitos), en los que interaccionan diversos objetos que
+chocan, son jalados o empujados,
+además de considerar diferentes
+distancias.
+
+Sistema Tierra–
+Luna–Sol: interacciones, cambios
+y regularidades;
+diversas explicaciones acerca del
+movimiento de
+estos astros y su
+relación con algunos fenómenos
+naturales.
+
+Indaga y representa con modelos, los movimientos de rotación
+y traslación de la Tierra, y los
+asocia con la sucesión del día y la
+noche, con las estaciones del año
+y el cambio del punto de aparición y ocultamiento del Sol en el
+horizonte.
+Describe y representa mediante
+modelos el movimiento de rotación y traslación de la Luna y su
+relación con sus fases.
+Indaga aportaciones de diversas culturas en relación con el
+movimiento de la Tierra, la Luna
+y el Sol, y su influencia en aspectos socioculturales.
+
+Indaga la formación de eclipses
+de Sol y de Luna, y describe las
+similitudes y diferencias entre
+ellos.
+Describe y representa con modelos, la formación de eclipses
+solares y lunares, en los que considera los movimientos de la Tierra y la Luna con respecto al Sol,
+los tamaños de los cuerpos celestes, las distancias a las que se
+encuentran, las propiedades de
+la luz, en particular su propagación rectilínea, así como el punto
+de referencia del observador.
+Reconoce que hay diversas maneras de explicar los fenómenos
+naturales, al recuperar narra­
+ciones y descripciones desde
+otras perspectivas culturales,
+alrededor de las causas y consecuencias de la formación de
+eclipses.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+47
+
+Cada uno de los siguientes contenidos de matemáticas, se debe abordar en articulación con
+los contenidos de ciencias naturales, de acuerdo con el contexto y después en integración con otros
+campos formativos, de manera que no se vean aislados y con ello se fragmenten los aprendizajes.
+
+Contenidos
+Estudio de los
+números.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Expresa oralmente la sucesión numérica hasta cuatro cifras, en español y hasta donde sea posible,
+en su lengua materna, de manera
+ascendente y descendente a partir
+de un número natural dado.
+
+Expresa oralmente la sucesión
+numérica hasta cinco cifras, en español y hasta donde sea posible,
+en su lengua materna, de manera
+ascendente y descendente a partir
+de un número natural dado.
+
+Identifica y usa los números ordinales, en español y en su lengua
+materna para ordenar objetos o
+para indicar el lugar que ocupan
+dentro de una colección de hasta
+diez elementos.
+
+Identifica y usa los números ordinales, en español y en su lengua
+materna para ordenar objetos, o
+para indicar el lugar que ocupan
+dentro de una colección de hasta
+veinte elementos.
+
+A través de situaciones cotidianas
+cuenta, representa de diferentes
+formas, interpreta, ordena, lee
+y escribe números naturales de
+hasta cuatro cifras; identifica regularidades en los números que
+representan decenas, centenas y
+millares.
+
+A través de situaciones cotidianas
+y de diversos contextos, cuenta,
+representa de diferentes formas,
+interpreta, ordena, lee y escribe
+números naturales de hasta cinco
+cifras; identifica regularidades en
+los números.
+
+Representa, con apoyo de material concreto y modelos gráficos,
+fracciones: medios, cuartos, octavos, dieciseisavos, para expresar
+el resultado de mediciones y repartos en situaciones vinculadas a
+su contexto.
+Identifica la unidad de referencia
+en representaciones de medios,
+cuartos, octavos, dieciseisavos
+que expresan el resultado de mediciones y repartos.
+Propone expresiones aditivas
+equivalentes de medios, cuartos,
+octavos o dieciseisavos; también
+compara fracciones (con igual numerador o igual denominador)
+
+48
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+A partir de situaciones vinculadas
+a diferentes contextos, representa, interpreta, lee, escribe y
+ordena números decimales hasta
+centésimos en notación decimal y
+con letras apoyándose en modelos
+gráficos; comprende la equivalencia entre décimos, centésimos y la
+unidad.
+Representa, con el apoyo de material concreto y modelos gráficos,
+fracciones: tercios, quintos, sextos,
+novenos y décimos, para expresar
+el resultado de mediciones y repartos en diversos contextos.
+Propone expresiones aditivas
+equivalentes de tercios, quintos,
+sextos, novenos y décimos;
+
+Saberes y Pensamiento Científico
+
+Contenidos
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+utilizando los signos > (mayor
+que), < (menor que) o = (igual).
+Conoce y usa las fracciones 1/10
+y 1/100 con el apoyo del metro
+graduado.
+
+Suma y resta, su
+relación como operaciones inversas.
+
+Resuelve situaciones problemáticas vinculadas a su contexto que
+implican sumas de números naturales de hasta tres cifras utilizando
+el algoritmo convencional.
+Resuelve situaciones problemáticas vinculadas a su contexto que
+implican restas de números naturales de hasta tres cifras utilizando
+agrupamientos y el algoritmo
+convencional.
+Utiliza, explica y comprueba sus
+estrategias para calcular mentalmente sumas o restas de números
+naturales de hasta tres cifras.
+Resuelve problemas de suma o
+resta vinculados a su contexto,
+que impliquen el uso de fracciones (medios, cuartos, octavos,
+dieciseisavos), con el apoyo de
+material concreto o representaciones gráficas.
+
+también compara fracciones (con
+igual numerador o igual denominador) utilizando los signos > (mayor que), < (menor que) o = (igual).
+Identifica y representa la unidad
+de referencia, a partir de una fracción dada de esta en la resolución
+de situaciones problemáticas.
+
+Resuelve situaciones problemáticas vinculadas a su contexto que
+implican sumas o restas de números naturales de hasta cuatro
+cifras utilizando los algoritmos
+convencionales.
+Resuelve situaciones problemáticas vinculadas a su contexto que
+implican sumas o restas de dos
+números decimales hasta centésimos, con apoyo de material concreto y representaciones gráficas.
+Resuelve situaciones problemáticas que implican sumas o restas
+de fracciones con diferente denominador (tercios, quintos, sextos,
+novenos y décimos) vinculados a
+su contexto, mediante diversos
+procedimientos, en particular, la
+equivalencia.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+49
+
+Contenidos
+Multiplicación y
+división, su relación
+como operaciones
+inversas.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Resuelve multiplicaciones cuyo
+producto es un número natural de
+tres cifras, mediante diversos procedimientos (suma de multiplicaciones parciales, multiplicaciones
+por 10, 20, 30, entre otros).
+
+Resuelve situaciones problemáticas vinculadas a su contexto
+que implican multiplicaciones de
+números naturales de hasta tres
+por dos cifras, a partir de diversas
+descomposiciones aditivas y el
+algoritmo convencional.
+
+Resuelve situaciones problemáticas vinculadas a su contexto
+que implican divisiones (reparto y
+agrupamiento), mediante diversos
+procedimientos, en particular con
+la multiplicación; representa la
+división como: a ÷ b = c.
+Construye y usa un repertorio
+multiplicativo de factores de una
+cifra, para resolver multiplicaciones y divisiones (cuántas veces
+está contenido el divisor en el
+dividendo).
+Utiliza, explica y comprueba sus
+estrategias para calcular mentalmente productos de números
+naturales de una cifra.
+
+Resuelve situaciones problemáticas vinculadas a su contexto que
+impliquen el uso de un algoritmo
+para dividir números naturales de
+hasta tres cifras entre un número
+de una o dos cifras; reconoce al
+cociente y al residuo como resultado de una división.
+Utiliza, explica y comprueba sus
+estrategias para calcular mentalmente el doble o el triple de un
+número natural de dos cifras y la
+mitad de un número natural par
+de dos cifras.
+
+Cuerpos
+geométricos y sus
+características.
+
+Identifica las figuras geométricas
+que componen diversos objetos
+(edificios, casas, cajas, muebles, y
+cuerpos geométricos); construye
+prismas rectos a partir de reconocer la configuración de cuadrados
+y rectángulos que lo componen.
+
+Reconoce y describe las características de distintos prismas
+rectos (números de vértices y
+aristas, número y formas de
+caras); reconoce los desarrollos
+planos que permiten construirlos, en particular el cubo.
+
+Figuras geométricas y sus
+características.
+
+A partir de retículas de triángulos,
+cuadrados o puntos, construye,
+analiza y clasifica figuras geométricas a partir de sus lados y su
+simetría, en particular a los triángulos; explica los criterios utilizados para la clasificación.
+
+Con el apoyo de instrumentos
+geométricos, construye, analiza y
+clasifica cuadriláteros a partir de
+sus lados, ángulos y diagonales;
+explica los criterios utilizados para
+la clasificación.
+
+50
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+Contenidos
+Medición de
+longitud, masa y
+capacidad.
+
+Procesos de desarrollo de
+aprendizaje
+
+Procesos de desarrollo de
+aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Resuelve situaciones problemáticas vinculadas a su contexto que
+impliquen, medición, estimación
+y comparación, de longitudes,
+masas y capacidades, con el uso
+del metro, kilogramo, litro, medios
+y cuartos de estas unidades; en el
+caso de la longitud, el decímetro
+y centímetro.
+
+Cálculo de perímetro y área.
+
+Medición del
+tiempo.
+
+Organización e
+interpretación de
+datos.
+
+Distingue entre contorno y superficie de caras de objetos de su
+entorno y de figuras y cuerpos
+geométricos; reconoce al perímetro como la suma de las longitudes de sus lados y área como la
+medida de la superficie; estima
+y compara áreas de manera
+directa, con unidades no convencionales y con retículas de
+cuadrados.
+
+Lee relojes de manecillas y digitales; compara y ordena la duración de diferentes actividades
+cotidianas o acontecimientos de
+la comunidad, usando la hora,
+media hora, cuarto de hora y los
+minutos.
+
+Resuelve situaciones problemáticas que implican el uso de equivalencias entre diferentes escalas de
+tiempo: día, hora, minuto y segundo; reconoce al segundo como
+unidad básica de tiempo.
+
+Recolecta, organiza, representa e
+interpreta datos en tablas de frecuencias o pictogramas para responder preguntas de su interés.
+
+Interpreta tablas de frecuencias
+y gráficas de barras, y reconoce
+la moda de un conjunto de datos
+para responder preguntas.
+
+Comprende y utiliza expresiones
+que indican temporalidad
+como quincena, bimestre, semestre, novenario, lustro, quinquenio,
+siglo, milenio, decenio, sexenio.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Saberes y Pensamiento Científico
+
+51
+
+Ética, Naturaleza y Sociedades
+Este campo aborda la relación del ser humano con la sociedad y la naturaleza desde
+la comprensión crítica de los procesos sociales, políticos, naturales y culturales en diversas comunidades situadas histórica y geográficamente; ofreciendo experiencias de
+aprendizaje para la construcción de una postura ética que impulse el desarrollo de una
+ciudadanía participativa, comunitaria, responsable y democrática.
+De igual manera, el campo formativo se orienta a que niñas, niños y adolescentes
+entiendan y expliquen las relaciones sociales y culturales de las que forman parte y que
+constituyen su entorno, las describan, las analicen y las interpreten aprovechando diversas formas de observación y registro, estableciendo nexos con ámbitos más amplios
+de pertenencia como su región, el país, América Latina y el mundo.
+El campo enfatiza el reconocimiento y respeto a la dignidad y los derechos de todas
+las personas, independientemente de su origen étnico o nacional, el género, la edad,
+las distintas capacidades, la condición socioeconómica, las condiciones de salud, la religión, las opiniones, las identidades y orientaciones sexuales, el estado civil o cualquier
+otra manifestación de las diversidades, todas igualmente legítimas. Esto supone además que niñas, niños y adolescentes se responsabilicen sobre el impacto de sus acciones en los ámbitos personal, social y natural y contribuyan al bienestar común.
+Este campo plantea el aprendizaje de algunos aspectos sobre la crisis ambiental, las
+relaciones entre culturas, en especial las que definen constitucionalmente el carácter
+intercultural de la nación mexicana, esto es los pueblos indígenas y afromexicanos; la
+igualdad de género; los derechos de las niñas, niños y adolescentes y promueve los
+valores asociados a estos aprendizajes, lo cual implica favorecer la reflexión en torno
+a nociones de libertad y responsabilidad, así como la construcción de saberes, conocimientos y valores que les permitan el desarrollo y fortalecimiento de su autonomía e
+identidad personal y comunitaria.
+
+Finalidades del Campo
+Este campo está orientado a que niñas, niños y adolescentes adquieran y desarrollen
+de manera gradual, razonada, vivencial y consciente:
+■ Sentido de pertenencia e identidad personal y colectiva, el cual inicia en el contexto familiar con la lengua, las costumbres, las concepciones del mundo y los
+estilos de vida que se comparten, y que se amplían al entorno local, nacional,
+regional y mundial.
+■ Reconocimiento de las diversas sociedades y culturas para ejercer el pensamiento crítico en torno a sus historias, costumbres, tradiciones, saberes y formas de
+convivir, y de esta manera, dar significado y valor a su propia cultura y otras.
+■ Convicciones, principios éticos y valores democráticos como el respeto, la libertad, la justicia, la honestidad, la responsabilidad, la reciprocidad y la empatía,
+que les sirvan de guía para prácticas personales y colectivas, así como para
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+53
+
+reflexionar y hacer juicios críticos, tomar decisiones, participar y relacionarse
+de forma positiva y pacífica con las demás personas.
+■ Respeto y protección de los derechos humanos conforme avancen en su trayecto educativo y de vida, y conozcan su importancia para la organización de
+la vida en sociedad, aprendan a defenderlos ante situaciones de desigualdad
+e injusticia, así como a ejercerlos de manera informada y pacífica; lo que supone exigir su cumplimiento para sí y para todas las personas, respetando
+todas las diversidades.
+■ Responsabilidad en el cuidado y conservación de la naturaleza a partir de la
+concepción de que todas las personas forman parte de ella, y asuman compromisos de bajo impacto ambiental y de sustentabilidad para garantizar el
+derecho de todas las personas y seres vivos, a un ambiente sano en el presente
+y futuro.
+■ Desarrollo de las conciencias histórica y geográfica basadas en el análisis de las
+transformaciones sociales, naturales, culturales, económicas y políticas ocurridas en su localidad, el país y el mundo en tiempos y espacios determinados
+para que comprendan que el presente es el resultado de las decisiones y acciones de las sociedades del pasado, y asimismo que el futuro depende de las
+decisiones y acciones actuales.
+
+Especificidades del Campo formativo para la Fase 4
+En esta Fase, se pretende que niñas y niños identifiquen y analicen críticamente sus relaciones personales, familiares, comunitarias, así como las de otras sociedades, con los
+componentes vivos y no vivos de su entorno y de los ecosistemas que conocen, tanto en
+su comunidad, en su estado, como en México, desde una perspectiva ética, histórica y
+geográfica. Asimismo, se busca que identifiquen que las personas de diversas culturas
+interactuamos de diferente manera con los ecosistemas y los transformamos a través
+del tiempo, distinguiendo las formas en que las mujeres, los pueblos originarios, afromexicanos, u otras culturas de su entidad o país, coexisten de manera más armónica
+con la naturaleza.
+Así pues, niñas y niños comprenderán las características de los ecosistemas y las
+regiones naturales, su función, su dinámica y cómo es que contribuyen a sustentar
+la vida en la Tierra; que los seres humanos, como los ecosistemas, somos parte de la
+naturaleza; construyen juicios éticos acerca de las situaciones culturales que los afectan y de cómo la satisfacción de las necesidades humanas y las de otros seres vivos,
+depende de establecer relaciones respetuosas hacia la naturaleza y con bajo impacto
+para los ecosistemas y la sociedad. Otro punto importante en esta fase es propiciar que
+niñas y niños, reflexionen sobre la necesidad de comprometerse a respetar los ecosistemas, actuar con reciprocidad, cuidarlos y contribuir en su preservación y regeneración,
+mediante acciones sustentables colectivas y comunitarias, que les permitan proponer
+alternativas que contribuyan a prevenir el deterioro de los ecosistemas y los riesgos de
+desastres, desde su ámbito de participación y responsabilidad.
+
+54
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+Se espera que niñas y niños construyan, conforme a sus propios ritmos de aprendizaje, una visión crítica, informada e integral de la realidad, en la que involucren sus
+propias experiencias, saberes, conocimientos y expectativas de vida. Se propicia que
+se reconozcan como seres sociales e históricos, al analizar transformaciones ocurridas
+en la comunidad, la entidad y el país en algunos momentos históricos, iniciando con
+el reconocimiento de los pueblos originarios que habitaban lo que hoy es el territorio
+nacional, antes de la invasión y colonización española y los procesos vividos en el periodo del denominado México colonial. Así como, la contribución histórica de diversos
+pueblos y grupos sociales en la conformación política, social y cultural de nuestro país
+y territorio, destacando la aportación de pueblos originarios y población afromexicana, entre otros sectores no visibilizados en la historia nacional. Se busca que, al analizar
+acontecimientos y procesos pasados o presentes de su comunidad, entidad y del país,
+identifiquen causas, consecuencias, cambios y permanencias. También se promueve
+el desarrollo de las habilidades cartográficas para ubicar, interpretar y representar el
+espacio de la comunidad, la región donde se vive y el territorio nacional, lo que incluye
+la superficie marítima.
+Se hace énfasis en que niñas y niños se reconozcan como titulares de derecho, lo que
+implica conocer cuáles son sus derechos, saber que su ejercicio no está condicionado,
+identificar cómo los practican en la vida cotidiana, realizar compromisos para favorecer
+su ejercicio y asumir algunas responsabilidades.
+Asimismo, niñas y niños comprenderán que forman parte de un país integrado por
+personas que tienen la misma dignidad y derechos, y que todas y todos merecen respeto.
+De igual forma, se pone especial atención en el derecho de niñas y niños a ser protegidos ante situaciones que representan riesgo para su dignidad e integridad física y mental. A través de la identificación de situaciones en las que no se respetan los derechos de
+todas las personas, se analizarán críticamente sus causas, para proponer alternativas
+que favorezcan la justicia y la equidad.
+En esta Fase, niñas y niños adquieren las bases de una ciudadanía activa, al reconocer que el conflicto y las discrepancias son parte de las relaciones entre personas y
+grupos, identificando sus causas para resolverlas mediante el diálogo, la comunicación
+y la empatía, para consensuar acuerdos y reglas que contribuyan a generar espacios
+de convivencia sin violencia, conforme a los principios de igualdad, equidad, justicia
+y responsabilidad; para que muestren respeto a la dignidad, diversidad y derechos
+de las personas, así como a los diferentes colectivos y pueblos que conforman el país:
+indígenas, campesinos, afromexicanos, migrantes, LGBTTTIQ+, entre otros.
+Finalmente, niñas y niños comprenderán las desigualdades por diferencias de género,
+y reflexionarán sobre acciones en favor de la igualdad, basadas en el reconocimiento y el
+respeto de los derechos de todas las personas; y, a partir de identificar que existen formas de gobierno que se han transformado a través del tiempo, analizarán los cambios y
+permanencias en la elección de nuestras autoridades de gobierno.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+55
+
+Contenidos y Procesos de desarrollo de aprendizaje
+del Campo formativo
+Contenidos
+Representaciones
+cartográficas de
+la localidad y/o
+comunidad; su
+ubicación dentro
+de la entidad y del
+país, con relación
+al conocimiento,
+función y cuidados
+de los ecosistemas
+como sustento de
+la vida.
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Elabora representaciones cartográficas de la localidad o pueblo
+donde vive, considerando los
+puntos cardinales dentro de la
+entidad.
+
+Elabora representaciones cartográficas de la entidad y el territorio nacional, considerando los
+puntos cardinales.
+
+Indaga sobre los ecosistemas locales y sus características, y
+los concibe como espacios vivos
+y complejos de la naturaleza.
+Comprende las relaciones e interdependencias de sus componentes, como sustento de la vida en
+la Tierra y de los seres vivos que la
+habitamos.
+Reflexiona situaciones de riesgo o
+amenazas a la preservación de los
+ecosistemas, y sus posibles causas
+locales.
+
+Valoración de los
+ecosistemas:
+características del
+territorio como espacio de vida y las
+interacciones de la
+comunidad con los
+ecosistemas, para
+su preservación
+responsable
+y sustentable.
+
+56
+
+Indaga sobre los cambios en los
+componentes del ecosistema (suelo,
+agua, aire y seres vivos, entre otros),
+por causas físicas o sociales.
+Comprende que las personas de
+distintas culturas interactúan
+de diferente manera con los ecosistemas, distinguiendo las formas
+de trabajo en que las mujeres y
+las personas de los pueblos originarios, afrodescendientes y otras
+culturas de su entidad o país, conviven de manera más armónica
+con los ecosistemas, protegiéndolos y preservándolos.
+
+Conoce cómo se puede contribuir
+a preservar los ecosistemas, así
+como sobre la importancia del
+respeto, responsabilidad y colaboración en su cuidado y aprovechamiento sustentable, a través
+del tiempo, con equidad y justicia
+social.
+
+Valora la importancia del respeto
+y colaboración en su cuidado y
+aprovechamiento sustentable, con
+equidad y justicia social.
+
+Representa cartográficamente las
+características del territorio de su
+comunidad, como espacio de vida.
+
+Representa la visión de su comunidad respecto a su relación con
+la naturaleza y las tradiciones
+culturales construidas, a partir de
+su interacción con los ecosistemas
+del territorio.
+
+Indaga las interacciones de la comunidad con los ecosistemas del
+territorio, reconociendo: rasgos
+físicos, altitud, biodiversidad local
+(tipo de animales y plantas), tipos
+de suelo, tipos de cultivos, aire,
+agua (de dónde llega el agua que
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Propone acciones para contribuir
+en la preservación de los ecosistemas, de manera personal y
+comunitaria, desde el trabajo y
+en la convivencia cotidiana de la
+comunidad, el barrio, el pueblo o
+la ciudad.
+
+Analiza críticamente otras formas
+de interacción de las sociedades
+con la naturaleza, que afectan los
+sistemas de vida en su territorio y
+
+Ética, Naturaleza y Sociedades
+
+Contenidos
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+toman en su comunidad, manantiales, ríos, lagunas, barrancas).
+
+en su comunidad, reconociendo
+que la vida humana y la de otros
+seres vivos depende de que se establezcan prácticas que reduzcan
+el impacto negativo, no sólo en
+la naturaleza, sino también en la
+sociedad, tales como el consumo
+sustentable, el comercio justo o
+economía solidaria, la agroecología y la protección del patrimonio
+biocultural.
+
+Analiza críticamente cómo interactúa con ellos cotidianamente, así
+como los beneficios que obtiene
+para su supervivencia junto con su
+comunidad (alimentación, salud,
+vestido, economía, bienestar), su
+buen manejo (valores culturales
+de bienestar y conservación del
+territorio y sus ecosistemas en
+la vida cotidiana), su manejo inadecuado (valores culturales que
+degradan el territorio, sus ecosistemas, la vida, la salud y la tradición cultural de la comunidad),
+y evalúa los impactos positivos y
+negativos de sus interacciones
+y de la sociedad con la naturaleza.
+
+Dialoga sobre el derecho humano
+a un ambiente sano, adecuado
+para su desarrollo y bienestar y
+cómo es posible ejercerlo.
+
+Comprende la importancia de
+que las personas actuemos con
+responsabilidad, disminuyendo
+el deterioro de los ecosistemas, a
+partir de prácticas para la preservación de la vida y el bienestar de
+la comunidad.
+
+Interculturalidad
+y sustentabilidad:
+formas en las que
+los pueblos originarios y otras
+culturas del país
+se relacionan con
+la naturaleza para
+contribuir a reducir
+el impacto negativo de la humanidad en el medio
+natural y social,
+así como acciones
+colectivas para
+promover
+
+Reconoce y analiza otras cosmovisiones o formas de relación de
+la sociedad con la naturaleza de
+pueblos originarios, campesinos y
+de otras culturas del país, que han
+establecido patrones de uso de
+los ecosistemas, sustentados en
+valores que tienen como principio
+una relación de respeto, equilibrio
+y reciprocidad con los ecosistemas
+de la Tierra y los otros seres vivos,
+así como su contribución en un
+manejo responsable o sustentable de su riqueza natural y en su
+preservación.
+
+Indaga y analiza formas diversas
+en que las mujeres contribuyen en
+el cuidado y la preservación del
+ambiente y la salud, así como
+acciones sociales y políticas que
+se orientan a recuperar prácticas
+tradicionales que ayuden a reducir y a transformar el deterioro
+que ocasiona la cultura capitalista
+dominante en la naturaleza y la
+sociedad.
+Comprende la importancia de una
+alimentación saludable y revalora
+la cultura de la Milpa y el Maíz en
+México, desarrollando acciones
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+57
+
+Contenidos
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+el bienestar con
+respeto y protección, a fin de
+preservar la naturaleza y fortalecer la conciencia
+geográfica.
+
+Comprende que algunas de esas
+prácticas las puede desarrollar de
+manera personal y colectiva desde
+el ámbito escolar, reconociendo
+que con ello ayuda en el cuidado
+de la vida y de la Tierra, de sí
+mismo y de otras personas.
+
+colectivas colaborativas en su
+escuela, involucrando a la comunidad, para socializar sus beneficios
+en la alimentación nacional.
+
+Identifica que hay leyes que protegen los derechos humanos a la
+salud y a un medio ambiente sano
+para el desarrollo y bienestar.
+
+Cuidado de los
+ecosistemas para
+su regeneración,
+preservación
+responsable y
+sustentable.
+
+Reflexiona situaciones de riesgo o
+amenazas a la preservación de los
+ecosistemas, y sus posibles causas
+locales.
+Indaga y analiza cómo se puede
+contribuir a regenerar y preservar
+los ecosistemas, y argumenta la
+importancia de que las personas
+actuemos con responsabilidad y
+colaboración, disminuyendo el
+deterioro de los ecosistemas, a
+partir de prácticas para la preservación de la vida y el bienestar de
+la comunidad.
+
+Identifica cómo se ejerce el derecho humano a un ambiente sano y
+adecuado, para el desarrollo
+y bienestar planetario, y se compromete a respetar los ecosistemas, actuar con reciprocidad,
+cuidándolos y contribuyendo en
+su preservación, mediante acciones personales, colectivas y
+comunitarias críticas, para contribuir al consumo sustentable.
+Indaga y analiza formas diversas
+en que las mujeres de diversas
+culturas contribuyen en el cuidado, la regeneración y la preservación del ambiente y la salud, así
+como acciones sociales y políticas
+que se orientan a recuperar prácticas que ayuden a reducir el deterioro en la naturaleza.
+Construye juicios éticos y dialoga
+respecto de la importancia del respeto y colaboración en el cuidado y
+aprovechamiento sustentable de los
+ecosistemas, con equidad y justicia.
+Propone y lleva a la práctica acciones para contribuir en la regeneración y preservación de los
+ecosistemas, de manera personal
+y comunitaria en la convivencia
+cotidiana.
+Reconoce que muchas de las
+especies endémicas que se han
+ido perdiendo fueron producto
+de desarrollos históricos de largo
+tiempo; identifica la relación de
+esos procesos con la historia de
+las personas y los pueblos.
+
+58
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+Contenidos
+Acciones de prevención ante peligros o amenazas
+de fenómenos
+naturales y acciones humanas y la
+importancia de
+actuar y participar
+en la escuela, barrio, pueblo, comunidad, entidad
+y país; promover
+la cultura de prevención, autoprotección, empatía
+y solidaridad con
+las personas afectadas y el entorno
+socioambiental.
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Indaga en fuentes orales, bibliográficas, hemerográficas, y en
+medios digitales, desastres ocurridos en la localidad o en la entidad,
+localiza en mapas los lugares
+en los que ocurrieron los desastres y los relaciona con los
+fenómenos naturales, muestra
+empatía y solidaridad con las personas afectadas.
+
+Indaga en fuentes orales, bibliográficas, hemerográficas, digitales
+algunos desastres asociados a fenómenos naturales y/o generados
+por acciones humanas ocurridos
+en la entidad y el país, a lo largo de
+la historia; utiliza entrevistas generacionales como recursos para
+obtener los testimonios.
+
+Participa en acciones individuales
+y colectivas, en la escuela, barrio,
+pueblo, comunidad y entidad
+como parte de una cultura de prevención y autoprotección.
+Identifica zonas de seguridad o albergues ante peligros o amenazas
+en la localidad donde vive, asociados a fenómenos naturales como:
+sismos, huracanes, deslaves, inundaciones, tsunamis e incendios,
+entre otros. Elabora croquis y mapas para localizarlos y describe las
+rutas para llegar a ellos.
+Comprende la necesidad de participar en acciones individuales
+y colectivas, encaminadas a la
+prevención de riesgos, al auto–
+cuidado y cuidado de la familia,
+y otras personas en la casa, la
+escuela y la comunidad, como la
+implementación de una mochila
+de emergencia.
+
+Caracterización
+y localización del
+territorio donde
+vive, la entidad y
+México; identificación de los tipos
+de suelo, clima,
+vegetación, fauna,
+cuerpos de agua
+
+Identifica las características de
+la comunidad y la entidad como
+suelo, clima, animales y plantas,
+cuerpos de agua, relieve; las representa en dibujos, croquis y
+mapas.
+Localiza y reconoce la forma, extensión y límites territoriales,
+
+Elabora mapas para localizar los
+lugares en los que ocurrieron
+los desastres y los relaciona
+con los fenómenos naturales o con
+acciones humanas. Identifica qué
+desastres han ocurrido en algunas
+entidades que no se presentan en
+otras y argumenta acerca de las
+causas.
+Indaga sobre planes y protocolos
+de emergencia, (sismos, terremotos, huracanes, inundaciones,
+tsunamis, entre otros); participa
+acciones colectivas encaminadas
+a una cultura de prevención y autoprotección y muestra empatía
+por las personas afectadas por
+un desastre para proponer acciones de ayuda solidaria.
+
+Localiza y reconoce características
+del territorio de México, como
+suelo, clima, regiones naturales,
+relieve, cuerpos de agua, extensión, límites terrestres, marítimos
+y aéreos, así como las entidades
+federativas que lo integran.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+59
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+(ríos, lagos, cenotes,
+humedales), así
+como las formas
+culturales que se
+desarrollan, vinculadas al patrimonio
+biocultural de la
+entidad y región;
+reconocimiento de
+su organización
+política y cambios
+históricos, hasta
+su conformación
+actual.
+
+la organización política de la comunidad y la entidad, como parte
+de México.
+
+Elabora representaciones cartográficas del territorio nacional y su
+diversidad natural.
+
+Indaga sobre los cambios en la
+conformación territorial, poblacional e histórica de la comunidad y
+la entidad.
+
+Indaga sobre los cambios en
+la conformación territorial de
+México, y reconoce pérdidas y
+anexiones territoriales, así como
+continuidades de pueblos originarios, más allá de las fronteras
+políticas actuales (comparaciones
+en imágenes y mapas).
+
+Composición sociocultural de la
+entidad federativa
+y de México, y su
+configuración a
+través de la historia como un
+país pluricultural,
+integrado por pueblos originarios,
+afromexicanos,
+migrantes y diversas comunidades
+con características
+y necesidades,
+quienes han luchado por el reconocimiento de la
+igualdad en dignidad y derechos.
+
+Dialoga acerca de las aportaciones
+de pueblos originarios, afromexicanos, migrantes y diversas comunidades, entre otros, al patrimonio
+cultural y a la memoria colectiva
+de la comunidad y entidad.
+
+Contenidos
+
+60
+
+Identifica formas culturales que
+se desarrollan vinculadas al patrimonio biocultural de la entidad
+y región tales como la milpa y la
+chinampa.
+
+Identifica formas de pensar, hablar, convivir, vestir, celebrar y
+compartir en su comunidad y la
+entidad.
+Reconoce que las leyes garantizan
+el derecho a vivir con igualdad y
+dignidad, así como a expresar sus
+prácticas culturales y lingüísticas,
+y a respetar y valorar las prácticas
+de otras personas o grupos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Analiza la conformación pluricultural y plurilingüe de México que
+se expresa en pueblos originarios,
+afromexicanos, migrantes y diversas comunidades que habitan
+México, que tienen prácticas
+culturales e historias que se manifiestan en formas de pensar,
+hablar, convivir, vestir, celebrar y
+compartir, apreciando sus aportaciones al patrimonio cultural del
+país y reconociendo los problemas
+y dificultades que enfrentan.
+Representa en mapas la ubicación
+de los pueblos originarios y afromexicanos que habitan en su entidad y el territorio nacional.
+Reconoce que en la Constitución
+Política de los Estados Unidos
+Mexicanos se garantiza el derecho
+a vivir con igualdad y dignidad, así
+como a expresar prácticas culturales y lingüísticas de los pueblos
+originarios y afromexicanos, y a
+respetar y valorar las prácticas de
+diversos grupos y personas.
+
+Ética, Naturaleza y Sociedades
+
+Contenidos
+La vida cotidiana
+antes de la primera
+invasión europea
+y en el México
+colonial: personas
+y grupos sociales
+que incidieron en
+la historia de la comunidad, entidad
+y el país, para reconocer sus aportes en lo social,
+cultural, político y
+económico.
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Indaga en fuentes primarias o
+secundarias bibliográficas, orales, hemerográficas, digitales,
+iconográficas, materiales (objetos
+de uso cotidiano, edificaciones),
+sobre pueblos originarios que
+habitaron lo que hoy es el territorio nacional, antes de la primera
+invasión europea, por ejemplo,
+Olmecas, Teotihuacanos, Mayas,
+Zapotecas, Toltecas, Mixtecas y
+Mexicas. Si es el caso, identifica los
+pueblos originarios que habitaban
+el territorio que hoy ocupa su entidad antes de la primera invasión
+europea.
+
+Indaga en fuentes primarias o
+secundarias bibliográficas, hemerográficas, digitales, orales sobre
+la invasión española, y analiza
+algunos de sus impactos en las
+poblaciones originarias.
+
+Reconoce la ubicación de pueblos
+originarios en mapas, códices y
+narraciones, analiza algunos aspectos de la vida cotidiana: ¿cómo
+vivían?, ¿cómo eran sus casas y
+a qué se dedicaban?, ¿cómo se
+alimentaban y vestían?, ¿cómo se
+organizaban y trabajaban en la
+familia y la comunidad?, ¿cuáles
+eran sus creencias?, ¿cómo se
+divertían?, ¿cómo educaban a sus
+hijas e hijos?, ¿cuáles eran las tareas de las mujeres?
+Identifica personas y grupos relevantes que incidieron en la historia de los pueblos que habitaban
+el territorio que hoy conocemos
+como México, antes de la primera
+invasión europea.
+
+Identifica, en el período de la
+conquista, cómo contribuyeron
+los diversos grupos sociales y
+cuáles fueron los que tuvieron
+más poder y mejores condiciones,
+en contraste a la situación de
+injusticia y dialoga acerca de la
+desigualdad que vivieron mujeres, hombres, niñas y niños de los
+pueblos originarios, afrodescendientes y personas esclavizadas.
+Reflexiona de manera intercultural crítica sobre el 12 de
+octubre para desmontar la idea
+del “encuentro de dos mundos
+o día de la raza” y la resistencia de los pueblos originarios y
+afrodescendientes.
+Indaga en diversas fuentes bibliográficas, hemerográficas o
+digitales sobre el México colonial,
+¿cómo era la vida cotidiana?, ¿qué
+eran las castas y qué implicaciones
+tuvieron en la vida de las personas?, ¿en qué trabajaban?, ¿cómo
+educaban a sus hijas e hijos?, ¿qué
+papel tuvo la religión en la vida de
+las personas y los pueblos?
+Relaciona las leyes de castas del
+periodo colonial como organización social que ayuda a explicar
+el racismo mexicano como fenómeno histórico y contemporáneo.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+61
+
+Contenidos
+Origen histórico de
+algunos símbolos
+(territorio, lugares
+sagrados, figuras y
+colores, banderas,
+escudos, himnos,
+entre otros), que
+identifican a las
+comunidades, pueblos, la entidad y a
+México como país,
+en tanto referentes
+que dan sentido
+de identidad y
+pertenencia.
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Indaga acerca de los símbolos de
+identidad y pertenencia en la comunidad, localidad o pueblo y en
+la entidad federativa, para comprender que la identidad nacional
+es un conjunto de identidades
+plurales, que pueden convivir respetuosamente, en la medida que
+exista igualdad de condiciones
+sociales, culturales, educativas,
+entre otras.
+
+Reconoce los símbolos nacionales
+que identifican a México como
+país (himno, escudo y bandera);
+indaga sobre su significado, cómo
+y dónde surgieron, los elementos
+que los conforman, así como su
+transformación histórica, para
+comprender cómo ayudaron
+a construir una identidad
+nacional.
+
+Dialoga acerca de la importancia
+de los símbolos para las comunidades, la entidad y para México,
+y reconoce la forma en que se
+representan.
+
+Dialoga sobre la importancia que
+tiene reconocer a la diversidad de
+símbolos, como el territorio, los lugares sagrados, las banderas, los
+himnos, entre otros, para respetar
+la diversidad de identidades socioculturales que conforman al país.
+Analiza de manera crítica posibles
+efectos negativos de los nacionalismos en las sociedades multiculturales como México.
+
+El derecho a la
+protección de la
+integridad propia
+y la de todas las
+personas, reconociendo situaciones
+de riesgo, como el
+maltrato, el abuso,
+bullying o la explotación de tipo
+sexual y la importancia de su prevención, al conocer
+las instancias para
+solicitar ayuda y/o
+denunciar.
+
+62
+
+Identifica situaciones y personas
+que representan un riesgo para
+la protección de la dignidad y la
+integridad física y mental de niñas
+y niños.
+Reconoce que tiene derecho a la
+protección ante situaciones que
+ponen en riesgo su integridad
+como maltrato, abuso o explotación de tipo sexual y expresa lo
+que siente al respecto.
+Propone acciones individuales y
+colectivas para ejercer su derecho a la protección y minimizar
+situaciones de riesgo en el aula, la
+escuela y la comunidad.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Dialoga acerca del derecho a que
+la niñez sea protegida contra toda
+forma de maltrato, abuso o explotación de tipo sexual.
+Propone y practica algunas medidas preventivas ante situaciones
+o personas que representan un
+riesgo para la protección de la
+integridad.
+Analiza situaciones de maltrato,
+abuso o explotación de tipo sexual, que puedan ocurrir en el
+aula, la escuela y la comunidad, y
+propone acciones para su denuncia y erradicación.
+
+Ética, Naturaleza y Sociedades
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Experiencias de organización comunitaria del pasado
+y del presente, y
+las acciones de
+colaboración, reciprocidad, cuidado
+mutuo y trabajo
+por el bienestar de
+la escuela, barrio,
+comunidad, pueblo
+y colectivo social,
+para configurar
+ambientes seguros
+e igualitarios, con
+equidad y justicia.
+
+Indaga en fuentes orales o escritas acerca de formas de organización participativa, en el pasado
+y el presente de su comunidad,
+e identifica la importancia de la
+colaboración, la reciprocidad, el
+respeto y el cuidado mutuo.
+
+Analiza críticamente el papel que
+juegan los valores y actitudes,
+así como las capacidades y responsabilidades de las personas
+en los procesos de organización
+participativa, para la conformación
+de ambientes igualitarios que permitan contribuir al bienestar de la
+comunidad.
+
+Situaciones de
+discriminación en
+el aula, la escuela,
+la comunidad, la
+entidad y el país,
+sobre la diversidad
+de género, cultural,
+étnica, lingüística,
+social, así como sobre rasgos físicos,
+desarrollo cognitivo y barreras de
+aprendizaje, y participación en ámbitos de convivencia,
+para la promoción
+de ambientes igualitarios, de respeto
+a la dignidad humana y a los derechos de todas las
+personas.
+
+Analiza e identifica en el aula, la
+escuela, la comunidad y la entidad, situaciones de discriminación
+y exclusión por motivo de diversidad de género, física, sensorial,
+intelectual, mental, cultural, étnica, lingüística o social.
+
+Contenidos
+
+Propone para su aplicación en la
+escuela formas de organización
+participativa, que contribuyan
+al bienestar de la colectividad
+escolar.
+
+Promueve en su entorno próximo
+de convivencia, acciones de trato
+igualitario, de respeto a la dignidad humana, a la diversidad
+cultural y a los derechos de niñas
+y niños.
+
+Conoce y analiza críticamente
+situaciones de discriminación y
+exclusión por género, física, sensorial, intelectual, mental, cultural,
+étnica, lingüística o social.
+Analiza las causas de la discriminación y exclusión, y propone acciones para promover ambientes
+igualitarios, de respeto a la dignidad humana, a las diversidades y
+a los derechos de todas las personas, en la comunidad, entidad y
+en el país.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+63
+
+Contenidos
+Retos en el reconocimiento y ejercicio
+de los derechos
+humanos y la satisfacción de las necesidades básicas,
+físicas, sociales, de
+seguridad, emocionales y cognitivas
+de niñas, niños y
+adolescentes; así
+como situaciones
+injustas en el pasado y el presente,
+en las que no se
+respetan los derechos para satisfacer las necesidades
+básicas de todas
+las personas.
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Analiza las necesidades básicas:
+físicas, sociales, de seguridad,
+emocionales y cognitivas de
+niñas, niños y adolescentes, las
+relaciona con el ejercicio de sus
+derechos, comparte experiencias
+sobre cómo éstas son satisfechas
+en las familias y en la comunidad.
+
+Comprende y analiza críticamente
+sobre las condiciones de diversos
+grupos sociales del país, que en
+el presente y el pasado no han
+podido satisfacer sus necesidades
+básicas, cómo los distintos colectivos históricamente demandaron
+que sus necesidades fueran satisfechas y por el reconocimiento de
+sus derechos.
+
+Dialoga acerca de lo que ocurre
+cuando esas necesidades no son
+satisfechas, identifica a quiénes
+corresponde generar condiciones para que todas las personas
+satisfagan sus necesidades y garantizar que puedan ejercer sus
+derechos humanos.
+
+Dialoga y elabora conclusiones
+acerca de las causas por las que
+determinados grupos no han cubierto sus necesidades, y reconoce
+que esta situación es injusta.
+Propone alternativas para superar
+la desigualdad y favorecer la justicia, desde la comprensión de los
+derechos humanos, cuyo ejercicio
+no está condicionado y el Estado
+tiene la obligación a garantizarlos.
+Identifica a quiénes corresponde
+generar condiciones para que
+todas las personas satisfagan sus
+necesidades.
+
+La construcción
+colectiva de la paz:
+situaciones que
+generan diferencias y conflictos
+que afectan la convivencia entre las
+personas y grupos
+de pertenencia,
+causas y formas
+de resolverlo a
+través del diálogo,
+la comunicación
+y la empatía, para
+contribuir a la convivencia y la resolución de conflictos
+sin violencia.
+
+64
+
+Reconoce que la paz se construye
+al dialogar sobre tensiones surgidas por diferencias de intereses,
+puntos de vista, formas de vida y
+de organización, acceso a servicios, entre otros, que dan lugar a
+conflictos entre las personas con
+las que se convive, en los ámbitos
+escolar, con los pares, miembros
+de la familia y otras personas del
+entorno, e identifica las causas y
+formas de resolverlos sin violencia
+mediante la comunicación y la empatía sustentada en los derechos
+humanos.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Comprende que la paz es
+una construcción colectiva que
+demanda analizar críticamente
+las causas, desarrollo y consecuencias, de conflictos entre personas y/o grupos de pertenencia,
+y realiza propuestas para enfrentar las tensiones sin violencia, mediante la comunicación dialógica y
+la empatía.
+
+Ética, Naturaleza y Sociedades
+
+Contenidos
+Formas y procedimientos mediante
+las que se eligen
+a las autoridades
+de gobierno, y los
+cambios que han
+tenido a través del
+tiempo, en función del bienestar
+colectivo.
+
+Democracia en
+la vida cotidiana:
+construcción,
+cumplimiento y
+aplicación justa
+de acuerdos, normas y leyes que
+contribuyen a la
+protección de los
+derechos de todas las personas,
+individuales y colectivos, y a la convivencia conforme
+a los principios de
+igualdad, justicia y
+responsabilidad.
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Indaga y analiza sobre cuáles son
+las autoridades de gobierno de
+su comunidad, municipio y entidad, cómo se eligen, cuáles son
+sus funciones y cómo colaboran
+con las personas y comunidad,
+empleando diversas formas de
+organización local para contribuir
+al bienestar colectivo.
+
+Indaga cómo se designaron las
+autoridades que gobernaban en
+el México colonial, cuáles eran sus
+funciones, cuáles son las características de la monarquía, qué eran
+los ayuntamientos, las encomiendas y cuáles fueron sus funciones
+en la Nueva España.
+
+Indaga acerca de cómo se designaban o elegían las autoridades
+que gobernaban algunos pueblos que habitaban el territorio
+de México antes de la llegada de
+los españoles, así como cuáles
+eran sus funciones y cómo se relacionaban estas formas con una
+visión cultural diversa.
+
+Comprende que la democracia
+se ejerce en la vida cotidiana al
+participar en la construcción,
+el cumplimiento y la aplicación
+justa y honesta de los acuerdos
+y las normas, en los espacios de
+convivencia como la escuela y la
+familia.
+Dialoga acerca de la importancia
+de participar y contribuir a la protección de los derechos de todas
+las personas, conforme a los principios democráticos de igualdad,
+justicia y responsabilidad.
+
+Compara y analiza críticamente
+cómo se eligen actualmente las
+autoridades de gobierno en nuestro país, y nuestra comunidad y/o
+pueblo, bajo el régimen democrático y/o de asambleas comunitarias, qué son los ayuntamientos o
+alcaldías en la actualidad y cuáles
+son sus funciones, reconoce las
+formas tradicionales de organización que se emplean en su
+contexto.
+
+Comprende y argumenta sobre
+la importancia de la participación
+democrática en la construcción,
+el cumplimiento y la aplicación
+justa de acuerdos, normas y leyes en el ámbito de la escuela, la
+comunidad, el barrio, la colonia,
+la vecindad, el pueblo o la localidad, entre otros, para contribuir
+a la protección de los derechos
+humanos de todas las personas
+y colectivos, como los pueblos
+indígenas, afromexicanos, grupos
+LGBTTTIQ+, religiosos, migrantes, entre otros, así como a la
+sana convivencia, conforme a los
+principios democráticos que nos
+rigen.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Ética, Naturaleza y Sociedades
+
+65
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+La toma de decisiones ante situaciones cotidianas
+y de riesgos, con
+base en el cuidado
+de la dignidad de
+todas y todos, considerando posibles
+consecuencias
+de las acciones,
+para actuar con
+responsabilidad.
+
+Analiza críticamente y distingue
+situaciones cotidianas en las que
+se ejerce la capacidad para tomar
+decisiones, empleando los criterios de valoración de los riesgos
+del entorno.
+
+Analiza situaciones cotidianas para
+la toma de decisiones, con base en
+criterios que priorizan el cuidado
+de la dignidad propia, así como de
+otras personas y colectivos.
+
+Desigualdades
+por diferencias de
+género: causas y
+consecuencias en
+la vida cotidiana pasada y presente,
+para proponer
+acciones en favor
+de la igualdad,
+basadas en el reconocimiento y el
+respeto de los
+derechos de todas
+las personas.
+
+Analiza en la casa, la escuela y
+la comunidad desigualdades de
+género, así como sus causas y
+consecuencias.
+
+Contenidos
+
+66
+
+Dialoga y analiza posibles consecuencias de las acciones, para
+actuar con responsabilidad.
+
+Identifica casos en los que expresan desigualdades en el acceso
+a servicios educativos, de salud,
+recreación, deporte o cultura.
+Propone acciones en favor de la
+igualdad, en las que se respeten
+los derechos de todas las personas y colectivos con los que
+convive.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Comprende y valora los riesgos del
+entorno y las posibles consecuencias de las acciones, para actuar
+con responsabilidad.
+
+Analiza críticamente situaciones
+de desigualdad de género, en los
+ámbitos educativo, laboral, cultural o de participación política,
+comparando cómo ocurrían en el
+pasado y el presente.
+Argumenta en favor de la igualdad, con base en el reconocimiento
+y el respeto de la dignidad y los
+derechos de todas las personas.
+
+Ética, Naturaleza y Sociedades
+
+De lo Humano y lo Comunitario
+Este campo reconoce que el ser humano interactúa con su comunidad mediante un proceso dinámico y continuo de construcción personal y social, y de participación auténtica
+en un espacio donde toda persona en colectividad, desde sus primeros años, acceda a
+una vida digna, justa y solidaria, contribuyendo así al goce de un mayor bienestar.
+Por ello, su objeto de aprendizaje son experiencias cognitivas, motrices, socioafectivas y creativas que permitan a niñas, niños y adolescentes favorecer progresivamente la
+construcción de su identidad, el sentido de pertenencia a diversos grupos, la conciencia
+de interdependencia, la conexión emocional, y el compromiso ético para la satisfacción de
+necesidades humanas.
+Con base en lo anterior, se incorporan contenidos orientados a identificar, fortalecer y
+poner en práctica conocimientos, saberes y valores a partir de las experiencias individuales y colectivas, así como de las características del lugar en el que se encuentran. Están
+estrechamente relacionados a lo largo de la educación preescolar, primaria y secundaria,
+y se centran en el conocimiento de sí y de los demás; la comprensión consciente de la vida
+emocional y afectiva propia en su relación con la de otras y otros; el cuidado de la salud
+individual y comunitaria; el análisis crítico de situaciones y problemas sociales en relación
+con su vida cotidiana; la valoración y construcción de saberes e intervenciones en la satisfacción de necesidades.
+Este campo utiliza el análisis de situaciones reales para el desarrollo y enriquecimiento mutuo, impulsando la reciprocidad, la ayuda y el diálogo de saberes para valorar la
+diversidad. El propósito es que niñas, niños y adolescentes exploren, comprendan, reflexionen e intervengan, con base en sus posibilidades, en la prevención y atención de
+problemáticas asociadas a la vida saludable, la inclusión, la igualdad de género y la interculturalidad crítica en contextos inmediatos y futuros; a la vez que adquieran conciencia
+de que sus acciones influyen en el buen vivir.
+Lo humano y lo comunitario apunta a la construcción de aprendizajes en la perspectiva del proyecto de vida de niñas, niños y adolescentes para afrontar los retos que
+tienen en la familia, la escuela y la comunidad, lo que puede incidir positivamente en su
+confianza, seguridad, autonomía y en la posibilidad de resolver en lo individual y advertir
+en lo colectivo nuevos desafíos.
+
+Finalidades del Campo
+Este campo está orientado a que niñas, niños y adolescentes, de manera gradual, razonada, vivencial y consciente:
+■ Construyan su identidad personal mediante la exploración de gustos, intereses,
+necesidades, posibilidades, formas de entender e interactuar en diversos contextos sociales y naturales.
+■ Conciban la sexualidad como resultado de una construcción cultural conformada por distintas maneras de pensar, representar y entender el cuerpo en su relación con la igualdad de género.
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo Comunitario
+
+69
+
+■ Desarrollen sus potencialidades (afectivas, motrices, creativas, de interacción
+y solución de problemas), reconociendo, valorando y respetando las de otras
+personas.
+■ Fortalezcan capacidades perceptivo, socio y físico–motrices, y las que deriven
+en el desarrollo creativo de la motricidad en relación con el cuerpo como espacio de cuidado y afecto.
+■ Reflexionen y comprendan su vida emocional y afectiva, así como la de las demás personas, como elemento constitutivo de relaciones de convivencia y potencial bienestar.
+■ Promuevan ambientes de convivencia sana y pacífica entre quienes integran la
+comunidad educativa, identificando aquello que trastoque sus entornos.
+■ Experimenten la importancia de cuidar, mejorar y preservar la salud, el entorno
+natural y social, como una responsabilidad individual y colectiva que se presenta ante una vida caracterizada por la incertidumbre.
+■ Tomen decisiones orientadas a modificar comportamientos y situaciones que
+violenten su integridad físico–emocional y la de otras personas.
+■ Actúen en la resolución de situaciones y problemas presentes en distintos contextos, recurriendo a saberes, capacidades y habilidades que se generan a partir del diálogo familias–escuela–comunidad.
+■ Generen sentido de comunidad y fortalezcan el de pertenencia, y ello incida en
+su apreciación de la diversidad de identidades para que reconozcan aspectos
+que comparten con otras personas al participar en la consecución de logros, la
+apropiación de valores y el diseño de proyectos para el beneficio colectivo.
+
+Especificidades del Campo formativo para la Fase 4
+Durante el tercer y el cuarto grado, niñas y niños presentan avances en el desarrollo
+cognitivo, socioemocional, físico y cultural, que les permiten actuar con mayor independencia y conocimiento de la realidad, así como mostrar más facilidad para la convivencia y el reconocimiento hacia las demás personas; por lo tanto, los contenidos y el
+tratamiento didáctico se presentan con mayor complejidad y amplitud para esta Fase.
+La socialización es muy importante en esta etapa, por lo que las interacciones entre
+pares y la convivencia dan oportunidades a niñas y niños de desarrollar un juicio crítico
+basado en el pensamiento lógico para expresar soluciones ante los conflictos, tanto
+para fortalecer su proyecto de vida como para mejorar sus capacidades de corresponsabilidad en las prácticas socioculturales de su contexto y en el lugar donde ocurren los
+procesos educativos.
+En los espacios de socialización, niñas y niños construyen conocimientos, actitudes
+y valores, y adquieren saberes para asumir compromisos y responsabilidades que requieren del manejo de reglas y tareas específicas para el trabajo colaborativo. En este
+sentido, la comprensión del mundo emocional juega un papel determinante en el desarrollo humano, por ello, se busca que identifiquen en ellas y ellos, así como en otras
+personas, las características y funciones de las emociones que expresan.
+
+70
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo Comunitario
+
+Es importante considerar en esta Fase la implementación de actividades situadas, pues
+las emociones se fortalecen a partir de las
+interacciones con distintos actores en
+el ámbito familiar, escolar y comunitario, debido a que son fundamentales
+en el desarrollo integral de niñas
+y niños y de una sana relación
+interpersonal.
+De la misma forma que sucede
+con las emociones, en esta etapa
+niñas y niños son más conscientes
+de su cuerpo y los cambios que experimentan, por lo que se hace necesario enfocar algunas actividades
+al desarrollo del autoconocimiento y la
+construcción de la imagen corporal y a
+la comprensión de los cambios que tienen.
+El Campo aborda el cuidado de la salud y
+del medio ambiente, así como la prevención de
+riesgos en la comunidad; en este sentido es esencial propiciar el desarrollo de acciones que promuevan el
+bienestar en su contexto a través de la reflexión sobre las problemáticas socio ambientales tanto locales como globales. Este punto es relevante porque funciona para abordar
+lo comunitario con referencia a la relación humanidad–cultura–naturaleza y en el cual
+se puede analizar de forma crítica las tensiones entre distintas comunidades en torno
+a ello.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo Comunitario
+
+71
+
+Contenidos y Procesos de desarrollo de aprendizaje
+del Campo formativo
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+La comunidad
+como el espacio
+en el que se vive
+y se encuentra la
+escuela.
+
+Indaga acerca de ideas, conocimientos, prácticas culturales,
+formas de organización y acuerdos
+familiares, escolares y comunitarios, para compartir su importancia en la socialización.
+
+Reconoce ideas, conocimientos,
+prácticas culturales y formas de
+organización, para explicar el significado que tienen en su familia,
+escuela y comunidad.
+
+Las familias como
+espacio de protección, cuidado,
+afecto y sustento
+para el desarrollo
+personal.
+
+Identifica formas de convivencia y
+socialización en las familias, para
+distinguir formas de participación
+y colaboración.
+
+Reflexiona sobre el valor de la
+familia y de la aportación de sus
+integrantes, para favorecer su
+desarrollo personal y afectivo.
+
+Identifica los valores que posee
+y que han sido heredados de su
+familia, para fomentar cuidados
+afectivos.
+
+Describe los valores que distinguen a su familia, para entenderlos como elementos de desarrollo
+social y personal.
+
+Entendimiento mutuo en la escuela.
+
+Participa en distintas situaciones
+para acordar reglas en su familia,
+escuela y comunidad.
+
+Comparte ideas y experiencias sobre diferentes temas, para aprender la importancia de escuchar.
+
+Reflexiona sobre el seguimiento de
+reglas para expresar las semejanzas y diferencias.
+
+Conoce distintos puntos de vista,
+para favorecer el entendimiento
+y la negociación con las demás
+personas.
+
+Contenidos
+
+Expresa la importancia del entendimiento, para la convivencia pacífica.
+La escuela como
+espacio de convivencia, colaboración y aprendizaje.
+
+Participa en la organización del
+aula y en la generación de normas,
+para el uso y disfrute de los materiales de apoyo y otros recursos
+existentes en la escuela, como el
+patio, el jardín y las canchas deportivas, entre otros.
+Platica con docentes y compañeras
+o compañeros sobre la importancia de reconocer situaciones interpersonales, sociales y ambientales
+problemáticas en su contexto, y sobre la posibilidad de contribuir para
+el logro de un mayor bienestar
+personal y colectivo.
+
+72
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Participa en la toma de decisiones
+sobre el funcionamiento
+de la escuela, y la relación
+escuela–comunidad, para
+favorecer la colaboración.
+Propone alternativas que favorezcan la colaboración entre las personas que integran la escuela y su
+comunidad para enriquecer sus
+experiencias, saberes y
+conocimientos.
+
+De lo Humano y lo Comunitario
+
+Contenidos
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Formas de ser,
+pensar, actuar y
+relacionarse.
+
+Reconoce características que le
+hacen a una persona diferente y
+a la vez única, para favorecer la
+construcción de su identidad.
+
+Comparte los cambios que
+afronta en sus capacidades y las
+formas de ser, pensar, actuar y
+relacionarse para valorar la manera en que las demás personas
+inciden en la construcción de su
+identidad.
+
+Construcción del
+proyecto de vida.
+
+Reflexiona acerca de logros cotidianos, académicos y emocionales,
+así como los aspectos que inciden
+en estos y los retos que tiene, para
+valorar su nivel de independencia
+y replantear sus metas.
+
+Reconoce cambios en sus necesidades, intereses y logros, para
+ajustar metas y diseñar estrategias que permitan cumplirlas.
+
+Explora las influencias de su familia, comunidad y cultura en la
+historia personal, para visualizar
+oportunidades y dificultades a superar en el planteamiento y logro
+de metas.
+
+Reflexiona acerca de los factores
+culturales, sociales u otros presentes en la conformación de las
+ideas, preferencias, necesidades
+y circunstancias, para determinar
+aspectos que posibilitan o limitan
+el desarrollo personal y colectivo.
+
+Equidad de género
+en las familias,
+la escuela y la
+comunidad.
+
+Analiza prácticas equitativas que
+favorecen la convivencia en diversos contextos, como la distribución
+de las tareas y responsabilidades
+cotidianas para identificar y proponer mejores formas de relación
+entre hombres y mujeres.
+
+Reflexiona acerca de los estilos
+de relación y distribución de
+responsabilidades, para tomar
+decisiones respecto de aquellos
+que inciden positivamente en el
+bienestar de todas y todos.
+
+Educación Integral
+en Sexualidad.
+
+Explora formas de vivir y sentir el
+cuerpo, así como de los afectos,
+para identificar la diversidad de
+expresiones que agradan, incomodan y/o ponen en riesgo la
+integridad de las personas.
+
+Valora y aprecia las formas de
+expresar el carácter y los afectos
+para tomar decisiones orientadas
+a salvaguardar su integridad.
+
+Efectos en la vida
+de las personas,
+derivados de cambios sociales, culturales y en la salud.
+
+Reflexiona sobre hechos y sucesos
+que han afectado a su familia, para
+proponer posibles alternativas que
+permitan afrontarlos.
+
+Dialoga acerca de situaciones que
+conoce o ha vivido en su familia
+o comunidad, para comprender
+causas y efectos en la vida de las
+personas.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo Comunitario
+
+73
+
+Contenidos
+Reconocimiento de
+las necesidades y
+características propias y de las demás
+personas.
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Valora las características cognitivas,
+motrices, afectivas y sociales, así
+como las necesidades de sus compañeras y compañeros para expresar lo que les une como grupo.
+
+Aprecia lo que las personas
+le aportan en la atención de sus
+necesidades e intereses para
+reconocer la importancia del
+enriquecimiento mutuo.
+
+Expresa con que personas se identifica, para reconocer la identidad
+del grupo.
+
+Invita a otras personas a participar en una representación dramatizada, sobre la importancia del
+reconocimiento de todas y todos.
+
+Expresa lo que puede hacer para
+tener la oportunidad de reconocer
+a otras personas.
+
+Sentido de pertenencia, identidad
+personal y social.
+
+Identifica eventos importantes de
+la historia de la comunidad: fundación, logros, personas o lugares
+destacados, entre otros, que son
+motivos de orgullo compartido,
+para fortalecer la identidad individual y colectiva.
+Observa y describe prácticas socioculturales de su entorno; actividades productivas, comerciales,
+profesionales, de servicios, entre
+otras, para identificar concepciones, valores y proyectos compartidos por las personas que integran
+las familias y la comunidad.
+
+Reconstruye la historia de su familia, escuela y comunidad, a partir de narraciones y/o documentos
+en los que respondan a cuestionamientos como ¿quiénes somos?,
+y ¿de dónde vinieron nuestros
+antepasados?, para descubrir los
+diversos aportes socioculturales y
+lingüísticos que pueden ser parte
+de su identidad.
+Consulta, por diversos medios
+físicos y electrónicos, información
+para entender la articulación de
+su comunidad local con la región,
+alcaldía, estado, según se trate de
+contextos rurales o urbanos.
+
+Capacidades y habilidades motrices.
+
+Adapta sus movimientos, de
+acuerdo con los elementos básicos
+de los juegos, para responder a las
+condiciones que se presentan.
+
+Pone en práctica sus habilidades
+motrices en situaciones lúdicas,
+individuales y colectivas, para
+valorar la diversidad de posibilidades que contribuyen a mejorar su
+actuación.
+
+Posibilidades cognitivas, expresivas,
+motrices, creativas
+y de relación.
+
+Elabora propuestas de códigos de
+comunicación por medio del cuerpo,
+para otorgarle una intención a sus
+movimientos al jugar e interactuar
+con las demás personas.
+
+Reconoce sus capacidades y habilidades motrices, al representar con
+el cuerpo situaciones e historias, a
+fin de favorecer la construcción de
+la imagen corporal.
+
+74
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo Comunitario
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+
+Estilos de vida activos y saludables.
+
+Socializa actividades físicas que
+practica de manera cotidiana, con
+la intención de valorar su incidencia en el bienestar y cuidado de la
+salud.
+
+Organiza juegos y otras actividades físicas, para analizar avances
+y logros personales o grupales,
+en favor de asumir una vida
+saludable.
+
+Pensamiento lúdico, estratégico y
+creativo.
+
+Toma decisiones estratégicas a
+partir de las características de las
+situaciones de juego y cotidianas, con el fin de solucionarlas
+asertivamente.
+
+Diseña estrategias para atender
+situaciones o resolver problemas
+y conflictos que se presentan en el
+juego y en actividades cotidianas.
+
+Interacción motriz.
+
+Establece acuerdos ante situaciones de juego y cotidianas, a partir
+de la interacción, para valorar
+su aplicación y los resultados
+alcanzados.
+
+Experimenta situaciones caracterizadas por la cooperación y oposición, con el fin de reconocer sus
+implicaciones en la interacción y
+el logro de metas.
+
+Hábitos saludables,
+para promover el
+bienestar en los
+seres vivos.
+
+Distingue alimentos saludables
+y no saludables para preparar
+alimentos y promover la alimentación saludable.
+
+Analiza las características de una
+alimentación saludable, para diseñar estrategias que mejoren sus
+hábitos alimentarios en el contexto escolar.
+
+Contenidos
+
+Reconoce la importancia de la
+hidratación en el desarrollo del
+cuerpo de los seres vivos, para
+promover hábitos y actitudes saludables y de bienestar en la escuela
+y la comunidad.
+
+Realiza prácticas de hidratación
+saludable para promover prácticas
+de alimentación, vinculadas con la
+salud en su escuela y comunidad.
+
+Higiene para una
+vida saludable.
+
+Reflexiona acerca de distintos hábitos y costumbres de higiene que
+se realizan en la vida cotidiana en
+su comunidad, para mejorar prácticas de higiene con sus compañeras y compañeros de clase.
+
+Comparte experiencias para mejorar la higiene en su escuela y su
+comunidad, y organiza campañas de higiene en la escuela y la
+comunidad.
+
+Situaciones de
+riesgo social en la
+comunidad y región donde vive.
+
+Distingue situaciones de riesgo
+social en la región, y propone algunas medidas para el autocuidado.
+
+Analiza situaciones de riesgo
+social en la comunidad y región
+donde vive.
+
+Analiza situaciones de riesgo social en la comunidad y el contexto
+donde vive, como la violencia doméstica y el vandalismo, y analiza
+estrategias de prevención.
+
+Distingue situaciones de
+riesgo social en la región,
+y propone algunas medidas
+para el autocuidado.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo Comunitario
+
+75
+
+Contenidos
+
+Procesos de desarrollo
+de aprendizaje
+
+Procesos de desarrollo
+de aprendizaje
+
+Tercer grado
+
+Cuarto grado
+Reconoce que la violencia doméstica y el vandalismo son situaciones que ponen en riesgo la sana
+convivencia, y analiza estrategias
+de prevención al respecto.
+Organiza campañas en su grupo y
+escuela, para prevenir problemas
+sociales, como la violencia escolar,
+el vandalismo, las adicciones, entre otros.
+Investiga problemas sociales
+en su contexto y país, para
+analizar sus causas y efectos.
+
+Los afectos y su
+influencia en el
+bienestar.
+
+76
+
+Reconoce los factores presentes
+en el contexto que influyen en la
+expresión de las emociones para
+favorecer reacciones asertivas.
+
+Utiliza conocimientos previos
+sobre las diferentes expresiones
+emocionales para aprovechar su
+función en situaciones cotidianas.
+
+Analiza situaciones previas y
+resultados obtenidos para adecuar su reacción emocional a
+favor del bienestar personal y
+social.
+
+Considera las reacciones emocionales ante situaciones comunes e
+identifica las más adecuadas para
+lograr sus metas y el bien común.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+De lo Humano y lo Comunitario
+
+78
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+El Programa Analítico
+El Programa Analítico es el segundo nivel de concreción del currículo. Es el resultado
+del ejercicio en el que las y los docentes, como colectivo escolar, contextualizan y sitúan
+los procesos formativos de niñas, niños y adolescentes a partir de los Programas Sintéticos y la incorporación de problemáticas, temas y asuntos comunitarios locales y regionales como contenidos necesarios, de acuerdo con las condiciones de la situación comunitaria,
+escolar y en particular de su grupo escolar.
+El Programa Analítico no es un formato específico que se llene por cuestiones administrativas, es un documento que se construye y reconstruye de manera permanente, que
+organiza de modo específico varias de las acciones que ya se realizan en la escuela, incorpora nuevas o reorienta el sentido de otras para atender las finalidades que el Plan de
+estudio señala. Surge del análisis, reflexión, selección y organización de los Contenidos
+propuestos en los Programas Sintéticos, en distintos espacios y momentos, incluidos el
+Consejo Técnico Escolar (CTE) y las academias para el caso de secundaria, además de los
+ámbitos de formación docente.
+
+Relación entre Programas de Estudio y Codiseño
+Contenidos
+nacionales
+Programa
+de Estudio
+Contenidos
+nacionales
+
+contextualizados
+Proceso de
+apropiación,
+
+Programa
+Analítico de la
+escuela
+
+articulación y
+contextualización
+Contenidos
+locales por
+
+La autoridad educativa federal
+determinará los planes y programas de
+estudio para la educación preescolar,
+primaria y secundaria (artículo 113;
+fracción II LGE).
+
+escuela
+basados en
+el contexto
+Codiseño
+
+Planeación
+didáctica
+del docente
+
+Para orientar la construcción y reconstrucción del Programa Analítico se sugiere
+tener presente:
+■ La situación educativa de niñas, niños y adolescentes; es decir, lo que saben al
+inicio del ciclo escolar, con qué frecuencia asisten a la escuela, los recursos con
+los que cuentan o requieren, qué lengua hablan, y las expectativas que tienen
+sobre la escuela, es decir qué esperan y quieren aprender en la escuela.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+El Programa Analítico
+
+79
+
+■ Las características del contexto, conocimientos y saberes de la comunidad que
+se pueden aprovechar como oportunidades de aprendizaje, así como las expectativas que tienen madres y padres de familia sobre la escuela.
+■ Las orientaciones metodológicas y didácticas a través de las cuales se abordarán las situaciones, problemas, acontecimientos o temas de interés, sin llegar a
+desarrollar la planeación didáctica.
+■ Lo que se pretende enseñar y aprender, considerando situaciones, problemas,
+acontecimientos o temas de interés que permitan la apropiación de los Contenidos para su comprensión, las expectativas de niñas, niños y adolescentes,
+así como los saberes y las voces de la comunidad. Este ejercicio puede ser tan
+amplio o específico como el colectivo docente acuerde.
+■ La secuenciación de los Contenidos, considerando que en el Programa Sintético
+no se presentan en una secuenciación y orden definido.
+■ La temporalidad del Programa Analítico, la cual es anual, y el abordaje de los
+Contenidos, se define en función de la dosificación que las y los docentes consideren pertinente.
+Asimismo, el Programa Analítico se configura en tres planos, el primero refiere a la
+lectura de la realidad de la escuela como punto de partida para la toma de decisiones.
+El segundo plano implica la toma de decisiones respecto de los contenidos que habrán
+de incorporarse al Programa Analítico. Por último, el tercer plano se refiere a la concreción del Programa Analítico. Cabe destacar que estos tres planos forman parte del
+proceso del codiseño.
+
+Primer plano: Lectura de la realidad
+
+La lectura de la realidad escuela–comunidad–región–país que realiza el colectivo docente, implica el análisis del diagnóstico de los aprendizajes de niñas, niños y adolescentes,
+así como reconocer sus distintas voces y expectativas. En ella se establecen relaciones
+entre las condiciones educativas de la escuela y los distintos retos que enfrenta: los
+procesos de enseñanza y aprendizaje en función de las características, condiciones,
+necesidades, intereses y capacidades de niñas, niños y adolescentes y su inclusión en
+ámbitos sociales, culturales, económicos, políticos y ambientales más amplios, así como
+la infraestructura, los materiales de la escuela y las condiciones de la comunidad. Este
+proceso va más allá de una lectura inicial, que sólo muestra ciertas características, tanto de la escuela como de quienes asisten a ella.
+Para abordar este primer plano se sugiere:
+a. Indagar y analizar las características personales, socioculturales y académicas
+de niñas, niños y adolescentes que asisten a la escuela, a través de los datos
+que se recaban al inicio del ciclo escolar a manera de diagnóstico y evaluación
+inicial, así como sus expectativas acerca de la escuela. También, habrá que
+identificar las fortalezas de las y los docentes.
+
+80
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+El Programa Analítico
+
+b. Analizar los contextos social, económico y cultural de la comunidad, así como las condiciones
+que afectan positiva o negativamente a la escuela en la
+consecución de sus propósitos y las posibilidades de
+intervención de ésta. También es importante considerar el impacto de elementos
+del mundo, el país, la entidad federativa y la localidad
+en la vida escolar.
+
+Segundo plano:
+Contextualización
+
+Este plano permite al colectivo escolar interpretar
+y resignificar los Contenidos curriculares del Programa
+Sintético, desde sus propios términos y referencias para promover
+un aprendizaje situacional.
+La Contextualización implica la resignificación y apropiación del currículo nacional,
+entendido lo nacional como punto de partida y no como contenidos universales, acabados o “aplicables a cualquier contexto”. De tal forma que los contenidos adquieren un
+sentido y significado particular al responder a las necesidades, intereses, capacidades o
+condiciones determinadas que el colectivo docente considere importantes y posibles de
+trabajar con los diferentes grupos de niñas, niños y adolescentes.
+El proceso de contextualización se puede desarrollar de diferentes maneras, no existe un formato o manera única de llevarla a cabo. Para ello, los Contenidos del Programa
+Sintético se pueden relacionar con las situaciones que viven niñas, niños y adolescentes
+cotidianamente, por ejemplo, a partir de contenidos afines de un campo formativo específico o de varios campos; un tema, concepto, situación o problema de interés escolar o local; relaciones socioafectivas, acontecimientos históricos, espacios geográficos,
+descubrimientos o inventos tanto locales como globales, por mencionar algunos.
+Es importante tener presente que, para establecer esas relaciones, el colectivo docente necesita analizar la pertinencia y las posibilidades que tienen determinados contenidos, lo que significa que se observen de manera clara las interconexiones entre los
+distintos conocimientos y saberes. Asimismo, deberán identificar en el Plan de estudio
+2022 y los Programas Sintéticos, las relaciones entre el Perfil de egreso, los Ejes articuladores, las Finalidades de los Campos formativos y las Especificidades de cada Fase; al
+igual que la organización y alcance de los Contenidos y los Procesos de desarrollo de
+aprendizaje de cada Campo formativo, y las necesidades de actualización o preparación
+docente que requiere su tratamiento didáctico.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+El Programa Analítico
+
+81
+
+Como resultado de este ejercicio de análisis, el colectivo docente deberá tomar decisiones en torno a los Contenidos que formarán parte de su Programa Analítico, a saber:
+■ Contenidos sin ajustes: se incorporan al Programa Analítico tal como aparecen
+en el Programa Sintético.
+■ Contenidos contextualizados: son aquellos que, manteniendo su esencia, requieren ser contextualizados de manera más pertinente a las condiciones
+particulares de las y los estudiantes y del contexto. Se pretende reconocer y retomar aquellos saberes y conocimientos locales y comunitarios, así como otras
+maneras de aproximarse a la comprensión de determinadas temáticas que no
+suelen ser consideradas dentro de una disciplina específica; por ejemplo, el
+aprendizaje de la Lengua de Señas Mexicana, o bien, la inclusión de variantes
+lingüísticas.
+■ Contenidos nuevos: son aquellos que no están presentes en el Programa Sintético, y que corresponden a contenidos locales o regionales, que será necesario
+incorporar al Programa Analítico., a partir del análisis que realizó el colectivo
+docente.
+De esta manera, los Contenidos se organizan en función de las necesidades de la
+escuela, considerando que no todos tienen que contextualizarse ni articularse al mismo tiempo en una situación, tema o problema, y que más bien, se pueden abordar en
+múltiples oportunidades, desde varias dimensiones y momentos.
+
+Tercer plano: Formulación del Programa Analítico
+
+Una vez delimitados los Contenidos que integrarán el Programa Analítico, y dado que
+el Programa Sintético no establece una secuenciación para abordar los contenidos en
+cada Fase, será el colectivo docente quien deberá organizar la secuenciación y la temporalidad, para definir cómo se abordará a lo largo del ciclo escolar.
+Asimismo, enunciará de manera general, algunas vinculaciones y metodologías (proyectos, aprendizaje basado en problemas, estudio de casos, secuencia didáctica, enseñanza globalizada, entre otras) al tiempo que define de qué manera estarán presentes
+los Ejes articuladores en el desarrollo del Programa Analítico.
+A su vez, el Programa Analítico de la escuela es un documento que debería tener una
+mayor integración curricular que no sea solo la suma de los programas analíticos por
+grado o fase. Se construye por ciclo escolar de manera anual, para cada grado e incorpora los cuatro Campos formativos. En el caso de secundaria, las profesoras y los profesores que trabajan las asignaturas de un mismo Campo determinarán los Contenidos
+de cada grado.
+Es fundamental que el Programa Analítico sea revisado cada tanto en las sesiones de
+Consejo Técnico Escolar, para hacer las reorientaciones, adaptaciones, adecuaciones y
+ajustes que la realidad le devuelva a la estrategia de Contextualización, ya que se trata
+de un instrumento dinámico que sirve de base para el trabajo docente, junto con el Plan
+y los Programas Sintéticos.
+
+82
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+El Programa Analítico
+
+Algunas reflexiones sobre la
+evaluación formativa
+La evaluación de los aprendizajes es parte del proceso formativo de niñas, niños y
+adolescentes que cursan la Educación Primaria, y tiene como base las actividades de
+aprendizaje que se realizan en el aula, la escuela y la comunidad, como espacios de interdependencia e interrelación para la construcción de saberes y conocimientos. La planeación
+de actividades de aprendizaje y la evaluación formativa son acciones que se realizan de
+manera paralela.
+En el proceso de enseñanza y aprendizaje la evaluación formativa ocupa un lugar central. Tal como lo plantea el Plan de estudio 2022:
+“La evaluación de los aprendizajes forma parte del proceso formativo, se encuentra
+dentro de la relación pedagógica profesor–estudiante y en el marco de un currículo que
+integra conocimientos y saberes alrededor de la realidad de las y los estudiantes.” (p. 80)
+Por su parte, la UNESCO (2021) la define como una serie de actividades que se integran al quehacer pedagógico y que enfatizan el proceso de acompañamiento y en
+una retroalimentación continua y basada en el diálogo. La retroalimentación dialógica
+procura que las y los estudiantes reflexionen sobre su proceso de aprendizaje, lo cual
+requiere de sostener un vínculo permanente entre estudiantes y docentes. El Plan de
+estudio lo explica en los siguientes términos: “Este diálogo conlleva elementos como la
+participación, la observación sistemática, personalizada y contextualizada de lo avanzado por las y los estudiantes respecto a los contenidos abordados en los campos formativos en diferentes momentos del ciclo escolar y, principalmente, cómo se expresan en
+la vida diaria.” (SEP, 2022, p. 81)
+Por tanto, la evaluación formativa busca,
+por un lado, conocer cómo niñas, niños
+y adolescentes organizan y aplican sus
+aprendizajes al interactuar con sus
+pares en diferentes situaciones
+y resolver diversos problemas y
+reflexionar conjuntamente con
+ellos sobre su proceso de aprendizaje. Así como proporcionar
+información sobre la pertinencia de las estrategias didácticas
+que se han implementado.
+En este sentido, la evaluación
+formativa tiene como función
+principal retroalimentar el proceso educativo a través de la autorreflexión de estudiantes y docentes
+para identificar tanto logros y fortalezas
+que favorecieron su alcance, como aspectos que se requieren reforzar y los obstáculos
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Algunas reflexiones sobre la evaluación formativa
+
+83
+
+que se han presentado, y en su caso, definir acciones para superarlos, además de establecer compromisos personales y grupales para continuar trabajando.
+Se trata de un proceso constante y continuo que no busca medir el conocimiento
+memorístico, no califica ni determina el trayecto escolar de niñas, niños y adolescentes.
+Por el contrario, favorece su avance de acuerdo con las propias condiciones, tiempos y
+formas de aprendizaje; de ahí que no tenga un carácter conclusivo o sumativo.
+Resulta útil que las y los docentes lleven un registro que acompañe la observación del
+acercamiento que niñas, niños y adolescentes logran con el saber y el conocimiento de los
+Campos formativos, con qué actitud lo hacen, y qué espacios les son favorables. Para ello,
+se requieren estrategias, criterios e instrumentos de evaluación variados, acordes al propósito, la situación a evaluar y las necesidades, intereses, características, habilidades y
+condiciones de niñas, niños y adolescentes.
+La resignificación curricular y apropiación que de este programa y sus elementos
+realicen las y los docentes, sin duda alguna concretará nuevas formas de enseñanza y de
+aprendizaje. Asimismo, reconocerá y promoverá otras que ya están presentes en la vida
+cotidiana de las escuelas.
+
+84
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4
+
+Algunas reflexiones sobre la evaluación formativa
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4 Materiales de apoyo para el diseño de actividades didácticas
+
+Materiales de apoyo para el diseño
+de actividades didácticas
+Puede consultar los siguientes materiales para apoyarse en el diseño de sus actividades
+y profundizar en los Contenidos de los Campos.
+
+Sobre planeación didáctica
+Aránega, S. y Doménech J. (2001). La educación
+primaria. Retos, dilemas y propuestas. España. Graó.
+Chevallard, I. (1997). La transposición didáctica.
+Argentina. Aique.
+Díaz Barriga, Á. (2013). Secuencias de aprendizaje ¿Un problema del enfoque de
+competencias o un reencuentro con perspectivas didácticas? Profesorado. Revista de
+currículum y formación del profesorado, vol.
+17, núm. 3. https://www.ugr.es/~recfpro/
+rev173ART1.pdf
+Giné, N. y Parcerisa, A. (coords.) (2003). Planificación y análisis de la práctica educativa. La secuencia formativa: fundamentos y aplicación.
+España. Graó.
+Hernández, F. y Ventura, M. (2005). La organización del currículum por proyectos de
+trabajo. El conocimiento es un calidoscopio.
+España. Graó.
+Zabala, A. (1999). El enfoque globalizador y pensamiento complejo. Una respuesta para la
+comprensión e intervención en la realidad.
+España. Graó.
+Zabala, A. (2002). La práctica educativa. Cómo
+enseñar. España. Graó.
+
+Sobre lectoescritura
+DECRETO por el que se crea la Ley General
+de Derechos Lingüísticos de los Pueblos Indígenas y reforma la fracción
+IV, del artículo 7o. de la Ley General de
+Educación. 13 de marzo de 2003. Diario
+Oficial de la Federación: 13/03/2003.
+https://dof.gob.mx/nota_detalle.
+php?codigo=698625&fecha=13/03/2003
+Cassany, D., Luna, M. y Sanz, G. (1994). Enseñar
+lengua. España. Graó.
+Foucambert, J. (1989/2008). Cómo ser lector. Leer
+es comprender. México. Fontamara.
+
+González, S. y de Marengo, L. (comp.) (1999).
+Escuchar, hablar, leer, y escribir en la EGB.
+México. Paidós.
+Instituto Nacional de Lenguas Indígenas.
+(2008). Catálogo de las Lenguas Indígenas
+Nacionales: Variantes Lingüísticas de México
+con sus autodenominaciones y referencias
+geoestadísticas. Diario Oficial de la Federación. México. https://www.inali.gob.mx/
+pdf/CLIN_completo.pdf
+Lerner, D. (2001). Leer y escribir en la escuela: lo
+real, lo posible y lo necesario. México. SEP/
+BAM/Fondo de Cultura Económica.
+Lomas, C. (comp.) (2002). El Aprendizaje de
+la Comunicación en las Aulas. España.
+Paidós.
+Lomas, C. (ed.) (2014). La educación lingüística,
+entre el deseo y la realidad. Competencias
+comunicativas y enseñanza del lenguaje.
+México. FLACSO/Ediciones Octaedro.
+Nemirovsky, M. (coord.) (2009). Experiencias en
+el aula con la lectura y la escritura. España.
+Graó.
+Rockwell, E. y Rebolledo, V. (coord.) (2016).
+Yoltocah: Estrategias didácticas multigrado. https://yoltocah.mx/wp-content/
+uploads/2018/05/Yoltocah-2018.pdf
+Santos, T. (2015). Estrategias para el uso, desarrollo y aprendizaje de las lenguas indígenas
+en educación básica. Lecciones derivadas de
+la experiencia. CGEIB/SEP. https://dgeiib.
+basica.sep.gob.mx/files/fondo-editorial/
+educacion-intercultural/cgeib_00033.pdf
+Solé, I. (1992). Estrategias de lectura. España.
+ICE/Graó.
+
+Sobre la enseñanza mediante
+lo lúdico
+Barbeito, C. y Careita, M. (2009). Juegos de paz.
+Caja de herramientas para educar hacia
+una cultura de paz. España. Los Libros de
+la Catarata.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4 Materiales de apoyo para el diseño de actividades didácticas
+
+87
+
+Navarro, V. (2002). El afán de jugar. Teoría y
+práctica de los juegos motores. España.
+INDE.
+Omeñaca, R., Puyuelo, E. y Ruíz, J. (2001). Explorar, jugar, cooperar, bases teóricas y
+unidades didácticas para educación física
+escolar abordadas desde las actividades,
+juegos y métodos de cooperación. España.
+Paidotribo.
+Pavía, V. (coord.) (2006). Jugar de un modo
+lúdico. El juego desde la perspectiva del jugador. México. Novedades Educativas.
+Puig, I. y Satiro, A. (2017). Jugar a Pensar. México. SEP/EUMO/Octaedro. https://rarchivoszona33.files.wordpress.com/2012/08/
+jugar-a-pensar.pdf
+
+Sobre lenguajes artísticos
+Alsina, P. (2010). El área de educación musical:
+propuesta para aplicar en el aula. España.
+Graó.
+Lines, D. (2009). La educación musical para el
+nuevo milenio. España. Morata.
+Matthews, J. (2002). El arte de la infancia y la
+adolescencia. La construcción del significado. España. Paidós.
+Parini. P. (2002). El recorrido de la mirada. Del estereotipo a la creatividad. España. Paidós.
+
+Sobre pensamiento matemático
+y pensamiento científico
+Arteaga, E. y Del Sol, J. (2016). La enseñanza
+de las ciencias en el nuevo milenio.
+Retos y sugerencias. Universidad y Sociedad, vol. 8, núm. 1. http://scielo.
+sld.cu/scielo.php?script=sci_arttext&pid=S2218-36202016000100025
+Buendía, G. (2010). Articulando el saber matemático a través de prácticas sociales. El
+caso de lo periódico. Revista Latinoamericana de Investigación en Matemática Educativa, vol. 13, núm. 4. https://www.redalyc.
+org/pdf/335/33529137002.pdf
+Fernandes, I., Pires, D. y Villamañan, R. (2014).
+Educación científica con enfoque ciencia-tecnología-sociedad-ambiente: construcción de un instrumento de análisis
+de las directrices curriculares. Formación
+Universitaria, vol.7, núm. 5. http://www.
+
+88
+
+scielo.cl/scielo.php?script=sci_arttext&pid=S0718-50062014000500004&lng=es&nrm=iso
+Harlen, W. (ed.) (2010). Principios y grandes
+ideas de la educación en ciencias. Association for Science Education. Traducción al
+español Innovación en la enseñanza de la
+Ciencia A.C. http://innovec.org.mx/home/
+images/Grandes%20Ideas%20de%20
+la%20Ciencia%20Espaol%2020112.pdf
+Rosária, J. (2006). La enseñanza de ciencias
+basada en la elaboración de modelos.
+Revista Enseñanza de las Ciencias, vol. 24,
+núm. 2. http://www.joseantoniochamizo.
+com/proyectos/mm/pdf/archivo/005_Ensenanza_ciencias_basada_elaboracion_
+modelos.pdf
+
+Sobre ética, naturaleza
+y sociedades
+Blanco, R. (2008). Convivencia democrática,
+inclusión y cultura de paz. Lecciones desde
+la práctica educativa en América Latina.
+UNESCO/Innovemos. https://unesdoc.
+unesco.org/ark:/48223/pf0000162184
+Boege, E. (2008). El patrimonio biocultural de
+los pueblos indígenas de México. Hacia la
+conservación in situ de la biodiversidad
+y agrodiversidad en los territorios indígenas. México. INAH/Comisión Nacional
+para el Desarrollo de los Pueblos Indígenas. https://idegeo.centrogeo.org.mx/
+uploaded/documents/El_patrimonio_biocultural-Eckart_Boege.pdf
+Castañeda, R. (2021). Esclavitud africana en la
+fundación de Nueva España. México. Dirección General de Publicaciones y Fomento
+Editorial/IHI, UNAM.
+Cortina, A. (1999). El quehacer ético. España. Aula XXI/Santillana. https://
+www.academia.edu/34517588/
+Cortina_Adela_1999_El_quehacer_
+etico_Guia_para_la_educacion_moral_Madrid_Grupo_Santillana_de_Editores
+Czarny, G., Navia, C. y Salinas, G. (coords.)
+(2020). Lecturas críticas sobre formación de
+profesionales indígenas en México y América
+Latina. México. Universidad Pedagógica
+Nacional.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4 Materiales de apoyo para el diseño de actividades didácticas
+
+Florescano, E. (1997). Etnia, estado y nación:
+ensayo sobre las identidades colectivas en
+México. México. Taurus.
+García, B. y Ordorica, M. (2010). Los grandes
+problemas de México. Población. El Colegio de México. https://libros.colmex.
+mx/wp-content/plugins/documentos/
+descargas/Ia.pdf
+Klemmer, C. y McNamara, K. (2019). Deep
+Ecology and Ecofeminism: Social Work
+to Address Global Environmental Crisis.
+Affilia. Vol. 35 núm. 4. https://doi.
+org/10.1177/0886109919894650
+Navarrete Linares, F. (2019). ¿Quién conquistó
+México? México. Penguin Random House.
+O’ Gorman, E. (1958/1995). La invención de América. México. Fondo de Cultura Económica.
+
+Sobre lo humano y lo comunitario
+Álvarez, L. (2019). (Re)pensar la ciudadanía
+en el siglo XXI. Centro de Investigaciones Interdisciplinarias en Ciencias
+y Humanidades/Universidad Nacional
+Autónoma de México/Juan Pablos
+Editor. https://www.researchgate.
+net/profile/Lucia_Alvarez_Enriquez/
+publication/337171683_REPENSAR_
+LA_CIUDADANIA_EN_EL_SIGLO_XXI/
+links/5dc9cd02a6fdcc575040cb28/REPENSAR-LA-CIUDADANIA-EN-EL-SIGLO-XXI.pdf
+Bantúla, J. (1998). Juegos motrices cooperativos.
+España. Paidotribo.
+Booth, T. y Ainscow, M. (2015). Guía para
+la Educación Inclusiva. Desarrollando
+el aprendizaje y la participación en los
+centros escolares. OEI. https://downgalicia.org/wp-content/uploads/2018/01/
+Guia-para-la-Educacion-Inclusiva.pdf
+Camerino, O. (2007). Fichero de juegos deportivos recreativos. España. Ediciones INDE.
+Castañer, M. y Camerino, O. (2006). Manifestaciones básicas de la motricidad. España.
+Ediciones de la Universidad de Lleida.
+
+Centro de Derechos Humanos Miguel Agustín
+Pro Juárez, A.C. (2015). La lucha por la
+tierra y el territorio desde la voz de las mujeres. Experiencias organizativas de comunidades de resistencia. México. Centro Prodh.
+https://centroprodh.org.mx/wp-content/
+uploads/2018/11/LaLuchaPorLaTierrayTerritorio.pdf
+De Filpo, S. (2019). El feminismo como revolución
+implosiva. Giro afectivo y reflexividad en
+los movimientos de mujeres. XI Congreso
+Internacional de Investigación y Práctica
+Profesional en Psicología, Buenos Aires,
+Argentina.
+Dietz, G. (2010). Comunalidad e interculturalidad:
+por un diálogo entre movimiento indígena
+e institución “intercultural”. Universidad
+Veracruzana Intercultural. https://cdigital.
+uv.mx/bitstream/handle/123456789/9081/
+co1_p12-16_2010-%206.
+pdf?sequence=1&isAllowed=y
+Marpegán, C., Mandón, M. J. y Pintos, J. C.
+(2000). El placer de enseñar tecnología. Actividades de aula para docentes inquietos. Argentina. Ediciones Novedades Educativas.
+El buen vivir: Comunalidad y Bienestar. 15 de
+agosto de 2019. https://www.gob.mx/
+bienestar/es/articulos/el-buen-vivir-comunalidad-y-bienestar?idiom=es
+Organización de las Naciones Unidas para la
+Educación, la Ciencia y la Cultura. (2015).
+Educación Física de Calidad (EFC). Guía
+para los responsables políticos. UNESCO.
+https://unesdoc.unesco.org/ark:/48223/
+pf0000231340
+Zembylas, M. (2019). Intentos por discernir
+la compleja imbricación entre emoción
+y pedagogía: contribuciones del giro
+afectivo. Propuesta Educativa, vol. 1, núm.
+51. https://www.redalyc.org/articulo.
+oa?id=403061372003
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4 Materiales de apoyo para el diseño de actividades didácticas
+
+89
+
+Referencias
+Badillo, E. y Márquez, C. (2018). Oportunidades
+y retos para conectar las matemáticas y
+las ciencias en el aula. Uno Revista de Didáctica de las Matemáticas, no. 81.
+Beane, J. (2010). La integración del currículum. El
+diseño del núcleo de la educación democrática. España. Morata.
+De Alba, A. (1995). Curriculum: crisis, mito y perspectivas. México. CESU-UNAM.
+Díaz Barriga, Á. (1997). Didáctica y currículum.
+España. Paidós.
+Freinet, C. (1996). Técnicas Freinet de la Escuela
+Moderna. España. Siglo XXI.
+Freire, P. (1981). La importancia del acto de leer.
+La importancia de leer y los procesos de
+liberación. México. Siglo XXI Editores.
+Organización de las Naciones Unidas para la
+Educación, la Ciencia y la Cultura. (2021).
+Evaluación formativa: Una oportunidad
+
+90
+
+para transformar la educación en tiempos
+de pandemia. Reflexión a partir de los
+resultados del estudio cualitativo sobre
+perspectivas docentes en torno a la evaluación formativa. UNESCO. https://unesdoc.
+unesco.org/ark:/48223/pf0000378045
+Secretaría de Educación Pública. (2022). Plan
+de estudio para la educación preescolar,
+primaria y secundaria. Diario Oficial de la
+Federación. https://www.gob.mx/cms/
+uploads/attachment/file/792397/plan_de_
+estudio_para_la_educacion_preescolar_
+primaria_secundaria_2022.pdf
+Torres, J. (1998). Globalización e interdisciplina:
+el curriculum integrado. España. Morata.
+Zemelman, H. (1987). El uso crítico de la teoría.
+En torno a las funciones analíticas de la
+totalidad. Universidad de las Naciones
+Unidas/El Colegio de México.
+
+Programa de Estudio para la Educación Primaria: Programa Sintético de la Fase 4 Referencias
+
+Programa de Estudio para
+la Educación Primaria:
+Programa Sintético de la Fase 4
+
+

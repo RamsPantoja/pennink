@@ -22,10 +22,36 @@ describe("parseStudentsWorkbook", () => {
 		expect(result).toEqual({
 			ok: true,
 			rows: [
-				{ rowNumber: 2, name: "Ana Pérez", email: "ana@example.com" },
-				{ rowNumber: 3, name: "Luis", email: "luis@example.com" },
+				{ rowNumber: 2, name: "Ana Pérez", email: "ana@example.com", phone: "" },
+				{ rowNumber: 3, name: "Luis", email: "luis@example.com", phone: "" },
 			],
 		});
+	});
+
+	it("reads an optional phone column", async () => {
+		const buffer = await buildWorkbook([
+			["Name", "Email", "Phone"],
+			["Ana", "ana@example.com", "+52 555 123 4567"],
+			["Luis", "luis@example.com", null],
+		]);
+
+		const result = await parseStudentsWorkbook(buffer);
+
+		expect(result.ok && result.rows.map((row) => row.phone)).toEqual([
+			"+52 555 123 4567",
+			"",
+		]);
+	});
+
+	it("accepts a Spanish telefono header", async () => {
+		const buffer = await buildWorkbook([
+			["Nombre", "Correo", "Teléfono"],
+			["Ana", "ana@example.com", "5551234"],
+		]);
+
+		const result = await parseStudentsWorkbook(buffer);
+
+		expect(result.ok && result.rows[0]?.phone).toBe("5551234");
 	});
 
 	it("accepts Spanish headers in any order and ignores extra columns", async () => {
@@ -38,7 +64,7 @@ describe("parseStudentsWorkbook", () => {
 
 		expect(result).toEqual({
 			ok: true,
-			rows: [{ rowNumber: 2, name: "María", email: "maria@example.com" }],
+			rows: [{ rowNumber: 2, name: "María", email: "maria@example.com", phone: "" }],
 		});
 	});
 

@@ -20,6 +20,7 @@ export type ParsedStudentRow = {
 	rowNumber: number;
 	name: string;
 	email: string;
+	phone: string;
 };
 
 export type ClassifiedStudentRow = ParsedStudentRow & {
@@ -29,6 +30,14 @@ export type ClassifiedStudentRow = ParsedStudentRow & {
 
 const NAME_HEADERS = new Set(["name", "nombre", "nombre completo", "full name"]);
 const EMAIL_HEADERS = new Set(["email", "correo", "correo electronico", "e-mail", "mail"]);
+const PHONE_HEADERS = new Set([
+	"phone",
+	"phone number",
+	"telefono",
+	"celular",
+	"mobile",
+	"movil",
+]);
 
 const emailSchema = z.string().trim().email().max(320);
 const nameSchema = z.string().trim().min(1).max(100);
@@ -77,10 +86,12 @@ export const parseStudentsWorkbook = async (
 
 	let nameColumn: number | undefined;
 	let emailColumn: number | undefined;
+	let phoneColumn: number | undefined;
 	sheet.getRow(1).eachCell((cell, columnNumber) => {
 		const header = normalizeHeader(cellToString(cell.value));
 		if (NAME_HEADERS.has(header)) nameColumn ??= columnNumber;
 		if (EMAIL_HEADERS.has(header)) emailColumn ??= columnNumber;
+		if (PHONE_HEADERS.has(header)) phoneColumn ??= columnNumber;
 	});
 
 	if (!nameColumn || !emailColumn) {
@@ -97,8 +108,11 @@ export const parseStudentsWorkbook = async (
 		const name = cellToString(row.getCell(nameColumn).value);
 		const email = cellToString(row.getCell(emailColumn).value);
 		if (!name && !email) continue;
+		const phone = phoneColumn
+			? cellToString(row.getCell(phoneColumn).value)
+			: "";
 
-		rows.push({ rowNumber, name, email });
+		rows.push({ rowNumber, name, email, phone });
 		if (rows.length > MAX_STUDENT_IMPORT_ROWS) {
 			return {
 				ok: false,

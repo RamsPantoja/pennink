@@ -27,10 +27,19 @@ export const addClassroomTeacherInputSchema = z.object({
 	email: z.string().trim().email().max(320),
 });
 
+export const studentPhoneSchema = z
+	.string()
+	.trim()
+	.max(30)
+	.regex(/^[0-9+()\-.\s]*$/, "Invalid phone number")
+	.optional()
+	.transform((value) => (value ? value : null));
+
 export const createStudentInputSchema = z.object({
 	classroomId: classroomIdSchema,
 	name: z.string().trim().min(1).max(100),
 	email: z.string().trim().email().max(320),
+	phone: studentPhoneSchema,
 });
 
 export const updateStudentInputSchema = z.object({
@@ -38,6 +47,7 @@ export const updateStudentInputSchema = z.object({
 	studentId: z.string().uuid(),
 	name: z.string().trim().min(1).max(100),
 	email: z.string().trim().email().max(320),
+	phone: studentPhoneSchema,
 });
 
 export const deleteStudentInputSchema = z.object({
@@ -59,6 +69,7 @@ export const parseStudentImportInputSchema = z.object({
 export const importStudentRowSchema = z.object({
 	name: z.string().trim().min(1).max(100),
 	email: z.string().trim().email().max(320),
+	phone: studentPhoneSchema,
 });
 
 export const importStudentsInputSchema = z.object({

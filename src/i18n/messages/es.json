@@ -853,7 +853,7 @@
 	"StudentImportDialog": {
 		"title": "Importar estudiantes desde Excel",
 		"description": "Sube un archivo .xlsx con columnas de nombre y correo, y revisa la vista previa antes de importar.",
-		"format": "Usa la primera hoja. La primera fila debe tener los encabezados name y email (o nombre y correo). Hasta 500 estudiantes, 2 MB.",
+		"format": "Usa la primera hoja. La primera fila debe tener los encabezados name y email (o nombre y correo). Puedes incluir opcionalmente una columna phone (o telefono). Hasta 500 estudiantes, 2 MB.",
 		"parsing": "Leyendo archivo...",
 		"summary": "Nuevos: {new} · Existentes: {existing} · Ya inscritos: {enrolled} · Inválidos: {invalid} · Duplicados: {duplicate}",
 		"status": {
@@ -891,7 +891,16 @@
 			"title": "Estudiantes",
 			"description": "Agrega estudiantes con su nombre y correo.",
 			"namePlaceholder": "Nombre del estudiante",
-			"emailPlaceholder": "Correo del estudiante"
+			"emailPlaceholder": "Correo del estudiante",
+			"phonePlaceholder": "Teléfono (opcional)",
+			"edit": "Editar",
+			"editDialog": {
+				"title": "Editar estudiante",
+				"description": "Actualiza los datos del estudiante.",
+				"phone": "Teléfono",
+				"save": "Guardar",
+				"cancel": "Cancelar"
+			}
 		},
 		"teachers": {
 			"title": "Profesores",
